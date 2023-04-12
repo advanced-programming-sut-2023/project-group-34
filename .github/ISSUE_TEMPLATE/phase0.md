@@ -50,12 +50,12 @@ assignees: Arman17Babaei
 
   **نام و نام خانوادگی: محمد حسین اسلامی**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>انجام قسمت User و Map:تسک مربوطه</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
-  2. [ ] در حال انجام
+  2. [ ....] در حال انجام
   3. [ ] تمام شده
   </div>
 </details>
