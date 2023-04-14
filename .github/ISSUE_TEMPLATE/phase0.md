@@ -75,9 +75,9 @@ assignees: Arman17Babaei
 
 ## تسک‌های نفر سوم
 
-  **نام و نام خانوادگی:**
+  **نام و نام خانوادگی: محمد علیزاده**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>تسک مربوطه Game</summary>
 
   <div dir="ltr" align='right'>
 
