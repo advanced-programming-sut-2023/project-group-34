@@ -77,13 +77,13 @@ assignees: Arman17Babaei
 
   **نام و نام خانوادگی: محمد علیزاده**
 <details>
-  <summary>تسک مربوطه Game</summary>
+  <summary>تسک مربوطه Game و Human</summary>
 
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [.] تمام شده
   </div>
 </details>
 </div>
