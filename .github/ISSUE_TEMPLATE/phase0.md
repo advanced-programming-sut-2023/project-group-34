@@ -20,7 +20,7 @@ assignees: Arman17Babaei
 
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [...] تمام شده
   </div>
 </details>
 
@@ -31,7 +31,7 @@ assignees: Arman17Babaei
   
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [...] تمام شده
      </div>
 </details>
 
@@ -42,7 +42,7 @@ assignees: Arman17Babaei
   
   1. [ ] شروع نشده
   2. [ ] در حال انجام
-  3. [ ] تمام شده
+  3. [...] تمام شده
      </div>
 </details>
 
@@ -64,7 +64,7 @@ assignees: Arman17Babaei
 
   **نام و نام خانوادگی: ارشیا ایزدیاری**
 <details>
-  <summary>تسک مربوطه Buildings</summary>
+  <summary>تسک مربوطه Buildings , SiegeMachine</summary>
   <div dir="ltr" align='right'>
 
   1. [ ] شروع نشده
