@@ -5,9 +5,13 @@ import java.util.regex.Pattern;
 
 public enum Commands {
     LOGIN(null),
-    CHANGE_USER("profile\\s+change\\s+-u\\s+(?<username>\\S+)\\s+"),
-    CHANGE_NICKNAME("profile\\s+change\\s+-n\\s+(?<nickname>\\S+)\\s+"),
-    CHANGE_EMAIL("profile\\s+change\\s+-e\\s+(?<email>\\S+)\\s+");
+    CHANGE_USER("Profile\\s+change\\s+slogan\\s+-s\\s*( ?<slogan>.+)*"),
+    CHANGE_NICKNAME("Profile\\s+change\\s+-n\\s+( ?<nickname>.+)*"),
+    CHANGE_EMAIL("Profile\\s+change\\s+-e\\s+( ?<email>.+)*"),
+    CHANGE_SLOGAN("Profile\\s+change\\s+slogan\\s+-s\\s+( ?<slogan>.+)*"),
+    CHANGE_PASSWORD("Profile\\s+change\\s+password\\s*( -o\\s+(?<oldPass>\\S+)\\s+-n\\s+(?<newPass>\\S+)|-n\\s+(?<newPass1>\\S+)\\s+-o\\s+(?<oldPass1>\\S+))*"),
+    CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
+    REMOVE_SLOGAN("Profile\\s+remove\\s+slogan");
 
     private final String regex;
 
