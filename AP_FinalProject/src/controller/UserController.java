@@ -31,22 +31,22 @@ public class UserController {
         return null;
     }
 
-    private static boolean nameChecker(String name){
+    public static boolean nameChecker(String name){
         return true;
     }
 
-    private static boolean emailChecker(String email) {
+    public static boolean emailChecker(String email) {
         return true;
     }
 
-    private static boolean isUserNameAlreadyUsed(String name) {
+    public static boolean isUserNameAlreadyUsed(String name) {
         return false;
     }
-    private static boolean isEmailAlreadyUsed(String email) {
+    public static boolean isEmailAlreadyUsed(String email) {
         return false;
     }
 
-    private static boolean passwordChecker(String password){
+    public static boolean passwordChecker(String password){
         return true;
     }
 
@@ -66,8 +66,14 @@ public class UserController {
         return null;
     }
 
-    private static String randomSloganGenerator(){
+    public static String randomSloganGenerator(){
         return null;
+    }
+
+    public static String randomUsernameGenerator(){
+        return null;
+        //This method creates a username similar to the username that user has entered and gives a recommendation
+        //We have to make sure the new generated username does not exit itself
     }
 
     private static String emailChecker(){

@@ -30,6 +30,12 @@ public class MainController {
     }
 
     public static String changeUsername (Matcher matcher){
+        String username = matcher.group("username");
+        if (username.isEmpty()) return "The required field is empty, changing username failed";
+
+        if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
+
+        if (UserController.isUserNameAlreadyUsed(username)) return "Username already exists, changing username failed";
         return null;
     }
 
@@ -41,7 +47,7 @@ public class MainController {
         return null;
     }
 
-    public static String changeEmail(){
+    public static String changeEmail(Matcher matcher){
         return null;
     }
 

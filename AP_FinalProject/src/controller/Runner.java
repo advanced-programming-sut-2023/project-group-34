@@ -18,4 +18,8 @@ public class Runner {
             }
         }
     }
+
+    public static Scanner getScn() {
+        return scn;
+    }
 }
