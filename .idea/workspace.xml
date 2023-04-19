@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e0d3423a-0b07-47a1-82e8-dfbb1ecde532" name="Changes" comment="testing">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Runner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Game.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Trade.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/Building.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/BuildingType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/CagedWarDog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/Church.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/ChurchType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/DeathPit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/DefenciveBuilding.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/DefenciveBuildingType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/DrawBridge.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/Gate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/GateType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/GeneralBuilding.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/GeneralBuildingsType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/GhirDitch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/Inn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/Maker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/MakerType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/OilSmelter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/building/OxTether.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/BlockFillerType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/BlockType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/Commands.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/Direction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/SecurityQuestion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/Slogan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/TroopStage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/Validations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/make_able/Food.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/make_able/MakeAble.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/make_able/Resources.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/enums/make_able/Weapons.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/SiegeMachine/OpponentTypes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/SiegeMachine/SiegeMachine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/SiegeMachine/SiegeMachineType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/WarEquipment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/human/Engineer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/human/Human.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/human/Troop.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/forces/human/TroopType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/government/AccountingDepartment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/government/Government.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/government/StorageDepartment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/map/Block.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/map/GameMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/user/Password.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/user/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/ForgetPasswordMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/MainMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/MapEditingMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/ProfileMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/StarterMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/gameMenu/GameMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/gameMenu/MapMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/gameMenu/ShopMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/gameMenu/TradeMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/GameController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/MainController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/Runner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Game.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Trade.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/Building.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/BuildingType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/CagedWarDog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/Church.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/ChurchType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/DeathPit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/DefenciveBuilding.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/DefenciveBuildingType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/DrawBridge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/Gate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/GateType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/GeneralBuilding.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/GeneralBuildingsType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/GhirDitch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/Inn.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/Maker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/MakerType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/OilSmelter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/building/OxTether.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/BlockFillerType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/BlockType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/Commands.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/Direction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/SecurityQuestion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/Slogan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/TroopStage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/Validations.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/make_able/Food.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/make_able/MakeAble.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/make_able/Resources.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/enums/make_able/Weapons.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/SiegeMachine/OpponentTypes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/SiegeMachine/SiegeMachine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/SiegeMachine/SiegeMachineType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/WarEquipment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/human/Engineer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/human/Human.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/human/Troop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/forces/human/TroopType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/government/AccountingDepartment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/government/Government.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/government/StorageDepartment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/map/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/map/GameMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/user/Password.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/user/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/ForgetPasswordMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/MainMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/MapEditingMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/ProfileMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/StarterMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/gameMenu/GameMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/gameMenu/MapMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/gameMenu/ShopMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/gameMenu/TradeMenu.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Oe3FWkjvHTzLmkVSb5FxH8QdX2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0d3423a-0b07-47a1-82e8-dfbb1ecde532" name="Changes" comment="" />
+      <created>1681907125319</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681907125319</updated>
+      <workItem from="1681907127032" duration="965000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="testing" />
+  </component>
+</project>
