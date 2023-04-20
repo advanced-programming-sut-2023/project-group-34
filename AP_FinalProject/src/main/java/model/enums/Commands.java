@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public enum Commands {
     //TODO: improve login and create regexes
-    CREATE_USER("\\s*user\\s+create((\\s+-u\\s+(?<username>\\S+))|(\\s+-p\\s+(?<password>\\S+))|(\\s+(?<passwordConfirmation>\\S+))|(\\s+–email\\s+(?<email>\\S+))|(\\s+-n\\s+(?<nickname>\\S+))|(\\s+-s\\s+(?<slogan>.+)))*\\s*"),
+    CREATE_USER("\\s*user\\s+create((\\s+-u\\s+(?<username>\\S+))|(\\s+-p\\s+(?<password>\\S+))|(\\s+(?<passwordConfirmation>\\S+))|(\\s+–email\\s+(?<email>\\S+))|(\\s+-n\\s+(?<nickname>\\S+))|(\\s+(?<sloganFlag>-s)\\s+(?<slogan>.+)))*\\s*"),
     LOGIN("\\s*user\\s+login(?=.*\\s+-u\\s+(?<username>\\S+))(?=.*\\s+-p\\s+(?<password>\\S+))(.*\\s+--stay-logged-in.*)?.*"),
     FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password(\\s+-u\\s+(?<username>\\S+))?\\s*"),
     LOGOUT("\\s*user\\s+logout\\s*"),
@@ -28,9 +28,5 @@ public enum Commands {
         if (matcher.matches())
             return matcher;
         return null;
-    }
-
-    public static boolean matches(String input, Commands command) {
-        return Pattern.matches(command.regex, input);
     }
 }
