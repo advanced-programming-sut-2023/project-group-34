@@ -43,6 +43,12 @@ public class ProfileMenu {
                 System.out.println("Your current rank is: " + User.currentUser.getPlayerRank());
             } else if (Commands.getOutput(command, Commands.DISPLAY_PROFILE) != null){
                 System.out.println(MainController.showProfile());
+            } else if (Commands.getOutput(command, Commands.CURRENT_MENU) != null){
+                System.out.println("Profile Menu");
+            } else if (command.equals("back")){
+                return "";
+            } else {
+                System.out.println("Invalid Command");
             }
         }
     }

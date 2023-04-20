@@ -2,9 +2,11 @@ package controller;
 
 import model.Game;
 import model.building.Building;
+import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.forces.human.Human;
 import model.forces.human.Troop;
+import model.user.User;
 import view.gameMenu.GameMenu;
 import view.gameMenu.MapMenu;
 import view.gameMenu.ShopMenu;
@@ -171,11 +173,46 @@ public class GameController {
     }
 
     public static String buyItems(Matcher matcher){
+        int finalAmount = 0;
+
+        if (matcher.group("amount").isEmpty() && (matcher.group("amount1").isEmpty()))
+            return "The required field is empty, buying failed";
+        else if (!matcher.group("amount").isEmpty())
+            finalAmount = Integer.parseInt(matcher.group("amount"));
+        else
+            finalAmount = Integer.parseInt(matcher.group("amount1"));
+
+        String item;
+        if (!matcher.group("item").isEmpty())
+            item = matcher.group("item");
+        else
+            item = matcher.group("item1");
+
+        if (item.isEmpty()) return "The required field is empty, buying failed";
+
+        if (finalAmount <= 0) return "Invalid amount, buying failed";
+
+        int finalPrice = currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount);
+
+        if (finalPrice == 0) return "The product you are looking for does not exit, buying failed";
+
+        if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
+            return "You do not have gold to buy this item, buying failed";
+
+
         return null;
     }
 
+
     public static String showPriceList(){
-        return null;
+        String finalString = new String();
+        finalString = finalString.concat(currentGame.getCurrentGovernment().
+                getStorageDepartment().getResourcesPriceList());
+        finalString = finalString.concat(currentGame.getCurrentGovernment().
+                getStorageDepartment().getFoodPriceList());
+        finalString = finalString.concat(currentGame.getCurrentGovernment().
+                getStorageDepartment().getWeaponPriceList());
+        return finalString;
     }
 
     public static String trade(Matcher matcher){

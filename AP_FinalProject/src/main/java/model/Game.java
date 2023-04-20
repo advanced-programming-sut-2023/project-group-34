@@ -57,4 +57,12 @@ public class Game {
     public int calculateScore(User user) {
         return 0;
     }
+
+    public Government getCurrentGovernment() {
+        return currentGovernment;
+    }
+
+    public void setCurrentGovernment(Government currentGovernment) {
+        this.currentGovernment = currentGovernment;
+    }
 }

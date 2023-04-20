@@ -1,17 +1,19 @@
 package model.enums.make_able;
 
 public enum Resources implements MakeAble {
-    RESOURCES_CAPACITY(0),
-    GHIR(0),
-    GOLD(0),
-    WOOD(0),
-    IRON(0),
-    STONE(0);
+    RESOURCES_CAPACITY(0, "resources_capacity"),
+    GHIR(0, "ghir"),
+    GOLD(0, "gold"),
+    WOOD(0, "wood"),
+    IRON(0, "iron"),
+    STONE(0, "stone");
 
     private int price;
+    private String name;
 
-    private Resources(int price){
+    private Resources(int price, String name){
         this.price = price;
+        this.name = name;
     }
 
     @Override
@@ -23,4 +25,13 @@ public enum Resources implements MakeAble {
     public void use(int rate) {
 
     }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
 }
