@@ -1,10 +1,12 @@
 package controller;
 
+import model.enums.Validations;
 import view.ForgetPasswordMenu;
 import view.StarterMenu;
 import model.enums.SecurityQuestion;
 import model.enums.Slogan;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 public class UserController {
@@ -32,17 +34,23 @@ public class UserController {
     }
 
     public static boolean nameChecker(String name){
-        return true;
+        return Validations.check(name, Validations.VALID_USERNAME);
     }
 
     public static boolean emailChecker(String email) {
-        return true;
+        return model.enums.Validations.check(email, Validations.VALID_EMAIL);
     }
 
     public static boolean isUserNameAlreadyUsed(String name) {
+        for (model.user.User user : model.user.User.getUsers()) {
+            if (user.getName().equals(name)) return true;
+        }
         return false;
     }
     public static boolean isEmailAlreadyUsed(String email) {
+        for (model.user.User user : model.user.User.getUsers()) {
+            if (user.getEmail().toLowerCase(Locale.ROOT).equals(email.toLowerCase())) return true;
+        }
         return false;
     }
 
@@ -87,6 +95,4 @@ public class UserController {
     private static void countWrongPasswordsEntered(){
 
     }
-
-
 }

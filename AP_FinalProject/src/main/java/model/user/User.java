@@ -12,7 +12,7 @@ public class User {
     private String nickname;
     private String email;
     private String slogan;
-    private static ArrayList<User> users;
+    private static ArrayList<User> users = new ArrayList<>();
     public static User currentUser;
     private Boolean isLoggedIn;
     private int score;
@@ -26,6 +26,7 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         government = new Government(this);
+        users.add(this);
     }
 
     public int getPlayerRank(){
