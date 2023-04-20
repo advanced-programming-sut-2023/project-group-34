@@ -35,7 +35,13 @@ public class User {
                 return o1.score - o2.score;
             }
         });
-        return 0;
+
+        int rank = 0;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getName().equals(name)) rank =  i+1;
+        }
+
+        return rank;
     }
 
     public String getName() {

@@ -9,9 +9,14 @@ public enum Commands {
     CHANGE_NICKNAME("Profile\\s+change\\s+-n\\s+( ?<nickname>.+)*"),
     CHANGE_EMAIL("Profile\\s+change\\s+-e\\s+( ?<email>.+)*"),
     CHANGE_SLOGAN("Profile\\s+change\\s+slogan\\s+-s\\s+( ?<slogan>.+)*"),
-    CHANGE_PASSWORD("Profile\\s+change\\s+password\\s*( -o\\s+(?<oldPass>\\S+)\\s+-n\\s+(?<newPass>\\S+)|-n\\s+(?<newPass1>\\S+)\\s+-o\\s+(?<oldPass1>\\S+))*"),
+    CHANGE_PASSWORD("Profile\\s+change\\s+password\\s*(-o\\s+(?<oldPass>\\S+)\\s+-n\\s+(?<newPass>\\S+)|-n\\s+(?<newPass1>\\S+)\\s+-o\\s+(?<oldPass1>\\S+))*"),
+    CHANGE_PASSWORD_RANDOMLY("Profile\\s+change\\s+password\\s*(-o\\s+(?<oldPass>\\S+)\\s+-n\\s+random|-n\\s+random\\s+-o\\s+(?<oldPass1>\\S+))*"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
-    REMOVE_SLOGAN("Profile\\s+remove\\s+slogan");
+    REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
+    DISPLAY_HIGHSCORE("Profile\\s+display\\s+highscore"),
+    DISPLAY_RANK("Profile\\s+display\\s+rank"),
+    DISPLAY_PROFILE("Profile\\s+display"),
+    DISPLAY_SLOGAN("Profile\\s+display\\s+slogan");
 
     private final String regex;
 

@@ -4,6 +4,7 @@ import controller.MainController;
 import controller.Runner;
 import controller.UserController;
 import model.enums.Commands;
+import model.user.User;
 
 import java.util.regex.Matcher;
 
@@ -32,6 +33,16 @@ public class ProfileMenu {
                 //There might be a conflict here
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){
                 System.out.println(MainController.changePassword(matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD_RANDOMLY)) != null){
+                System.out.println(MainController.changePasswordRandomly(matcher));
+            } else if (Commands.getOutput(command, Commands.DISPLAY_HIGHSCORE) != null){
+                System.out.println(User.currentUser.getScore());
+            } else if (Commands.getOutput(command, Commands.DISPLAY_SLOGAN) != null){
+                System.out.println(MainController.displaySlogan());
+            } else if (Commands.getOutput(command, Commands.DISPLAY_RANK) != null){
+                System.out.println("Your current rank is: " + User.currentUser.getPlayerRank());
+            } else if (Commands.getOutput(command, Commands.DISPLAY_PROFILE) != null){
+                System.out.println(MainController.showProfile());
             }
         }
     }
