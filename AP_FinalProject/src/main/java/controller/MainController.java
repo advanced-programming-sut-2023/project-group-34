@@ -63,16 +63,23 @@ public class MainController {
         String newPass1 = matcher.group("newPass1");
 
         String finalOldPass;
-        if (oldPass.isEmpty())
-            finalOldPass = oldPass1;
-        else
+        if (!oldPass.isEmpty())
             finalOldPass = oldPass;
+        else
+            finalOldPass = oldPass1;
 
         String finalNewPass;
-        if (newPass.isEmpty())
-            finalNewPass = newPass1;
-        else
+        if (!newPass.isEmpty())
             finalNewPass = newPass;
+        else
+            finalNewPass = newPass1;
+
+        if (finalOldPass.isEmpty() || finalNewPass.isEmpty()) return "The required field is empty, changing password failed";
+
+        String response = UserController.passwordChecker(newPass1);
+        if (!response.isEmpty()) return response;
+
+        if (!User.currentUser.getPassword().equals(finalOldPass)) return "Incorrect current password, changing password failed";
 
         return null;
 

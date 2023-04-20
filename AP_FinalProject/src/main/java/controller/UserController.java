@@ -46,8 +46,8 @@ public class UserController {
         return false;
     }
 
-    public static boolean passwordChecker(String password){
-        return true;
+    public static String passwordChecker(String password){
+        return null;
     }
 
     public static String loginUser(Matcher matcher){
