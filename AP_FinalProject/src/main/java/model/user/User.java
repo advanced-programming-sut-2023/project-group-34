@@ -1,4 +1,4 @@
-package model.user;
+package main.java.model.user;
 
 import model.enums.Slogan;
 import model.government.Government;
@@ -16,7 +16,6 @@ public class User {
     public static User currentUser;
     private static Boolean isLoggedIn;
     private int score;
-    private Government government;
     private Slogan sloganTypes;
     private int currentScore = 0;
 
@@ -25,7 +24,6 @@ public class User {
         this.name = name;
         this.nickname = nickname;
         this.password = password;
-        government = new Government(this);
         users.add(this);
     }
 

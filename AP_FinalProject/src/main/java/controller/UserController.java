@@ -59,14 +59,14 @@ public class UserController {
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
         model.user.Password passwordObject = new Password();
         passwordObject.setPasswordName(password);
-        String result = securityQuestion(passwordObject);
+        String result = pickSecurityQuestion(passwordObject);
         if (result != null) return result;
         new model.user.User(username, passwordObject, nickname, email);
         //TODO: JSON
         return "User created successfully!";
     }
 
-    public static String securityQuestion(Password password) {
+    public static String pickSecurityQuestion(Password password) {
         String input = controller.Runner.getScn().nextLine();
         Matcher matcher = model.enums.Commands.getOutput(input, Commands.PICK_QUESTION);
         if (matcher == null) return "Picking security Question failed: Invalid command!";
@@ -114,10 +114,6 @@ public class UserController {
         model.user.User.setCurrentUser(user);
         if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
         return "User logged in";
-    }
-
-    private static String pickSecurityQuestion(){
-        return null;
     }
 
     public static String pickRandomSecurityQuestion(){
