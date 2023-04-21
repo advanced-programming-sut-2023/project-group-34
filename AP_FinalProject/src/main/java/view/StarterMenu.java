@@ -20,7 +20,10 @@ public class StarterMenu {
                 System.out.println(UserController.registerUser(matcher));
             }
             else if ((matcher = Commands.getOutput (input, Commands.LOGIN)) != null) {
-                System.out.println(UserController.loginUser(matcher));
+                String result = UserController.loginUser(matcher);
+                System.out.println(result);
+                if (result.equals("Username and password didn’t match!")) UserController.wrongPasswordsEntered();
+                else if (result.equals("User logged in")) return result;
             }
             else if ((matcher = Commands.getOutput (input, Commands.FORGOT_PASSWORD)) != null) {
                 System.out.println(UserController.forgotPassword(matcher));
@@ -30,6 +33,4 @@ public class StarterMenu {
             }
         }
     }
-
-
 }

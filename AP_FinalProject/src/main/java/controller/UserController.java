@@ -117,11 +117,8 @@ public class UserController {
         String username = matcher.group("username");
         String password = matcher.group("password");
         model.user.User user;
-        if ((user = getUserByUsername(username)) == null) return "Username and password didn’t match!";
-        if (!user.getPassword().checkPassword(password)) {
-            wrongPasswordsEntered();
-            return "Username and password didn’t match!";
-        }
+        if ((user = getUserByUsername(username)) == null) return "No user with the given username!";
+        if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
         model.user.User.setCurrentUser(user);
         if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
         return "User logged in";
@@ -165,8 +162,8 @@ public class UserController {
 
     private static int wrongPasswordsCount = 0;
 
-    private static void wrongPasswordsEntered(){
-        //TODO: improve related outputs
+    public static void wrongPasswordsEntered(){
+        //TODO: improve mechanism
         wrongPasswordsCount++;
         if (wrongPasswordsCount % 5 != 0) {
             System.out.println("you are locked!");
