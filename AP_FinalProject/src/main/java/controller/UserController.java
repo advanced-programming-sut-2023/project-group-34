@@ -65,8 +65,7 @@ public class UserController {
         if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
-        model.user.Password passwordObject = new Password();
-        passwordObject.setPasswordName(password);
+        model.user.Password passwordObject = new Password(password);
         String result = pickSecurityQuestion(passwordObject);
         if (result != null) return result;
         new model.user.User(username, passwordObject, nickname, email);
@@ -128,10 +127,6 @@ public class UserController {
         return "User logged in";
     }
 
-    public static String pickRandomSecurityQuestion(){
-        return null;
-    }
-
     public static String randomSloganGenerator(){
         return null;
     }
@@ -152,7 +147,7 @@ public class UserController {
         Password password = user.getPassword();
         System.out.println(password.getSecurityQuestion());
         String answer = Runner.getScn().nextLine();
-        if (!password.getAnswer().equals(answer)) return "Wrong answer!";
+        if (!password.checkAnswer(answer)) return "Wrong answer!";
         System.out.println("Enter new password:");
         String newPassword = Runner.getScn().nextLine();
         if (newPassword.equals("random")) {

@@ -28,6 +28,9 @@ public class Password {
         }
     }
 
+    public Password(String password) {
+        this.passwordName = sha256Encrypt(password);
+    }
 
     public boolean checkPassword(String password) {
         return passwordName.equals(sha256Encrypt(password));
@@ -65,12 +68,12 @@ public class Password {
         this.securityQuestion = securityQuestion;
     }
 
-    public String getAnswer() {
-        return answer;
+    public boolean checkAnswer(String answer) {
+        return this.answer.equals(sha256Encrypt(answer));
     }
 
     public void setAnswer(String answer) {
-        this.answer = answer;
+        this.answer = sha256Encrypt(answer);
     }
 
 }
