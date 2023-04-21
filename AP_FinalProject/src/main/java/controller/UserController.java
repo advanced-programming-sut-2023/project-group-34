@@ -42,11 +42,14 @@ public class UserController {
         if (username == null || password == null || nickname == null || email == null ||
                 (matcher.group("sloganFlag") != null && slogan == null)) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
-        if (getUserByUsername(username) != null) return "Couldn't create user: username in use!";
-        if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
-        if (!Validations.check(password, Validations.STRONG_PASSWORD))
-            return "Couldn't create user: weak password(doesn't have needed chars)!";
-        //TODO: random s
+        if (getUserByUsername(username) != null) {
+            username = randomUsernameGenerator(username);
+            System.out.println("Username already used! do you like to use\"" +
+                    username +
+                    "\" instead?(Yes/No)");
+            String response = Runner.getScn().nextLine().trim();
+            if (response.equals("No")) return "Couldn't create user: username in use!";
+        }
         if (password.equals("random")) {
             password = Password.randomPassword();
             System.out.println("Your random password is: " +
@@ -54,6 +57,10 @@ public class UserController {
                     "\nPlease re-enter your password here:");
             passwordConfirmation = controller.Runner.getScn().nextLine();
         }
+        if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
+        if (!Validations.check(password, Validations.STRONG_PASSWORD))
+            return "Couldn't create user: weak password(doesn't have needed chars)!";
+        //TODO: random s
         if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
@@ -110,7 +117,10 @@ public class UserController {
         String password = matcher.group("password");
         model.user.User user;
         if ((user = getUserByUsername(username)) == null) return "Username and password didn’t match!";
-        if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
+        if (!user.getPassword().checkPassword(password)) {
+            wrongPasswordsEntered();
+            return "Username and password didn’t match!";
+        }
         model.user.User.setCurrentUser(user);
         if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
         return "User logged in";
@@ -120,18 +130,13 @@ public class UserController {
         return null;
     }
 
-    public static String randomPasswordGenerator(){
-        return null;
-    }
-
     public static String randomSloganGenerator(){
         return null;
     }
 
-    public static String randomUsernameGenerator(){
-        return null;
-        //This method creates a username similar to the username that user has entered and gives a recommendation
-        //We have to make sure the new generated username does not exit itself
+    public static String randomUsernameGenerator(String currentUsername){
+        if (getUserByUsername(currentUsername) == null) return currentUsername;
+        else return randomUsernameGenerator(currentUsername + "1");
     }
 
     private static String emailChecker(){
@@ -142,7 +147,18 @@ public class UserController {
         return null;
     }
 
-    private static void countWrongPasswordsEntered(){
+    private static int wrongPasswordsCount = 0;
 
+    private static void wrongPasswordsEntered(){
+        //TODO: improve related outputs
+        wrongPasswordsCount++;
+        if (wrongPasswordsCount % 5 != 0) {
+            System.out.println("you are locked!");
+            try {
+                Thread.sleep(wrongPasswordsCount * 2000L);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }
