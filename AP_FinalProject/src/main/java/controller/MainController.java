@@ -79,7 +79,7 @@ public class MainController {
         String response = UserController.passwordChecker(newPass1);
         if (!response.isEmpty()) return response;
 
-        if (!User.currentUser.getPassword().equals(finalOldPass)) return "Incorrect current password, changing password failed";
+        if (!User.currentUser.getPassword().checkPassword(finalOldPass)) return "Incorrect current password, changing password failed";
 
         return null;
 
