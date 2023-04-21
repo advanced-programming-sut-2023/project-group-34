@@ -7,13 +7,16 @@ public class Password {
     private SecurityQuestion securityQuestion;
     private String answer;
 
+    private static String sha256Encrypt (String string) {
+        return null;
+    }
 
-    public String getPasswordName() {
-        return passwordName;
+    public boolean checkPassword(String password) {
+        return passwordName.equals(sha256Encrypt(password));
     }
 
     public void setPasswordName(String passwordName) {
-        this.passwordName = passwordName;
+        this.passwordName = sha256Encrypt (passwordName);
     }
 
     public SecurityQuestion getSecurityQuestion() {
