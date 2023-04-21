@@ -36,7 +36,7 @@ public class MainController {
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
 
-        if (UserController.isUserNameAlreadyUsed(username)) return "Username already exists, changing username failed";
+        if (UserController.getUserByUsername(username) != null) return "Username already exists, changing username failed";
 
         if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
 

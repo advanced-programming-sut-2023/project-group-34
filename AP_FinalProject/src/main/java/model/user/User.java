@@ -1,4 +1,4 @@
-package main.java.model.user;
+package model.user;
 
 import model.enums.Slogan;
 import model.government.Government;
@@ -107,14 +107,6 @@ public class User {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public Government getGovernment() {
-        return government;
-    }
-
-    public void setGovernment(Government government) {
-        this.government = government;
     }
 
     public User getUserByUsername(String name){
