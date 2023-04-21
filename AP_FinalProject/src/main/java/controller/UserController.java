@@ -58,9 +58,7 @@ public class UserController {
                     "\nPlease re-enter your password here:");
             passwordConfirmation = controller.Runner.getScn().nextLine();
         }
-        if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
-        if (!Validations.check(password, Validations.STRONG_PASSWORD))
-            return "Couldn't create user: weak password(doesn't have needed chars)!";
+        if (passwordChecker(password) != null) return passwordChecker(password);
         //TODO: random s
         if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
@@ -110,6 +108,9 @@ public class UserController {
     }
 
     public static String passwordChecker(String password){
+        if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
+        if (!Validations.check(password, Validations.STRONG_PASSWORD))
+            return "Couldn't create user: weak password(doesn't have needed chars)!";
         return null;
     }
 
@@ -121,6 +122,7 @@ public class UserController {
         if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
         model.user.User.setCurrentUser(user);
         if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
+        wrongPasswordsCount = 0;
         return "User logged in";
     }
 
@@ -131,10 +133,6 @@ public class UserController {
     public static String randomUsernameGenerator(String currentUsername){
         if (getUserByUsername(currentUsername) == null) return currentUsername;
         else return randomUsernameGenerator(currentUsername + "1");
-    }
-
-    private static String emailChecker(){
-        return null;
     }
 
     public static String forgotPassword(Matcher matcher){
