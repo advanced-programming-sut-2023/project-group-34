@@ -4,6 +4,7 @@ import model.Game;
 import model.building.Building;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
+import model.enums.make_able.Weapons;
 import model.forces.human.Human;
 import model.forces.human.Troop;
 import model.user.User;
@@ -197,10 +198,60 @@ public class GameController {
         if (finalPrice == 0) return "The product you are looking for does not exit, buying failed";
 
         if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
-            return "You do not have gold to buy this item, buying failed";
+            return "You do not have enough gold to buy this item, buying failed";
 
+        if (!capacityChecker(item, finalAmount)) return "You do not have enough capacity to buy this item, buying failed";
 
-        return null;
+        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD) - finalPrice);
+        changeStorage(item, finalAmount);
+        return "Item purchased successfully";
+    }
+
+    public static boolean capacityChecker(String name, int amount){
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(name)) {
+                if (currentGame.getCurrentGovernment().getStorageDepartment().getResourcesMaxCapacity() >= amount + currentGame.getCurrentGovernment().getStorageDepartment().resourcesOccupied())
+                    return true;
+            }
+        }
+
+        for (Weapons weapons : Weapons.values()){
+            if (weapons.getName().equals(name)) {
+                if (currentGame.getCurrentGovernment().getStorageDepartment().getWeaponsMaxCapacity() >= amount + currentGame.getCurrentGovernment().getStorageDepartment().weaponsOccupied())
+                    return true;
+            }
+        }
+
+        for (Food food : Food.values()){
+            if (food.getName().equals(name)) {
+                if (currentGame.getCurrentGovernment().getStorageDepartment().getFoodMaxCapacity() >= amount + currentGame.getCurrentGovernment().getStorageDepartment().foodOccupied())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static void changeStorage(String name, int amount){
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(name)) {
+                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put(resources, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(resources) + amount);
+                return;
+            }
+        }
+
+        for (Weapons weapons : Weapons.values()){
+            if (weapons.getName().equals(name)) {
+                currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.put(weapons, currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.get(weapons) + amount);
+                return;
+            }
+        }
+
+        for (Food food : Food.values()){
+            if (food.getName().equals(name)) {
+                currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.put(food, currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.get(food) + amount);
+                return;
+            }
+        }
     }
 
 

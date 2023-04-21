@@ -1,7 +1,6 @@
 package model.enums.make_able;
 
 public enum Resources implements MakeAble {
-    RESOURCES_CAPACITY(0, "resources_capacity"),
     GHIR(0, "ghir"),
     GOLD(0, "gold"),
     WOOD(0, "wood"),

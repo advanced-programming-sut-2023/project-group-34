@@ -3,7 +3,7 @@ package model.enums.make_able;
 import model.enums.make_able.MakeAble;
 
 public enum Weapons implements MakeAble {
-    WEAPONS_CAPACITY(0, "weapons_capacity"),
+
     LEATHER_ARMOUR(0, "leather armour"),
     MACE(0, "mace"),
     SWORD(0, "sword"),
