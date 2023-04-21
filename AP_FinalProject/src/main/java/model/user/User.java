@@ -1,10 +1,16 @@
 package model.user;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.enums.Slogan;
 import model.government.Government;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class User {
     private String name;
@@ -25,6 +31,7 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         users.add(this);
+        updateDataBase();
     }
 
     public int getPlayerRank(){
@@ -144,5 +151,23 @@ public class User {
     public static void logout() {
         currentUser = null;
         isLoggedIn = false;
+    }
+
+    public static void updateDataBase() {
+        String usersListAsJSON = new Gson().toJson(users);
+        try (FileWriter file = new FileWriter("Users.json")) {
+            file.write(usersListAsJSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadAllUsersFromDataBase() {
+        try (FileReader reader = new FileReader("Users.json")) {
+            // Convert JSON File to Java Object
+            List<User> userObjects = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
