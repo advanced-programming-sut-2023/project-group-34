@@ -21,13 +21,13 @@ public class Block {
     private int resourcesCapacity;
     private boolean isPassable;
 
-    private final int locationX;
-    private final int locationY;
+    private final int locationI;
+    private final int locationJ;
 
-    public Block(int locationX, int locationY) {
+    public Block(int locationI, int locationJ) {
         this.blockType = BlockType.GROUND;
-        this.locationX = locationX;
-        this.locationY = locationY;
+        this.locationI = locationI;
+        this.locationJ = locationJ;
     }
 
     public ArrayList<Human> getHumans() {
@@ -38,12 +38,12 @@ public class Block {
     }
 
 
-    public int getLocationX() {
-        return locationX;
+    public int getLocationI() {
+        return locationI;
     }
 
-    public int getLocationY() {
-        return locationY;
+    public int getLocationJ() {
+        return locationJ;
     }
 
     public BlockType getBlockType() {
