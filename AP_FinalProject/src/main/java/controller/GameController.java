@@ -6,15 +6,11 @@ import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import model.forces.human.Human;
-import model.forces.human.Troop;
-import model.user.User;
 import view.gameMenu.GameMenu;
 import view.gameMenu.MapMenu;
 import view.gameMenu.ShopMenu;
 import view.gameMenu.TradeMenu;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Stack;
 import java.util.regex.Matcher;
 
 public class GameController {
@@ -170,7 +166,50 @@ public class GameController {
 
 
     public static String sellItems(Matcher matcher){
-        return null;
+        int finalAmount = 0;
+
+        if (matcher.group("amount").isEmpty() && (matcher.group("amount1").isEmpty()))
+            return "The required field is empty, selling failed";
+
+        finalAmount = defineAmount(matcher);
+
+        String item;
+        item = defineItem(matcher);
+
+        if (item.isEmpty()) return "The required field is empty, selling failed";
+
+        if (finalAmount <= 0) return "Invalid amount, selling failed";
+
+        int finalPrice = (currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount)*4)/5;
+
+        if (finalPrice == 0) return "The product you are looking for does not exit, selling failed";
+        if (!capacityChecker(item, finalAmount, -1)) return "You do not have enough to sell, buying failed";
+
+        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put
+                (Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage
+                        .get(Resources.GOLD) + finalPrice);
+        changeStorage(item, finalAmount, -1);
+        return "Item sold successfully";
+
+
+    }
+
+    public static String defineItem(Matcher matcher){
+        String item;
+        if (!matcher.group("item").isEmpty())
+            item = matcher.group("item");
+        else
+            item = matcher.group("item1");
+        return item;
+    }
+
+    public static int defineAmount(Matcher matcher){
+        int finalAmount = 0;
+        if (!matcher.group("amount").isEmpty())
+            finalAmount = Integer.parseInt(matcher.group("amount"));
+        else
+            finalAmount = Integer.parseInt(matcher.group("amount1"));
+        return finalAmount;
     }
 
     public static String buyItems(Matcher matcher){
@@ -178,16 +217,11 @@ public class GameController {
 
         if (matcher.group("amount").isEmpty() && (matcher.group("amount1").isEmpty()))
             return "The required field is empty, buying failed";
-        else if (!matcher.group("amount").isEmpty())
-            finalAmount = Integer.parseInt(matcher.group("amount"));
-        else
-            finalAmount = Integer.parseInt(matcher.group("amount1"));
+
+        finalAmount = defineAmount(matcher);
 
         String item;
-        if (!matcher.group("item").isEmpty())
-            item = matcher.group("item");
-        else
-            item = matcher.group("item1");
+        item = defineItem(matcher);
 
         if (item.isEmpty()) return "The required field is empty, buying failed";
 
@@ -200,55 +234,70 @@ public class GameController {
         if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
             return "You do not have enough gold to buy this item, buying failed";
 
-        if (!capacityChecker(item, finalAmount)) return "You do not have enough capacity to buy this item, buying failed";
+        if (!capacityChecker(item, finalAmount, 1)) return "You do not have enough capacity to buy this item, buying failed";
 
-        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD) - finalPrice);
-        changeStorage(item, finalAmount);
+        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put
+                (Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage
+                        .get(Resources.GOLD) - finalPrice);
+
+        changeStorage(item, finalAmount, 1);
         return "Item purchased successfully";
     }
 
-    public static boolean capacityChecker(String name, int amount){
+    public static boolean capacityChecker(String name, int amount, int coefficient){
+        amount *= coefficient;
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
-                if (currentGame.getCurrentGovernment().getStorageDepartment().getResourcesMaxCapacity() >= amount + currentGame.getCurrentGovernment().getStorageDepartment().resourcesOccupied())
+                if (currentGame.getCurrentGovernment().getStorageDepartment().getResourcesMaxCapacity()
+                        >= amount + currentGame.getCurrentGovernment().getStorageDepartment().resourcesOccupied())
                     return true;
             }
         }
 
         for (Weapons weapons : Weapons.values()){
             if (weapons.getName().equals(name)) {
-                if (currentGame.getCurrentGovernment().getStorageDepartment().getWeaponsMaxCapacity() >= amount + currentGame.getCurrentGovernment().getStorageDepartment().weaponsOccupied())
+                if (currentGame.getCurrentGovernment().getStorageDepartment().getWeaponsMaxCapacity()
+                        >= amount + currentGame.getCurrentGovernment().getStorageDepartment().weaponsOccupied())
                     return true;
             }
         }
 
         for (Food food : Food.values()){
             if (food.getName().equals(name)) {
-                if (currentGame.getCurrentGovernment().getStorageDepartment().getFoodMaxCapacity() >= amount + currentGame.getCurrentGovernment().getStorageDepartment().foodOccupied())
+                if (currentGame.getCurrentGovernment().getStorageDepartment().getFoodMaxCapacity()
+                        >= amount + currentGame.getCurrentGovernment().getStorageDepartment().foodOccupied())
                     return true;
             }
         }
         return false;
     }
 
-    public static void changeStorage(String name, int amount){
+
+    public static void changeStorage(String name, int amount, int coefficient){
+        amount *= coefficient;
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
-                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put(resources, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(resources) + amount);
+                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        put(resources, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                                get(resources) + amount);
                 return;
             }
         }
 
         for (Weapons weapons : Weapons.values()){
             if (weapons.getName().equals(name)) {
-                currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.put(weapons, currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.get(weapons) + amount);
+                currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.
+                        put(weapons, currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.
+                                get(weapons) + amount);
                 return;
             }
         }
 
         for (Food food : Food.values()){
             if (food.getName().equals(name)) {
-                currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.put(food, currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.get(food) + amount);
+                currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.
+                        put(food, currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.
+                                get(food) + amount);
                 return;
             }
         }
