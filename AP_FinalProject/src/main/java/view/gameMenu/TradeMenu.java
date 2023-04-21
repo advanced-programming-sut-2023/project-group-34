@@ -16,6 +16,8 @@ public class TradeMenu {
             System.out.println(GameController.showTradeNotification());
             if (Commands.getOutput(command, Commands.CURRENT_MENU) != null){
                 System.out.println("Trade Menu");
+            } else if (Commands.getOutput(command, Commands.TRADE_HISTORY) != null){
+                System.out.println(GameController.showTradeHistory());
             }
         }
     }

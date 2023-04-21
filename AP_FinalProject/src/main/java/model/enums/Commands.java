@@ -21,9 +21,9 @@ public enum Commands {
     DISPLAY_SLOGAN("Profile\\s+display\\s+slogan"),
     CURRENT_MENU("Show\\s+current\\s+menu"),
     SHOW_PRICE_LIST("Show\\s+price\\s+list"),
-    BUY_ITEM("Buy(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Buy\\s*( *-[ia] \\S+){2}$"),
-    SELL_ITEM("Sell(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Sell\\s*( *-[ia] \\S+){2}$"),
-    TRADE("");
+    BUY_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Buy\\s*( *-[ia] \\S+){2}$"),
+    SELL_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Sell\\s*( *-[ia] \\S+){2}$"),
+    TRADE_HISTORY("Trade\\s+history");
 
     private final String regex;
 
