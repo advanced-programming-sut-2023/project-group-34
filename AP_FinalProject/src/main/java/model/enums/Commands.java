@@ -23,7 +23,16 @@ public enum Commands {
     SHOW_PRICE_LIST("Show\\s+price\\s+list"),
     BUY_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Buy\\s*( *-[ia] \\S+){2}$"),
     SELL_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Sell\\s*( *-[ia] \\S+){2}$"),
-    TRADE_HISTORY("Trade\\s+history");
+    TRADE_HISTORY("Trade\\s+history"),
+    SHOW_POPULARITY_FACTORS("Show\\s+popularity\\s+factors"),
+    SHOW_POPULARITY("Show\\s+popularity"),
+    SHOW_FOOD_LIST("Show\\s+food\\s+list"),
+    SET_FOOD_RATE("Food\\s+rate\\s+-r\\s+(?<foodRate>-?[0-9]+)"),
+    SHOW_FOOD_RATE("Show\\s+food\\s+rate"),
+    SET_TAX_RATE("Tax\\s+rate\\s+-r\\s+(?<taxRate>-?[0-9]+)"),
+    SHOW_TAX_RATE("Show\\s+tax\\s+rate"),
+    SET_FEAR_RATE("Fear\\s+rate\\s+-r\\s+(?<fearRate>-?[0-9]+)"),
+    SHOW_FEAR_RATE("Show\\s+fear\\s+rate");
 
     private final String regex;
 

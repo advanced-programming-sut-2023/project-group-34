@@ -1,6 +1,7 @@
 package controller;
 
 import model.map.GameMap;
+import model.user.Password;
 import model.user.User;
 import view.MainMenu;
 import view.MapEditingMenu;
@@ -38,7 +39,7 @@ public class MainController {
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
 
-        if (UserController.isUserNameAlreadyUsed(username)) return "Username already exists, changing username failed";
+        if (UserController.isUserNameAlreadyUsed(username) == null) return "Username already exists, changing username failed";
 
         if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
 
@@ -95,10 +96,10 @@ public class MainController {
         if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
             return "Incorrect current password, changing password failed";
 
-        String finalNewPass = UserController.randomPasswordGenerator();
+        String finalNewPass = Password.randomPasswordGenerator();
 
         while(finalNewPass.equals(finalOldPass)) {
-            finalNewPass = UserController.randomPasswordGenerator();
+            finalNewPass = Password.randomPasswordGenerator();
         }
 
         //Info has to be changed in Json as well

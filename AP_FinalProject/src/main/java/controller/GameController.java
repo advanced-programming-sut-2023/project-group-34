@@ -77,44 +77,63 @@ public class GameController {
     }
 
     public static String showPopularity () {
-        return null;
+        return "Your current popularity is: " + currentGame.getCurrentGovernment().getAccountingDepartment().addGovernmentPopularity();
     }
 
     public static String showPopularityFactors () {
-        return null;
-
+        String finalString = new String();
+        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().foodAccounting());
+        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().fearAccounting());
+        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().taxAccounting());
+        finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().religionAccounting());
+        return finalString;
     }
 
     public static String showFoodList () {
-        //check storages
-        return null;
-
+        String finalString = new String();
+        finalString = finalString.concat("Bread: " + currentGame.getCurrentGovernment()
+                .getStorageDepartment().foodStorage.get(Food.BREAD));
+        finalString = finalString.concat("Meat: " + currentGame.getCurrentGovernment()
+                .getStorageDepartment().foodStorage.get(Food.MEAT));
+        finalString = finalString.concat("Apple: " + currentGame.getCurrentGovernment()
+                .getStorageDepartment().foodStorage.get(Food.APPLE));
+        finalString = finalString.concat("Cheese: " + currentGame.getCurrentGovernment()
+                .getStorageDepartment().foodStorage.get(Food.CHEESE));
+        return finalString;
     }
 
-    public static String showFoodRate(Matcher matcher) {
-        return null;
+    public static String showFoodRate() {
+        return "Your current food rate is: " + currentGame.getCurrentGovernment().
+                getAccountingDepartment().getFoodRate();
     }
-    public static String taxFoodRate(Matcher matcher) {
-        return null;
+    public static String showTaxRate() {
+        return "Your current tax rate is: " + currentGame.getCurrentGovernment().
+                getAccountingDepartment().getTaxRate();
     }
-    public static String fearFoodRate(Matcher matcher) {
-        return null;
+    public static String showFearRate() {
+        return "Your current fear rate is: " + currentGame.getCurrentGovernment().
+                getAccountingDepartment().getFearRate();
     }
-    public static void changeResourceAmount (Resources resource, int amount) {}
-
-
 
     public static String setTaxRate (Matcher matcher) {
-        return null;
-
+        int taxRate = Integer.parseInt(matcher.group("taxRate"));
+        if (taxRate < -3  || taxRate > 8) return "Invalid tax rate";
+        currentGame.getCurrentGovernment().getAccountingDepartment().setTaxRate(taxRate);
+        return "Tax rate successfully";
     }
 
     public static String setFearRate (Matcher matcher) {
-        return null;
+        int fearRate = Integer.parseInt(matcher.group("fearRate"));
+        if (fearRate < -2 || fearRate > 2) return "Invalid fear rate";
+        currentGame.getCurrentGovernment().getAccountingDepartment().setFearRate(fearRate);
+        return "Fear rate set successfully";
     }
 
     public static String setFoodRate(Matcher matcher){
-        return null;
+        int foodRate = Integer.parseInt(matcher.group("foodRate"));
+        if (foodRate < -2 || foodRate > 2) return "Invalid food rate";
+        currentGame.getCurrentGovernment().getAccountingDepartment().setFoodRate(foodRate);
+        return "Food rate set successfully";
     }
 
     public static String createUnit (Matcher matcher) {
