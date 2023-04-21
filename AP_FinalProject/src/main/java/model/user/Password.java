@@ -3,8 +3,10 @@ package model.user;
 import model.enums.SecurityQuestion;
 
 import java.security.MessageDigest;
+import java.util.Random;
 
 public class Password {
+    //TODO: Cunst
     private String passwordName;
     private SecurityQuestion securityQuestion;
     private String answer;
@@ -26,12 +28,33 @@ public class Password {
         }
     }
 
+
     public boolean checkPassword(String password) {
         return passwordName.equals(sha256Encrypt(password));
     }
 
     public void setPasswordName(String passwordName) {
         this.passwordName = sha256Encrypt (passwordName);
+    }
+
+    public static String randomPassword() {
+        String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+        String specialCharacters = "!@#$";
+        String numbers = "1234567890";
+        String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
+        Random random = new Random();
+        StringBuilder password = new StringBuilder();
+
+        password.append(lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length())));
+        password.append(capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length())));
+        password.append(specialCharacters.charAt(random.nextInt(specialCharacters.length())));
+        password.append(numbers.charAt(random.nextInt(numbers.length())));
+
+        for(int i = 0; i< 10 ; i++) {
+            password.append(combinedChars.charAt(random.nextInt(combinedChars.length())));
+        }
+        return password.toString();
     }
 
     public SecurityQuestion getSecurityQuestion() {

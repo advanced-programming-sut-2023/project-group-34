@@ -1,11 +1,13 @@
 package controller;
 
 import model.enums.Validations;
+import model.user.Password;
 import view.ForgetPasswordMenu;
 import view.StarterMenu;
 import model.enums.SecurityQuestion;
 import model.enums.Slogan;
 
+import javax.sql.rowset.serial.SerialStruct;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
@@ -30,7 +32,34 @@ public class UserController {
     }
 
     public static String registerUser(Matcher matcher){
-        return null;
+        String username = matcher.group("username");
+        String password = matcher.group("password");
+        String passwordConfirmation = matcher.group("passwordConfirmation");
+        String email = matcher.group("email");
+        String nickname = matcher.group("nickname");
+        String slogan = matcher.group("slogan").trim();
+        if (username == null || password == null || nickname == null || email == null ||
+                (matcher.group("sloganFlag") != null && slogan == null)) return "Couldn't create user: empty field!";
+        if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
+        if (isUserNameAlreadyUsed(username)) return "Couldn't create user: username in use!";
+        if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
+        if (!Validations.check(password, Validations.STRONG_PASSWORD))
+            return "Couldn't create user: weak password(doesn't have needed chars)!";
+        //TODO: random s
+        if (password.equals("random")) {
+            password = Password.randomPassword();
+            System.out.println("Your random password is: " +
+                    password +
+                    "\nPlease re-enter your password here:");
+            passwordConfirmation = controller.Runner.getScn().nextLine();
+            if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
+        }
+        if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
+        if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
+        model.user.Password passwordObject = new Password();
+        passwordObject.setPasswordName(password);
+        new model.user.User(username, passwordObject, nickname, email);
+        //TODO: JSON
     }
 
     public static boolean nameChecker(String name){
