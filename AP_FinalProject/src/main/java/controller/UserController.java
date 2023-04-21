@@ -11,6 +11,7 @@ import model.enums.Slogan;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Matcher;
 
 public class UserController {
@@ -59,14 +60,15 @@ public class UserController {
             passwordConfirmation = controller.Runner.getScn().nextLine();
         }
         if (passwordChecker(password) != null) return passwordChecker(password);
-        //TODO: random s
+        if (slogan.equals("random")) slogan = randomSloganGenerator();
         if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
         model.user.Password passwordObject = new Password(password);
         String result = pickSecurityQuestion(passwordObject);
         if (result != null) return result;
-        new model.user.User(username, passwordObject, nickname, email);
+        User user = new model.user.User(username, passwordObject, nickname, email);
+        if (slogan != null) user.setSlogan(slogan);
         //TODO: JSON
         return "User created successfully!";
     }
@@ -127,7 +129,8 @@ public class UserController {
     }
 
     public static String randomSloganGenerator(){
-        return null;
+        Random random = new Random();
+        return Slogan.values()[random.nextInt(0, 3)].slogan;
     }
 
     public static String randomUsernameGenerator(String currentUsername){

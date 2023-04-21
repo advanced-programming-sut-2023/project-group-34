@@ -7,7 +7,7 @@ public enum Slogan {
     UNDEFEATED("There is no losing in my culture"),
 
     ;
-    final String slogan;
+    public final String slogan;
     Slogan (String slogan){
         this.slogan = slogan;
     }
