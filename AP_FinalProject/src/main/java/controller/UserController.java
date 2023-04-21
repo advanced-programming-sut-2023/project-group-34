@@ -102,6 +102,7 @@ public class UserController {
         }
         return null;
     }
+
     public static boolean isEmailAlreadyUsed(String email) {
         for (model.user.User user : model.user.User.getUsers()) {
             if (user.getEmail().toLowerCase(Locale.ROOT).equals(email.toLowerCase())) return true;
