@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 public class Password {
-    //TODO: Cunst
     private String passwordName;
     private SecurityQuestion securityQuestion;
     private String answer;
