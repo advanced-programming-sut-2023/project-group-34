@@ -14,7 +14,7 @@ public class User {
     private String slogan;
     private static ArrayList<User> users = new ArrayList<>();
     public static User currentUser;
-    private Boolean isLoggedIn;
+    private static Boolean isLoggedIn;
     private int score;
     private Government government;
     private Slogan sloganTypes;
@@ -145,5 +145,14 @@ public class User {
 
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
+    }
+
+    public static void stayLoggedIn() {
+        isLoggedIn = true;
+    }
+
+    public static void logout() {
+        currentUser = null;
+        isLoggedIn = false;
     }
 }

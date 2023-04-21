@@ -8,7 +8,6 @@ import view.StarterMenu;
 import model.enums.SecurityQuestion;
 import model.enums.Slogan;
 
-import javax.sql.rowset.serial.SerialStruct;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -43,7 +42,7 @@ public class UserController {
         if (username == null || password == null || nickname == null || email == null ||
                 (matcher.group("sloganFlag") != null && slogan == null)) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
-        if (isUserNameAlreadyUsed(username)) return "Couldn't create user: username in use!";
+        if (getUserByUsername(username) != null) return "Couldn't create user: username in use!";
         if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
         if (!Validations.check(password, Validations.STRONG_PASSWORD))
             return "Couldn't create user: weak password(doesn't have needed chars)!";
@@ -89,11 +88,11 @@ public class UserController {
         return model.enums.Validations.check(email, Validations.VALID_EMAIL);
     }
 
-    public static boolean isUserNameAlreadyUsed(String name) {
+    public static model.user.User getUserByUsername(String name) {
         for (model.user.User user : model.user.User.getUsers()) {
-            if (user.getName().equals(name)) return true;
+            if (user.getName().equals(name)) return user;
         }
-        return false;
+        return null;
     }
     public static boolean isEmailAlreadyUsed(String email) {
         for (model.user.User user : model.user.User.getUsers()) {
@@ -107,7 +106,14 @@ public class UserController {
     }
 
     public static String loginUser(Matcher matcher){
-        return null;
+        String username = matcher.group("username");
+        String password = matcher.group("password");
+        model.user.User user;
+        if ((user = getUserByUsername(username)) == null) return "Username and password didn’t match!";
+        if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
+        model.user.User.setCurrentUser(user);
+        if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
+        return "User logged in";
     }
 
     private static String pickSecurityQuestion(){
