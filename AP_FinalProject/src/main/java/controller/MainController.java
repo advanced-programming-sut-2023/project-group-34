@@ -32,6 +32,8 @@ public class MainController {
 
     public static String changeUsername (Matcher matcher){
         String username = matcher.group("username");
+        username = username.replaceAll("\"", "");
+
         if (username.isEmpty()) return "The username field is empty, changing username failed";
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
@@ -47,6 +49,7 @@ public class MainController {
 
     public static String changeNickname (Matcher matcher){
         String nickname = matcher.group("nickname");
+        nickname = nickname.replaceAll("\"", "");
         if (nickname.isEmpty()) return "The nickname field is empty, changing nickname failed";
 
         if (User.currentUser.getNickname().equals(nickname)) return "Your nickname is already this, changing nickname failed";
@@ -57,33 +60,19 @@ public class MainController {
     }
 
     public static String changePassword(Matcher matcher){
-        String oldPass = matcher.group("oldPass");
-        String oldPass1 = matcher.group("oldPass1");
-        String newPass = matcher.group("newPass");
-        String newPass1 = matcher.group("newPass1");
-
-        String finalOldPass;
-        if (!oldPass.isEmpty())
-            finalOldPass = oldPass;
-        else
-            finalOldPass = oldPass1;
-
-        String finalNewPass;
-        if (!newPass.isEmpty())
-            finalNewPass = newPass;
-        else
-            finalNewPass = newPass1;
+        String finalOldPass = matcher.group("oldPass");
+        String finalNewPass = matcher.group("newPass");
 
         if (finalOldPass.isEmpty() || finalNewPass.isEmpty())
             return "The required field is empty, changing password failed";
 
-        String response = UserController.passwordChecker(newPass1);
+        String response = UserController.passwordChecker(finalNewPass);
         if (!response.isEmpty()) return response;
 
-        if (!User.currentUser.getPassword().equals(finalOldPass))
+        if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
             return "Incorrect current password, changing password failed";
 
-        if (User.currentUser.getPassword().equals(newPass))
+        if (User.currentUser.getPassword().getPasswordName().equals(finalNewPass))
             return "Your new password has to be different from your current password, changing password failed";
 
         System.out.println("Please renter your new password for confirmation");
@@ -98,16 +87,12 @@ public class MainController {
     }
 
     public static String changePasswordRandomly(Matcher matcher){
-        String oldPass = matcher.group("oldPass");
-        String oldPass1 = matcher.group("oldPass1");
-        String finalOldPass;
 
-        if (!oldPass.isEmpty()) finalOldPass = oldPass;
-        else finalOldPass = oldPass1;
+        String finalOldPass = matcher.group("oldPass");
 
         if (finalOldPass.isEmpty()) return "The required field is empty, changing password failed";
 
-        if (!User.currentUser.getPassword().equals(finalOldPass))
+        if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
             return "Incorrect current password, changing password failed";
 
         String finalNewPass = UserController.randomPasswordGenerator();
@@ -138,6 +123,7 @@ public class MainController {
 
     public static String changeSlogan(Matcher matcher){
         String slogan = matcher.group("slogan");
+        slogan = slogan.replaceAll("\"", "");
         if (slogan.isEmpty()) return "The slogan field is empty, changing slogan failed";
 
         if (!User.currentUser.getSlogan().isEmpty() && User.currentUser.getSlogan().equals(slogan))
@@ -146,8 +132,6 @@ public class MainController {
         //Info has to be changed in Json as well
         User.currentUser.setSlogan(slogan);
         return "Slogan changed successfully";
-
-
     }
 
     public static String changeSloganRandomly(Matcher matcher){

@@ -7,12 +7,12 @@ public enum Commands {
 
     //TODO: Handle spaces in qutations
     LOGIN(null),
-    CHANGE_USER("Profile\\s+change\\s+slogan\\s+-s\\s*( ?<slogan>.+)*"),
-    CHANGE_NICKNAME("Profile\\s+change\\s+-n\\s+( ?<nickname>.+)*"),
-    CHANGE_EMAIL("Profile\\s+change\\s+-e\\s+( ?<email>.+)*"),
-    CHANGE_SLOGAN("Profile\\s+change\\s+slogan\\s+-s\\s+( ?<slogan>.+)*"),
-    CHANGE_PASSWORD("Profile\\s+change\\s+password\\s*(-o\\s+(?<oldPass>\\S+)\\s+-n\\s+(?<newPass>\\S+)|-n\\s+(?<newPass1>\\S+)\\s+-o\\s+(?<oldPass1>\\S+))*"),
-    CHANGE_PASSWORD_RANDOMLY("Profile\\s+change\\s+password\\s*(-o\\s+(?<oldPass>\\S+)\\s+-n\\s+random|-n\\s+random\\s+-o\\s+(?<oldPass1>\\S+))*"),
+    CHANGE_USER("Profile\\s+change\\s+-u\\s* (?<username>\".+\"|\\S+)*"),
+    CHANGE_NICKNAME("Profile\\s+change\\s+-u\\s* (?<nickname>\".+\"|\\S+)*"),
+    CHANGE_EMAIL("Profile\\s+change\\s+-e\\s* (?<email>.+)*"),
+    CHANGE_SLOGAN("Profile\\s+change\\s+-u\\s* (?<slogan>\".+\"|\\S+)*"),
+    CHANGE_PASSWORD("(?=.*-o (?<oldPass>\".+\"|\\S+))(?=.*-n (?<newPass>\".+\"|\\S+))^Profile\\s+change\\s+password\\s*( -[on] (\".+\"|\\S+)){2}$"),
+    CHANGE_PASSWORD_RANDOMLY("(?=.*-o (?<oldPass>\".+\"|\\S+))(?=.*-n (?<newPass>random))^Profile\\s+change\\s+password\\s*( -[on] (\".+\"|\\S+)){2}$"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
     DISPLAY_HIGHSCORE("Profile\\s+display\\s+highscore"),
