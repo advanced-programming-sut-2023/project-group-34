@@ -167,17 +167,12 @@ public class GameController {
 
 
     public static String sellItems(Matcher matcher){
-        int finalAmount = 0;
+        int finalAmount = Integer.parseInt(matcher.group("amount"));
+        String item = matcher.group("item");
 
-        if (matcher.group("amount").isEmpty() && (matcher.group("amount1").isEmpty()))
+        if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
             return "The required field is empty, selling failed";
 
-        finalAmount = defineAmount(matcher);
-
-        String item;
-        item = defineItem(matcher);
-
-        if (item.isEmpty()) return "The required field is empty, selling failed";
 
         if (finalAmount <= 0) return "Invalid amount, selling failed";
 
@@ -195,36 +190,13 @@ public class GameController {
 
     }
 
-    public static String defineItem(Matcher matcher){
-        String item;
-        if (!matcher.group("item").isEmpty())
-            item = matcher.group("item");
-        else
-            item = matcher.group("item1");
-        return item;
-    }
-
-    public static int defineAmount(Matcher matcher){
-        int finalAmount = 0;
-        if (!matcher.group("amount").isEmpty())
-            finalAmount = Integer.parseInt(matcher.group("amount"));
-        else
-            finalAmount = Integer.parseInt(matcher.group("amount1"));
-        return finalAmount;
-    }
-
     public static String buyItems(Matcher matcher){
-        int finalAmount = 0;
 
-        if (matcher.group("amount").isEmpty() && (matcher.group("amount1").isEmpty()))
+        int finalAmount = Integer.parseInt(matcher.group("amount"));
+        String item = matcher.group("item");
+
+        if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
             return "The required field is empty, buying failed";
-
-        finalAmount = defineAmount(matcher);
-
-        String item;
-        item = defineItem(matcher);
-
-        if (item.isEmpty()) return "The required field is empty, buying failed";
 
         if (finalAmount <= 0) return "Invalid amount, buying failed";
 
