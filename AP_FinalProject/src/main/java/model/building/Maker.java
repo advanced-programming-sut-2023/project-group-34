@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class Maker extends Building{
     private final ArrayList<MakeAble> output;
     private final int rate;
+    private int currentRate;
     private final int inputRate;
     private final int capacity;
     private final MakeAble input;
@@ -79,5 +80,14 @@ public class Maker extends Building{
 
     public MakeAble getInput() {
         return input;
+    }
+
+    public int getCurrentRate() {
+        return currentRate;
+    }
+
+    public void setCurrentRate(int integrityRate) {
+        integrityRate *= 5;
+        this.currentRate = (rate * (integrityRate+100))/100;
     }
 }

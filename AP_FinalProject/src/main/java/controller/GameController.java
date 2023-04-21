@@ -77,15 +77,15 @@ public class GameController {
     }
 
     public static String showPopularity () {
-        return "Your current popularity is: " + currentGame.getCurrentGovernment().getAccountingDepartment().addGovernmentPopularity();
+        return "Your current popularity is: " + currentGame.getCurrentGovernment().getTotalPopularity();
     }
 
     public static String showPopularityFactors () {
         String finalString = new String();
-        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().foodAccounting());
-        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().fearAccounting());
-        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().taxAccounting());
-        finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().religionAccounting());
+        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().foodPopularityAccounting());
+        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate());
+        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().taxPopularityAccounting());
+        finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity());
         return finalString;
     }
 
@@ -124,7 +124,7 @@ public class GameController {
 
     public static String setFearRate (Matcher matcher) {
         int fearRate = Integer.parseInt(matcher.group("fearRate"));
-        if (fearRate < -2 || fearRate > 2) return "Invalid fear rate";
+        if (fearRate < -5 || fearRate > 5) return "Invalid fear rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setFearRate(fearRate);
         return "Fear rate set successfully";
     }
@@ -200,9 +200,7 @@ public class GameController {
         if (finalPrice == 0) return "The product you are looking for does not exit, selling failed";
         if (!capacityChecker(item, finalAmount, -1)) return "You do not have enough to sell, buying failed";
 
-        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put
-                (Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage
-                        .get(Resources.GOLD) + finalPrice);
+        currentGame.getCurrentGovernment().getStorageDepartment().setGold(currentGame.getCurrentGovernment().getStorageDepartment().getGold()+finalPrice);
         changeStorage(item, finalAmount, -1);
         return "Item sold successfully";
 
@@ -223,14 +221,12 @@ public class GameController {
 
         if (finalPrice == 0) return "The product you are looking for does not exit, buying failed";
 
-        if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
+        if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().getGold())
             return "You do not have enough gold to buy this item, buying failed";
 
         if (!capacityChecker(item, finalAmount, 1)) return "You do not have enough capacity to buy this item, buying failed";
 
-        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put
-                (Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage
-                        .get(Resources.GOLD) - finalPrice);
+        currentGame.getCurrentGovernment().getStorageDepartment().setGold(currentGame.getCurrentGovernment().getStorageDepartment().getGold()-finalPrice);
 
         changeStorage(item, finalAmount, 1);
         return "Item purchased successfully";

@@ -1,9 +1,15 @@
 package model.government;
 
+import model.building.Building;
+import model.forces.human.Human;
 import model.user.User;
+
+import java.util.ArrayList;
 
 public class Government {
     private final User owner;
+    private ArrayList<Building> buildings = new ArrayList<>();
+    private ArrayList<Human> humans = new ArrayList<>();
     private int totalPopularity;
     private int population;
     private int maxPopulation;
@@ -34,6 +40,21 @@ public class Government {
         this.maxPopulation = maxPopulation;
     }
 
+    public void addToBuilding(Building building){
+        buildings.add(building);
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void addToHuman(Human human){
+        humans.add(human);
+    }
+
+    public ArrayList<Human> getHumans() {
+        return humans;
+    }
 
     public int getTotalPopularity() {
         return totalPopularity;
@@ -50,4 +71,6 @@ public class Government {
     public StorageDepartment getStorageDepartment() {
         return storageDepartment;
     }
+
+
 }
