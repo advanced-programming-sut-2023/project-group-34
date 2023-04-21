@@ -25,8 +25,9 @@ public class StarterMenu {
                 if (result.equals("Username and password didn’t match!")) UserController.wrongPasswordsEntered();
                 else if (result.equals("User logged in")) return result;
             }
-            else if ((matcher = Commands.getOutput (input, Commands.FORGOT_PASSWORD)) != null) {
-                System.out.println(UserController.forgotPassword(matcher));
+            else if ((matcher = Commands.getOutput (input, Commands.ENTER_FORGOT_PASSWORD_MENU)) != null) {
+                System.out.println("Entered forgot password menu!");
+                return "forgetPassword";
             }
             else {
                 System.out.println("Invalid Command");
