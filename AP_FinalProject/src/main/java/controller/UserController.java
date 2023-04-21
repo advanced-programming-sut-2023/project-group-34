@@ -3,6 +3,7 @@ package controller;
 import model.enums.Commands;
 import model.enums.Validations;
 import model.user.Password;
+import model.user.User;
 import view.ForgetPasswordMenu;
 import view.StarterMenu;
 import model.enums.SecurityQuestion;
@@ -143,8 +144,27 @@ public class UserController {
         return null;
     }
 
-    public static String forgotPassword(){
-        return null;
+    public static String forgotPassword(Matcher matcher){
+        String username = matcher.group("username");
+        User user = getUserByUsername(username);
+        if (user == null) return "No user with the id given!";
+        Password password = user.getPassword();
+        System.out.println(password.getSecurityQuestion());
+        String answer = Runner.getScn().nextLine();
+        if (!password.getAnswer().equals(answer)) return "Wrong answer!";
+        System.out.println("Enter new password:");
+        String newPassword = Runner.getScn().nextLine();
+        if (newPassword.equals("random")) {
+            newPassword = Password.randomPassword();
+            System.out.println("Your random password is: " +
+                    newPassword);
+        }
+        if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
+        System.out.println("Re-enter your password:");
+        String confirm = Runner.getScn().nextLine();
+        if (!confirm.equals(newPassword)) return "confirmation failed!";
+        password.setPasswordName(newPassword);
+        return "success!";
     }
 
     private static int wrongPasswordsCount = 0;
