@@ -1,6 +1,7 @@
 package controller;
 
 import model.Game;
+import model.Trade;
 import model.building.Building;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
@@ -312,6 +313,17 @@ public class GameController {
                 getStorageDepartment().getFoodPriceList());
         finalString = finalString.concat(currentGame.getCurrentGovernment().
                 getStorageDepartment().getWeaponPriceList());
+        return finalString;
+    }
+
+    public static String showTradeNotification(){
+        String finalString = new String();
+        for (Trade trade : currentGame.getAllTrades()){
+            if (trade.getReceiver().getName().equals(currentGame.getCurrentGovernment().getOwner().getName()) && !trade.isWasShown()){
+                finalString = finalString.concat("New Offer from: " + trade.getSender().getName() + "Message: " + trade.getMessage());
+                trade.setWasShown(true);
+            }
+        }
         return finalString;
     }
 

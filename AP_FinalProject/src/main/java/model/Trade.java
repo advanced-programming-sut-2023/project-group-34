@@ -85,4 +85,8 @@ public class Trade {
     public Resources getWanted() {
         return wanted;
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

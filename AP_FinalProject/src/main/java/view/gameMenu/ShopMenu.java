@@ -22,7 +22,10 @@ public class ShopMenu {
                 System.out.println(GameController.buyItems(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.SELL_ITEM)) != null){
                 System.out.println(GameController.sellItems(matcher));
-            }
+            } else if (command.equals("back"))
+                return "back";
+            else
+                System.out.println("Invalid command!");
         }
     }
 }

@@ -20,7 +20,8 @@ public enum Commands {
     CURRENT_MENU("Show\\s+current\\s+menu"),
     SHOW_PRICE_LIST("Show\\s+price\\s+list"),
     BUY_ITEM("Buy\\s+(-i\\s+(?<item>\\S+)\\s+-a\\s+(?<amount>[0-9]+)|-a\\s+(?<amount1>[0-9]+)\\s+-i\\s+(?<item1>\\S+))"),
-    SELL_ITEM("Sell\\s+(-i\\s+(?<item>\\S+)\\s+-a\\s+(?<amount>[0-9]+)|-a\\s+(?<amount1>[0-9]+)\\s+-i\\s+(?<item1>\\S+))");
+    SELL_ITEM("Sell\\s+(-i\\s+(?<item>\\S+)\\s+-a\\s+(?<amount>[0-9]+)|-a\\s+(?<amount1>[0-9]+)\\s+-i\\s+(?<item1>\\S+))"),
+    TRADE("");
 
     private final String regex;
 
