@@ -1,5 +1,6 @@
 package controller;
 
+import model.enums.Commands;
 import model.enums.Validations;
 import model.user.Password;
 import view.ForgetPasswordMenu;
@@ -9,6 +10,7 @@ import model.enums.Slogan;
 
 import javax.sql.rowset.serial.SerialStruct;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
 public class UserController {
@@ -52,14 +54,31 @@ public class UserController {
                     password +
                     "\nPlease re-enter your password here:");
             passwordConfirmation = controller.Runner.getScn().nextLine();
-            if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         }
+        if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
         model.user.Password passwordObject = new Password();
         passwordObject.setPasswordName(password);
+        String result = securityQuestion(passwordObject);
+        if (result != null) return result;
         new model.user.User(username, passwordObject, nickname, email);
         //TODO: JSON
+        return "User created successfully!";
+    }
+
+    public static String securityQuestion(Password password) {
+        String input = controller.Runner.getScn().nextLine();
+        Matcher matcher = model.enums.Commands.getOutput(input, Commands.PICK_QUESTION);
+        if (matcher == null) return "Picking security Question failed: Invalid command!";
+        int secQNum = Integer.parseInt(matcher.group("questionNumber"));
+        if (secQNum > 3) return "Picking security Question failed: Invalid security Question!";
+        String answer = matcher.group("answer");
+        String answerConfirmation = matcher.group("answerConfirm");
+        if (!Objects.equals(answer, answerConfirmation)) return "Picking security Question failed: Confirmation failed!";
+        password.setSecurityQuestion(SecurityQuestion.values()[secQNum - 1]);
+        password.setAnswer(answer);
+        return null;
     }
 
     public static boolean nameChecker(String name){
