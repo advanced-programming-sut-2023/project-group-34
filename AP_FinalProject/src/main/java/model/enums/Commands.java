@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 
 public enum Commands {
     //TODO: improve login and create regexes
-    CREATE_USER("\\s*user\\s+create((\\s+-u\\s+(?<username>\\S+))|(\\s+-p\\s+(?<password>\\S+)\\s+(?<passwordConfirmation>\\S+))|(\\s+–email\\s+(?<email>\\S+))|(\\s+-n\\s+(?<nickname>\\S+))|(\\s+(?<sloganFlag>-s)\\s+(?<slogan>.+)))*\\s*"),
+    CREATE_USER("\\s*user\\s+create(?=.*\\s-u\\s+(?<username>\"[^\"]+\"|\\S+))(?=.*(\\s-p\\s+(?<password>\"[^\"]+\"|\\S+)\\s+(?<passwordConfirmation>\"[^\"]+\"|\\S+)|\\s-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]+\"|\\S+))(?=.*\\s-n\\s+(?<nickname>\"[^\"]+\"|\\S+))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]+\"|\\S+))?((\\s+-[unse]\\s+(\"[^\"]+\"|\\S+))|(\\s+-p\\s+(\"[^\"]+\"|\\S+)\\s+(\"[^\"]+\"|\\S+)|\\s+-p\\s+random)){4,5}"),
     PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s+<questionNumber>\\s+-a\\s+<answer>\\s+-c\\s+<answerConfirm>\\s*"),
-    LOGIN("\\s*user\\s+login(?=.*\\s+-u\\s+(?<username>\\S+))(?=.*\\s+-p\\s+(?<password>\\S+))(.*\\s+(?<flag>--stay-logged-in).*)?.*"),
+    LOGIN("(?=.*-u (?<username>\\S+))(?=.*-p (?<password>\\S+))(?=.*(?<flag>--stay-logged-in))?^user\\s+login(\\s+-[up]\\s+\\S+|\\s+--stay-logged-in){2,3}"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),
     FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password(\\s+-u\\s+(?<username>\\S+))?\\s*"),
     LOGOUT("\\s*user\\s+logout\\s*"),
