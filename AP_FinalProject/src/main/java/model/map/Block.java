@@ -103,6 +103,10 @@ public class Block {
     }
 
     public String resource() {
-        return null;
+        if (bLockFiller == null || bLockFiller.equals(BlockFillerType.STAIR)) return bLockFiller.toString();
+        else if (blockType.equals(BlockType.IRON)) return "iron";
+        else if (blockType.equals(BlockType.BOULDER)) return "stone";
+        else if (blockType.equals(BlockType.OIL)) return "oil";
+        else return null;
     }
 }
