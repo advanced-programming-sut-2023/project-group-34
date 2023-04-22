@@ -36,11 +36,17 @@ public class UserController {
 
     public static String registerUser(Matcher matcher){
         String username = matcher.group("username");
+        if (username != null) username = username.replace("\"", "");
         String password = matcher.group("password");
+        if (password != null) password = password.replace("\"", "");
         String passwordConfirmation = matcher.group("passwordConfirmation");
+        if (passwordConfirmation != null) passwordConfirmation = passwordConfirmation.replace("\"", "");
         String email = matcher.group("email");
+        if (email != null) email = email.replace("\"", "");
         String nickname = matcher.group("nickname");
-        String slogan = matcher.group("slogan").trim();
+        if (nickname != null) nickname = nickname.replace("\"", "");
+        String slogan = matcher.group("slogan");
+        if (slogan != null) slogan = slogan.replace("\"", "");
         if (username == null || password == null || nickname == null || email == null ||
                 (matcher.group("sloganFlag") != null && slogan == null)) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
@@ -69,7 +75,6 @@ public class UserController {
         if (result != null) return result;
         User user = new model.user.User(username, passwordObject, nickname, email);
         if (slogan != null) user.setSlogan(slogan);
-        //TODO: JSON
         return "User created successfully!";
     }
 
@@ -118,7 +123,9 @@ public class UserController {
 
     public static String loginUser(Matcher matcher){
         String username = matcher.group("username");
+        if (username != null) username = username.replace("\"", "");
         String password = matcher.group("password");
+        if (password != null) password = password.replace("\"", "");
         model.user.User user;
         if ((user = getUserByUsername(username)) == null) return "No user with the given username!";
         if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
