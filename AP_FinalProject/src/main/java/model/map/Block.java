@@ -4,8 +4,11 @@ import model.building.Building;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.forces.human.Human;
+import model.forces.human.Troop;
+import model.forces.human.TroopType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Block {
     private BlockFillerType bLockFiller;
@@ -20,7 +23,6 @@ public class Block {
 
     private int resourcesCapacity;
     private boolean isPassable;
-
     private final int locationI;
     private final int locationJ;
 
@@ -33,10 +35,10 @@ public class Block {
     public ArrayList<Human> getHumans() {
         return humans;
     }
+
     public ArrayList<Building> getBuilding() {
         return building;
     }
-
 
     public int getLocationI() {
         return locationI;
@@ -83,9 +85,24 @@ public class Block {
     }
 
     public void addBuilding(Building building) {
-
+        this.building.add(building);
     }
     public void removeBuilding(Building building) {
+        this.building.remove(building);
+    }
 
+    public HashMap<String, Integer> troops() {
+        HashMap<String, Integer> result = new HashMap<>();
+        for (Human human : humans) {
+            if (!(human instanceof Troop)) continue;
+            String type = Troop.troopsNameString.get(((Troop) human).getTroopType());
+            if (result.containsKey(type)) result.replace(type, result.get(type) + 1);
+            else result.put(type, 1);
+        }
+        return result;
+    }
+
+    public String resource() {
+        return null;
     }
 }

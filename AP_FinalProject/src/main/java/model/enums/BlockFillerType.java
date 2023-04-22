@@ -10,5 +10,10 @@ public enum BlockFillerType {
     SOUTH_BOLDER,
     WEST_BOLDER,
     EAST_BOLDER,
-    STAIR
+    STAIR;
+
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase().replace("_", " ");
+    }
 }

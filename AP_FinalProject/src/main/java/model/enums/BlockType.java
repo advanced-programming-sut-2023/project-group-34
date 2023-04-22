@@ -15,5 +15,10 @@ public enum BlockType {
     BEACH,
     SEA,
     LAKE,
-    DITCH
+    DITCH;
+
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase().replace("_", " ");
+    }
 }

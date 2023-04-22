@@ -2,7 +2,10 @@ package model.map;
 
 import model.enums.Direction;
 
+import java.beans.Introspector;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class GameMap {
     private final Block[][] map;
@@ -87,5 +90,22 @@ public class GameMap {
 
     public void setUpLeftCornerBlock(Block upLeftCornerBlock) {
         UpLeftCornerBlock = upLeftCornerBlock;
+    }
+
+    public String showDetails(int x, int y) {
+        Block block = map[y][x];
+        StringBuilder details = new StringBuilder();
+        HashMap<String, Integer> troops = block.troops();
+        Set<String> troopTypes = troops.keySet();
+        details.append("details:");
+        details.append("\n");
+        details.append(block.getBlockType().toString());
+        for (String troopType : troopTypes) {
+            details.append("\n")
+                    .append(troopType)
+                    .append(": ")
+                    .append(troops.get(troopType));
+        }
+        return details.toString();
     }
 }
