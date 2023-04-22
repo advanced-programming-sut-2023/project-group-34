@@ -47,8 +47,8 @@ public class Game {
         return allTrades;
     }
 
-    public void setAllTrades(ArrayList<Trade> allTrades) {
-        this.allTrades = allTrades;
+    public void addAllTrades(Trade trade){
+        this.allTrades.add(trade);
     }
     public void startGame() {
 

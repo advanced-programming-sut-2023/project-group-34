@@ -42,7 +42,7 @@ public class User {
         return notificationsList;
     }
 
-    public void addGetMyTrades(Trade trade){
+    public void addToMyTrades(Trade trade){
         this.myTrades.add(trade);
     }
 

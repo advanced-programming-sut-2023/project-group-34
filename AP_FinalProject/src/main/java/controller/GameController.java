@@ -7,6 +7,7 @@ import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import model.forces.human.Human;
+import model.user.User;
 import view.gameMenu.GameMenu;
 import view.gameMenu.MapMenu;
 import view.gameMenu.ShopMenu;
@@ -199,15 +200,13 @@ public class GameController {
         int finalPrice = (currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount)*4)/5;
 
         if (finalPrice == 0) return "The product you are looking for does not exit, selling failed";
-        if (!capacityChecker(item, finalAmount, -1)) return "You do not have enough to sell, buying failed";
+        if (!capacityCheckerForSelling(item, finalAmount)) return "You do not have enough to sell, buying failed";
 
         currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
                 put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
                         get(Resources.GOLD) + finalPrice);
         changeStorage(item, finalAmount, -1);
         return "Item sold successfully";
-
-
     }
 
     public static String buyItems(Matcher matcher){
@@ -227,7 +226,7 @@ public class GameController {
         if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
             return "You do not have enough gold to buy this item, buying failed";
 
-        if (!capacityChecker(item, finalAmount, 1)) return "You do not have enough capacity to buy this item, buying failed";
+        if (!capacityCheckerForBuying(item, finalAmount)) return "You do not have enough capacity to buy this item, buying failed";
 
         currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
                 put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
@@ -237,8 +236,8 @@ public class GameController {
         return "Item purchased successfully";
     }
 
-    public static boolean capacityChecker(String name, int amount, int coefficient){
-        amount *= coefficient;
+    //This needs to get fixed
+    public static boolean capacityCheckerForBuying(String name, int amount){
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
                 if (currentGame.getCurrentGovernment().getStorageDepartment().getResourcesMaxCapacity()
@@ -259,6 +258,30 @@ public class GameController {
             if (food.getName().equals(name)) {
                 if (currentGame.getCurrentGovernment().getStorageDepartment().getFoodMaxCapacity()
                         >= amount + currentGame.getCurrentGovernment().getStorageDepartment().foodOccupied())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean capacityCheckerForSelling(String name, int amount){
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(name)) {
+                if (currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(resources) - amount > 0)
+                    return true;
+            }
+        }
+
+        for (Weapons weapons : Weapons.values()){
+            if (weapons.getName().equals(name)) {
+                if (currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.get(weapons) - amount > 0)
+                    return true;
+            }
+        }
+
+        for (Food food : Food.values()){
+            if (food.getName().equals(name)) {
+                if (currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.get(food) - amount > 0)
                     return true;
             }
         }
@@ -346,8 +369,81 @@ public class GameController {
 
         if (wantedAmount < 0 || offeredAmount < 0) return "Invalid amount, trading failed";
 
+        if (!wantedName.equals("null") || !checkResourceName(wantedName))
+            return "The resource you want does not exit, trading failed";
 
+        if (!offeredName.equals("null") || !checkResourceName(offeredName))
+            return "The resource you are offering does not exit, trading failed";
+
+        if (wantedName.equals("null") && wantedAmount != 0)
+            return "This is a donation and you cannot set an amount, trade failed";
+
+        if (offeredName.equals("null") && offeredAmount != 0)
+            return "You are begging people so you cannot set an amount, trade failed";
+
+        if (checkEnoughStorageForTrade(offeredName, offeredAmount))
+            return "You do not have enough resources to make this trade, trading failed";
+
+        if (!receiverName.equals("all") && getPlayerByUsername(receiverName) == null)
+            return "This player does not exit in the game, trading failed";
+
+        tradeWork(wantedName, wantedAmount, offeredName, offeredAmount, receiverName);
         return null;
+    }
+
+    private static void tradeWork(String wanted, int wantedAmount, String offered, int offeredAmount, String receiverName){
+        Resources wantedResource = null;
+        Resources offeredResource = null;
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(wanted)){
+                wantedResource = resources;
+            }
+            if (resources.getName().equals(offered)){
+                offeredResource = resources;
+            }
+        }
+
+
+        Trade trade = new Trade(wantedResource, wantedAmount, offeredResource, offeredAmount);
+        currentGame.addAllTrades(trade);
+        if (!receiverName.equals("all")){
+            getPlayerByUsername(receiverName).addToMyTrades(trade);
+            getPlayerByUsername(receiverName).putNotificationList(trade);
+        } else {
+            for (User player : currentGame.getPlayers()){
+                player.addToMyTrades(trade);
+                player.putNotificationList(trade);
+            }
+        }
+
+    }
+
+    private static User getPlayerByUsername(String username){
+        for (User user : currentGame.getPlayers()){
+            if (user.getName().equals(username))
+                return user;
+        }
+        return null;
+    }
+
+    private static boolean checkResourceName(String name){
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    private static boolean checkEnoughStorageForTrade(String name, int amount){
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(name)){
+                if ((currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        get(resources) - amount) < 0){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static String showTradeList(){

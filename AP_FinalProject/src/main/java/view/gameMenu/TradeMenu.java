@@ -23,6 +23,10 @@ public class TradeMenu {
                 System.out.println(GameController.acceptTradeItem(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.TRADE)) != null){
                 System.out.println(GameController.trade(matcher));
+            } else if (command.equals("back")){
+                return "back";
+            } else {
+                System.out.println("Invalid command!");
             }
         }
     }
