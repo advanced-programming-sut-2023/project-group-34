@@ -76,13 +76,14 @@ public class GameMap {
         }
      }
 
-     public void getMiniMap() {
+     public Block[][] getMiniMap() {
          Block[][] mini = new Block[10][10];
          for (int i = UpLeftCornerBlock.getLocationI(); i < 10 + UpLeftCornerBlock.getLocationI(); i++) {
              for (int j = UpLeftCornerBlock.getLocationJ(); j < 10 + UpLeftCornerBlock.getLocationJ(); j++) {
                  mini[i - UpLeftCornerBlock.getLocationI()][j - UpLeftCornerBlock.getLocationJ()] = map[i][j];
              }
          }
+         return mini;
      }
 
      public Block getUpLeftCornerBlock() {
