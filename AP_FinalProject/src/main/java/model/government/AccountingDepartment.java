@@ -97,15 +97,17 @@ public class AccountingDepartment {
 
     public int taxPopularityAccounting() {
         int taxPopularity = 0;
-        if (government.getStorageDepartment().getGold() == 0) return 1;
+        if (government.getStorageDepartment().resourcesStorage.get(Resources.GOLD) == 0) return 1;
         if (taxRate <= 0){
             taxPopularity = (-2)*taxRate + 1;
             double goldToBeGiven = ((-0.2)*taxRate + 0.4) * government.getPopulation();
-            government.getStorageDepartment().setGold(government.getStorageDepartment().getGold()-goldToBeGiven);
+            government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
+                    .resourcesStorage.get(Resources.GOLD) - goldToBeGiven);
             return taxPopularity;
         } else {
-            double goldToBeGiven = ((0.2)*taxRate + 0.4) * government.getPopulation();
-            government.getStorageDepartment().setGold(government.getStorageDepartment().getGold()-goldToBeGiven);
+            double goldToGet = ((0.2)*taxRate + 0.4) * government.getPopulation();
+            government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
+                    .resourcesStorage.get(Resources.GOLD) + goldToGet);
             taxPopularity = switch (taxRate) {
                 case 1 -> -2;
                 case 2 -> -4;

@@ -77,7 +77,8 @@ public class GameController {
     }
 
     public static String showPopularity () {
-        return "Your current popularity is: " + currentGame.getCurrentGovernment().getTotalPopularity();
+        return "Your current popularity is: " + currentGame.getCurrentGovernment().getAccountingDepartment()
+                .addGovernmentPopularity();
     }
 
     public static String showPopularityFactors () {
@@ -200,7 +201,9 @@ public class GameController {
         if (finalPrice == 0) return "The product you are looking for does not exit, selling failed";
         if (!capacityChecker(item, finalAmount, -1)) return "You do not have enough to sell, buying failed";
 
-        currentGame.getCurrentGovernment().getStorageDepartment().setGold(currentGame.getCurrentGovernment().getStorageDepartment().getGold()+finalPrice);
+        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        get(Resources.GOLD) + finalPrice);
         changeStorage(item, finalAmount, -1);
         return "Item sold successfully";
 
@@ -221,12 +224,14 @@ public class GameController {
 
         if (finalPrice == 0) return "The product you are looking for does not exit, buying failed";
 
-        if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().getGold())
+        if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
             return "You do not have enough gold to buy this item, buying failed";
 
         if (!capacityChecker(item, finalAmount, 1)) return "You do not have enough capacity to buy this item, buying failed";
 
-        currentGame.getCurrentGovernment().getStorageDepartment().setGold(currentGame.getCurrentGovernment().getStorageDepartment().getGold()-finalPrice);
+        currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        get(Resources.GOLD) - finalPrice);
 
         changeStorage(item, finalAmount, 1);
         return "Item purchased successfully";
@@ -303,30 +308,157 @@ public class GameController {
         return finalString;
     }
 
+    public static String showTradeDetails(Trade trade){
+        String finalString = new String();
+        finalString = finalString.concat("Sender: " + trade.getSender().getName() + "  ");
+        finalString = finalString.concat("Resource offered: " + trade.getOfferedNumber() + " " + trade.getOffered() + "  ");
+        if (trade.getOffered() == null)
+            finalString = finalString.concat("Resource wanted: Nothing  ");
+        else
+            finalString = finalString.concat("Resource wanted: " + trade.getWantedNumber() + trade.getWanted());
+        finalString = finalString.concat("Message: " + trade.getMessage());
+        return finalString;
+    }
+
     public static String showTradeNotification(){
         String finalString = new String();
-        for (Trade trade : currentGame.getAllTrades()){
-            if (trade.getReceiver().getName().equals(currentGame.getCurrentGovernment().getOwner().getName()) && !trade.isWasShown()){
-                finalString = finalString.concat("New Offer from: " + trade.getSender().getName() + "Message: " + trade.getMessage());
-                trade.setWasShown(true);
-            }
+
+        if (currentGame.getCurrentGovernment().getOwner().getNotificationsList().isEmpty())
+            return "You have no new requests";
+
+        while (currentGame.getCurrentGovernment().getOwner().getNotificationsList().size() > 0){
+            Trade trade = currentGame.getCurrentGovernment().getOwner().getNotificationsList().poll();
+            if (trade.isAccepted())
+                finalString = finalString.concat("Trade Accepted: " + showTradeDetails(trade) + " Acceptor: " + trade.getReceiver().getName() + "\n");
+            else
+                finalString = finalString.concat("New Request: " + showTradeDetails(trade) + "\n");
         }
         return finalString;
     }
 
     public static String trade(Matcher matcher){
+        String message = matcher.group("message");
+        String receiverName = matcher.group("receiver");
+        String wantedName = matcher.group("wanted");
+        String offeredName = matcher.group("offered");
+        int wantedAmount = Integer.parseInt(matcher.group("wantedAmount"));
+        int offeredAmount = Integer.parseInt(matcher.group("offeredAmount"));
+
+        if (wantedAmount < 0 || offeredAmount < 0) return "Invalid amount, trading failed";
+
+
         return null;
     }
 
     public static String showTradeList(){
-        return null;
+        String finalString = new String();
+        int counter = 1;
+        if (currentGame.getCurrentGovernment().getOwner().getMyTrades().isEmpty())
+            return "You have no offers";
+
+        for (Trade trade : currentGame.getCurrentGovernment().getOwner().getMyTrades()){
+            if (!trade.isAccepted()) {
+                finalString = finalString.concat(counter + ". ");
+                counter++;
+                finalString = finalString.concat(showTradeDetails(trade) + "\n");
+            }
+        }
+        return finalString;
     }
 
     public static String acceptTradeItem(Matcher matcher){
-        return null;
+        String id = matcher.group("id");
+        String message = matcher.group("message");
+        if (id.isEmpty() || message.isEmpty()) return "Required field is empty, accepting trade failed";
+        int id1 = Integer.parseInt(matcher.group("id"));
+
+        int tradesToBeAccepted = 0;
+        for (Trade trade : currentGame.getCurrentGovernment().getOwner().getMyTrades()){
+            if (!trade.isAccepted())
+                tradesToBeAccepted++;
+        }
+
+        if (id1 > tradesToBeAccepted)
+            return "Invalid id number, accepting trade failed";
+
+        for (Trade trade : currentGame.getCurrentGovernment().getOwner().getMyTrades()){
+            if (!trade.isAccepted() && id1 == 0){
+                Resources wanted = trade.getWanted();
+                int wantedAmount = trade.getWantedNumber();
+
+                if (wantedAmount > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(wanted))
+                    return "You do not have enough resources to accept this trade, accepting trade failed";
+                AcceptingTradeWork(trade, message);
+                break;
+            } else if (!trade.isAccepted()){
+                id1--;
+            }
+        }
+        return "Trade finished successfully";
     }
 
-    public static String showTradeHistory(){ return null; }
+    public static void AcceptingTradeWork(Trade trade, String message){
+        trade.setMessage(message);
+        trade.setAccepted(true);
+        trade.setReceiver(currentGame.getCurrentGovernment().getOwner());
+        int offeredAmount = trade.getOfferedNumber();
+        String offeredName = trade.getOffered().getName();
+        int wantedAmount = trade.getWantedNumber();
+        String wantedName = trade.getWanted().getName();
+
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(offeredName)){
+                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        put(resources, currentGame.getCurrentGovernment().
+                                getStorageDepartment().resourcesStorage.get(resources) + offeredAmount);
+                if (currentGame.getCurrentGovernment().getStorageDepartment().
+                        resourcesOccupied() > currentGame.getCurrentGovernment().
+                        getStorageDepartment().getResourcesMaxCapacity())
+                    currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                            put(resources, (double) currentGame.getCurrentGovernment().getStorageDepartment()
+                                    .getResourcesMaxCapacity());
+                trade.getSender().getGovernment().getStorageDepartment().resourcesStorage.
+                        put(resources, trade.getSender().getGovernment().getStorageDepartment().
+                                resourcesStorage.get(resources) - offeredAmount);
+
+            }
+        }
+
+        for (Resources resources : Resources.values()){
+            if (resources.getName().equals(wantedName)){
+                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        put(resources, currentGame.getCurrentGovernment().getStorageDepartment().
+                                resourcesStorage.get(resources) - wantedAmount);
+                trade.getSender().getGovernment().getStorageDepartment().
+                        resourcesStorage.put(resources, trade.getSender().getGovernment().
+                                getStorageDepartment().resourcesStorage.get(resources) + wantedAmount);
+                if (trade.getSender().getGovernment().getStorageDepartment().
+                        resourcesOccupied() > trade.getSender().getGovernment().
+                        getStorageDepartment().getResourcesMaxCapacity())
+                    trade.getSender().getGovernment().getStorageDepartment().
+                            resourcesStorage.put(resources, (double) trade.getSender().getGovernment().
+                                    getStorageDepartment().getResourcesMaxCapacity());
+            }
+        }
+
+
+    }
+
+    public static String showTradeHistory(){
+        String finalString = new String();
+        finalString = finalString.concat("Trades Sent: " + "\n");
+        for (Trade trade : currentGame.getAllTrades()){
+            if (trade.getSender().getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
+                finalString = finalString.concat(showTradeDetails(trade) + "\n");
+        }
+
+        finalString = finalString.concat("Trades Accepted: " + "\n");
+        for (Trade trade : currentGame.getCurrentGovernment().getOwner().getMyTrades()){
+            if (trade.isAccepted() && trade.getReceiver().getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
+                finalString = finalString.concat(showTradeDetails(trade) + "\n");
+        }
+        return finalString;
+    }
 
     public static String dropStairs(Matcher matcher) { return null;}
     public static String EngineerGetOil(Matcher matcher) {return null;}

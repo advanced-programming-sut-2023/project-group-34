@@ -32,7 +32,14 @@ public enum Commands {
     SET_TAX_RATE("Tax\\s+rate\\s+-r\\s+(?<taxRate>-?[0-9]+)"),
     SHOW_TAX_RATE("Show\\s+tax\\s+rate"),
     SET_FEAR_RATE("Fear\\s+rate\\s+-r\\s+(?<fearRate>-?[0-9]+)"),
-    SHOW_FEAR_RATE("Show\\s+fear\\s+rate");
+    SHOW_FEAR_RATE("Show\\s+fear\\s+rate"),
+    SHOW_TRADE_LIST("Show\\s+trade\\s+list"),
+    SHOW_TRADE_HISTORY("Show\\s+trade\\s+history"),
+    ACCEPT_TRADE("(?=.*-m (?<message>\".+\"|\\S+))(?=.*-i (?<id>\\d+))^Accept\\s+trade\\s*( *-[im] (\".+\"|\\S+)){2}$"),
+    TRADE("(?=.*-m (?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]+\")|\\S+)))(?=.*-oa (?<offeredAmount>\\d+))" +
+            "(?=.*-wa (?<wantedAmount>\\d+))(?=.*-w (?<wanted>\\S+))(?=.*-o (?<offered>\\S+))" +
+            "(?=.*-r (?<receiver>(\".+\"|\\S+)))^Trade\\s*( *-[wmoar]{1,2} (\".+[^\"]\"|\\S+)){6}$");
+
 
     private final String regex;
 

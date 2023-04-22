@@ -1,10 +1,13 @@
 package model.user;
 
+import model.Trade;
 import model.enums.Slogan;
 import model.government.Government;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class User {
     private String name;
@@ -20,12 +23,31 @@ public class User {
     private Slogan sloganTypes;
     private int currentScore = 0;
 
+    private ArrayList<Trade> myTrades = new ArrayList<>();
+    private Queue<Trade> notificationsList = new LinkedList<>();
+
     public User(String name, Password password, String nickname, String email){
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.password = password;
         government = new Government(this);
+    }
+
+    public ArrayList<Trade> getMyTrades() {
+        return myTrades;
+    }
+
+    public Queue<Trade> getNotificationsList() {
+        return notificationsList;
+    }
+
+    public void addGetMyTrades(Trade trade){
+        this.myTrades.add(trade);
+    }
+
+    public void putNotificationList(Trade trade){
+        this.notificationsList.add(trade);
     }
 
     public int getPlayerRank(){

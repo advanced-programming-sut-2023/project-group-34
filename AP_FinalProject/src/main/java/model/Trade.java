@@ -89,4 +89,5 @@ public class Trade {
     public String getMessage() {
         return message;
     }
+
 }
