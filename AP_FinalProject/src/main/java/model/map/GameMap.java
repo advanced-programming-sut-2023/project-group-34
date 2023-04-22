@@ -1,5 +1,6 @@
 package model.map;
 
+import model.building.Building;
 import model.enums.Direction;
 
 import java.beans.Introspector;
@@ -98,13 +99,30 @@ public class GameMap {
         HashMap<String, Integer> troops = block.troops();
         Set<String> troopTypes = troops.keySet();
         details.append("details:");
-        details.append("\n");
+        details.append("\n" +
+                "block type: ");
         details.append(block.getBlockType().toString());
+        details.append("\n" +
+                "resource: ");
+        details.append(block.resource());
+        details.append("\n" +
+                "amount: ");
+        details.append(block.getResourcesCapacity());
+        details.append("\n" +
+                "troops:");
         for (String troopType : troopTypes) {
             details.append("\n")
                     .append(troopType)
                     .append(": ")
                     .append(troops.get(troopType));
+        }
+        details.append("\n" +
+                "buildings:");
+        for (Building building : block.getBuilding())
+        {
+            details.append("\n")
+                    .append(building.toString());
+            //TODO: toString is gonna print a camelCase name!!!
         }
         return details.toString();
     }
