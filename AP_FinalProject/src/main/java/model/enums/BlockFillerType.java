@@ -6,10 +6,6 @@ public enum BlockFillerType {
     OLIVE,
     COCONUT,
     DATE,
-    NORTH_BOLDER,
-    SOUTH_BOLDER,
-    WEST_BOLDER,
-    EAST_BOLDER,
     STAIR;
 
     @Override

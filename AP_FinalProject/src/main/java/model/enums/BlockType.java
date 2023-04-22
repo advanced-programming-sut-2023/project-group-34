@@ -15,6 +15,10 @@ public enum BlockType {
     BEACH,
     SEA,
     LAKE,
+    NORTH_BOULDER,
+    SOUTH_BOULDER,
+    WEST_BOULDER,
+    EAST_BOULDER,
     DITCH;
 
     @Override
