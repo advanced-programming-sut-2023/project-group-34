@@ -17,6 +17,12 @@ public enum Commands {
     CHANGE_PASSWORD("Profile\\s+change\\s+password\\s*( -o\\s+(?<oldPass>\\S+)\\s+-n\\s+(?<newPass>\\S+)|-n\\s+(?<newPass1>\\S+)\\s+-o\\s+(?<oldPass1>\\S+))*"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
+    SET_TEXTURE("\\s*settexture(\\s+-x\\s+(?<singleX>\\d+)\\s+-y\\s+(?<singleY>\\d+)|\\s+-x1\\s+(?<x1>\\d+)\\s+-y1\\s+(?<y1>\\d+)\\s+-x2\\s+(?<x2>\\d+)\\s+-y2\\s+(?<y2>\\d+))\\s+-t\\s+(?<type>\\S+)\\s*"),
+    CLEAR("clear(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(\\s+-[xy]\\s+\\d+){2}"),
+    DROP_ROCK("droprock(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(?=.*\\s+-d\\s+(?<direction>\\S+))(\\s+-[xyd]\\s+\\S+){3}"),
+    DROP_TREE("droptree(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(?=.*\\s+-t\\s+(?<type>\\S+))(\\s+-[xyt]\\s+\\S+){3}"),
+    DROP_BUILDING("dropbuilding(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(?=.*\\s+-t\\s+(?<type>\\S+))(\\s+-[xyt]\\s+\\S+){3}"),
+    DROP_UNIT("droptree(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(?=.*\\s+-c\\s+(?<count>\\d+))(?=.*\\s+-t\\s+(?<type>\\S+))(\\s+-[xytc]\\s+\\S+){4}"),
     BACK("\\s*back\\s*");
 
     private final String regex;
