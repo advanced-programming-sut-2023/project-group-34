@@ -1,5 +1,6 @@
 package controller;
 
+import model.enums.BlockType;
 import model.map.GameMap;
 import model.user.User;
 import view.MainMenu;
@@ -139,7 +140,21 @@ public class MainController {
     }
 
     public static String changeBlockFloorType(Matcher matcher){
-        return null;
+        BlockType blockType = BlockType.BEACH.stringToBlockType(matcher.group("type"));
+        if (blockType == null) return "Invalid texture!";
+        String x = matcher.group("singleX");
+        if (x == null) {
+            int x1 = Integer.parseInt(matcher.group("x1"));
+            int x2 = Integer.parseInt(matcher.group("x2"));
+            int y1 = Integer.parseInt(matcher.group("y1"));
+            int y2 = Integer.parseInt(matcher.group("y2"));
+            return currentGameMap.setRectangleTexture(x1, x2, y1, y2, blockType);
+        }
+        else {
+            int x1 = Integer.parseInt(x);
+            int y1 = Integer.parseInt(matcher.group("singleY"));
+            return currentGameMap.setRectangleTexture(x1, x1, y1, y1, blockType);
+        }
     }
 
     public static String changeMultipleBlockFloorType(Matcher matcher){
@@ -147,7 +162,9 @@ public class MainController {
     }
 
     public static String clearBlock(Matcher matcher){
-        return null;
+        int i = Integer.parseInt(matcher.group("yAxis"));
+        int j = Integer.parseInt(matcher.group("xAxis"));
+        return currentGameMap.clearBlock(i, j);
     }
 
     public static String dropRock(Matcher matcher){

@@ -1,6 +1,7 @@
 package model.map;
 
 import model.building.Building;
+import model.enums.BlockType;
 import model.enums.Direction;
 
 import java.beans.Introspector;
@@ -24,13 +25,16 @@ public class GameMap {
         }
         maxSize = size;
     }
+
     public Block[][] getMap() {
         return map;
     }
+
     public ArrayList<Direction> findRoute(Block beginning , Block destination) {
         //TODO
          return null;
      }
+
      public void moveMiniMap(Direction direction , int number) {
         switch (direction) {
             case NORTH:
@@ -127,5 +131,21 @@ public class GameMap {
             //TODO: toString is gonna print a camelCase name!!!
         }
         return details.toString();
+    }
+
+    public String setRectangleTexture(int x1, int x2, int y1, int y2, BlockType blockType) {
+        if (x1 > x2 || y1 > y2 || x2 >= maxSize || y2 >= maxSize || x1 < 0 || y1 < 0) return "Out of bounds!";
+        for (; y1 <= y2; y1++){
+            for (int j = x1; j <= x2; j++) {
+                map[y1][j].setBlockType(blockType);
+            }
+        }
+        return "Success!";
+    }
+
+    public String clearBlock(int i, int j) {
+        if (i < 0 || i >= maxSize || j < 0 || j >= maxSize) return "Out of bounds!";
+        map[i][j] = new Block(i, j);
+        return "Success!";
     }
 }
