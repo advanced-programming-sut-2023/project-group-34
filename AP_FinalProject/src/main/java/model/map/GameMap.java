@@ -95,6 +95,7 @@ public class GameMap {
     }
 
     public String showDetails(int x, int y) {
+        if (x >= maxSize || y >= maxSize || x < 0 || y < 0) return "Out of bounds!";
         Block block = map[y][x];
         StringBuilder details = new StringBuilder();
         HashMap<String, Integer> troops = block.troops();
