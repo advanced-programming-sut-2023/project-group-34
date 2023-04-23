@@ -1,4 +1,4 @@
-package model.building;
+package model.enums.benums;
 
 import model.enums.make_able.Resources;
 import model.government.Government;
@@ -29,7 +29,8 @@ public enum DefenciveBuildingType implements BuildingType{
         this.cost = cost;
     }
 
-    public static DefenciveBuilding siegeEquipmentCreator(Government government , Block block , DefenciveBuildingType siegeEquipmentType) {
-        return null;
+    @Override
+    public void creator(Government government, Block block) {
+
     }
 }

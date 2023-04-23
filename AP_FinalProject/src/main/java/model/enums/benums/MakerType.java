@@ -1,4 +1,4 @@
-package model.building;
+package model.enums.benums;
 
 import model.enums.BlockType;
 import model.enums.make_able.MakeAble;
@@ -13,19 +13,19 @@ import java.util.Map;
 import static model.enums.make_able.Resources.WOOD;
 
 public enum MakerType implements BuildingType{
-    IRON_MAKER(null, 0, null , 0, 0, null, 0,  new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    STONE_MAKER(null, 0, null, 0, 0, null, 0,  new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    WOOD_MAKER(null, 0, null, 0, 0, null, 0,  new HashMap<>(Map.ofEntries(Map.entry(WOOD , 3)))),
-    GHIR_MAKER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    ARMOUR_MAKER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    BOW_MAKER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    SWORD_MAKER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    SPEAR_MAKER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    IRON_MINE(null, 0, null , 0, 0, null, 0,  new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    QUARRY(null, 0, null, 0, 0, null, 0,  new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    WOOD_CUTTER(null, 0, null, 0, 0, null, 0,  new HashMap<>(Map.ofEntries(Map.entry(WOOD , 3)))),
+    PITCH_RIG(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    ARMOURER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    FLETCHER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    BLACKSMITH(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    POLETURNER(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
     STABLE(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))) ,
     APPLE_GARDEN(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    CHEESE_FACTORY(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
+    DAIRY_FACTORY(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
     HOP_FARM(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
-    ALE_MAKER(null , 0 , null , 0 , 0 , null ,0 , null),
+    BREWERY(null , 0 , null , 0 , 0 , null ,0 , null),
     WHEAT_FARM(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
     HUNTING_GROUND(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
     BAKERY(null, 0, null, 0, 0, null, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20)))),
@@ -51,7 +51,7 @@ public enum MakerType implements BuildingType{
         this.cost = cost;
     }
 
-    public static Maker resourceMakerCreator(Government government , Block block , MakerType makerType) {
-        return null;
+    public void creator(Government government , Block block) {
+
     }
 }

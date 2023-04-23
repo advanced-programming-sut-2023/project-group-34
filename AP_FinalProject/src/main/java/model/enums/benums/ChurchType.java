@@ -1,4 +1,4 @@
-package model.building;
+package model.enums.benums;
 
 import model.enums.make_able.Resources;
 import model.government.Government;
@@ -19,7 +19,8 @@ public enum ChurchType implements BuildingType{
         NumberOfWorkers = numberOfWorkers;
     }
 
-    public Church churchMaker(Government government , Block block , ChurchType churchType) {
-        return null;
+    @Override
+    public void creator(Government government, Block block) {
+
     }
 }

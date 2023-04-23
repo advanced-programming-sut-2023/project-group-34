@@ -1,5 +1,6 @@
 package model.building;
 
+import model.enums.benums.BuildingType;
 import model.enums.make_able.Resources;
 import model.forces.WarEquipment;
 import model.government.Government;

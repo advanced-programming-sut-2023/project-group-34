@@ -1,5 +1,6 @@
 package model.building;
 
+import model.enums.benums.CagedWarDogType;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.map.Block;
@@ -9,8 +10,8 @@ import java.util.HashMap;
 public class CagedWarDog extends Building{
     private final int numberOfDogs = 0;
     private final int Range = 0;
-    public CagedWarDog(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType) {
-        super(government, block, HP, cost, buildingType);
+    protected CagedWarDog(Government government, Block block, int HP, HashMap<Resources, Integer> cost) {
+        super(government, block, HP, cost, CagedWarDogType.CAGED_WAR_DOG);
     }
 
     @Override
@@ -22,4 +23,5 @@ public class CagedWarDog extends Building{
     public void destroy() {
 
     }
+
 }
