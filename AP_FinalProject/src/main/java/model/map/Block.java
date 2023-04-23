@@ -91,6 +91,18 @@ public class Block {
         this.building.remove(building);
     }
 
+    public Troop[] getTroops() {
+        ArrayList<Troop> troops = new ArrayList<>();
+        for (Human human : humans) {
+            if (human instanceof Troop) troops.add((Troop) human);
+        }
+        Troop[] result = new Troop[troops.size()];
+        for (int i = 0; i < troops.size(); i++) {
+            result[i] = troops.get(i);
+        }
+        return result;
+    }
+
     public HashMap<String, Integer> troops() {
         HashMap<String, Integer> result = new HashMap<>();
         for (Human human : humans) {
