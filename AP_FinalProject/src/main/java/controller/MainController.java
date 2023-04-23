@@ -157,10 +157,6 @@ public class MainController {
         }
     }
 
-    public static String changeMultipleBlockFloorType(Matcher matcher){
-        return null;
-    }
-
     public static String clearBlock(Matcher matcher){
         int i = Integer.parseInt(matcher.group("yAxis"));
         int j = Integer.parseInt(matcher.group("xAxis"));
@@ -168,7 +164,17 @@ public class MainController {
     }
 
     public static String dropRock(Matcher matcher){
-        return null;
+        String direction = matcher.group("direction");
+        int y = Integer.parseInt(matcher.group("yAxis"));
+        int x = Integer.parseInt(matcher.group("xAxis"));
+        return switch (direction) {
+            case "north" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.NORTH_BOULDER);
+            case "south" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.SOUTH_BOULDER);
+            case "west" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.WEST_BOULDER);
+            case "east" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.EAST_BOULDER);
+            case "random" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
+            default -> "Invalid direction!";
+        };
     }
 
     public static String dropTree(Matcher matcher){
