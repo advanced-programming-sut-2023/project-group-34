@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.enums.Slogan;
 import model.government.Government;
+import model.map.GameMap;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -25,6 +26,9 @@ public class User {
     private Slogan sloganTypes;
     private int currentScore = 0;
 
+    private ArrayList<GameMap> customMaps;
+    //TODO: json
+
     public User(String name, Password password, String nickname, String email){
         this.email = email;
         this.name = name;
@@ -32,6 +36,7 @@ public class User {
         this.password = password;
         users.add(this);
         updateDataBase();
+        customMaps = new ArrayList<>();
     }
 
     public int getPlayerRank(){
@@ -169,5 +174,15 @@ public class User {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<GameMap> getCustomMaps() {
+        return customMaps;
+    }
+
+    public GameMap newCustomMap(int size) {
+        GameMap map = new GameMap(size);
+        this.customMaps.add(map);
+        return map;
     }
 }

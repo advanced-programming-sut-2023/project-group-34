@@ -16,7 +16,7 @@ public class GameMap {
 
     private Block UpLeftCornerBlock;
 
-    GameMap(int size) {
+    public GameMap(int size) {
         map = new Block[size + 1][size + 1];
         for (int i = 1; i <= size; i++) {
             for (int j = 1; j <= size; j++) {
