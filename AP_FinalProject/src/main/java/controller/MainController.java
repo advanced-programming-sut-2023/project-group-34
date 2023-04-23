@@ -184,6 +184,7 @@ public class MainController {
         int i = Integer.parseInt(matcher.group("yIndex"));
         int j = Integer.parseInt(matcher.group("xIndex"));
         if (!currentGameMap.checkBounds(i, j)) return "Out of bounds!";
+        if (!(currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GRASS) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GROUND))) return "Can't put a tree here!";
         currentGameMap.getMap()[i][j].setBLockFiller(blockFillerType);
         return "Success!";
     }
