@@ -134,7 +134,7 @@ public class GameMap {
     }
 
     public String setRectangleTexture(int x1, int x2, int y1, int y2, BlockType blockType) {
-        if (x1 > x2 || y1 > y2 || x2 >= maxSize || y2 >= maxSize || x1 < 0 || y1 < 0) return "Out of bounds!";
+        if (!(checkBounds(y1, x1) && checkBounds(y2, x2))) return "Out of bounds!";
         for (; y1 <= y2; y1++){
             for (int j = x1; j <= x2; j++) {
                 map[y1][j].setBlockType(blockType);
@@ -144,8 +144,12 @@ public class GameMap {
     }
 
     public String clearBlock(int i, int j) {
-        if (i < 0 || i >= maxSize || j < 0 || j >= maxSize) return "Out of bounds!";
+        if (!checkBounds(i, j)) return "Out of bounds!";
         map[i][j] = new Block(i, j);
         return "Success!";
+    }
+
+    public boolean checkBounds(int i, int j) {
+        return i >= 0 && i < maxSize && j >= 0 && j < maxSize;
     }
 }

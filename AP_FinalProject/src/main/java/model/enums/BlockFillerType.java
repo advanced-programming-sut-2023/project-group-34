@@ -12,4 +12,11 @@ public enum BlockFillerType {
     public String toString() {
         return super.toString().toLowerCase().replace("_", " ");
     }
+
+    public static BlockFillerType stringToType(String string) {
+        for (BlockFillerType value : BlockFillerType.values()) {
+            if (value.toString().equals(string)) return value;
+        }
+        return null;
+    }
 }

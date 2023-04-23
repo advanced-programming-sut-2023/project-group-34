@@ -1,5 +1,6 @@
 package controller;
 
+import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.map.GameMap;
 import model.user.User;
@@ -140,7 +141,7 @@ public class MainController {
     }
 
     public static String changeBlockFloorType(Matcher matcher){
-        BlockType blockType = BlockType.BEACH.stringToBlockType(matcher.group("type"));
+        BlockType blockType = BlockType.stringToBlockType(matcher.group("type"));
         if (blockType == null) return "Invalid texture!";
         String x = matcher.group("singleX");
         if (x == null) {
@@ -178,11 +179,18 @@ public class MainController {
     }
 
     public static String dropTree(Matcher matcher){
-        return null;
+        BlockFillerType blockFillerType = BlockFillerType.stringToType(matcher.group("type"));
+        if (blockFillerType == null) return "Invalid type!";
+        int i = Integer.parseInt(matcher.group("yIndex"));
+        int j = Integer.parseInt(matcher.group("xIndex"));
+        if (!currentGameMap.checkBounds(i, j)) return "Out of bounds!";
+        currentGameMap.getMap()[i][j].setBLockFiller(blockFillerType);
+        return "Success!";
     }
 
     public static String dropBuilding(Matcher matcher){
         return null;
+        //TODO: Arshia joon
     }
 
     public static String dropUnit(Matcher matcher){

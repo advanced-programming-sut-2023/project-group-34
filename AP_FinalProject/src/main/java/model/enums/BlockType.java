@@ -28,7 +28,7 @@ public enum BlockType {
         return super.toString().toLowerCase().replace("_", " ");
     }
 
-    public BlockType stringToBlockType(String string) {
+    public static BlockType stringToBlockType(String string) {
         for (BlockType value : BlockType.values()) {
             if (value.toString().equals(string)) return value;
         }
