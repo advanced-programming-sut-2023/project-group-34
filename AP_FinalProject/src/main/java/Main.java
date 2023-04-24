@@ -1,5 +1,9 @@
+import controller.Runner;
+import model.user.User;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        User.loadAllUsersFromDataBase();
+        Runner.run();
     }
 }

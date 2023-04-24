@@ -3,11 +3,16 @@ package controller;
 import model.Game;
 import model.Trade;
 import model.building.Building;
+import model.enums.BlockFillerType;
+import model.enums.Direction;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import model.forces.human.Human;
 import model.user.User;
+import model.forces.human.Troop;
+import model.map.Block;
+import model.map.GameMap;
 import view.gameMenu.GameMenu;
 import view.gameMenu.MapMenu;
 import view.gameMenu.ShopMenu;
@@ -66,15 +71,39 @@ public class GameController {
     }
 
     public static String showMiniMap () {
-        return null;
+        StringBuilder output = new StringBuilder();
+        Block[][] map = currentGame.getMap().getMiniMap();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (map[i][j].getTroops().length != 0) output.append("S ");
+                else if (map[i][j].getBuilding().size() != 0) output.append("B ");
+                else if (map[i][j].getBLockFiller() != null && !map[i][j].getBLockFiller().equals(BlockFillerType.STAIR))
+                    output.append("T ");
+                else output.append(map[i][j].getBlockType().toString(), 0, 2);
+                output.append(' ');
+            }
+            output.append('\n');
+        }
+        return output.toString();
     }
 
     public static String moveMiniMap (Matcher matcher) {
-        return null;
+        String up = matcher.group("up");
+        String down = matcher.group("down");
+        String left = matcher.group("left");
+        String right = matcher.group("right");
+        if ((down != null && up != null) || (left != null && right != null)) return "Invalid command: opposite directions used!";
+        if (up != null) currentGame.getMap().moveMiniMap(Direction.NORTH, Integer.parseInt(up));
+        if (down != null) currentGame.getMap().moveMiniMap(Direction.SOUTH, Integer.parseInt(down));
+        if (left != null) currentGame.getMap().moveMiniMap(Direction.WEST, Integer.parseInt(left));
+        if (right != null) currentGame.getMap().moveMiniMap(Direction.EAST, Integer.parseInt(right));
+        return "Map moved successfully!";
     }
 
     public static String getBlockDetails (Matcher matcher) {
-        return null;
+        int x = Integer.parseInt(matcher.group("xAxis"));
+        int y = Integer.parseInt(matcher.group("yAxis"));
+        return currentGame.getMap().showDetails(x, y);
     }
 
     public static String showPopularity () {
@@ -116,6 +145,9 @@ public class GameController {
         return "Your current fear rate is: " + currentGame.getCurrentGovernment().
                 getAccountingDepartment().getFearRate();
     }
+    public static void changeResourceAmount (Resources resource, int amount) {}
+
+
 
     public static String setTaxRate (Matcher matcher) {
         int taxRate = Integer.parseInt(matcher.group("taxRate"));
@@ -145,10 +177,10 @@ public class GameController {
     public static String repairCurrentBuilding () {
         return null;
     }
+
     public static String selectBuilding (Matcher matcher) {
         return null;
     }
-
 
     public static String selectUnits (Matcher matcher) {
         return null;

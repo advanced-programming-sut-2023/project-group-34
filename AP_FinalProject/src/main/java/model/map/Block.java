@@ -4,8 +4,11 @@ import model.building.Building;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.forces.human.Human;
+import model.forces.human.Troop;
+import model.forces.human.TroopType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Block {
     private BlockFillerType bLockFiller;
@@ -20,30 +23,29 @@ public class Block {
 
     private int resourcesCapacity;
     private boolean isPassable;
+    private final int locationI;
+    private final int locationJ;
 
-    private final int locationX;
-    private final int locationY;
-
-    public Block(int locationX, int locationY) {
+    public Block(int locationI, int locationJ) {
         this.blockType = BlockType.GROUND;
-        this.locationX = locationX;
-        this.locationY = locationY;
+        this.locationI = locationI;
+        this.locationJ = locationJ;
     }
 
     public ArrayList<Human> getHumans() {
         return humans;
     }
+
     public ArrayList<Building> getBuilding() {
         return building;
     }
 
-
-    public int getLocationX() {
-        return locationX;
+    public int getLocationI() {
+        return locationI;
     }
 
-    public int getLocationY() {
-        return locationY;
+    public int getLocationJ() {
+        return locationJ;
     }
 
     public BlockType getBlockType() {
@@ -83,9 +85,40 @@ public class Block {
     }
 
     public void addBuilding(Building building) {
-
+        this.building.add(building);
     }
     public void removeBuilding(Building building) {
+        this.building.remove(building);
+    }
 
+    public Troop[] getTroops() {
+        ArrayList<Troop> troops = new ArrayList<>();
+        for (Human human : humans) {
+            if (human instanceof Troop) troops.add((Troop) human);
+        }
+        Troop[] result = new Troop[troops.size()];
+        for (int i = 0; i < troops.size(); i++) {
+            result[i] = troops.get(i);
+        }
+        return result;
+    }
+
+    public HashMap<String, Integer> troops() {
+        HashMap<String, Integer> result = new HashMap<>();
+        for (Human human : humans) {
+            if (!(human instanceof Troop)) continue;
+            String type = Troop.troopsNameString.get(((Troop) human).getTroopType());
+            if (result.containsKey(type)) result.replace(type, result.get(type) + 1);
+            else result.put(type, 1);
+        }
+        return result;
+    }
+
+    public String resource() {
+        if (bLockFiller == null || bLockFiller.equals(BlockFillerType.STAIR)) return bLockFiller.toString();
+        else if (blockType.equals(BlockType.IRON)) return "iron";
+        else if (blockType.equals(BlockType.BOULDER)) return "stone";
+        else if (blockType.equals(BlockType.OIL)) return "oil";
+        else return null;
     }
 }

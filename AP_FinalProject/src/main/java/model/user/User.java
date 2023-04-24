@@ -1,11 +1,18 @@
 package model.user;
 
 import model.Trade;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.enums.Slogan;
 import model.government.Government;
+import model.map.GameMap;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -15,13 +22,16 @@ public class User {
     private String nickname;
     private String email;
     private String slogan;
-    private static ArrayList<User> users;
+    private static ArrayList<User> users = new ArrayList<>();
     public static User currentUser;
-    private Boolean isLoggedIn;
+    private static Boolean isLoggedIn;
     private int score;
     private Government government;
     private Slogan sloganTypes;
     private int currentScore = 0;
+
+    private ArrayList<GameMap> customMaps;
+    //TODO: json
 
     private ArrayList<Trade> myTrades = new ArrayList<>();
     private Queue<Trade> notificationsList = new LinkedList<>();
@@ -31,6 +41,9 @@ public class User {
         this.name = name;
         this.nickname = nickname;
         this.password = password;
+        users.add(this);
+        updateDataBase();
+        customMaps = new ArrayList<>();
         government = new Government(this);
     }
 
@@ -172,5 +185,42 @@ public class User {
 
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
+    }
+
+    public static void stayLoggedIn() {
+        isLoggedIn = true;
+    }
+
+    public static void logout() {
+        currentUser = null;
+        isLoggedIn = false;
+    }
+
+    public static void updateDataBase() {
+        String usersListAsJSON = new Gson().toJson(users);
+        try (FileWriter file = new FileWriter("Users.json")) {
+            file.write(usersListAsJSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadAllUsersFromDataBase() {
+        try (FileReader reader = new FileReader("Users.json")) {
+            // Convert JSON File to Java Object
+            List<User> userObjects = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<GameMap> getCustomMaps() {
+        return customMaps;
+    }
+
+    public GameMap newCustomMap(int size) {
+        GameMap map = new GameMap(size);
+        this.customMaps.add(map);
+        return map;
     }
 }

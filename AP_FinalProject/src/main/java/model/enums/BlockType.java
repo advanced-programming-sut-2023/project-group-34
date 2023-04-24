@@ -1,5 +1,7 @@
 package model.enums;
 
+import model.map.Block;
+
 public enum BlockType {
     GROUND,
     BOULDER,
@@ -15,5 +17,21 @@ public enum BlockType {
     BEACH,
     SEA,
     LAKE,
-    DITCH
+    NORTH_BOULDER,
+    SOUTH_BOULDER,
+    WEST_BOULDER,
+    EAST_BOULDER,
+    DITCH;
+
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase().replace("_", " ");
+    }
+
+    public static BlockType stringToBlockType(String string) {
+        for (BlockType value : BlockType.values()) {
+            if (value.toString().equals(string)) return value;
+        }
+        return null;
+    }
 }
