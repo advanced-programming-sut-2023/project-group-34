@@ -1,4 +1,4 @@
-package model.building;
+package model.enums.benums;
 
 import model.enums.make_able.Resources;
 import model.government.Government;
@@ -22,7 +22,6 @@ public enum GateType implements BuildingType{
         this.cost = cost;
         this.capacity = capacity;
     }
-    public Gate makeGate(Government government , Block block , GateType gateType) {
-        return null;
+    public void create(Government government , Block block) {
     }
 }

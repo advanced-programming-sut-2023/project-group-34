@@ -32,5 +32,9 @@ public class Password {
         this.answer = answer;
     }
 
+    public static String randomPasswordGenerator(){
+        return null;
+    }
+
 }
 

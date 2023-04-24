@@ -1,5 +1,6 @@
-package model.building;
+package model.enums.benums;
 
+import model.building.GeneralBuilding;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.map.Block;
@@ -35,5 +36,10 @@ public enum GeneralBuildingsType implements BuildingType{
 
     public static GeneralBuilding storageMaker(Government government , Block block , GeneralBuildingsType storageType) {
         return null;
+    }
+
+    @Override
+    public void create(Government government, Block block) {
+
     }
 }

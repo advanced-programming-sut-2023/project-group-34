@@ -1,6 +1,7 @@
 package controller;
 
 import model.map.GameMap;
+import model.user.Password;
 import model.user.User;
 import view.MainMenu;
 import view.MapEditingMenu;
@@ -32,11 +33,13 @@ public class MainController {
 
     public static String changeUsername (Matcher matcher){
         String username = matcher.group("username");
+        username = username.replaceAll("\"", "");
+
         if (username.isEmpty()) return "The username field is empty, changing username failed";
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
 
-        if (UserController.isUserNameAlreadyUsed(username)) return "Username already exists, changing username failed";
+        if (UserController.isUserNameAlreadyUsed(username) == null) return "Username already exists, changing username failed";
 
         if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
 
@@ -47,6 +50,7 @@ public class MainController {
 
     public static String changeNickname (Matcher matcher){
         String nickname = matcher.group("nickname");
+        nickname = nickname.replaceAll("\"", "");
         if (nickname.isEmpty()) return "The nickname field is empty, changing nickname failed";
 
         if (User.currentUser.getNickname().equals(nickname)) return "Your nickname is already this, changing nickname failed";
@@ -57,32 +61,50 @@ public class MainController {
     }
 
     public static String changePassword(Matcher matcher){
-        String oldPass = matcher.group("oldPass");
-        String oldPass1 = matcher.group("oldPass1");
-        String newPass = matcher.group("newPass");
-        String newPass1 = matcher.group("newPass1");
+        String finalOldPass = matcher.group("oldPass");
+        String finalNewPass = matcher.group("newPass");
 
-        String finalOldPass;
-        if (!oldPass.isEmpty())
-            finalOldPass = oldPass;
-        else
-            finalOldPass = oldPass1;
+        if (finalOldPass.isEmpty() || finalNewPass.isEmpty())
+            return "The required field is empty, changing password failed";
 
-        String finalNewPass;
-        if (!newPass.isEmpty())
-            finalNewPass = newPass;
-        else
-            finalNewPass = newPass1;
-
-        if (finalOldPass.isEmpty() || finalNewPass.isEmpty()) return "The required field is empty, changing password failed";
-
-        String response = UserController.passwordChecker(newPass1);
+        String response = UserController.passwordChecker(finalNewPass);
         if (!response.isEmpty()) return response;
 
-        if (!User.currentUser.getPassword().equals(finalOldPass)) return "Incorrect current password, changing password failed";
+        if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
+            return "Incorrect current password, changing password failed";
 
-        return null;
+        if (User.currentUser.getPassword().getPasswordName().equals(finalNewPass))
+            return "Your new password has to be different from your current password, changing password failed";
 
+        System.out.println("Please renter your new password for confirmation");
+        String finalNewPass1 = Runner.getScn().nextLine();
+
+        if (!finalNewPass1.equals(finalNewPass))
+            return "Confirmation failed, changing password failed";
+
+        //Info has to be changed in Json as well
+        User.currentUser.getPassword().setPasswordName(finalNewPass1);
+        return "Password changed successfully";
+    }
+
+    public static String changePasswordRandomly(Matcher matcher){
+
+        String finalOldPass = matcher.group("oldPass");
+
+        if (finalOldPass.isEmpty()) return "The required field is empty, changing password failed";
+
+        if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
+            return "Incorrect current password, changing password failed";
+
+        String finalNewPass = Password.randomPasswordGenerator();
+
+        while(finalNewPass.equals(finalOldPass)) {
+            finalNewPass = Password.randomPasswordGenerator();
+        }
+
+        //Info has to be changed in Json as well
+        User.currentUser.getPassword().setPasswordName(finalNewPass);
+        return "Password changed successfully";
     }
 
     public static String changeEmail(Matcher matcher){
@@ -102,6 +124,7 @@ public class MainController {
 
     public static String changeSlogan(Matcher matcher){
         String slogan = matcher.group("slogan");
+        slogan = slogan.replaceAll("\"", "");
         if (slogan.isEmpty()) return "The slogan field is empty, changing slogan failed";
 
         if (!User.currentUser.getSlogan().isEmpty() && User.currentUser.getSlogan().equals(slogan))
@@ -110,8 +133,6 @@ public class MainController {
         //Info has to be changed in Json as well
         User.currentUser.setSlogan(slogan);
         return "Slogan changed successfully";
-
-
     }
 
     public static String changeSloganRandomly(Matcher matcher){
@@ -128,14 +149,21 @@ public class MainController {
         return "Slogan removed successfully";
     }
 
-    public static String displayScore(){ return null; }
+    public static String displaySlogan(){
+        if (User.currentUser.getSlogan().isEmpty()) return "Slogan is empty!";
+        else return User.currentUser.getSlogan();
+    }
 
-    public static String displayRank(){ return null; }
-
-    public static String displaySlogan(){ return null;}
-
-    public static String showProfile(Matcher matcher){
-        return null;
+    public static String showProfile(){
+        String theWholeProfile = "";
+        theWholeProfile = theWholeProfile.concat("Username: " + User.currentUser.getName() + "\n");
+        theWholeProfile = theWholeProfile.concat("Password: " + User.currentUser.getPassword().getPasswordName() + "\n");
+        theWholeProfile = theWholeProfile.concat("Nickname: " + User.currentUser.getNickname() + "\n");
+        theWholeProfile = theWholeProfile.concat("Email: " + User.currentUser.getEmail() + "\n");
+        if (!User.currentUser.getSlogan().isEmpty())
+            theWholeProfile = theWholeProfile.concat("Slogan: " + User.currentUser.getSlogan() + "\n");
+        theWholeProfile = theWholeProfile.concat("Highscore: " + User.currentUser.getScore() + "\n");
+        return theWholeProfile;
     }
 
     public static String changeBlockFloorType(Matcher matcher){

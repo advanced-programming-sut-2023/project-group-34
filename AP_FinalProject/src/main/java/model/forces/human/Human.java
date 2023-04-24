@@ -13,7 +13,8 @@ public class Human {
     private int HP;
     private Government government;
     private ArrayList<Direction> rout = new ArrayList<>();
-    private int damage;
+    private final int damage;
+    private int currentDamage;
     private boolean canClimb;
     private boolean canDig;
     private Block block;
@@ -76,10 +77,6 @@ public class Human {
         return damage;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
     public Boolean getCanClimb() {
         return canClimb;
     }
@@ -109,5 +106,10 @@ public class Human {
     public void makeTroop(Building building) {
     }
     public void dismissWorker() {
+    }
+
+    public void setCurrentRate(int moralityRate) {
+        moralityRate *= 5;
+        this.currentDamage = (damage * (moralityRate+100))/100;
     }
 }

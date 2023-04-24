@@ -47,8 +47,8 @@ public class Game {
         return allTrades;
     }
 
-    public void setAllTrades(ArrayList<Trade> allTrades) {
-        this.allTrades = allTrades;
+    public void addAllTrades(Trade trade){
+        this.allTrades.add(trade);
     }
     public void startGame() {
 
@@ -56,5 +56,13 @@ public class Game {
 
     public int calculateScore(User user) {
         return 0;
+    }
+
+    public Government getCurrentGovernment() {
+        return currentGovernment;
+    }
+
+    public void setCurrentGovernment(Government currentGovernment) {
+        this.currentGovernment = currentGovernment;
     }
 }

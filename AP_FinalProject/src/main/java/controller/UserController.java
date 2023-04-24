@@ -1,5 +1,6 @@
 package controller;
 
+import model.user.User;
 import view.ForgetPasswordMenu;
 import view.StarterMenu;
 import model.enums.SecurityQuestion;
@@ -39,8 +40,8 @@ public class UserController {
         return true;
     }
 
-    public static boolean isUserNameAlreadyUsed(String name) {
-        return false;
+    public static User isUserNameAlreadyUsed(String name) {
+        return null;
     }
     public static boolean isEmailAlreadyUsed(String email) {
         return false;
@@ -58,19 +59,12 @@ public class UserController {
         return null;
     }
 
-    public static String pickRandomSecurityQuestion(){
-        return null;
-    }
-
-    public static String randomPasswordGenerator(){
-        return null;
-    }
 
     public static String randomSloganGenerator(){
         return null;
     }
 
-    public static String randomUsernameGenerator(){
+    public static String randomUsernameGenerator(String username){
         return null;
         //This method creates a username similar to the username that user has entered and gives a recommendation
         //We have to make sure the new generated username does not exit itself

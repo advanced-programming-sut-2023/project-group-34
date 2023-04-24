@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0d3423a-0b07-47a1-82e8-dfbb1ecde532" name="Changes" comment="fixing the mess">
-      <change afterPath="$PROJECT_DIR$/AP_FinalProject/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +19,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Oe3FWkjvHTzLmkVSb5FxH8QdX2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -28,7 +29,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/m20h0/Desktop/project-group-34/AP_FinalProject",
+    "last_opened_file_path": "C:/Users/IT CITY/Desktop/AP",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -46,6 +47,8 @@
       <option name="presentableId" value="Default" />
       <updated>1681907125319</updated>
       <workItem from="1681907127032" duration="1783000" />
+      <workItem from="1682241081969" duration="343000" />
+      <workItem from="1682241455541" duration="3000" />
     </task>
     <task id="LOCAL-00001" summary="testing">
       <created>1681908363611</created>
