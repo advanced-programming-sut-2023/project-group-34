@@ -32,6 +32,14 @@ public class GameMenu {
                 System.out.println(GameController.setFearRate(matcher));
             } else if (Commands.getOutput(command, Commands.SHOW_FEAR_RATE) != null){
                 System.out.println(GameController.showFearRate());
+            } else if (Commands.getOutput(command, Commands.TRADE_MENU) != null){
+                System.out.println("You just entered trade menu");
+                return "trade menu";
+            } else if (Commands.getOutput(command, Commands.SHOP_MENU) != null){
+                System.out.println("You just entered shop menu");
+                return "shop menu";
+            } else if (Commands.getOutput(command, Commands.CURRENT_MENU) != null){
+                System.out.println("Gaming Menu");
             }
         }
     }

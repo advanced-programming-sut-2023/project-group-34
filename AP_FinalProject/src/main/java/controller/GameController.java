@@ -266,7 +266,6 @@ public class GameController {
         return "Item purchased successfully";
     }
 
-    //This needs to get fixed
     public static boolean capacityCheckerForBuying(String name, int amount){
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
@@ -591,6 +590,5 @@ public class GameController {
     public static String digDitch(Matcher matcher) {return null;}
     public static String fillDitch(Matcher matcher) {return null;}
 
-    public static String enterTradeMenu(Matcher matcher) {return  null;}
 
 }

@@ -52,7 +52,9 @@ public enum Commands {
             "(?=.*-wa (?<wantedAmount>\\d+))(?=.*-w (?<wanted>\\S+))(?=.*-o (?<offered>\\S+))" +
             "(?=.*-r (?<receiver>(\".+\"|\\S+)))^Trade\\s*( *-[wmoar]{1,2} (\".+[^\"]\"|\\S+)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
-    MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu");
+    MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
+    SHOP_MENU("Enter\\s+shop\\s+menu"),
+    TRADE_MENU("Enter\\s+shop\\s+menu");
 
 
     private final String regex;
