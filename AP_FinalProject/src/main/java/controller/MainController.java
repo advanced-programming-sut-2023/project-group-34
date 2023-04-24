@@ -72,10 +72,10 @@ public class MainController {
         String response = UserController.passwordChecker(finalNewPass);
         if (!response.isEmpty()) return response;
 
-        if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
+        if (User.currentUser.getPassword().checkPassword(finalOldPass))
             return "Incorrect current password, changing password failed";
 
-        if (User.currentUser.getPassword().getPasswordName().equals(finalNewPass))
+        if (User.currentUser.getPassword().checkPassword(finalNewPass))
             return "Your new password has to be different from your current password, changing password failed";
 
         System.out.println("Please renter your new password for confirmation");
@@ -95,7 +95,7 @@ public class MainController {
 
         if (finalOldPass.isEmpty()) return "The required field is empty, changing password failed";
 
-        if (!User.currentUser.getPassword().getPasswordName().equals(finalOldPass))
+        if (!User.currentUser.getPassword().checkPassword(finalOldPass))
             return "Incorrect current password, changing password failed";
 
         String finalNewPass = Password.randomPasswordGenerator();
@@ -159,7 +159,6 @@ public class MainController {
     public static String showProfile(){
         String theWholeProfile = "";
         theWholeProfile = theWholeProfile.concat("Username: " + User.currentUser.getName() + "\n");
-        theWholeProfile = theWholeProfile.concat("Password: " + User.currentUser.getPassword().getPasswordName() + "\n");
         theWholeProfile = theWholeProfile.concat("Nickname: " + User.currentUser.getNickname() + "\n");
         theWholeProfile = theWholeProfile.concat("Email: " + User.currentUser.getEmail() + "\n");
         if (!User.currentUser.getSlogan().isEmpty())
