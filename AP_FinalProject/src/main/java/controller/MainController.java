@@ -8,6 +8,7 @@ import model.user.User;
 import view.MainMenu;
 import view.MapEditingMenu;
 import view.ProfileMenu;
+import view.gameMenu.GameMenu;
 
 import java.util.regex.Matcher;
 

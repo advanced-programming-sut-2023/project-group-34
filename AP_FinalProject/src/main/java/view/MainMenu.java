@@ -15,11 +15,19 @@ public class MainMenu {
             if ((matcher = model.enums.Commands.getOutput(input, Commands.LOGOUT)) != null) {
                 System.out.println("User logged out successfully!");
                 User.logout();
-                return "exit";
+                return "logout";
+            } else if (Commands.getOutput(input, Commands.PROFILE_MENU) != null){
+                System.out.println("You just entered profile menu");
+                return "profile menu";
+            } else if (Commands.getOutput(input, Commands.MAP_EDITING_MENU) != null){
+                System.out.println("You just entered map editing menu");
+                return "mapEditing menu";
+            } else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null){
+                System.out.println("Main Menu");
+            } else {
+                System.out.println("Invalid Command");
             }
-            else {
-
-            }
+            //TODO The part that starts a game with multiple users needs to be implemented
         }
     }
 }

@@ -50,7 +50,9 @@ public enum Commands {
     ACCEPT_TRADE("(?=.*-m (?<message>\".+\"|\\S+))(?=.*-i (?<id>\\d+))^Accept\\s+trade\\s*( *-[im] (\".+\"|\\S+)){2}$"),
     TRADE("(?=.*-m (?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]+\")|\\S+)))(?=.*-oa (?<offeredAmount>\\d+))" +
             "(?=.*-wa (?<wantedAmount>\\d+))(?=.*-w (?<wanted>\\S+))(?=.*-o (?<offered>\\S+))" +
-            "(?=.*-r (?<receiver>(\".+\"|\\S+)))^Trade\\s*( *-[wmoar]{1,2} (\".+[^\"]\"|\\S+)){6}$");
+            "(?=.*-r (?<receiver>(\".+\"|\\S+)))^Trade\\s*( *-[wmoar]{1,2} (\".+[^\"]\"|\\S+)){6}$"),
+    PROFILE_MENU("Enter\\s+profile\\s+menu"),
+    MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu");
 
 
     private final String regex;

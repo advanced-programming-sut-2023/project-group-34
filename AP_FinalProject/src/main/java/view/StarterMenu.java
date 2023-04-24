@@ -22,16 +22,17 @@ public class StarterMenu {
             else if ((matcher = Commands.getOutput (input, Commands.LOGIN)) != null) {
                 String result = UserController.loginUser(matcher);
                 System.out.println(result);
-                if (result.equals("Username and password didn’t match!")) UserController.wrongPasswordsEntered();
+                if (result.equals("Username and password did not match!")) UserController.wrongPasswordsEntered();
                 else if (result.equals("User logged in")) return result;
             }
-            else if ((matcher = Commands.getOutput (input, Commands.ENTER_FORGOT_PASSWORD_MENU)) != null) {
+            else if (Commands.getOutput (input, Commands.ENTER_FORGOT_PASSWORD_MENU) != null) {
                 System.out.println("Entered forgot password menu!");
                 return "forgetPassword";
             }
-            else {
+            else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
+                System.out.println("Starter Menu");
+            else
                 System.out.println("Invalid Command");
-            }
         }
     }
 }

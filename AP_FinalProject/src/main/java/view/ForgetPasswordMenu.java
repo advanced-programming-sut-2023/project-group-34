@@ -14,8 +14,11 @@ public class ForgetPasswordMenu {
             input = Runner.getScn().nextLine();
             if ((matcher = Commands.getOutput (input, Commands.FORGOT_PASSWORD)) != null) {
                 System.out.println(UserController.forgotPassword(matcher));
+                return;
             }
-            else if ((matcher = Commands.getOutput(input, Commands.BACK)) != null) return;
+            else if (Commands.getOutput(input, Commands.BACK) != null) return;
+            else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
+                System.out.println("Forget Password Menu");
             else System.out.println("Invalid command!");
         }
     }

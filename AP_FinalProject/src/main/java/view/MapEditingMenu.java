@@ -30,6 +30,9 @@ public class MapEditingMenu {
                 System.out.println("Back to main menu");
                 return "main menu";
             }
+            else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
+                System.out.println("Map Editing Menu");
+
             else System.out.println("Invalid command!");
         }
     }
