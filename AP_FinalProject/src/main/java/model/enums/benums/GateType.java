@@ -22,6 +22,6 @@ public enum GateType implements BuildingType{
         this.cost = cost;
         this.capacity = capacity;
     }
-    public void creator(Government government , Block block) {
+    public void create(Government government , Block block) {
     }
 }

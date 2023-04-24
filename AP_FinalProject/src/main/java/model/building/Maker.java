@@ -25,11 +25,11 @@ public class Maker extends Building{
 
     private int numberOfCurrentWorkers;
 
-    protected Maker(Government government, Block block , ArrayList<MakeAble> output , int rate , int capacity, BlockType requiredBlock
-                        , int HP, int numberOfWorkers , HashMap<Resources, Integer> cost , BuildingType buildingType, int inputRate, MakeAble input) {
+    public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity, BlockType requiredBlock
+            , int HP, int numberOfWorkers, HashMap<Resources, Integer> cost, BuildingType buildingType, int inputRate, MakeAble input) {
         super(government, block, HP , cost, buildingType);
         this.output = output;
-        this.outputRate = rate;
+        this.outputRate = outputRate;
         this.capacity = capacity;
         this.requiredBlock = requiredBlock;
         this.numberOfWorkers = numberOfWorkers;
@@ -99,7 +99,7 @@ public class Maker extends Building{
         this.outputRate = outputRate;
     }
 
-    public void setNumberOfCurrentWorkers(int numberOfCurrentWorkers) {
-        this.numberOfCurrentWorkers = numberOfCurrentWorkers;
+    public void addWorkers(int numberOfWorkers) {
+        this.numberOfCurrentWorkers += numberOfWorkers;
     }
 }

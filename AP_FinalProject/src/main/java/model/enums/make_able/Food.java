@@ -1,6 +1,6 @@
 package model.enums.make_able;
 
-import model.enums.make_able.MakeAble;
+import model.government.Government;
 
 public enum Food implements MakeAble {
     APPLE(0, "apple"),
@@ -27,7 +27,14 @@ public enum Food implements MakeAble {
     public void use(int rate) {
 
     }
-
+    @Override
+    public double getLeftCapacity(Government government) {
+        return government.getStorageDepartment().getFoodMaxCapacity() - government.getStorageDepartment().foodOccupied();
+    }
+    @Override
+    public double getAmount(Government government) {
+        return government.getStorageDepartment().getFoodStorage().get(this);
+    }
     public int getPrice() {
         return price;
     }

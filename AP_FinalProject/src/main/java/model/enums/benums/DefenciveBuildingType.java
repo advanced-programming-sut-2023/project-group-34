@@ -30,7 +30,7 @@ public enum DefenciveBuildingType implements BuildingType{
     }
 
     @Override
-    public void creator(Government government, Block block) {
+    public void create(Government government, Block block) {
 
     }
 }

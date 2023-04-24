@@ -6,7 +6,7 @@ import model.map.Block;
 public enum InnType implements BuildingType{
     INN;
     @Override
-    public void creator(Government government, Block block) {
+    public void create(Government government, Block block) {
 
     }
 }

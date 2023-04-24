@@ -7,7 +7,7 @@ public enum DrawBridgeType implements BuildingType{
     DRAW_BRIDGE;
 
     @Override
-    public void creator(Government government, Block block) {
+    public void create(Government government, Block block) {
 
     }
 }

@@ -178,5 +178,4 @@ public class AccountingDepartment {
         this.religionPopularity = religionPopularity;
     }
 
-    public void nextTurn() {}
 }

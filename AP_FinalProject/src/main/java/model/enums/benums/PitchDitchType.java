@@ -6,7 +6,7 @@ import model.map.Block;
 public enum PitchDitchType implements BuildingType{
     PITCH_DITCH;
     @Override
-    public void creator(Government government, Block block) {
+    public void create(Government government, Block block) {
 
     }
 }

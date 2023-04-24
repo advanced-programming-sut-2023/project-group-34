@@ -7,6 +7,6 @@ public enum OxTetherType implements BuildingType{
     OX_TETHER;
 
     @Override
-    public void creator(Government government, Block block) {
+    public void create(Government government, Block block) {
     }
 }

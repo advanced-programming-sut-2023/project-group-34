@@ -7,7 +7,7 @@ public enum DeathPitType implements BuildingType{
     DEATH_PIT;
 
     @Override
-    public void creator(Government government, Block block) {
+    public void create(Government government, Block block) {
 
     }
 }

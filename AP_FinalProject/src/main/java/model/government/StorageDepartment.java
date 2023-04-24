@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StorageDepartment {
-    public HashMap<Resources , Double> resourcesStorage = new HashMap<>(Map.ofEntries(Map.entry(Resources.GHIR, 0.0), Map.entry(Resources.IRON, 0.0), Map.entry(Resources.WOOD, 0.0), Map.entry(Resources.STONE, 0.0), Map.entry(Resources.GOLD, 0.0)));
-    public HashMap<Weapons, Integer> weaponsStorage = new HashMap<>(Map.ofEntries(Map.entry(Weapons.CROSSBOW, 0), Map.entry(Weapons.BOW, 0), Map.entry(Weapons.MACE, 0), Map.entry(Weapons.LEATHER_ARMOUR, 0), Map.entry(Weapons.METAL_ARMOUR, 0), Map.entry(Weapons.SWORD, 0), Map.entry(Weapons.SPEAR, 0), Map.entry(Weapons.PIKE, 0)));
-    public HashMap<Food, Double> foodStorage = new HashMap<>(Map.ofEntries(Map.entry(Food.ALE, 0.0), Map.entry(Food.HOP, 0.0), Map.entry(Food.CHEESE, 0.0), Map.entry(Food.APPLE, 0.0), Map.entry(Food.BREAD, 0.0), Map.entry(Food.FLOUR, 0.0), Map.entry(Food.WHEAT, 0.0), Map.entry(Food.MEAT, 0.0)));
+    public final HashMap<Resources , Double> resourcesStorage = new HashMap<>(Map.ofEntries(Map.entry(Resources.GHIR, 0.0), Map.entry(Resources.IRON, 0.0), Map.entry(Resources.WOOD, 0.0), Map.entry(Resources.STONE, 0.0), Map.entry(Resources.GOLD, 0.0)));
+    public final HashMap<Weapons, Double> weaponsStorage = new HashMap<>(Map.ofEntries(Map.entry(Weapons.PIKE , 0.0) , Map.entry(Weapons.SWORD , 0.0) , Map.entry(Weapons.SPEAR , 0.0) , Map.entry(Weapons.MACE , 0.0) , Map.entry(Weapons.BOW , 0.0) , Map.entry(Weapons.CROSSBOW ,0.0) , Map.entry(Weapons.METAL_ARMOUR , 0.0) , Map.entry(Weapons.LEATHER_ARMOUR , 0.0)));
+    public final HashMap<Food, Double> foodStorage = new HashMap<>(Map.ofEntries(Map.entry(Food.ALE, 0.0), Map.entry(Food.HOP, 0.0), Map.entry(Food.CHEESE, 0.0), Map.entry(Food.APPLE, 0.0), Map.entry(Food.BREAD, 0.0), Map.entry(Food.FLOUR, 0.0), Map.entry(Food.WHEAT, 0.0), Map.entry(Food.MEAT, 0.0)));
 
     private int resourcesMaxCapacity;
+
     private int weaponsMaxCapacity;
     private Double foodMaxCapacity;
-
 
     public int getResourcesMaxCapacity() {
         return resourcesMaxCapacity;
@@ -61,7 +61,7 @@ public class StorageDepartment {
 
     public String getWeaponPriceList(){
         String finalString = new String();
-        for (Map.Entry<Weapons, Integer> entry : weaponsStorage.entrySet()){
+        for (Map.Entry<Weapons, Double> entry : weaponsStorage.entrySet()){
             finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
                     entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue());
         }
@@ -86,7 +86,7 @@ public class StorageDepartment {
 
     public int weaponsOccupied(){
         int spaceOccupied = 0;
-        for (Map.Entry<Weapons, Integer> entry : weaponsStorage.entrySet()){
+        for (Map.Entry<Weapons, Double> entry : weaponsStorage.entrySet()){
             spaceOccupied += entry.getValue();
         }
         return spaceOccupied;
@@ -112,4 +112,16 @@ public class StorageDepartment {
         return 0;
     }
 
+
+    public HashMap<Resources, Double> getResourcesStorage() {
+        return resourcesStorage;
+    }
+
+    public HashMap<Weapons, Double> getWeaponsStorage() {
+        return weaponsStorage;
+    }
+
+    public HashMap<Food, Double> getFoodStorage() {
+        return foodStorage;
+    }
 }
