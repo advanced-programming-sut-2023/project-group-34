@@ -19,6 +19,8 @@ public class MapMenu {
                 System.out.println("Map Menu");
             } else if (Commands.getOutput(command, Commands.BACK) != null){
                 return "";
+            } else if ((matcher = Commands.getOutput(command, Commands.MOVE_MAP)) != null) {
+                System.out.println(GameController.moveMiniMap(matcher));
             } else {
                 System.out.println("Invalid Command");
             }
