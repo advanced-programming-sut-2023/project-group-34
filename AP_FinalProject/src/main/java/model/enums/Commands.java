@@ -27,7 +27,7 @@ public enum Commands {
     DROP_BUILDING("dropbuilding(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(?=.*\\s+-t\\s+(?<type>\\S+))(\\s+-[xyt]\\s+\\S+){3}"),
     DROP_UNIT("droptree(?=.*\\s+-x\\s+(?<xIndex>\\d+))(?=.*\\s+-y\\s+(?<yIndex>\\d+))(?=.*\\s+-c\\s+(?<count>\\d+))(?=.*\\s+-t\\s+(?<type>\\S+))(\\s+-[xytc]\\s+\\S+){4}"),
     BACK("\\s*back\\s*"),
-    DISPLAY_HIGHSCORE("Profile\\s+display\\s+highscore"),
+    DISPLAY_HIGHS_CORE("Profile\\s+display\\s+highscore"),
     DISPLAY_RANK("Profile\\s+display\\s+rank"),
     DISPLAY_PROFILE("Profile\\s+display"),
     DISPLAY_SLOGAN("Profile\\s+display\\s+slogan"),

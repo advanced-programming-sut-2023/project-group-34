@@ -8,11 +8,11 @@ import model.map.Block;
 import java.util.HashMap;
 
 public abstract class Building {
-    private final Government government;
-    private final Block block;
-    private final HashMap<Resources, Integer> cost;
-    private final BuildingType buildingType;
-    private int HP;
+    protected final Government government;
+    protected final Block block;
+    protected final HashMap<Resources, Integer> cost;
+    protected final BuildingType buildingType;
+    protected int HP;
 
     public Building(Government government, Block block, int HP , HashMap<Resources, Integer> cost, BuildingType buildingType) {
         this.government = government;
@@ -49,4 +49,5 @@ public abstract class Building {
     public void setHP(int HP) {
         this.HP = HP;
     }
+
 }

@@ -1,6 +1,7 @@
 package model.enums.make_able;
 
 import model.enums.make_able.MakeAble;
+import model.government.Government;
 
 public enum Weapons implements MakeAble {
 
@@ -22,13 +23,23 @@ public enum Weapons implements MakeAble {
     }
 
     @Override
-    public void add(int rate) {
-
+    public void add(double rate , Government government) {
+        double temp = getAmount(government);
+        government.getStorageDepartment().getWeaponsStorage().replace(this , temp + rate);
     }
 
     @Override
-    public void use(int rate) {
-
+    public void use(double rate , Government government) {
+        double temp = getAmount(government);
+        government.getStorageDepartment().getWeaponsStorage().replace(this , temp - rate);
+    }
+    @Override
+    public double getLeftCapacity(Government government) {
+        return government.getStorageDepartment().getWeaponsMaxCapacity() - government.getStorageDepartment().weaponsOccupied();
+    }
+    @Override
+    public double getAmount(Government government) {
+        return government.getStorageDepartment().getWeaponsStorage().get(this);
     }
 
     public int getPrice() {

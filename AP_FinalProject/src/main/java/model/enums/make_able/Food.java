@@ -19,13 +19,15 @@ public enum Food implements MakeAble {
         this.name = name;
     }
     @Override
-    public void add(int rate) {
-
+    public void add(double rate , Government government) {
+        double temp = getAmount(government);
+        government.getStorageDepartment().getFoodStorage().replace(this , temp + rate);
     }
 
     @Override
-    public void use(int rate) {
-
+    public void use(double rate , Government government) {
+        double temp = getAmount(government);
+        government.getStorageDepartment().getFoodStorage().replace(this , temp - rate);
     }
     @Override
     public double getLeftCapacity(Government government) {

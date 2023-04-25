@@ -1,7 +1,5 @@
 package model.enums;
 
-import model.map.Block;
-
 public enum BlockType {
     GROUND,
     BOULDER,
@@ -17,10 +15,10 @@ public enum BlockType {
     BEACH,
     SEA,
     LAKE,
-    NORTH_BOULDER,
-    SOUTH_BOULDER,
-    WEST_BOULDER,
-    EAST_BOULDER,
+    NORTH_ROCK,
+    SOUTH_ROCK,
+    WEST_ROCK,
+    EAST_ROCK,
     DITCH;
 
     @Override

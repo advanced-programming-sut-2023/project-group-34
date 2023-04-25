@@ -5,7 +5,6 @@ import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.forces.human.Human;
 import model.forces.human.Troop;
-import model.forces.human.TroopType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

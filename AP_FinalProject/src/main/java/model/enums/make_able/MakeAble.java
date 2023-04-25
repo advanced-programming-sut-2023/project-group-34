@@ -3,8 +3,8 @@ package model.enums.make_able;
 import model.government.Government;
 
 public interface MakeAble {
-    void add(int rate);
-    void use(int rate);
+    void add(double rate , Government government);
+    void use(double rate , Government government);
 
     double getLeftCapacity(Government government);
 

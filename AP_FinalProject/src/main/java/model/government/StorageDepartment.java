@@ -12,12 +12,12 @@ public class StorageDepartment {
     public final HashMap<Weapons, Double> weaponsStorage = new HashMap<>(Map.ofEntries(Map.entry(Weapons.PIKE , 0.0) , Map.entry(Weapons.SWORD , 0.0) , Map.entry(Weapons.SPEAR , 0.0) , Map.entry(Weapons.MACE , 0.0) , Map.entry(Weapons.BOW , 0.0) , Map.entry(Weapons.CROSSBOW ,0.0) , Map.entry(Weapons.METAL_ARMOUR , 0.0) , Map.entry(Weapons.LEATHER_ARMOUR , 0.0)));
     public final HashMap<Food, Double> foodStorage = new HashMap<>(Map.ofEntries(Map.entry(Food.ALE, 0.0), Map.entry(Food.HOP, 0.0), Map.entry(Food.CHEESE, 0.0), Map.entry(Food.APPLE, 0.0), Map.entry(Food.BREAD, 0.0), Map.entry(Food.FLOUR, 0.0), Map.entry(Food.WHEAT, 0.0), Map.entry(Food.MEAT, 0.0)));
 
-    private int resourcesMaxCapacity;
+    private double resourcesMaxCapacity;
 
-    private int weaponsMaxCapacity;
-    private Double foodMaxCapacity;
+    private double weaponsMaxCapacity;
+    private double foodMaxCapacity;
 
-    public int getResourcesMaxCapacity() {
+    public double getResourcesMaxCapacity() {
         return resourcesMaxCapacity;
     }
 
@@ -25,7 +25,7 @@ public class StorageDepartment {
         this.resourcesMaxCapacity = resourcesMaxCapacity;
     }
 
-    public int getWeaponsMaxCapacity() {
+    public double getWeaponsMaxCapacity() {
         return weaponsMaxCapacity;
     }
 
@@ -33,7 +33,7 @@ public class StorageDepartment {
         this.weaponsMaxCapacity = weaponsMaxCapacity;
     }
 
-    public Double getFoodMaxCapacity() {
+    public double getFoodMaxCapacity() {
         return foodMaxCapacity;
     }
 
@@ -41,58 +41,33 @@ public class StorageDepartment {
         this.foodMaxCapacity = foodMaxCapacity;
     }
 
-    public String getResourcesPriceList(){
-        String finalString = new String();
-        for (Map.Entry<Resources, Double> entry : resourcesStorage.entrySet()){
-            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
-                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue());
-        }
-        return finalString;
-    }
 
-    public String getFoodPriceList(){
-        String finalString = new String();
-        for (Map.Entry<Food, Double> entry : foodStorage.entrySet()){
-            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
-                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue());
-        }
-        return finalString;
-    }
 
-    public String getWeaponPriceList(){
-        String finalString = new String();
-        for (Map.Entry<Weapons, Double> entry : weaponsStorage.entrySet()){
-            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
-                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue());
-        }
-        return finalString;
-    }
-
-    public int resourcesOccupied() {
-        int spaceOccupied = 0;
+    public double resourcesOccupied() {
+        double spaceOccupied = 0.0;
         for (Map.Entry<Resources, Double> entry : resourcesStorage.entrySet()) {
             spaceOccupied += entry.getValue();
         }
         return spaceOccupied;
     }
 
-    public int foodOccupied() {
-        int spaceOccupied = 0;
+    public double foodOccupied() {
+        double spaceOccupied = 0;
         for (Map.Entry<Food, Double> entry : foodStorage.entrySet()) {
             spaceOccupied += entry.getValue();
         }
         return spaceOccupied;
     }
 
-    public int weaponsOccupied(){
-        int spaceOccupied = 0;
+    public double weaponsOccupied(){
+        double spaceOccupied = 0;
         for (Map.Entry<Weapons, Double> entry : weaponsStorage.entrySet()){
             spaceOccupied += entry.getValue();
         }
         return spaceOccupied;
     }
 
-    public int priceOfASource(String name, int amount){
+    public double priceOfASource(String name, double amount){
         for (Weapons weapons : Weapons.values()){
             if (weapons.getName().equals(name)){
                 return amount * weapons.getPrice();
