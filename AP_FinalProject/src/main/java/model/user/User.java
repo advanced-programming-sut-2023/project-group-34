@@ -7,6 +7,7 @@ import model.enums.Slogan;
 import model.government.Government;
 import model.map.GameMap;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -205,11 +206,12 @@ public class User {
     }
 
     public static void loadAllUsersFromDataBase() {
+        //TODO needs to be checked by ALIZADEH
         try (FileReader reader = new FileReader("Users.json")) {
-            // Convert JSON File to Java Object
+            //TODO Convert JSON File to Java Object
             List<User> userObjects = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
