@@ -54,7 +54,9 @@ public enum Commands {
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),
-    TRADE_MENU("Enter\\s+shop\\s+menu");
+    TRADE_MENU("Enter\\s+shop\\s+menu"),
+    SHOW_MAP("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s*( *-[xy] \\S+){2}$"),
+    SHOW_MAP_DETAILS("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s+details\\s*( *-[xy] \\S+){2}$");
 
 
     private final String regex;
