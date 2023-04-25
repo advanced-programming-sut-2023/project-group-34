@@ -44,7 +44,6 @@ public class User {
         users.add(this);
         updateDataBase();
         customMaps = new ArrayList<>();
-        government = new Government(this);
     }
 
     public ArrayList<Trade> getMyTrades() {
@@ -218,8 +217,8 @@ public class User {
         return customMaps;
     }
 
-    public GameMap newCustomMap(int size) {
-        GameMap map = new GameMap(size);
+    public GameMap newCustomMap() {
+        GameMap map = new GameMap();
         this.customMaps.add(map);
         return map;
     }

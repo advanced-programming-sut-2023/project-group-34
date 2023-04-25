@@ -1,7 +1,11 @@
 package controller;
 
+import model.Dictionaries;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
+import model.enums.benums.BuildingType;
+import model.enums.benums.MakerType;
+import model.map.Block;
 import model.map.GameMap;
 import model.user.Password;
 import model.user.User;
@@ -9,6 +13,8 @@ import view.MainMenu;
 import view.MapEditingMenu;
 import view.ProfileMenu;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 
 public class MainController {
@@ -19,16 +25,14 @@ public class MainController {
         while (true){
             String response = MainMenu.run();
             switch (response) {
-                case "profile menu":
-                    ProfileMenu.run();
-                    break;
-                case "mapEditing menu":
-                    MapEditingMenu.run();
-                    break;
-                case "game menu":
+                case "profile menu" -> ProfileMenu.run();
+                case "mapEditing menu" -> MapEditingMenu.run();
+                case "game menu" -> {
                     return "game menu";
-                case "logout":
+                }
+                case "logout" -> {
                     return "logout";
+                }
             }
         }
     }
@@ -163,7 +167,7 @@ public class MainController {
         theWholeProfile = theWholeProfile.concat("Email: " + User.currentUser.getEmail() + "\n");
         if (!User.currentUser.getSlogan().isEmpty())
             theWholeProfile = theWholeProfile.concat("Slogan: " + User.currentUser.getSlogan() + "\n");
-        theWholeProfile = theWholeProfile.concat("Highscore: " + User.currentUser.getScore() + "\n");
+        theWholeProfile = theWholeProfile.concat("High score: " + User.currentUser.getScore() + "\n");
         return theWholeProfile;
     }
 
@@ -196,10 +200,10 @@ public class MainController {
         int y = Integer.parseInt(matcher.group("yAxis"));
         int x = Integer.parseInt(matcher.group("xAxis"));
         return switch (direction) {
-            case "north" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.NORTH_BOULDER);
-            case "south" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.SOUTH_BOULDER);
-            case "west" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.WEST_BOULDER);
-            case "east" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.EAST_BOULDER);
+            case "north" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
+            case "south" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
+            case "west" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
+            case "east" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
             case "random" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
             default -> "Invalid direction!";
         };
@@ -216,13 +220,63 @@ public class MainController {
         return "Success!";
     }
 
-    public static String dropBuilding(Matcher matcher){
-        return null;
-        //TODO: Arshia joon
+    private static String checkBlockType(Block block , BuildingType buildingType) {
+        if((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) &&
+                (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
+            return "You can't put farm on that ground!";
+        }
+        if((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
+            return "You only can put quarry on rocks!";
+        }
+        if(buildingType.equals(MakerType.IRON_MINE) && !block.getBlockType().equals(BlockType.IRON)) {
+            return "You can only put iron mine on iron!";
+        }
+        if(buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
+            return "You can only put pitch rig on plains!";
+        }
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND , BlockType.STONY_GROUND , BlockType.GRASS , BlockType.MEADOW , BlockType.DENSE_MEADOW));
+        if(!goodBlockTypes.contains(block.getBlockType())) {
+            return "You can put anything on that block!";
+        }
+        return "OK";
+    }
+    public static String dropBuilding(Matcher matcher) {
+
+        int x = Integer.parseInt(matcher.group("xIndex"));
+        int y = Integer.parseInt(matcher.group("yIndex"));
+        String type = matcher.group("type");
+
+        if (!currentGameMap.checkBounds(x , y)) {
+            return "Index out of bound! try between 0 and 399";
+        }
+        if (!Dictionaries.buildingDictionary.containsKey(type))
+        {
+            return "Invalid building name!";
+        }
+        Block block = currentGameMap.getABlock(x , y);
+        BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
+        if(!checkBlockType(block , buildingType).equals("OK")) {
+            return checkBlockType(block , buildingType);
+        }
+        buildingType.create(User.currentUser.getGovernment(), block);
+        return "Building created successfully!";
     }
 
     public static String dropUnit(Matcher matcher){
-        return null;
+        int x = Integer.parseInt(matcher.group("xIndex"));
+        int y = Integer.parseInt(matcher.group("yIndex"));
+        String type = matcher.group("type");
+        int count = Integer.parseInt(matcher.group("count"));
+        if (!currentGameMap.checkBounds(x , y)) {
+            return "Index out of bound! try between 0 and 399";
+        }
+        //TODO add dictionary for troops;
+        Block block = currentGameMap.getABlock(x , y);
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND , BlockType.STONY_GROUND , BlockType.GRASS , BlockType.MEADOW , BlockType.DENSE_MEADOW));
+        if(!goodBlockTypes.contains(block.getBlockType())) {
+            return "You can put anything on that block!";
+        }
+        return "Units added successfully!";
     }
 
 }

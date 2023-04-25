@@ -12,18 +12,17 @@ import java.util.Set;
 public class GameMap {
     private final Block[][] map;
 
-    private final int maxSize;
+    private final int size = 400;
 
     private Block UpLeftCornerBlock;
 
-    public GameMap(int size) {
-        map = new Block[size + 1][size + 1];
-        for (int i = 1; i <= size; i++) {
-            for (int j = 1; j <= size; j++) {
+    public GameMap() {
+        map = new Block[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 map[i][j] = new Block(i , j);
             }
         }
-        maxSize = size;
     }
 
     public Block[][] getMap() {
@@ -45,13 +44,13 @@ public class GameMap {
                 break;
             case EAST:
                 for (int i = 0; i < number; i++) {
-                    if (UpLeftCornerBlock.getLocationJ() != maxSize - 11)
+                    if (UpLeftCornerBlock.getLocationJ() != size - 11)
                         UpLeftCornerBlock = map[UpLeftCornerBlock.getLocationI()][UpLeftCornerBlock.getLocationJ() + 1];
                 }
                 break;
             case SOUTH:
                 for (int i = 0; i < number; i++) {
-                    if (UpLeftCornerBlock.getLocationI() != maxSize - 11)
+                    if (UpLeftCornerBlock.getLocationI() != size - 11)
                         UpLeftCornerBlock = map[UpLeftCornerBlock.getLocationI() + 1][UpLeftCornerBlock.getLocationJ()];
                 }
                 break;
@@ -98,8 +97,12 @@ public class GameMap {
         UpLeftCornerBlock = upLeftCornerBlock;
     }
 
+    public Block getABlock(int i , int j) {
+        return map[i][j];
+    }
+    //TODO functions with String output go out side of model
     public String showDetails(int x, int y) {
-        if (x >= maxSize || y >= maxSize || x < 0 || y < 0) return "Out of bounds!";
+        if (x >= size || y >= size || x < 0 || y < 0) return "Out of bounds!";
         Block block = map[y][x];
         StringBuilder details = new StringBuilder();
         HashMap<String, Integer> troops = block.troops();
@@ -150,6 +153,6 @@ public class GameMap {
     }
 
     public boolean checkBounds(int i, int j) {
-        return i >= 0 && i < maxSize && j >= 0 && j < maxSize;
+        return i >= 0 && i < size && j >= 0 && j < size;
     }
 }

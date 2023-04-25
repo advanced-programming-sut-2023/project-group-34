@@ -5,7 +5,7 @@ import com.google.common.collect.HashBiMap;
 import model.enums.benums.MakerType;
 import model.enums.benums.*;
 
-public class Dictionary  {
+public class Dictionaries  {
     public static BiMap<String , BuildingType> buildingDictionary = HashBiMap.create();
     static {
         buildingDictionary.put("small stone gatehouse" , GateType.SMALL_GATE_HOUSE);

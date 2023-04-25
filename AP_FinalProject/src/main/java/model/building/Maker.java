@@ -1,10 +1,11 @@
 package model.building;
 
 import model.enums.benums.BuildingType;
-import model.enums.BlockType;
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
+import model.forces.human.Engineer;
 import model.forces.human.Human;
+import model.forces.human.Troop;
 import model.government.Government;
 import model.map.Block;
 
@@ -15,23 +16,19 @@ public class Maker extends Building{
     private final ArrayList<MakeAble> output;
 
     private int outputRate;
-
-    private int currentRate;
     private final int inputRate;
     private final int capacity;
     private final MakeAble input;
-    private final BlockType requiredBlock;
     private final int numberOfWorkers;
 
     private int numberOfCurrentWorkers;
 
-    public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity, BlockType requiredBlock
+    public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity
             , int HP, int numberOfWorkers, HashMap<Resources, Integer> cost, BuildingType buildingType, int inputRate, MakeAble input) {
         super(government, block, HP , cost, buildingType);
         this.output = output;
         this.outputRate = outputRate;
         this.capacity = capacity;
-        this.requiredBlock = requiredBlock;
         this.numberOfWorkers = numberOfWorkers;
         this.inputRate = inputRate;
         this.input = input;
@@ -39,18 +36,24 @@ public class Maker extends Building{
     }
     @Override
     public void process() {
-
+        double tempInputRate = Double.min(inputRate , input.getAmount(government));
+        for(MakeAble makeAble : output) {
+            makeAble.add(tempInputRate * outputRate , government);
+            if(government.getStorageDepartment().foodOccupied() > government.getStorageDepartment().getFoodMaxCapacity()) {
+                makeAble.use(government.getStorageDepartment().foodOccupied() - government.getStorageDepartment().getFoodMaxCapacity() , government);
+            }
+        }
     }
 
     @Override
     public void destroy() {
-
+        for (Human human : this.block.getHumans()) {
+            if(!(human instanceof Troop || human instanceof Engineer)) {
+                human.die();
+            }
+        }
+        block.getBuilding().remove(this);
     }
-
-    public BlockType getRequiredBlock() {
-        return requiredBlock;
-    }
-
 
 
     public int getOutputRate() {
@@ -86,13 +89,9 @@ public class Maker extends Building{
     public MakeAble getInput() {
         return input;
     }
-    public int getCurrentRate() {
-        return currentRate;
-    }
-
     public void setCurrentRate(int integrityRate) {
         integrityRate *= 5;
-        this.currentRate = (outputRate * (integrityRate+100))/100;
+        this.outputRate = (outputRate * (integrityRate+100))/100;
     }
 
     public void setOutputRate(int outputRate) {

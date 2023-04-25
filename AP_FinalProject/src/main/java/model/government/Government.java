@@ -13,11 +13,13 @@ public class Government {
     private int totalPopularity;
     private int population;
     private int maxPopulation;
+    private final Color color;
     private final StorageDepartment storageDepartment = new StorageDepartment();
     private final AccountingDepartment accountingDepartment = new AccountingDepartment(this);
 
-    public Government(User owner) {
+    public Government(User owner,String color) {
         this.owner = owner;
+        this.color = new Color(color , this);
     }
 
     public void setTotalPopularity(int totalPopularity) {
@@ -73,4 +75,7 @@ public class Government {
     }
 
 
+    public Color getColor() {
+        return color;
+    }
 }

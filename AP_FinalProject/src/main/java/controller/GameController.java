@@ -16,6 +16,7 @@ import view.gameMenu.MapMenu;
 import view.gameMenu.ShopMenu;
 import view.gameMenu.TradeMenu;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class GameController {
@@ -26,14 +27,14 @@ public class GameController {
     public static String run(){
         while (true) {
             String response = GameMenu.run();
-            if (response.equals("shop menu"))
-                ShopMenu.run();
-            else if (response.equals("trade menu"))
-                TradeMenu.run();
-            else if (response.equals("map menu"))
-                MapMenu.run();
-            else if (response.equals("back"))
-                return "back";
+            switch (response) {
+                case "shop menu" -> ShopMenu.run();
+                case "trade menu" -> TradeMenu.run();
+                case "map menu" -> MapMenu.run();
+                case "back" -> {
+                    return "back";
+                }
+            }
         }
     }
 
@@ -110,7 +111,7 @@ public class GameController {
     }
 
     public static String showPopularityFactors () {
-        String finalString = new String();
+        String finalString = "";
         finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().foodPopularityAccounting());
         finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate());
         finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().taxPopularityAccounting());
@@ -119,7 +120,7 @@ public class GameController {
     }
 
     public static String showFoodList () {
-        String finalString = new String();
+        String finalString = "";
         finalString = finalString.concat("Bread: " + currentGame.getCurrentGovernment()
                 .getStorageDepartment().foodStorage.get(Food.BREAD));
         finalString = finalString.concat("Meat: " + currentGame.getCurrentGovernment()
@@ -227,7 +228,7 @@ public class GameController {
 
         if (finalAmount <= 0) return "Invalid amount, selling failed";
 
-        int finalPrice = (currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount)*4)/5;
+        double finalPrice = (currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount)*4)/5;
 
         if (finalPrice == 0) return "The product you are looking for does not exit, selling failed";
         if (!capacityCheckerForSelling(item, finalAmount)) return "You do not have enough to sell, buying failed";
@@ -249,7 +250,7 @@ public class GameController {
 
         if (finalAmount <= 0) return "Invalid amount, buying failed";
 
-        int finalPrice = currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount);
+        double finalPrice = currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount);
 
         if (finalPrice == 0) return "The product you are looking for does not exit, buying failed";
 
@@ -349,16 +350,40 @@ public class GameController {
         }
     }
 
+    private static String getResourcesPriceList(){
+        String finalString = "";
+        for (Map.Entry<Resources, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getResourcesStorage().entrySet()){
+            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
+                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue() + "\n");
+        }
+        return finalString;
+    }
+
+    private static String getFoodPriceList(){
+        String finalString = "";
+        for (Map.Entry<Food, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getFoodStorage().entrySet()){
+            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
+                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue() + "\n");
+        }
+        return finalString;
+    }
+
+    private static String getWeaponPriceList(){
+        String finalString = "";
+        for (Map.Entry<Weapons, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getWeaponsStorage().entrySet()){
+            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
+                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue() + "\n");
+        }
+        return finalString;
+    }
 
     public static String showPriceList(){
-        String finalString = new String();
-        finalString = finalString.concat(currentGame.getCurrentGovernment().
-                getStorageDepartment().getResourcesPriceList());
-        finalString = finalString.concat(currentGame.getCurrentGovernment().
-                getStorageDepartment().getFoodPriceList());
-        finalString = finalString.concat(currentGame.getCurrentGovernment().
-                getStorageDepartment().getWeaponPriceList());
-        return finalString;
+        String finalString = "";
+        finalString = finalString.concat(getResourcesPriceList());
+        finalString = finalString.concat(getFoodPriceList());
+        finalString = finalString.concat(getWeaponPriceList());
+
+        return finalString.substring(0 , finalString.length() - 2);
     }
 
     public static String showTradeDetails(Trade trade){
@@ -477,7 +502,7 @@ public class GameController {
     }
 
     public static String showTradeList(){
-        String finalString = new String();
+        String finalString = "";
         int counter = 1;
         if (currentGame.getCurrentGovernment().getOwner().getMyTrades().isEmpty())
             return "You have no offers";
@@ -571,7 +596,7 @@ public class GameController {
     }
 
     public static String showTradeHistory(){
-        String finalString = new String();
+        String finalString = "";
         finalString = finalString.concat("Trades Sent: " + "\n");
         for (Trade trade : currentGame.getAllTrades()){
             if (trade.getSender().getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
