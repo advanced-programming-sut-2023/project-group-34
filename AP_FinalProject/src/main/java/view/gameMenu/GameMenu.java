@@ -40,6 +40,8 @@ public class GameMenu {
                 return "shop menu";
             } else if (Commands.getOutput(command, Commands.CURRENT_MENU) != null){
                 System.out.println("Gaming Menu");
+            } else if ((matcher = Commands.getOutput(command, Commands.MOVE_MAP)) != null){
+                System.out.println(GameController.moveMiniMap(matcher));
             } else if (Commands.getOutput(command, Commands.SHOW_MAP) != null){
                 String response = GameController.showMiniMap();
                 if (!response.equals("Wrong coordinates")) {

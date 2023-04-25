@@ -56,7 +56,8 @@ public enum Commands {
     SHOP_MENU("Enter\\s+shop\\s+menu"),
     TRADE_MENU("Enter\\s+shop\\s+menu"),
     SHOW_MAP("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s*( *-[xy] \\S+){2}$"),
-    SHOW_MAP_DETAILS("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s+details\\s*( *-[xy] \\S+){2}$");
+    SHOW_MAP_DETAILS("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s+details\\s*( *-[xy] \\S+){2}$"),
+    MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d+))?(?=.*\\s+left\\s+(?<left>-?\\d+))?(?=.*\\s+right\\s+(?<right>-?\\d+))?(?=.*\\s+down\\s+(?<down>-?\\d+))?(\\s+(down|up|right|left)\\s+-?\\d+){1,4}");
 
 
     private final String regex;

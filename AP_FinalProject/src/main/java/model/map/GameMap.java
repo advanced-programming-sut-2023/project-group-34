@@ -150,6 +150,6 @@ public class GameMap {
     }
 
     public boolean checkBounds(int i, int j) {
-        return i >= 0 && i < maxSize && j >= 0 && j < maxSize;
+        return i > 0 && i <= maxSize && j > 0 && j <= maxSize;
     }
 }
