@@ -152,4 +152,8 @@ public class GameMap {
     public boolean checkBounds(int i, int j) {
         return i > 0 && i <= maxSize && j > 0 && j <= maxSize;
     }
+
+    public void setUpLeftCorner (int x, int y) {
+        setUpLeftCornerBlock(map[y][x]);
+    }
 }
