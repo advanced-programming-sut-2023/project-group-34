@@ -75,7 +75,7 @@ assignees: Arman17Babaei
 
   **نام و نام خانوادگی: محمد علیزاده**
 <details>
-  <summary>تسک مربوطه</summary>
+  <summary>User & Map</summary>
 
   <div dir="ltr" align='right'>
 
