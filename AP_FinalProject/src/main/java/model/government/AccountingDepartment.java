@@ -14,14 +14,18 @@ public class AccountingDepartment {
     private int fearRate;
     private int taxRate;
     private int religionPopularity;
+    private int taxPopularity;
+    private int foodPopularity;
+    private int fearPopularity;
 
-    public int foodPopularityAccounting(){
-        int foodPopularity = 0;
-        foodPopularity = foodTypeCounter() -1;
+    public void foodPopularityAccounting(){
+        int foodPopularity1 = 0;
+        foodPopularity1 = foodTypeCounter() -1;
         double foodNeeded = ((foodRate * 0.5) + 1) * government.getPopulation();
         if (foodNeeded > edibleFood()) foodRate = -2;
-        foodPopularity = foodPopularity + foodRate * 4;
-        return foodPopularity;
+        foodPopularity1 = foodPopularity1 + foodRate * 4;
+        foodPopularity += foodPopularity1;
+        government.setTotalPopularity(government.getTotalPopularity() + foodPopularity1);
     }
     public void giveFoodToPeople(){
         double foodNeeded = ((foodRate * 0.5) + 1) * government.getPopulation();
@@ -71,6 +75,11 @@ public class AccountingDepartment {
         return  edibleFoodCounter;
     }
 
+    private void fearPopularityAccounting(){
+        int fearPopularity1 = -fearRate;
+        fearPopularity += fearPopularity1;
+        government.setTotalPopularity(government.getTotalPopularity() - fearPopularity1);
+    }
     private void moralityAndIntegrity(){
         for (Building building : government.getBuildings()){
             if (building instanceof Maker){
@@ -85,23 +94,28 @@ public class AccountingDepartment {
         }
     }
 
-    private void religionPopularity(){
+    private void religionPopularityAccounting(){
         for (Building building : government.getBuildings()){
             if (building.getBuildingType() == GeneralBuildingsType.CHURCH){
                 religionPopularity++;
+                government.setTotalPopularity(government.getTotalPopularity() + 1);
             } else if (building.getBuildingType() == GeneralBuildingsType.CATHEDRAL){
                 religionPopularity += 2;
+                government.setTotalPopularity(government.getTotalPopularity() + 2);
             }
         }
     }
 
-    public int taxPopularityAccounting() {
-        int taxPopularity = 0;
-        if (government.getStorageDepartment().resourcesStorage.get(Resources.GOLD) == 0) return 1;
+    public void taxPopularityAccounting() {
+        int taxPopularity1 = 0;
+        if (government.getStorageDepartment().resourcesStorage.get(Resources.GOLD) == 0){
+            taxPopularity += 1;
+            government.setTotalPopularity(government.getTotalPopularity()+1);
+        }
         if (taxRate <= 0){
-            taxPopularity = (-2)*taxRate + 1;
+            taxPopularity1 = (-2)*taxRate + 1;
         } else {
-            taxPopularity = switch (taxRate) {
+            taxPopularity1 = switch (taxRate) {
                 case 1 -> -2;
                 case 2 -> -4;
                 case 3 -> -6;
@@ -110,10 +124,12 @@ public class AccountingDepartment {
                 case 6 -> -16;
                 case 7 -> -20;
                 case 8 -> -24;
-                default -> taxPopularity;
+                default -> taxPopularity1;
             };
+            taxPopularity += taxPopularity1;
+            government.setTotalPopularity(government.getTotalPopularity()+taxPopularity1);
         }
-        return taxPopularity;
+
     }
 
     private void getMoneyFromPeople(){
@@ -133,7 +149,7 @@ public class AccountingDepartment {
     private void changeCurrentPopulation() {
         double foodLeft = edibleFood();
         Block block = null;
-        int populationToBeAdded = (int) (foodLeft/(2 * ((foodRate * 0.5) + 1)));
+        int populationToBeAdded = (int) ((foodLeft + government.getTotalPopularity())/(2 * ((foodRate * 0.5) + 1)));
         for (Building building : government.getBuildings()){
             if (building.getBuildingType().equals(GateType.KEEP)){
                 block = building.getBlock();
@@ -144,25 +160,42 @@ public class AccountingDepartment {
         if (government.getPopulation() + populationToBeAdded > government.getMaxPopulation()){
             populationToBeAdded = government.getMaxPopulation() - government.getPopulation();
         }
-
-        for (int i = 0; i < populationToBeAdded; i++) {
-            human = new Human(block, government);
-            government.addToHuman(human);
+        if(populationToBeAdded < 0) {
+            int unemployed = 0;
+            for (Human human1 : government.getHumans()){
+                if (!(human1 instanceof Troop))
+                    unemployed++;
+            }
+            for (int i = 0; i < Integer.min(-populationToBeAdded , unemployed); i++) {
+                for(Human human1 : government.getHumans()) {
+                    if(!(human1 instanceof Troop)) {
+                        human1.die();
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < populationToBeAdded; i++) {
+                human = new Human(block, government);
+                government.addToHuman(human);
+            }
         }
 
         government.setPopulation(government.getPopulation()+populationToBeAdded);
     }
 
-    public int getGovernmentPopularity() {
-        return taxPopularityAccounting() + foodPopularityAccounting() - fearRate + religionPopularity;
-    }
 
     private void buildingAccounting(){}
     public void nextTurnForThisUser(){
         buildingAccounting();
+        foodPopularityAccounting();
         giveFoodToPeople();
+        taxPopularityAccounting();
         getMoneyFromPeople();
+        fearPopularityAccounting();
         moralityAndIntegrity();
+        religionPopularityAccounting();
         changeCurrentPopulation();
     }
 
@@ -200,6 +233,30 @@ public class AccountingDepartment {
 
     public int getReligionPopularity() {
         return religionPopularity;
+    }
+
+    public int getTaxPopularity() {
+        return taxPopularity;
+    }
+
+    public void setTaxPopularity(int taxPopularity) {
+        this.taxPopularity = taxPopularity;
+    }
+
+    public int getFoodPopularity() {
+        return foodPopularity;
+    }
+
+    public void setFoodPopularity(int foodPopularity) {
+        this.foodPopularity = foodPopularity;
+    }
+
+    public int getFearPopularity() {
+        return fearPopularity;
+    }
+
+    public void setFearPopularity(int fearPopularity) {
+        this.fearPopularity = fearPopularity;
     }
 
     public void setReligionPopularity(int religionPopularity) {

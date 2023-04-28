@@ -49,8 +49,22 @@ public class GameController {
         currentGame = game;
     }
 
-    private void setCurrentBuilding(Building currentBuilding) {
-        this.selectedBuilding = currentBuilding;
+    public static String selectBuilding(Matcher matcher){
+        int xLocation = Integer.parseInt(matcher.group("x"));
+        int yLocation = Integer.parseInt(matcher.group("y"));
+
+        if (xLocation < 1 || yLocation < 1 || xLocation > 400 || yLocation > 400)
+            return "Invalid coordinates, selecting building failed";
+
+        if (currentGame.getMap().getABlock(xLocation, yLocation).getBuilding() != null)
+            return "There is no building in this block, selecting building failed";
+
+        if (!currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0).getGovernment().getOwner()
+                .getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
+            return "You do not own this building, selecting building failed";
+
+        selectedBuilding = currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0);
+        return "Building selected successfully";
     }
 
     public Building getCurrentBuilding() {
@@ -136,15 +150,14 @@ public class GameController {
     }
 
     public static String showPopularity () {
-        return "Your current popularity is: " + currentGame.getCurrentGovernment().getAccountingDepartment()
-                .getGovernmentPopularity();
+        return "Your current popularity is: " + currentGame.getCurrentGovernment().getTotalPopularity();
     }
 
     public static String showPopularityFactors () {
         String finalString = "";
-        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().foodPopularityAccounting());
+        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity());
         finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate());
-        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().taxPopularityAccounting());
+        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity());
         finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity());
         return finalString;
     }
@@ -210,9 +223,6 @@ public class GameController {
         return null;
     }
 
-    public static String selectBuilding (Matcher matcher) {
-        return null;
-    }
 
     public static String selectUnits (Matcher matcher) {
         return null;

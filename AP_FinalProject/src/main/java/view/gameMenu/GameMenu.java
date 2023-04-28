@@ -49,6 +49,8 @@ public class GameMenu {
                     return "map menu";
                 }
                 System.out.println(response);
+            } else if ((matcher = Commands.getOutput(command, Commands.SELECT_BUILDING)) != null){
+                System.out.println(GameController.selectBuilding(matcher));
             }
         }
     }
