@@ -35,7 +35,6 @@ public enum Commands {
     SHOW_PRICE_LIST("Show\\s+price\\s+list"),
     BUY_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Buy\\s*( *-[ia] \\S+){2}$"),
     SELL_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Sell\\s*( *-[ia] \\S+){2}$"),
-    TRADE_HISTORY("Trade\\s+history"),
     SHOW_POPULARITY_FACTORS("Show\\s+popularity\\s+factors"),
     SHOW_POPULARITY("Show\\s+popularity"),
     SHOW_FOOD_LIST("Show\\s+food\\s+list"),
