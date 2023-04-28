@@ -50,7 +50,7 @@ public class MainController {
         if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
 
         User.currentUser.setName(username);
-        //Info has to be changed in Json as well
+        User.updateDataBase();
         return "Username successfully changed";
     }
 
@@ -62,7 +62,7 @@ public class MainController {
         if (User.currentUser.getNickname().equals(nickname)) return "Your nickname is already this, changing nickname failed";
 
         User.currentUser.setNickname(nickname);
-        //Info has to be changed in Json as well
+        User.updateDataBase();
         return "Nickname changed successfully";
     }
 
@@ -88,8 +88,8 @@ public class MainController {
         if (!finalNewPass1.equals(finalNewPass))
             return "Confirmation failed, changing password failed";
 
-        //Info has to be changed in Json as well
         User.currentUser.getPassword().setPasswordName(finalNewPass1);
+        User.updateDataBase();
         return "Password changed successfully";
     }
 
@@ -108,8 +108,9 @@ public class MainController {
             finalNewPass = Password.randomPasswordGenerator();
         }
 
-        //Info has to be changed in Json as well
+
         User.currentUser.getPassword().setPasswordName(finalNewPass);
+        User.updateDataBase();
         return "Password changed successfully";
     }
 
@@ -123,8 +124,9 @@ public class MainController {
 
         if (User.currentUser.getEmail().equals(email)) return "Your email is already this, changing email failed";
 
-        //Info has to be changed in Json as well
+
         User.currentUser.setEmail(email);
+        User.updateDataBase();
         return "Email changed successfully";
     }
 
@@ -138,20 +140,22 @@ public class MainController {
 
         //Info has to be changed in Json as well
         User.currentUser.setSlogan(slogan);
+        User.updateDataBase();
         return "Slogan changed successfully";
     }
 
     public static String changeSloganRandomly(Matcher matcher){
         String newSlogan =  UserController.randomSloganGenerator();
         User.currentUser.setSlogan(newSlogan);
+        User.updateDataBase();
         return "Slogan changed successfully";
     }
 
     public static String removeSlogan(Matcher matcher){
         if (User.currentUser.getSlogan().isEmpty()) return "Your slogan field is already empty, removing slogan failed";
 
-        //Info has to be changed in Json as well
         User.currentUser.setSlogan(null);
+        User.updateDataBase();
         return "Slogan removed successfully";
     }
 
