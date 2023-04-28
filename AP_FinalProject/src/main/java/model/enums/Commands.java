@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    CREATE_USER("\\s*user\\s+create(?=.*\\s-u\\s+(?<username>\"[^\"]*\"|\\S*))(?=.*(\\s-p\\s+(?<password>\"[^\"]*\"|\\S*)\\s+(?<passwordConfirmation>\"[^\"]*\"|\\S*)|\\s-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]*\"|\\S*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]*\"|\\S*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|\\S*))?((\\s+-[unse]\\s+(\"[^\"]*\"|\\S*))|(\\s+-p\\s+(\"[^\"]*\"|\\S*)\\s+(\"[^\"]*\"|\\S*)|\\s+-p\\s+random)){4,5}"),
+    CREATE_USER("\\s*user\\s+create(?=.*\\s+-u(\\s+(?<username>\"[^\"]*\"|\\S*))?)(?=.*(\\s+-p\\s+(?<password>\"[^\"]*\"|\\S*)\\s+(?<passwordConfirmation>\"[^\"]*\"|\\S*)|\\s+-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]*\"|\\S*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]*\"|\\S*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|\\S*))?((\\s+-[unse](\\s+(\"[^\"]*\"|\\S*))?)|(\\s+-p\\s+(\"[^\"]*\"|\\S*)\\s+(\"[^\"]*\"|\\S*)|\\s+-p\\s+random)){4,5}"),
     PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s+(?<questionNumber>\\d*)\\s+-a\\s+(?<answer>\"[^\"]*\"|\\S*)\\s+-c\\s+(?<answerConfirm>\"[^\"]*\"|\\S*)\\s*"),
     LOGIN("(?=.*-u\\s+(?<username>\"[^\"]*\"|\\S*))(?=.*-p\\s+(?<password>\"[^\"]*\"|\\S*))^\\s*user\\s+login(\\s+-[up]\\s+(\"[^\"]*\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),
@@ -55,7 +55,7 @@ public enum Commands {
     TRADE_MENU("Enter\\s+shop\\s+menu"),
     SHOW_MAP("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map(\\s+-[xy]\\s+\\d*){2}$"),
     SHOW_MAP_DETAILS("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map\\s+details(\\s+-[xy]\\s+\\d*){2}$"),
-    MOVE_MAP(""),
+    MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d*))?(?=.*\\s+left\\s+(?<left>-?\\d*))?(?=.*\\s+right\\s+(?<right>-?\\d*))?(?=.*\\s+down\\s+(?<down>-?\\d*))?(\\s+(down|up|right|left)\\s+-?\\d*){1,4}"),
 
     SELECT_BUILDING("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+building\\s*( *-[xy] \\S+){2}$"),
     DESELECT_BUILDING("Deselect\\s+building"),

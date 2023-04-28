@@ -48,14 +48,14 @@ public class UserController {
         String slogan = matcher.group("slogan");
         if (slogan != null) slogan = slogan.replaceAll("\"", "");
         if (username == null ||
-                username.equals("") ||
+                username.isEmpty() ||
                 password == null ||
-                password.equals("") ||
+                password.isEmpty() ||
                 nickname == null ||
-                nickname.equals("") ||
+                nickname.isEmpty() ||
                 email == null ||
                 email.equals("") ||
-                (matcher.group("sloganFlag") != null && (slogan == null || slogan.equals("")))) return "Couldn't create user: empty field!";
+                (matcher.group("sloganFlag") != null && (slogan == null || slogan.isEmpty()))) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
         if (getUserByUsername(username) != null) {
             username = randomUsernameGenerator(username);
@@ -73,7 +73,7 @@ public class UserController {
             passwordConfirmation = controller.Runner.getScn().nextLine();
         }
         if (passwordChecker(password) != null) return passwordChecker(password);
-        if (slogan.equals("random")) slogan = randomSloganGenerator();
+        if (slogan != null && slogan.equals("random")) slogan = randomSloganGenerator();
         if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
@@ -82,7 +82,7 @@ public class UserController {
         if (result != null) return result;
         User user = new model.user.User(username, passwordObject, nickname, email);
         if (slogan != null) user.setSlogan(slogan);
-        User.updateDataBase();
+        //User.updateDataBase();
         return "User created successfully!";
     }
 
