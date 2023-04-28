@@ -47,8 +47,15 @@ public class UserController {
         if (nickname != null) nickname = nickname.replace("\"", "");
         String slogan = matcher.group("slogan");
         if (slogan != null) slogan = slogan.replace("\"", "");
-        if (username == null || password == null || nickname == null || email == null ||
-                (matcher.group("sloganFlag") != null && slogan == null)) return "Couldn't create user: empty field!";
+        if (username == null ||
+                username.equals("") ||
+                password == null ||
+                password.equals("") ||
+                nickname == null ||
+                nickname.equals("") ||
+                email == null ||
+                email.equals("") ||
+                (matcher.group("sloganFlag") != null && (slogan == null || slogan.equals("")))) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
         if (getUserByUsername(username) != null) {
             username = randomUsernameGenerator(username);
