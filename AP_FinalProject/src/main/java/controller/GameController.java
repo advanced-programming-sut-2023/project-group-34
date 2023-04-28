@@ -79,26 +79,12 @@ public class GameController {
     }
 
     public static String showMiniMap (Matcher matcher) {
-        StringBuilder output = new StringBuilder();
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         String response = setMapLocation(x, y);
         if (response != null) return response;
-        Block[][] map = currentGame.getMap().getMiniMap();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (map[i][j].getTroops().length != 0) output.append("S ");
-                else if (map[i][j].getBuilding().size() != 0) output.append("B ");
-                else if (map[i][j].getBLockFiller() != null && !map[i][j].getBLockFiller().equals(BlockFillerType.STAIR))
-                    output.append("T ");
-                else output.append(map[i][j].getBlockType().toString(), 0, 2);
-                output.append(' ');
-            }
-            output.append('\n');
-        }
-        return output.toString();
+        return showMiniMap();
     }
-
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
@@ -419,7 +405,7 @@ public class GameController {
     }
 
     public static String showTradeDetails(Trade trade){
-        String finalString = new String();
+        String finalString = "";
         finalString = finalString.concat("Sender: " + trade.getSender().getName() + "  ");
         finalString = finalString.concat("Resource offered: " + trade.getOfferedNumber() + " " + trade.getOffered() + "  ");
         if (trade.getOffered() == null)
@@ -431,7 +417,7 @@ public class GameController {
     }
 
     public static String showTradeNotification(){
-        String finalString = new String();
+        String finalString = "";
 
         if (currentGame.getCurrentGovernment().getOwner().getNotificationsList().isEmpty())
             return "You have no new requests";

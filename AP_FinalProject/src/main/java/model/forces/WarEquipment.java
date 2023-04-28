@@ -6,4 +6,5 @@ public interface WarEquipment {
     void fight(WarEquipment opponent);
     void addRange(int amount);
     void die();
+
 }

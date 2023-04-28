@@ -9,7 +9,8 @@ import java.util.HashMap;
 
 public class OilSmelter extends Building{
     private final int rate;
-    private int numberOfEngineers = 0;
+    private Engineer engineer;
+    private int numberOfOils = 0;
 
     protected OilSmelter(Government government, Block block, int HP, HashMap<Resources, Integer> cost, int rate) {
         super(government, block, HP, cost, OilSmelterType.OIL_SMELTER);
@@ -17,27 +18,23 @@ public class OilSmelter extends Building{
     }
     @Override
     public void process() {
-        for(Building building : government.getBuildings()) {
-            if(building.getBuildingType().equals(MakerType.QUARRY)) {
-                (Maker) building.ge
-            }
-        }
+        numberOfOils += rate;
     }
 
     @Override
     public void destroy() {
-
+        block.getBuilding().remove(this);
+        government.getBuildings().remove(this);
+        engineer.die();
     }
 
     public int getRate() {
         return rate;
     }
 
-    public void giveOilToEngineer(Engineer engineer) {
-        if(numberOfEngineers == 0) {
-            numberOfEngineers++;
-            return;
-        }
+    public void addEngineer(Engineer engineer) {
+        this.engineer = engineer;
     }
+
 
 }
