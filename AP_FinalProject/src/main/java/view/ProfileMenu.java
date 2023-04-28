@@ -16,7 +16,7 @@ public class ProfileMenu {
             command = command.trim();
             if ((matcher = Commands.getOutput(command, Commands.CHANGE_USER)) != null){
                 String response = MainController.changeUsername(matcher);
-                System.out.println(MainController.changeUsername(matcher));
+                System.out.println(response);
                 if (response.equals("Username already exists, changing username failed")){
                     System.out.println(UserController.randomUsernameGenerator(matcher.group("username")));
                 }

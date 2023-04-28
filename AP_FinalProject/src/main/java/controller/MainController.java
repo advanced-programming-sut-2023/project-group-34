@@ -39,7 +39,9 @@ public class MainController {
 
     public static String changeUsername (Matcher matcher){
         String username = matcher.group("username");
-        username = username.replaceAll("\"", "");
+        if (username != null) username = username.replaceAll("\"", "");
+
+        if (username == null || username.equals("")) return "empty field";
 
         if (username.isEmpty()) return "The username field is empty, changing username failed";
 
@@ -56,25 +58,32 @@ public class MainController {
 
     public static String changeNickname (Matcher matcher){
         String nickname = matcher.group("nickname");
-        nickname = nickname.replaceAll("\"", "");
+        if (nickname != null) nickname = nickname.replaceAll("\"", "");
+        if (nickname == null || nickname.equals("")) return "empty field";
         if (nickname.isEmpty()) return "The nickname field is empty, changing nickname failed";
 
         if (User.currentUser.getNickname().equals(nickname)) return "Your nickname is already this, changing nickname failed";
 
         User.currentUser.setNickname(nickname);
-        //Info has to be changed in Json as well
+        //TODO: Info has to be changed in Json as well
         return "Nickname changed successfully";
     }
 
     public static String changePassword(Matcher matcher){
         String finalOldPass = matcher.group("oldPass");
+        if (finalOldPass != null) finalOldPass = finalOldPass.replaceAll("\"", "");
+        else return "empty field";
+        if (finalOldPass.equals("")) return "empty field";
         String finalNewPass = matcher.group("newPass");
+        if (finalNewPass != null) finalNewPass = finalNewPass.replaceAll("\"", "");
+        else return "empty field";
+        if (finalNewPass.equals("")) return "empty field";
 
         if (finalOldPass.isEmpty() || finalNewPass.isEmpty())
             return "The required field is empty, changing password failed";
 
         String response = UserController.passwordChecker(finalNewPass);
-        if (!response.isEmpty()) return response;
+        if (response != null) return response;
 
         if (User.currentUser.getPassword().checkPassword(finalOldPass))
             return "Incorrect current password, changing password failed";
@@ -96,7 +105,8 @@ public class MainController {
     public static String changePasswordRandomly(Matcher matcher){
 
         String finalOldPass = matcher.group("oldPass");
-
+        if (finalOldPass == null) return "empty field";
+        else finalOldPass = finalOldPass.replaceAll("\"", "");
         if (finalOldPass.isEmpty()) return "The required field is empty, changing password failed";
 
         if (!User.currentUser.getPassword().checkPassword(finalOldPass))
@@ -115,6 +125,8 @@ public class MainController {
 
     public static String changeEmail(Matcher matcher){
         String email = matcher.group("email");
+        if (email != null) email = email.replaceAll("\"", "");
+        if (email == null || email.equals("")) return "empty field";
         if (email.isEmpty()) return "The email field is empty, changing email failed";
 
         if (!UserController.emailChecker(email)) return "Email's format is invalid, changing email failed";
@@ -130,8 +142,8 @@ public class MainController {
 
     public static String changeSlogan(Matcher matcher){
         String slogan = matcher.group("slogan");
-        slogan = slogan.replaceAll("\"", "");
-        if (slogan.isEmpty()) return "The slogan field is empty, changing slogan failed";
+        if (slogan != null) slogan = slogan.replaceAll("\"", "");
+        if (slogan == null || slogan.equals("")) return "The slogan field is empty, changing slogan failed";
 
         if (!User.currentUser.getSlogan().isEmpty() && User.currentUser.getSlogan().equals(slogan))
             return "Your slogan is already this, changing slogan failed";
@@ -172,7 +184,9 @@ public class MainController {
     }
 
     public static String changeBlockFloorType(Matcher matcher){
-        BlockType blockType = BlockType.stringToBlockType(matcher.group("type"));
+        String blockTypeString = matcher.group("type");
+        if (blockTypeString == null) return "empty field";
+        BlockType blockType = BlockType.stringToBlockType(blockTypeString);
         if (blockType == null) return "Invalid texture!";
         String x = matcher.group("singleX");
         if (x == null) {
