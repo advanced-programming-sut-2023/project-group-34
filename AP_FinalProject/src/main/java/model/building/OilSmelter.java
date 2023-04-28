@@ -1,6 +1,5 @@
 package model.building;
 
-import model.enums.benums.OilSmelterType;
 import model.enums.make_able.Resources;
 import model.forces.human.Engineer;
 import model.government.Government;
@@ -10,6 +9,7 @@ import java.util.HashMap;
 
 public class OilSmelter extends Building{
     private final int rate;
+    private int numberOfEngineers = 0;
 
     protected OilSmelter(Government government, Block block, int HP, HashMap<Resources, Integer> cost, int rate) {
         super(government, block, HP, cost, OilSmelterType.OIL_SMELTER);
@@ -30,7 +30,10 @@ public class OilSmelter extends Building{
     }
 
     public void giveOilToEngineer(Engineer engineer) {
-
+        if(numberOfEngineers == 0) {
+            numberOfEngineers++;
+            return;
+        }
     }
 
 }

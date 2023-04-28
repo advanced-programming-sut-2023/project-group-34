@@ -1,6 +1,5 @@
 package model.building;
 
-import model.enums.benums.BuildingType;
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
 import model.forces.human.Engineer;
@@ -15,12 +14,12 @@ import java.util.HashMap;
 public class Maker extends Building{
     private final ArrayList<MakeAble> output;
 
-    private int outputRate;
-    private final int inputRate;
-    private final int capacity;
+    private double outputRate;  //مقدار تولید شده به ازای هر واحد ورودی
+    private final double inputRate;
+    private final double capacity;
+    private double currentAmount = 0;
     private final MakeAble input;
     private final int numberOfWorkers;
-
     private int numberOfCurrentWorkers;
 
     public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity
@@ -36,11 +35,21 @@ public class Maker extends Building{
     }
     @Override
     public void process() {
-        double tempInputRate = Double.min(inputRate , input.getAmount(government));
+        if(this.buildingType == MakerType.QUARRY) {
+            currentAmount += outputRate;
+            currentAmount = Math.min(currentAmount, capacity);
+            return;
+        }
+        double tempInputRate;
+        if(input == null) tempInputRate = inputRate;
+        else {
+            tempInputRate = Double.min(inputRate , input.getAmount(government));
+            input.use(tempInputRate , government);
+        }
         for(MakeAble makeAble : output) {
             makeAble.add(tempInputRate * outputRate , government);
-            if(government.getStorageDepartment().foodOccupied() > government.getStorageDepartment().getFoodMaxCapacity()) {
-                makeAble.use(government.getStorageDepartment().foodOccupied() - government.getStorageDepartment().getFoodMaxCapacity() , government);
+            if(makeAble.getLeftCapacity(government) < 0) {
+                makeAble.use(-makeAble.getLeftCapacity(government), government);
             }
         }
     }
@@ -53,10 +62,11 @@ public class Maker extends Building{
             }
         }
         block.getBuilding().remove(this);
+        government.getBuildings().remove(this);
     }
 
 
-    public int getOutputRate() {
+    public double getOutputRate() {
         return outputRate;
     }
 
@@ -66,7 +76,7 @@ public class Maker extends Building{
         return output;
     }
 
-    public int getCapacity() {
+    public double getCapacity() {
         return capacity;
     }
 
@@ -82,14 +92,14 @@ public class Maker extends Building{
 
     }
 
-    public int getInputRate() {
+    public double getInputRate() {
         return inputRate;
     }
 
     public MakeAble getInput() {
         return input;
     }
-    public void setCurrentRate(int integrityRate) {
+    public void setCurrentOutputRate(int integrityRate) {
         integrityRate *= 5;
         this.outputRate = (outputRate * (integrityRate+100))/100;
     }

@@ -1,4 +1,6 @@
-package model.government;
+package model.user;
+
+import model.government.Government;
 
 public class Color {
     private final String colorName;

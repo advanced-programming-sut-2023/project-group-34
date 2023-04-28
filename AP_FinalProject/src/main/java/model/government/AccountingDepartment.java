@@ -1,7 +1,7 @@
 package model.government;
 
 import model.building.Building;
-import model.building.Church;
+import model.building.GeneralBuildingsType;
 import model.building.Maker;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
@@ -74,7 +74,7 @@ public class AccountingDepartment {
     private void moralityAndIntegrity(){
         for (Building building : government.getBuildings()){
             if (building instanceof Maker){
-                ((Maker) building).setCurrentRate(fearRate);
+                ((Maker) building).setCurrentOutputRate(fearRate);
             }
         }
 
@@ -87,9 +87,9 @@ public class AccountingDepartment {
 
     private void religionPopularity(){
         for (Building building : government.getBuildings()){
-            if (building instanceof Church && building.getCost().get(Resources.GOLD) == 250){
+            if (building.getBuildingType() == GeneralBuildingsType.CHURCH){
                 religionPopularity++;
-            } else if (building instanceof Church && building.getCost().get(Resources.GOLD) == 1000){
+            } else if (building.getBuildingType() == GeneralBuildingsType.CATHEDRAL){
                 religionPopularity += 2;
             }
         }
@@ -103,7 +103,6 @@ public class AccountingDepartment {
             double goldToBeGiven = ((-0.2)*taxRate + 0.4) * government.getPopulation();
             government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
                     .resourcesStorage.get(Resources.GOLD) - goldToBeGiven);
-            return taxPopularity;
         } else {
             double goldToGet = ((0.2)*taxRate + 0.4) * government.getPopulation();
             government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
@@ -119,8 +118,8 @@ public class AccountingDepartment {
                 case 8 -> -24;
                 default -> taxPopularity;
             };
-            return taxPopularity;
         }
+        return taxPopularity;
     }
 
 

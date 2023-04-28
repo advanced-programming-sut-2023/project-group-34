@@ -3,8 +3,8 @@ package controller;
 import model.Dictionaries;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
-import model.enums.benums.BuildingType;
-import model.enums.benums.MakerType;
+import model.building.BuildingType;
+import model.building.MakerType;
 import model.map.Block;
 import model.map.GameMap;
 import model.user.Password;
@@ -12,7 +12,6 @@ import model.user.User;
 import view.MainMenu;
 import view.MapEditingMenu;
 import view.ProfileMenu;
-import view.gameMenu.GameMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;

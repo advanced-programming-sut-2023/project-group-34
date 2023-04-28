@@ -1,4 +1,4 @@
-package model.enums.benums;
+package model.building;
 
 import model.government.Government;
 import model.map.Block;

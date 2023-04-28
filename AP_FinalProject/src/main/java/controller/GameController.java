@@ -3,6 +3,9 @@ package controller;
 import model.Game;
 import model.Trade;
 import model.building.Building;
+import model.building.Gate;
+import model.building.GateType;
+import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
 import model.enums.Direction;
 import model.enums.make_able.Food;
@@ -21,7 +24,7 @@ import java.util.regex.Matcher;
 
 public class GameController {
     private static Game currentGame;
-    private Building selectedBuilding;
+    private static Building selectedBuilding;
     private static ArrayList<Human> selectedHumans = new ArrayList<>();
 
     public static String run(){
@@ -176,6 +179,9 @@ public class GameController {
 
 
     public static String setTaxRate (Matcher matcher) {
+        if(!(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GeneralBuildingsType.KEEP)) {
+            return "You have not selected the right building";
+        }
         int taxRate = Integer.parseInt(matcher.group("taxRate"));
         if (taxRate < -3  || taxRate > 8) return "Invalid tax rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setTaxRate(taxRate);

@@ -1,7 +1,5 @@
-package model.enums.benums;
+package model.building;
 
-import model.building.Maker;
-import model.enums.BlockType;
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
 import model.government.Government;

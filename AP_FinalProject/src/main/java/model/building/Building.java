@@ -1,6 +1,5 @@
 package model.building;
 
-import model.enums.benums.BuildingType;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.map.Block;
@@ -20,6 +19,7 @@ public abstract class Building {
         this.cost = cost;
         this.buildingType = buildingType;
         this.HP = HP;
+        government.addBuilding(this);
     }
 
 
