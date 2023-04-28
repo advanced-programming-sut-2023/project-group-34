@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class StorageDepartment {
     public final HashMap<Resources , Double> resourcesStorage = new HashMap<>(Map.ofEntries(Map.entry(Resources.GHIR, 0.0), Map.entry(Resources.IRON, 0.0), Map.entry(Resources.WOOD, 0.0), Map.entry(Resources.STONE, 0.0), Map.entry(Resources.GOLD, 0.0)));
-    public final HashMap<Weapons, Double> weaponsStorage = new HashMap<>(Map.ofEntries(Map.entry(Weapons.PIKE , 0.0) , Map.entry(Weapons.SWORD , 0.0) , Map.entry(Weapons.SPEAR , 0.0) , Map.entry(Weapons.MACE , 0.0) , Map.entry(Weapons.BOW , 0.0) , Map.entry(Weapons.CROSSBOW ,0.0) , Map.entry(Weapons.METAL_ARMOUR , 0.0) , Map.entry(Weapons.LEATHER_ARMOUR , 0.0)));
+    public final HashMap<Weapons, Double> weaponsStorage = new HashMap<>(Map.ofEntries(Map.entry(Weapons.PIKE , 0.0) , Map.entry(Weapons.SWORD , 0.0) , Map.entry(Weapons.SPEAR , 0.0) , Map.entry(Weapons.MACE , 0.0) , Map.entry(Weapons.BOW , 0.0) , Map.entry(Weapons.CROSSBOW ,0.0) , Map.entry(Weapons.METAL_ARMOUR , 0.0) , Map.entry(Weapons.LEATHER_ARMOUR , 0.0), Map.entry(Weapons.HORSE, 0.0)));
     public final HashMap<Food, Double> foodStorage = new HashMap<>(Map.ofEntries(Map.entry(Food.ALE, 0.0), Map.entry(Food.HOP, 0.0), Map.entry(Food.CHEESE, 0.0), Map.entry(Food.APPLE, 0.0), Map.entry(Food.BREAD, 0.0), Map.entry(Food.FLOUR, 0.0), Map.entry(Food.WHEAT, 0.0), Map.entry(Food.MEAT, 0.0)));
 
     private double resourcesMaxCapacity;

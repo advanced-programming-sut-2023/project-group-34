@@ -1,12 +1,12 @@
 package model.government;
 
-import model.building.Building;
-import model.building.GeneralBuildingsType;
-import model.building.Maker;
+import model.Dictionaries;
+import model.building.*;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.forces.human.Human;
 import model.forces.human.Troop;
+import model.map.Block;
 
 public class AccountingDepartment {
     private final Government government;
@@ -18,7 +18,7 @@ public class AccountingDepartment {
     public int foodPopularityAccounting(){
         int foodPopularity = 0;
         foodPopularity = foodTypeCounter() -1;
-        double foodNeeded = ((foodRate * 0.5) - 1) * government.getPopulation();
+        double foodNeeded = ((foodRate * 0.5) + 1) * government.getPopulation();
         if (foodNeeded > edibleFood()) foodRate = -2;
         foodPopularity = foodPopularity + foodRate * 4;
         return foodPopularity;
@@ -100,13 +100,7 @@ public class AccountingDepartment {
         if (government.getStorageDepartment().resourcesStorage.get(Resources.GOLD) == 0) return 1;
         if (taxRate <= 0){
             taxPopularity = (-2)*taxRate + 1;
-            double goldToBeGiven = ((-0.2)*taxRate + 0.4) * government.getPopulation();
-            government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
-                    .resourcesStorage.get(Resources.GOLD) - goldToBeGiven);
         } else {
-            double goldToGet = ((0.2)*taxRate + 0.4) * government.getPopulation();
-            government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
-                    .resourcesStorage.get(Resources.GOLD) + goldToGet);
             taxPopularity = switch (taxRate) {
                 case 1 -> -2;
                 case 2 -> -4;
@@ -122,20 +116,55 @@ public class AccountingDepartment {
         return taxPopularity;
     }
 
+    private void getMoneyFromPeople(){
+        if (taxRate <= 0) {
+            double goldToBeGiven = ((-0.2) * taxRate + 0.4) * government.getPopulation();
+            government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
+                    .resourcesStorage.get(Resources.GOLD) - goldToBeGiven);
+        } else {
+            double goldToGet = ((0.2)*taxRate + 0.4) * government.getPopulation();
+            government.getStorageDepartment().resourcesStorage.put(Resources.GOLD, government.getStorageDepartment()
+                    .resourcesStorage.get(Resources.GOLD) + goldToGet);
 
-
-    private int populationAccounting() {
-        return 0;
+        }
     }
 
-    private void changeCurrentPopulation(int change) {}
 
-    public int addGovernmentPopularity() {
-        return taxPopularityAccounting()+ foodPopularityAccounting() - fearRate + religionPopularity;
+    private void changeCurrentPopulation() {
+        double foodLeft = edibleFood();
+        Block block = null;
+        int populationToBeAdded = (int) (foodLeft/(2 * ((foodRate * 0.5) + 1)));
+        for (Building building : government.getBuildings()){
+            if (building.getBuildingType().equals(GateType.KEEP)){
+                block = building.getBlock();
+            }
+        }
+
+        Human human = null;
+        if (government.getPopulation() + populationToBeAdded > government.getMaxPopulation()){
+            populationToBeAdded = government.getMaxPopulation() - government.getPopulation();
+        }
+
+        for (int i = 0; i < populationToBeAdded; i++) {
+            human = new Human(block, government);
+            government.addToHuman(human);
+        }
+
+        government.setPopulation(government.getPopulation()+populationToBeAdded);
+    }
+
+    public int getGovernmentPopularity() {
+        return taxPopularityAccounting() + foodPopularityAccounting() - fearRate + religionPopularity;
     }
 
     private void buildingAccounting(){}
-    public void nextTurnForThisUser(){}
+    public void nextTurnForThisUser(){
+        buildingAccounting();
+        giveFoodToPeople();
+        getMoneyFromPeople();
+        moralityAndIntegrity();
+        changeCurrentPopulation();
+    }
 
     public AccountingDepartment(Government government) {
         this.government = government;
