@@ -12,7 +12,8 @@ public enum Weapons implements MakeAble {
     BOW(0, "bow"),
     CROSSBOW(0, "crossbow"),
     SPEAR(0, "spear"),
-    PIKE(0, "pike");
+    PIKE(0, "pike"),
+    HORSE(0, "horse");
 
     private int price;
     private String name;

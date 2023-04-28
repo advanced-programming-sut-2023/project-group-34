@@ -179,7 +179,7 @@ public class GameController {
 
 
     public static String setTaxRate (Matcher matcher) {
-        if(!(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GeneralBuildingsType.KEEP)) {
+        if(!(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.KEEP)) {
             return "You have not selected the right building";
         }
         int taxRate = Integer.parseInt(matcher.group("taxRate"));

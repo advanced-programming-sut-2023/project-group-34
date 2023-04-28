@@ -2,8 +2,6 @@ package model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import model.enums.benums.MakerType;
-import model.enums.benums.*;
 import model.forces.human.TroopType;
 import model.building.*;
 
@@ -12,7 +10,7 @@ public class Dictionaries  {
     static {
         buildingDictionary.put("small stone gatehouse" , GateType.SMALL_GATE_HOUSE);
         buildingDictionary.put("big stone gatehouse" , GateType.BIG_GATE_HOUSE);
-        buildingDictionary.put("keep" , GeneralBuildingsType.KEEP);
+        buildingDictionary.put("keep" , GateType.KEEP);
         buildingDictionary.put("drawbridge" , DrawBridgeType.DRAW_BRIDGE);
         buildingDictionary.put("lookout tower" , DefenciveBuildingType.LOOKOUT_TOWER);
         buildingDictionary.put("perimeter tower" , DefenciveBuildingType.PERIMETER_TOWER);
@@ -25,11 +23,10 @@ public class Dictionaries  {
         buildingDictionary.put("cathedral" , GeneralBuildingsType.CATHEDRAL);
         buildingDictionary.put("church" , GeneralBuildingsType.CHURCH);
         buildingDictionary.put("death pit" , DeathPitType.DEATH_PIT);
-        buildingDictionary.put("houses" , GeneralBuildingsType.HOUSE);
+        buildingDictionary.put("houses" , GateType.HOUSE);
         buildingDictionary.put("food storage" , GeneralBuildingsType.FOOD_STORAGE);
         buildingDictionary.put("armour storage" , GeneralBuildingsType.ARMOUR_STORAGE);
         buildingDictionary.put("resource storage" , GeneralBuildingsType.RESOURCES_STORAGE);
-        buildingDictionary.put("shop" , GeneralBuildingsType.SHOP);
         buildingDictionary.put("barrack" , GeneralBuildingsType.BARRACK);
         buildingDictionary.put("mercenary" , GeneralBuildingsType.MERCENARY);
         buildingDictionary.put("engineer guild" , GeneralBuildingsType.ENGINEER_GUILD);
