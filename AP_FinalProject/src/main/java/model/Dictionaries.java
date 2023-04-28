@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import model.enums.benums.MakerType;
 import model.enums.benums.*;
+import model.forces.human.TroopType;
 
 public class Dictionaries  {
     public static BiMap<String , BuildingType> buildingDictionary = HashBiMap.create();
@@ -54,5 +55,26 @@ public class Dictionaries  {
         buildingDictionary.put("mill" , MakerType.MILL);
         buildingDictionary.put("oil smelter" , OilSmelterType.OIL_SMELTER);
         buildingDictionary.put("ox tether" , OxTetherType.OX_TETHER);
+    }
+
+    public static BiMap<String, TroopType> troopDictionary = HashBiMap.create();
+    static {
+        troopDictionary.put("archer", TroopType.ARCHER);
+        troopDictionary.put("cross bow man", TroopType.CROSS_BOW_MAN);
+        troopDictionary.put("spear man", TroopType.SPEAR_MAN);
+        troopDictionary.put("pike man", TroopType.PIKE_MAN);
+        troopDictionary.put("mace man", TroopType.MACE_MAN);
+        troopDictionary.put("swords man", TroopType.SWORDS_MAN);
+        troopDictionary.put("knight", TroopType.KNIGHT);
+        troopDictionary.put("tunneler", TroopType.TUNNELER);
+        troopDictionary.put("ladder man", TroopType.LADDER_MAN);
+        troopDictionary.put("black monk", TroopType.BLACK_MONK);
+        troopDictionary.put("archer bow", TroopType.ARCHER_BOW);
+        troopDictionary.put("slave", TroopType.SLAVE);
+        troopDictionary.put("slinger", TroopType.SLINGER);
+        troopDictionary.put("assassin", TroopType.ASSASSIN);
+        troopDictionary.put("horse archer", TroopType.HORSE_ARCHER);
+        troopDictionary.put("arab sword man", TroopType.ARAB_SWORD_MAN);
+        troopDictionary.put("fire thrower", TroopType.FIRE_THROWERS);
     }
 }
