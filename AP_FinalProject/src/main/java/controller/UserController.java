@@ -90,7 +90,11 @@ public class UserController {
         String input = controller.Runner.getScn().nextLine();
         Matcher matcher = model.enums.Commands.getOutput(input, Commands.PICK_QUESTION);
         if (matcher == null) return "Picking security Question failed: Invalid command!";
-        int secQNum = Integer.parseInt(matcher.group("questionNumber"));
+        String securityQuestionNumberString = matcher.group("questionNumber");
+        if (securityQuestionNumberString != null) securityQuestionNumberString = securityQuestionNumberString.replace("\"", "");
+        else return "empty field";
+        if (securityQuestionNumberString.equals("")) return "empty field";
+        int secQNum = Integer.parseInt(securityQuestionNumberString);
         if (secQNum > 3) return "Picking security Question failed: Invalid security Question!";
         String answer = matcher.group("answer");
         String answerConfirmation = matcher.group("answerConfirm");
@@ -132,8 +136,11 @@ public class UserController {
     public static String loginUser(Matcher matcher){
         String username = matcher.group("username");
         if (username != null) username = username.replace("\"", "");
+        else return "empty field";
         String password = matcher.group("password");
         if (password != null) password = password.replace("\"", "");
+        else return "empty field";
+        if (password.equals("") || username.equals("")) return "empty field";
         model.user.User user;
         if ((user = getUserByUsername(username)) == null) return "No user with the given username!";
         if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
@@ -144,8 +151,7 @@ public class UserController {
     }
 
     public static String randomSloganGenerator(){
-        Random random = new Random();
-        return Slogan.values()[random.nextInt(0, 3)].slogan;
+        return Slogan.values()[Runner.getRandomNumber(3)].slogan;
     }
 
     public static String randomUsernameGenerator(String currentUsername){

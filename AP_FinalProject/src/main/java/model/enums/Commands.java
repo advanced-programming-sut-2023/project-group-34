@@ -4,11 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    //empty field error handled up to here
     CREATE_USER("\\s*user\\s+create(?=.*\\s-u\\s+(?<username>\"[^\"]+\"|\\S*))(?=.*(\\s-p\\s+(?<password>\"[^\"]+\"|\\S*)\\s+(?<passwordConfirmation>\"[^\"]+\"|\\S*)|\\s-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]+\"|\\S*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]+\"|\\S*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]+\"|\\S*))?((\\s+-[unse]\\s+(\"[^\"]+\"|\\S*))|(\\s+-p\\s+(\"[^\"]+\"|\\S*)\\s+(\"[^\"]+\"|\\S*)|\\s+-p\\s+random)){4,5}"),
     PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s+(?<questionNumber>\\d*)\\s+-a\\s+(?<answer>\"[^\"]+\"|\\S*)\\s+-c\\s+(?<answerConfirm>\"[^\"]+\"|\\S*)\\s*"),
     LOGIN("(?=.*-u\\s+(?<username>\"[^\"]+\"|\\S*))(?=.*-p\\s+(?<password>\"[^\"]+\"|\\S*))^\\s*user\\s+login(\\s+-[up]\\s+(\"[^\"]+\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),
+    //empty field error handled up to here
     FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password\\s+-u\\s+(?<username>\"[^\"]+\"|\\S*)\\s*"),
     LOGOUT("\\s*user\\s+logout\\s*"),
     CHANGE_USER("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]+\"|\\S*))?\\s*"),
