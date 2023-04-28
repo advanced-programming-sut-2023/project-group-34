@@ -47,7 +47,7 @@ public class Maker extends Building{
             input.use(tempInputRate , government);
         }
         for(MakeAble makeAble : output) {
-            makeAble.add(tempInputRate * outputRate , government);
+            makeAble.add(Math.floor((tempInputRate * outputRate) / inputRate), government);
             if(makeAble.getLeftCapacity(government) < 0) {
                 makeAble.use(-makeAble.getLeftCapacity(government), government);
             }

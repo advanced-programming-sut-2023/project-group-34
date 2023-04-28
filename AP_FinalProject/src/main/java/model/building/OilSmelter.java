@@ -17,7 +17,11 @@ public class OilSmelter extends Building{
     }
     @Override
     public void process() {
-
+        for(Building building : government.getBuildings()) {
+            if(building.getBuildingType().equals(MakerType.QUARRY)) {
+                (Maker) building.ge
+            }
+        }
     }
 
     @Override

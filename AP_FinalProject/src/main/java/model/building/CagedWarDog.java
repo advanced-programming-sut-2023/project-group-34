@@ -24,7 +24,8 @@ public class CagedWarDog extends Building{
 
     @Override
     public void destroy() {
-
+        block.getBuilding().remove(this);
+        government.getBuildings().remove(this);
     }
 
 }
