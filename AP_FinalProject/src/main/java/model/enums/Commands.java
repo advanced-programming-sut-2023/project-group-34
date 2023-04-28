@@ -4,19 +4,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
+
+    //TODO The matcher has to match with the string that has empty fields
     CREATE_USER("\\s*user\\s+create(?=.*\\s-u\\s+(?<username>\"[^\"]+\"|\\S+))(?=.*(\\s-p\\s+(?<password>\"[^\"]+\"|\\S+)\\s+(?<passwordConfirmation>\"[^\"]+\"|\\S+)|\\s-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]+\"|\\S+))(?=.*\\s-n\\s+(?<nickname>\"[^\"]+\"|\\S+))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]+\"|\\S+))?((\\s+-[unse]\\s+(\"[^\"]+\"|\\S+))|(\\s+-p\\s+(\"[^\"]+\"|\\S+)\\s+(\"[^\"]+\"|\\S+)|\\s+-p\\s+random)){4,5}"),
     PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s+<questionNumber>\\s+-a\\s+<answer>\\s+-c\\s+<answerConfirm>\\s*"),
     LOGIN("(?=.*-u (?<username>\\S+))(?=.*-p (?<password>\\S+))(?=.*(?<flag>--stay-logged-in))?^user\\s+login(\\s+-[up]\\s+\\S+|\\s+--stay-logged-in){2,3}"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),
     FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password(\\s+-u\\s+(?<username>\\S+))?\\s*"),
     LOGOUT("\\s*user\\s+logout\\s*"),
-    CHANGE_USER("Profile\\s+change\\s+slogan\\s+-s\\s*( ?<slogan>.+)*"),
-    CHANGE_NICKNAME("Profile\\s+change\\s+-n\\s+( ?<nickname>.+)*"),
-    CHANGE_EMAIL("Profile\\s+change\\s+-e\\s+( ?<email>.+)*"),
-    CHANGE_SLOGAN("Profile\\s+change\\s+slogan\\s+-s\\s+( ?<slogan>.+)*"),
+    CHANGE_USER("Profile\\s+change\\s+user\\s+-s\\s*( ?<username>.+)*"),
+    CHANGE_NICKNAME("Profile\\s+change\\s+-n\\s*( ?<nickname>.+)*"),
+    CHANGE_EMAIL("Profile\\s+change\\s+-e\\s*( ?<email>.+)*"),
+    CHANGE_SLOGAN("Profile\\s+change\\s+slogan\\s+-s\\s*( ?<slogan>.+)*"),
     CHANGE_PASSWORD("Profile\\s+change\\s+password\\s*( -o\\s+(?<oldPass>\\S+)\\s+-n\\s+(?<newPass>\\S+)|-n\\s+(?<newPass1>\\S+)\\s+-o\\s+(?<oldPass1>\\S+))*"),
-
-    //TODO: Handle spaces in qutations
     CHANGE_PASSWORD_RANDOMLY("(?=.*-o (?<oldPass>\".+\"|\\S+))(?=.*-n (?<newPass>random))^Profile\\s+change\\s+password\\s*( *-[on] (\".+\"|\\S+)){2}$"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
@@ -35,7 +35,6 @@ public enum Commands {
     SHOW_PRICE_LIST("Show\\s+price\\s+list"),
     BUY_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Buy\\s*( *-[ia] \\S+){2}$"),
     SELL_ITEM("(?=.*-i (?<item>\\S+))(?=.*-a (?<amount>\\d+))^Sell\\s*( *-[ia] \\S+){2}$"),
-    TRADE_HISTORY("Trade\\s+history"),
     SHOW_POPULARITY_FACTORS("Show\\s+popularity\\s+factors"),
     SHOW_POPULARITY("Show\\s+popularity"),
     SHOW_FOOD_LIST("Show\\s+food\\s+list"),
@@ -55,9 +54,15 @@ public enum Commands {
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),
     TRADE_MENU("Enter\\s+shop\\s+menu"),
-    SHOW_MAP("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s*( *-[xy] \\S+){2}$"),
-    SHOW_MAP_DETAILS("(?=.*-i (?<x>\\S+))(?=.*-a (?<y>\\d+))^Show\\s+map\\s+details\\s*( *-[xy] \\S+){2}$"),
-    MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d+))?(?=.*\\s+left\\s+(?<left>-?\\d+))?(?=.*\\s+right\\s+(?<right>-?\\d+))?(?=.*\\s+down\\s+(?<down>-?\\d+))?(\\s+(down|up|right|left)\\s+-?\\d+){1,4}");
+    SHOW_MAP("(?=.*-x (?<x>\\S+))(?=.*-y (?<y>\\d+))^Show\\s+map\\s*( *-[xy] \\S+){2}$"),
+    SHOW_MAP_DETAILS("(?=.*-x (?<x>\\S+))(?=.*-y (?<y>\\d+))^Show\\s+map\\s+details\\s*( *-[xy] \\S+){2}$"),
+    MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d+))?(?=.*\\s+left\\s+(?<left>-?\\d+))?(?=.*\\s+right\\s+(?<right>-?\\d+))?(?=.*\\s+down\\s+(?<down>-?\\d+))?(\\s+(down|up|right|left)\\s+-?\\d+){1,4}"),
+    SELECT_BUILDING("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+building\\s*( *-[xy] \\S+){2}$"),
+    DESELECT_BUILDING("Deselect\\s+building"),
+    CREATE_UNIT("(?=.*-t (?<type>(\".+\"|\\S+)))(?=.*-c (?<count>\\d+))^Create\\s+unit\\s*( *-[tc] (\".+\"|\\S+)){2}$"),
+    REPAIR("Repair"),
+    SELECT_UNIT("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+unit\\s*( *-[xy] \\S+){2}$"),
+    DESELECT_TROOP("Deselect\\s+troop");
 
 
     private final String regex;

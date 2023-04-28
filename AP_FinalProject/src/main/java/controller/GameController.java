@@ -3,15 +3,14 @@ package controller;
 import model.Game;
 import model.Trade;
 import model.building.Building;
-import model.building.Gate;
 import model.building.GateType;
-import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
 import model.enums.Direction;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import model.forces.human.Human;
+import model.forces.human.Troop;
 import model.user.User;
 import model.map.Block;
 import view.gameMenu.GameMenu;
@@ -49,8 +48,28 @@ public class GameController {
         currentGame = game;
     }
 
-    private void setCurrentBuilding(Building currentBuilding) {
-        this.selectedBuilding = currentBuilding;
+    public static String selectBuilding(Matcher matcher){
+        int xLocation = Integer.parseInt(matcher.group("x"));
+        int yLocation = Integer.parseInt(matcher.group("y"));
+
+        if (xLocation < 1 || yLocation < 1 || xLocation > 399 || yLocation > 399)
+            return "Invalid coordinates, selecting building failed";
+
+        if (currentGame.getMap().getABlock(xLocation, yLocation).getBuilding() != null)
+            return "There is no building in this block, selecting building failed";
+
+        if (!currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0).getGovernment().getOwner()
+                .getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
+            return "You do not own this building, selecting building failed";
+
+        selectedBuilding = currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0);
+        return "Building selected successfully";
+    }
+
+    public static String deselectBuilding(){
+        if (selectedBuilding == null) return "You have no building selected, deselecting building failed";
+        else selectedBuilding = null;
+        return "Building deselected successfully";
     }
 
     public Building getCurrentBuilding() {
@@ -122,15 +141,14 @@ public class GameController {
     }
 
     public static String showPopularity () {
-        return "Your current popularity is: " + currentGame.getCurrentGovernment().getAccountingDepartment()
-                .getGovernmentPopularity();
+        return "Your current popularity is: " + currentGame.getCurrentGovernment().getTotalPopularity();
     }
 
     public static String showPopularityFactors () {
         String finalString = "";
-        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().foodPopularityAccounting());
+        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity());
         finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate());
-        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().taxPopularityAccounting());
+        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity());
         finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity());
         return finalString;
     }
@@ -193,15 +211,55 @@ public class GameController {
     }
 
     public static String repairCurrentBuilding () {
-        return null;
+        if (selectedBuilding.getHP() == selectedBuilding.getMaxHP())
+            return "There is nothing to repair in this building, repairing failed";
+
+        int x = selectedBuilding.getBlock().getLocationI() - 1;
+        int y = selectedBuilding.getBlock().getLocationJ() - 1;
+
+        for (int i = x; i < x + 3; i++){
+            for (int j = y; j < y + 3; y++) {
+                if (i < 0 || i > 399 || j < 0 || j > 399){
+                    continue;
+                }
+                for (Human human : currentGame.getMap().getABlock(i, j).getHumans()){
+                    if (!human.getGovernment().equals(selectedBuilding.getGovernment())){
+                        return "There are enemy troops near this building, repairing failed";
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<Resources, Integer> entry : selectedBuilding.getCost().entrySet()) {
+            double resourceNeeded = Math.ceil(((double) selectedBuilding.getHP()/selectedBuilding.getMaxHP()) * entry.getValue());
+            if (currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(entry.getKey()) < resourceNeeded)
+                return "You do not have enough resources to repair this building, repairing failed";
+            else
+                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        put(entry.getKey(), currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                                get(entry.getKey())-resourceNeeded);
+        }
+        return "Building repaired successfully";
     }
 
-    public static String selectBuilding (Matcher matcher) {
-        return null;
-    }
 
     public static String selectUnits (Matcher matcher) {
-        return null;
+        int xLocation = Integer.parseInt(matcher.group("x"));
+        int yLocation = Integer.parseInt(matcher.group("y"));
+        if (xLocation < 0 | xLocation > 399 | yLocation < 0 | yLocation > 399)
+            return "Invalid coordinates, selecting unit failed";
+        for (Human human : currentGame.getMap().getABlock(xLocation, yLocation).getHumans()){
+            if (human instanceof Troop && human.getGovernment().equals(currentGame.getCurrentGovernment())){
+                selectedHumans.add(human);
+            }
+        }
+        return "Troops selected successfully";
+    }
+
+    public static String deselectUnits(){
+        if (selectedHumans.isEmpty()) return "You have no troops selected";
+        else selectedHumans.clear();
+        return "Troops deselected successfully";
     }
 
     public static String moveSelectedUnits (Matcher matcher) {

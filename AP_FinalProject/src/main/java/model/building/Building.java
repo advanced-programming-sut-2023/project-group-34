@@ -12,13 +12,14 @@ public abstract class Building {
     protected final HashMap<Resources, Integer> cost;
     protected final BuildingType buildingType;
     protected int HP;
-
+    private final int maxHP;
     public Building(Government government, Block block, int HP , HashMap<Resources, Integer> cost, BuildingType buildingType) {
         this.government = government;
         this.block = block;
         this.cost = cost;
         this.buildingType = buildingType;
         this.HP = HP;
+        maxHP = HP;
         government.addBuilding(this);
     }
 
@@ -50,4 +51,7 @@ public abstract class Building {
         this.HP = HP;
     }
 
+    public int getMaxHP() {
+        return maxHP;
+    }
 }

@@ -24,17 +24,17 @@ public class ProfileMenu {
                 System.out.println(MainController.changeNickname(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_EMAIL)) != null){
                 System.out.println(MainController.changeEmail(matcher));
-            } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_SLOGAN)) != null){
-                System.out.println(MainController.changeSlogan(matcher));
-            } else if ((matcher = Commands.getOutput(command, Commands.REMOVE_SLOGAN)) != null){
-                System.out.println(MainController.removeSlogan(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_SLOGAN_RANDOMLY)) != null){
                 System.out.println(MainController.changeSloganRandomly(matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.REMOVE_SLOGAN)) != null){
+                System.out.println(MainController.removeSlogan(matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_SLOGAN)) != null){
+                System.out.println(MainController.changeSlogan(matcher));
                 //There might be a conflict here
-            } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){
-                System.out.println(MainController.changePassword(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD_RANDOMLY)) != null){
                 System.out.println(MainController.changePasswordRandomly(matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){
+                System.out.println(MainController.changePassword(matcher));
             } else if (Commands.getOutput(command, Commands.DISPLAY_HIGHS_CORE) != null){
                 System.out.println(User.currentUser.getScore());
             } else if (Commands.getOutput(command, Commands.DISPLAY_SLOGAN) != null){
