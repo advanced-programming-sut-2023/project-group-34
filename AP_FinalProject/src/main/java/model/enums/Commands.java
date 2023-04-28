@@ -4,18 +4,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    CREATE_USER("\\s*user\\s+create(?=.*\\s-u\\s+(?<username>\"[^\"]+\"|\\S*))(?=.*(\\s-p\\s+(?<password>\"[^\"]+\"|\\S*)\\s+(?<passwordConfirmation>\"[^\"]+\"|\\S*)|\\s-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]+\"|\\S*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]+\"|\\S*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]+\"|\\S*))?((\\s+-[unse]\\s+(\"[^\"]+\"|\\S*))|(\\s+-p\\s+(\"[^\"]+\"|\\S*)\\s+(\"[^\"]+\"|\\S*)|\\s+-p\\s+random)){4,5}"),
-    PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s+(?<questionNumber>\\d*)\\s+-a\\s+(?<answer>\"[^\"]+\"|\\S*)\\s+-c\\s+(?<answerConfirm>\"[^\"]+\"|\\S*)\\s*"),
-    LOGIN("(?=.*-u\\s+(?<username>\"[^\"]+\"|\\S*))(?=.*-p\\s+(?<password>\"[^\"]+\"|\\S*))^\\s*user\\s+login(\\s+-[up]\\s+(\"[^\"]+\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
+    CREATE_USER("\\s*user\\s+create(?=.*\\s-u\\s+(?<username>\"[^\"]*\"|\\S*))(?=.*(\\s-p\\s+(?<password>\"[^\"]*\"|\\S*)\\s+(?<passwordConfirmation>\"[^\"]*\"|\\S*)|\\s-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]*\"|\\S*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]*\"|\\S*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|\\S*))?((\\s+-[unse]\\s+(\"[^\"]*\"|\\S*))|(\\s+-p\\s+(\"[^\"]*\"|\\S*)\\s+(\"[^\"]*\"|\\S*)|\\s+-p\\s+random)){4,5}"),
+    PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s+(?<questionNumber>\\d*)\\s+-a\\s+(?<answer>\"[^\"]*\"|\\S*)\\s+-c\\s+(?<answerConfirm>\"[^\"]*\"|\\S*)\\s*"),
+    LOGIN("(?=.*-u\\s+(?<username>\"[^\"]*\"|\\S*))(?=.*-p\\s+(?<password>\"[^\"]*\"|\\S*))^\\s*user\\s+login(\\s+-[up]\\s+(\"[^\"]*\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),
     //empty field error handled up to here
-    FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password\\s+-u\\s+(?<username>\"[^\"]+\"|\\S*)\\s*"),
+    FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password\\s+-u\\s+(?<username>\"[^\"]*\"|\\S*)\\s*"),
     LOGOUT("\\s*user\\s+logout\\s*"),
-    CHANGE_USER("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]+\"|\\S*))?\\s*"),
-    CHANGE_NICKNAME("\\s*Profile\\s+change\\s+-n(\\s+(?<nickname>\"[^\"]+\"|\\S*))?\\s*"),
-    CHANGE_EMAIL("\\s*Profile\\s+change\\s+-e(\\s+(?<email>\"[^\"]+\"|\\S*))?\\s*"),
-    CHANGE_SLOGAN("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]+\"|\\S*))?\\s*"),
-    CHANGE_PASSWORD("\\s*Profile\\s+change\\s+password(?=.*\\s+-o\\s+(?<oldPass>\"[^\"]+\"|\\S*))(?=.*\\s+-n\\s+(?<newPass>\"[^\"]+\"|\\S*))(\\s+-[on]\\s+(\"[^\"]+\"|\\S*)){2}\\s*"),
+    CHANGE_USER("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]*\"|\\S*))?\\s*"),
+    CHANGE_NICKNAME("\\s*Profile\\s+change\\s+-n(\\s+(?<nickname>\"[^\"]*\"|\\S*))?\\s*"),
+    CHANGE_EMAIL("\\s*Profile\\s+change\\s+-e(\\s+(?<email>\"[^\"]*\"|\\S*))?\\s*"),
+    CHANGE_SLOGAN("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]*\"|\\S*))?\\s*"),
+    CHANGE_PASSWORD("\\s*Profile\\s+change\\s+password(?=.*\\s+-o\\s+(?<oldPass>\"[^\"]*\"|\\S*))(?=.*\\s+-n\\s+(?<newPass>\"[^\"]*\"|\\S*))(\\s+-[on]\\s+(\"[^\"]*\"|\\S*)){2}\\s*"),
 
     //TODO: Handle spaces in qutations
     CHANGE_PASSWORD_RANDOMLY("(?=.*\\s+-o\\s+(?<oldPass>\".+\"|\\S*))(?=.*\\s+-n\\s+random)^\\s*Profile\\s+change\\s+password(\\s+-[on]\\s+(\".+\"|\\S*)){2}\\s*$"),
@@ -50,7 +50,7 @@ public enum Commands {
     ACCEPT_TRADE("(?=.*-m\\s+(?<message>\".+\"|\\S*))(?=.*-i\\s+(?<id>\\d*))^Accept\\s+trade\\s*(\\s+-[im]\\s+(\".+\"|\\S*)){2}$"),
     TRADE("(?=.*-m\\s+(?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]+\")|\\S*)))(?=.*-oa\\s+(?<offeredAmount>\\d*))" +
             "(?=.*-wa\\s+(?<wantedAmount>\\d*))(?=.*-w\\s+(?<wanted>\\S*))(?=.*-o\\s+(?<offered>\\S*))" +
-            "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]+\"|\\S*)){6}$"),
+            "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),
