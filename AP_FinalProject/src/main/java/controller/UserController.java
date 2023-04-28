@@ -36,19 +36,26 @@ public class UserController {
 
     public static String registerUser(Matcher matcher){
         String username = matcher.group("username");
-        if (username != null) username = username.replace("\"", "");
+        if (username != null) username = username.replaceAll("\"", "");
         String password = matcher.group("password");
-        if (password != null) password = password.replace("\"", "");
+        if (password != null) password = password.replaceAll("\"", "");
         String passwordConfirmation = matcher.group("passwordConfirmation");
-        if (passwordConfirmation != null) passwordConfirmation = passwordConfirmation.replace("\"", "");
+        if (passwordConfirmation != null) passwordConfirmation = passwordConfirmation.replaceAll("\"", "");
         String email = matcher.group("email");
-        if (email != null) email = email.replace("\"", "");
+        if (email != null) email = email.replaceAll("\"", "");
         String nickname = matcher.group("nickname");
-        if (nickname != null) nickname = nickname.replace("\"", "");
+        if (nickname != null) nickname = nickname.replaceAll("\"", "");
         String slogan = matcher.group("slogan");
-        if (slogan != null) slogan = slogan.replace("\"", "");
-        if (username == null || password == null || nickname == null || email == null ||
-                (matcher.group("sloganFlag") != null && slogan == null)) return "Couldn't create user: empty field!";
+        if (slogan != null) slogan = slogan.replaceAll("\"", "");
+        if (username == null ||
+                username.equals("") ||
+                password == null ||
+                password.equals("") ||
+                nickname == null ||
+                nickname.equals("") ||
+                email == null ||
+                email.equals("") ||
+                (matcher.group("sloganFlag") != null && (slogan == null || slogan.equals("")))) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
         if (getUserByUsername(username) != null) {
             username = randomUsernameGenerator(username);
@@ -83,7 +90,11 @@ public class UserController {
         String input = controller.Runner.getScn().nextLine();
         Matcher matcher = model.enums.Commands.getOutput(input, Commands.PICK_QUESTION);
         if (matcher == null) return "Picking security Question failed: Invalid command!";
-        int secQNum = Integer.parseInt(matcher.group("questionNumber"));
+        String securityQuestionNumberString = matcher.group("questionNumber");
+        if (securityQuestionNumberString != null) securityQuestionNumberString = securityQuestionNumberString.replaceAll("\"", "");
+        else return "empty field";
+        if (securityQuestionNumberString.equals("")) return "empty field";
+        int secQNum = Integer.parseInt(securityQuestionNumberString);
         if (secQNum > 3) return "Picking security Question failed: Invalid security Question!";
         String answer = matcher.group("answer");
         String answerConfirmation = matcher.group("answerConfirm");
@@ -124,9 +135,12 @@ public class UserController {
 
     public static String loginUser(Matcher matcher){
         String username = matcher.group("username");
-        if (username != null) username = username.replace("\"", "");
+        if (username != null) username = username.replaceAll("\"", "");
+        else return "empty field";
         String password = matcher.group("password");
-        if (password != null) password = password.replace("\"", "");
+        if (password != null) password = password.replaceAll("\"", "");
+        else return "empty field";
+        if (password.equals("") || username.equals("")) return "empty field";
         model.user.User user;
         if ((user = getUserByUsername(username)) == null) return "No user with the given username!";
         if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
@@ -137,8 +151,7 @@ public class UserController {
     }
 
     public static String randomSloganGenerator(){
-        Random random = new Random();
-        return Slogan.values()[random.nextInt(0, 3)].slogan;
+        return Slogan.values()[Runner.getRandomNumber(3)].slogan;
     }
 
     public static String randomUsernameGenerator(String currentUsername){
@@ -148,6 +161,9 @@ public class UserController {
 
     public static String forgotPassword(Matcher matcher){
         String username = matcher.group("username");
+        if (username != null) username = username.replaceAll("\"", "");
+        else return "empty field";
+        if (username.equals("")) return "empty field";
         User user = getUserByUsername(username);
         if (user == null) return "No user with the id given!";
         Password password = user.getPassword();
