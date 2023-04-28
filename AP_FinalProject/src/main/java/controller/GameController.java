@@ -137,7 +137,7 @@ public class GameController {
 
     public static String showPopularity () {
         return "Your current popularity is: " + currentGame.getCurrentGovernment().getAccountingDepartment()
-                .addGovernmentPopularity();
+                .getGovernmentPopularity();
     }
 
     public static String showPopularityFactors () {
