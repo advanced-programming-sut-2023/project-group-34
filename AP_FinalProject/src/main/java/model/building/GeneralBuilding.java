@@ -1,6 +1,5 @@
 package model.building;
 
-import model.enums.benums.BuildingType;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.map.Block;
@@ -15,16 +14,18 @@ public class GeneralBuilding extends Building{
         super(government, block, HP, cost, buildingType);
         this.capacity = capacity;
         this.numberOfResidents = numberOfResidents;
+        //TODO add storage
     }
 
     @Override
     public void process() {
-
     }
 
     @Override
     public void destroy() {
-
+        block.getBuilding().remove(this);
+        government.getBuildings().remove(this);
+        //TODO remove storage
     }
 
     public int getNumberOfResidents() {

@@ -1,6 +1,5 @@
-package model.enums.benums;
+package model.building;
 
-import model.building.GeneralBuilding;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.map.Block;
@@ -13,14 +12,14 @@ public enum GeneralBuildingsType implements BuildingType{
     ARMOUR_STORAGE(0 , 0 , null , 0),
     KEEP(0 ,0 , null , 0),
     HOUSE(0 , 0 , null , 0),
-    SMALL_STONE_GATEHOUSE(0 , 0, null , 0),
-    BIG_STONE_GATEHOUSE(0 , 0, null , 0),
     SHOP(0 , 0, null , 0),
     BARRACK(0 , 0 , null , 0),
     MERCENARY(0 , 0 , null , 0),
     ENGINEER_GUILD(0 ,0 , null , 0),
     TUNNELERS_GUILD(0 ,0 ,null , 0),
-    SIEGE_TENT(0 , 0 , null , 0);
+    SIEGE_TENT(0 , 0 , null , 0),
+    CHURCH(0 , 0 , null , 0),
+    CATHEDRAL(0 , 0 , null , 0);
 
     private final int capacity;
     private final int HP;
@@ -40,6 +39,6 @@ public enum GeneralBuildingsType implements BuildingType{
 
     @Override
     public void create(Government government, Block block) {
-
+        block.addBuilding(new GeneralBuilding(government , block , this.HP , this.cost , this , this.capacity , this.numberOfResidents));
     }
 }

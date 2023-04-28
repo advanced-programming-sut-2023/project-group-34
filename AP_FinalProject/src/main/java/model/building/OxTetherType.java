@@ -1,13 +1,12 @@
-package model.enums.benums;
+package model.building;
 
 import model.government.Government;
 import model.map.Block;
 
-public enum CagedWarDogType implements BuildingType{
-    CAGED_WAR_DOG;
+public enum OxTetherType implements BuildingType{
+    OX_TETHER;
 
     @Override
     public void create(Government government, Block block) {
-
     }
 }

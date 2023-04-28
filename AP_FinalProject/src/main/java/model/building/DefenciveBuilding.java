@@ -1,6 +1,5 @@
 package model.building;
 
-import model.enums.benums.BuildingType;
 import model.enums.Direction;
 import model.enums.make_able.Resources;
 import model.forces.WarEquipment;
@@ -25,7 +24,6 @@ public class DefenciveBuilding extends Building{
         this.defendRange = defendRange;
         this.capacity = capacity;
     }
-
     @Override
     public void process() {
 

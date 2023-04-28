@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import model.enums.benums.MakerType;
 import model.enums.benums.*;
 import model.forces.human.TroopType;
+import model.building.*;
 
 public class Dictionaries  {
     public static BiMap<String , BuildingType> buildingDictionary = HashBiMap.create();
@@ -21,8 +22,8 @@ public class Dictionaries  {
         buildingDictionary.put("low wall" , DefenciveBuildingType.LOW_WALL);
         buildingDictionary.put("high wall" , DefenciveBuildingType.HIGH_WALL);
         buildingDictionary.put("caged war dogs" , CagedWarDogType.CAGED_WAR_DOG);
-        buildingDictionary.put("cathedral" , ChurchType.CATHEDRAL);
-        buildingDictionary.put("church" , ChurchType.CHURCH);
+        buildingDictionary.put("cathedral" , GeneralBuildingsType.CATHEDRAL);
+        buildingDictionary.put("church" , GeneralBuildingsType.CHURCH);
         buildingDictionary.put("death pit" , DeathPitType.DEATH_PIT);
         buildingDictionary.put("houses" , GeneralBuildingsType.HOUSE);
         buildingDictionary.put("food storage" , GeneralBuildingsType.FOOD_STORAGE);
@@ -34,7 +35,6 @@ public class Dictionaries  {
         buildingDictionary.put("engineer guild" , GeneralBuildingsType.ENGINEER_GUILD);
         buildingDictionary.put("tunnelers guild" , GeneralBuildingsType.TUNNELERS_GUILD);
         buildingDictionary.put("siege tent" , GeneralBuildingsType.SIEGE_TENT);
-        buildingDictionary.put("pitch ditch" , PitchDitchType.PITCH_DITCH);
         buildingDictionary.put("inn" , InnType.INN);
         buildingDictionary.put("iron mine" , MakerType.IRON_MINE);
         buildingDictionary.put("quarry" , MakerType.QUARRY);

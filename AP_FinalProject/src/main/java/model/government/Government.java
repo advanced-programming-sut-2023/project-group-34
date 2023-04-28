@@ -2,14 +2,15 @@ package model.government;
 
 import model.building.Building;
 import model.forces.human.Human;
+import model.user.Color;
 import model.user.User;
 
 import java.util.ArrayList;
 
 public class Government {
     private final User owner;
-    private ArrayList<Building> buildings = new ArrayList<>();
-    private ArrayList<Human> humans = new ArrayList<>();
+    private final ArrayList<Building> buildings = new ArrayList<>();
+    private final ArrayList<Human> humans = new ArrayList<>();
     private int totalPopularity;
     private int population;
     private int maxPopulation;
@@ -38,11 +39,11 @@ public class Government {
         return maxPopulation;
     }
 
-    public void setMaxPopulation(int maxPopulation) {
-        this.maxPopulation = maxPopulation;
+    public void changeMaxPopulation(int amount) {
+        this.maxPopulation += amount;
     }
 
-    public void addToBuilding(Building building){
+    public void addBuilding(Building building){
         buildings.add(building);
     }
 
