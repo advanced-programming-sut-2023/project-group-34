@@ -8,6 +8,6 @@ public enum DeathPitType implements BuildingType{
 
     @Override
     public void create(Government government, Block block) {
-
+        block.addBuilding(new DeathPit(government , block));
     }
 }

@@ -19,6 +19,7 @@ public enum TroopType {
     ASSASSIN(0, 0 , 0 , false , false , 0 , 0 ,0),
     HORSE_ARCHER(0, 0 , 0 ,false , false , 0 ,0 ,0),
     ARAB_SWORD_MAN(0, 0 , 0 , false , false ,0  ,0 , 0 ),
+    WAR_DOG(0 , 0 , 0 , false , false , 0 , 0 , 0),
     FIRE_THROWERS(0, 0 , 0 , false , false ,0 , 0 , 0);
 
 
@@ -42,8 +43,8 @@ public enum TroopType {
     final int defensiveRange;
     final int fireRange;
     final int aggressiveRange;
-    public static Troop troopMaker(Block block, Government government , TroopType troop) {
-        return new Troop(troop.HP, block, troop.damage, troop.canDig,troop.canClimb,  government, troop.defensiveRange, troop.fireRange, troop.aggressiveRange , troop, troop.price);
+    public void Maker(Block block, Government government) {
+         block.getHumans().add(new Troop(this.HP, block, this.damage, this.canDig,this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this, this.price));
     }
 }
 

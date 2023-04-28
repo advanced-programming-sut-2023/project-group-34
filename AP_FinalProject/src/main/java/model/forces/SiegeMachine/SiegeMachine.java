@@ -30,9 +30,25 @@ public class SiegeMachine implements WarEquipment {
     public int getFireRange() {
         return 0;
     }
+
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
+
     @Override
     public void fight(WarEquipment opponent) {
        //TODO first attack to conquer machines
+    }
+
+    @Override
+    public void addRange(int amount) {
+
+    }
+
+    @Override
+    public void die() {
+
     }
 
     public int getNumberOfRequiredEngineers() {

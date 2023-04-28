@@ -11,14 +11,15 @@ import java.util.*;
 
 public class Troop extends Human implements WarEquipment {
     private final static ArrayList<Troop> troops = new ArrayList<>();
-    private final int defensiveRange;
+    private int defensiveRange;
     private int fireRange;
     private final int aggressiveRange;
     private final TroopType troopType;
 
+    private boolean isVisible = true;
+
     private TroopStage troopStage;
     private final int price;
-
     protected Troop(int HP, Block block, int damage, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int price) {
         super(HP, HP , block, damage, canDig, canClimb, government);
         this.defensiveRange = defensiveRange;
@@ -26,6 +27,7 @@ public class Troop extends Human implements WarEquipment {
         this.aggressiveRange = aggressiveRange;
         this.troopType = troopType;
         this.price = price;
+        if(troopType == TroopType.ASSASSIN) isVisible = false;
     }
 
     public Troop enemyLocator(){
@@ -45,6 +47,12 @@ public class Troop extends Human implements WarEquipment {
     @Override
     public void fight(WarEquipment opponent) {
         //TODO first attack conquer machines
+    }
+
+    @Override
+    public void addRange(int amount) {
+        this.fireRange += amount;
+        this.defensiveRange += amount;
     }
 
     public void setFireRange(int fireRange) {
@@ -84,25 +92,12 @@ public class Troop extends Human implements WarEquipment {
         return price;
     }
 
-    public static HashMap<TroopType, String> troopsNameString = new HashMap<>(
-            Map.ofEntries(
-                    Map.entry(TroopType.ARCHER, "archer"),
-                    Map.entry(TroopType.CROSS_BOW_MAN, "crossbow man"),
-                    Map.entry(TroopType.SPEAR_MAN, "spear man"),
-                    Map.entry(TroopType.PIKE_MAN, "pike man"),
-                    Map.entry(TroopType.MACE_MAN, "mace man"),
-                    Map.entry(TroopType.SWORDS_MAN, "swords man"),
-                    Map.entry(TroopType.KNIGHT, "knight"),
-                    Map.entry(TroopType.TUNNELER, "tunneler"),
-                    Map.entry(TroopType.LADDER_MAN, "ladder man"),
-                    Map.entry(TroopType.BLACK_MONK, "black monk"),
-                    Map.entry(TroopType.ARCHER_BOW, "archer bow"),
-                    Map.entry(TroopType.SLAVE, "slave"),
-                    Map.entry(TroopType.SLINGER, "slinger"),
-                    Map.entry(TroopType.ASSASSIN, "assassin"),
-                    Map.entry(TroopType.HORSE_ARCHER, "horse archer"),
-                    Map.entry(TroopType.ARAB_SWORD_MAN, "arab swords man"),
-                    Map.entry(TroopType.FIRE_THROWERS, "fire thrower")
-            )
-    );
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 }

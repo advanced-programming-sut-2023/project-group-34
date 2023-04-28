@@ -26,7 +26,7 @@ public class Dictionaries  {
         buildingDictionary.put("food storage" , GeneralBuildingsType.FOOD_STORAGE);
         buildingDictionary.put("armour storage" , GeneralBuildingsType.ARMOUR_STORAGE);
         buildingDictionary.put("resource storage" , GeneralBuildingsType.RESOURCES_STORAGE);
-        buildingDictionary.put("shop" , GeneralBuildingsType.SHOP);
+        buildingDictionary.put("shop" , MakerType.SHOP);
         buildingDictionary.put("barrack" , GeneralBuildingsType.BARRACK);
         buildingDictionary.put("mercenary" , GeneralBuildingsType.MERCENARY);
         buildingDictionary.put("engineer guild" , GeneralBuildingsType.ENGINEER_GUILD);

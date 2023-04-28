@@ -3,6 +3,8 @@ package model.map;
 import model.building.Building;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
+import model.forces.SiegeMachine.SiegeMachine;
+import model.forces.WarEquipment;
 import model.forces.human.Human;
 import model.forces.human.Troop;
 
@@ -12,14 +14,15 @@ import java.util.HashMap;
 public class Block {
     private BlockFillerType bLockFiller;
     private BlockType blockType;
-    private ArrayList<Human> humans;
+    private ArrayList<Human> humans = new ArrayList<>();
 
     public BlockFillerType getBLockFiller() {
         return bLockFiller;
     }
 
-    private ArrayList<Building> building;
+    private ArrayList<Building> building = new ArrayList<>();
 
+    private final ArrayList<SiegeMachine> siegeMachines = new ArrayList<>();
     private int resourcesCapacity;
     private boolean isPassable;
     private final int locationI;
@@ -119,5 +122,13 @@ public class Block {
         else if (blockType.equals(BlockType.BOULDER)) return "stone";
         else if (blockType.equals(BlockType.OIL)) return "oil";
         else return null;
+    }
+
+    public ArrayList<SiegeMachine> getSiegeMachines() {
+        return siegeMachines;
+    }
+
+    public void addSiegeMachines(SiegeMachine siegeMachine) {
+        this.siegeMachines.add(siegeMachine);
     }
 }

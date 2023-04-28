@@ -3,6 +3,9 @@ package model.building;
 import model.enums.Direction;
 import model.enums.make_able.Resources;
 import model.forces.WarEquipment;
+import model.forces.human.Engineer;
+import model.forces.human.Human;
+import model.forces.human.Troop;
 import model.government.Government;
 import model.map.Block;
 
@@ -26,12 +29,16 @@ public class DefenciveBuilding extends Building{
     }
     @Override
     public void process() {
-
+        //TODO people on the tower attack
     }
 
     @Override
     public void destroy() {
-
+        for (WarEquipment warEquipment : this.warEquipments) {
+            warEquipment.die();
+        }
+        block.getBuilding().remove(this);
+        government.getBuildings().remove(this);
     }
 
     public ArrayList<WarEquipment> getWarEquipments() {
@@ -59,5 +66,18 @@ public class DefenciveBuilding extends Building{
 
     public HashMap<Direction, Boolean> getIsPassableFromThisDirection() {
         return isPassableFromThisDirection;
+    }
+
+    public void addWarEquipment(WarEquipment warEquipment) {
+        this.warEquipments.add(warEquipment);
+        warEquipment.setVisible(false);
+        warEquipment.addRange(this.fireRange);
+    }
+
+    public void removeEquipment(WarEquipment warEquipment) {
+        this.warEquipments.add(warEquipment);
+        warEquipment.setVisible(false);
+        warEquipment.addRange(this.fireRange);
+
     }
 }

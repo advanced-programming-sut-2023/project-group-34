@@ -28,7 +28,8 @@ public enum MakerType implements BuildingType {
     WHEAT_FARM(null, 0, null, 0, 0, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20))), 0),
     HUNTING_GROUND(null, 0, null, 0, 0,  0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20))), 0),
     BAKERY(null, 0, null, 0, 0, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20))), 0),
-    MILL(null, 0, null, 0, 0, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20))), 0);
+    MILL(null, 0, null, 0, 0, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20))), 0),
+    SHOP(null, 0, null, 0, 0, 0, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20))), 0);
 
     private final MakeAble input;
     private final int inputRate;
