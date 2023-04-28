@@ -20,12 +20,11 @@ public enum Commands {
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
     SET_TEXTURE("\\s*settexture(?=.*\\s+-t\\s+(?<type>\\S*))((?=.*\\s+-x\\s+(?<singleX>\\d*))(?=.*\\s+-y\\s+(?<singleY>\\d*))(\\s+-[xyt]\\s+\\S*){3}|(?=.*\\s+-x1\\s+(?<x1>\\d*))(?=.*\\s+-y1\\s+(?<y1>\\d*))(?=.*\\s+-x2\\s+(?<x2>\\d*))(?=.*\\s+-y2\\s+(?<y2>\\d*))(\\s+-([xy][12]|t)\\s+\\S*){5})\\s*"),
-    //empty field error handled up to here
     CLEAR("\\s*clear(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(\\s+-[xy]\\s+\\d*){2}\\s*"),
     DROP_ROCK("\\s*droprock(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-d\\s+(?<direction>\\S*))(\\s+-[xyd]\\s+\\S*){3}\\s*"),
     DROP_TREE("\\s*droptree(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xyt]\\s+\\S*){3}\\s*"),
     DROP_BUILDING("\\s*dropbuilding(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xyt]\\s+\\S*){3}\\s*"),
-    DROP_UNIT("\\s*droptree(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-c\\s+(?<count>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xytc]\\s+\\S*){4}\\s*"),
+    DROP_UNIT("\\s*dropunit(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-c\\s+(?<count>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xytc]\\s+\\S*){4}\\s*"),
     BACK("\\s*back\\s*"),
     DISPLAY_HIGHS_CORE("Profile\\s+display\\s+highscore"),
     DISPLAY_RANK("Profile\\s+display\\s+rank"),
@@ -38,18 +37,19 @@ public enum Commands {
     SHOW_POPULARITY_FACTORS("Show\\s+popularity\\s+factors"),
     SHOW_POPULARITY("Show\\s+popularity"),
     SHOW_FOOD_LIST("Show\\s+food\\s+list"),
-    SET_FOOD_RATE("Food\\s+rate\\s+-r\\s+(?<foodRate>-?[0-9]+)"),
+    SET_FOOD_RATE("Food\\s+rate\\s+-r\\s+(?<foodRate>-?\\d+)"),
     SHOW_FOOD_RATE("Show\\s+food\\s+rate"),
-    SET_TAX_RATE("Tax\\s+rate\\s+-r\\s+(?<taxRate>-?[0-9]+)"),
+    SET_TAX_RATE("Tax\\s+rate\\s+-r\\s+(?<taxRate>-?\\d+)"),
     SHOW_TAX_RATE("Show\\s+tax\\s+rate"),
-    SET_FEAR_RATE("Fear\\s+rate\\s+-r\\s+(?<fearRate>-?[0-9]+)"),
+    SET_FEAR_RATE("Fear\\s+rate\\s+-r\\s+(?<fearRate>-?\\d+)"),
     SHOW_FEAR_RATE("Show\\s+fear\\s+rate"),
     SHOW_TRADE_LIST("Show\\s+trade\\s+list"),
     SHOW_TRADE_HISTORY("Show\\s+trade\\s+history"),
     ACCEPT_TRADE("(?=.*-m\\s+(?<message>\".+\"|\\S*))(?=.*-i\\s+(?<id>\\d*))^Accept\\s+trade\\s*(\\s+-[im]\\s+(\".+\"|\\S*)){2}$"),
-    TRADE("(?=.*-m\\s+(?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]+\")|\\S*)))(?=.*-oa\\s+(?<offeredAmount>\\d*))" +
+    //empty field error handled up to here
+    TRADE("(?=.*-m\\s+(?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]*\")|\\S*)))(?=.*-oa\\s+(?<offeredAmount>\\d*))" +
             "(?=.*-wa\\s+(?<wantedAmount>\\d*))(?=.*-w\\s+(?<wanted>\\S*))(?=.*-o\\s+(?<offered>\\S*))" +
-            "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
+            "(?=.*-r\\s+(?<receiver>(\".*\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),

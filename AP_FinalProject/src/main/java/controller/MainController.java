@@ -204,15 +204,21 @@ public class MainController {
     }
 
     public static String clearBlock(Matcher matcher){
-        int i = Integer.parseInt(matcher.group("yAxis"));
-        int j = Integer.parseInt(matcher.group("xAxis"));
+        String x = matcher.group("xAxis");
+        String y = matcher.group("yAxis");
+        if (x == null || y == null) return "empty field";
+        int i = Integer.parseInt(y);
+        int j = Integer.parseInt(x);
         return currentGameMap.clearBlock(i, j);
     }
 
     public static String dropRock(Matcher matcher){
         String direction = matcher.group("direction");
-        int y = Integer.parseInt(matcher.group("yAxis"));
-        int x = Integer.parseInt(matcher.group("xAxis"));
+        String xString = matcher.group("xIndex");
+        String yString = matcher.group("yIndex");
+        if (direction == null || xString == null || yString == null) return "empty field";
+        int y = Integer.parseInt(matcher.group("yIndex"));
+        int x = Integer.parseInt(matcher.group("xIndex"));
         return switch (direction) {
             case "north" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
             case "south" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
@@ -224,10 +230,14 @@ public class MainController {
     }
 
     public static String dropTree(Matcher matcher){
-        BlockFillerType blockFillerType = BlockFillerType.stringToType(matcher.group("type"));
+        String type = matcher.group("type");
+        String x = matcher.group("xIndex");
+        String y = matcher.group("yIndex");
+        if (x == null || y == null || type == null) return "empty field";
+        BlockFillerType blockFillerType = BlockFillerType.stringToType(type);
         if (blockFillerType == null) return "Invalid type!";
-        int i = Integer.parseInt(matcher.group("yIndex"));
-        int j = Integer.parseInt(matcher.group("xIndex"));
+        int i = Integer.parseInt(y);
+        int j = Integer.parseInt(x);
         if (!currentGameMap.checkBounds(i, j)) return "Out of bounds!";
         if (!(currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GRASS) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GROUND))) return "Can't put a tree here!";
         currentGameMap.getMap()[i][j].setBLockFiller(blockFillerType);
@@ -255,10 +265,14 @@ public class MainController {
         return "OK";
     }
     public static String dropBuilding(Matcher matcher) {
-
-        int x = Integer.parseInt(matcher.group("xIndex"));
-        int y = Integer.parseInt(matcher.group("yIndex"));
+        String xString = matcher.group("xIndex");
+        String yString = matcher.group("yIndex");
         String type = matcher.group("type");
+
+        if (xString == null || yString == null || type == null) return "empty field";
+
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
 
         if (!currentGameMap.checkBounds(x , y)) {
             return "Index out of bound! try between 0 and 399";
@@ -277,10 +291,14 @@ public class MainController {
     }
 
     public static String dropUnit(Matcher matcher){
-        int x = Integer.parseInt(matcher.group("xIndex"));
-        int y = Integer.parseInt(matcher.group("yIndex"));
+        String xString = matcher.group("xIndex");
+        String yString = matcher.group("yIndex");
         String type = matcher.group("type");
-        int count = Integer.parseInt(matcher.group("count"));
+        String countString = matcher.group("count");
+        if (xString == null || yString == null || type == null || countString == null) return "empty field";
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        int count = Integer.parseInt(countString);
         if (!currentGameMap.checkBounds(x , y)) {
             return "Index out of bound! try between 0 and 399";
         }

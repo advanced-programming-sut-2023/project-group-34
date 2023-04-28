@@ -182,21 +182,27 @@ public class GameController {
         if(!(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.KEEP)) {
             return "You have not selected the right building";
         }
-        int taxRate = Integer.parseInt(matcher.group("taxRate"));
+        String rateString = matcher.group("taxRate");
+        if (rateString == null) return "empty field";
+        int taxRate = Integer.parseInt(rateString);
         if (taxRate < -3  || taxRate > 8) return "Invalid tax rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setTaxRate(taxRate);
         return "Tax rate successfully";
     }
 
     public static String setFearRate (Matcher matcher) {
-        int fearRate = Integer.parseInt(matcher.group("fearRate"));
+        String rateString = matcher.group("fearRate");
+        if (rateString == null) return "empty field";
+        int fearRate = Integer.parseInt(rateString);
         if (fearRate < -5 || fearRate > 5) return "Invalid fear rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setFearRate(fearRate);
         return "Fear rate set successfully";
     }
 
     public static String setFoodRate(Matcher matcher){
-        int foodRate = Integer.parseInt(matcher.group("foodRate"));
+        String foodRateString = matcher.group("foodRate");
+        if (foodRateString == null) return "empty field";
+        int foodRate = Integer.parseInt(foodRateString);
         if (foodRate < -2 || foodRate > 2) return "Invalid food rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setFoodRate(foodRate);
         return "Food rate set successfully";
@@ -252,8 +258,10 @@ public class GameController {
 
 
     public static String sellItems(Matcher matcher){
-        int finalAmount = Integer.parseInt(matcher.group("amount"));
         String item = matcher.group("item");
+        String amount = matcher.group("amount");
+        if (item == null || amount == null) return "empty field";
+        int finalAmount = Integer.parseInt(amount);
 
         if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
             return "The required field is empty, selling failed";
@@ -275,8 +283,10 @@ public class GameController {
 
     public static String buyItems(Matcher matcher){
 
-        int finalAmount = Integer.parseInt(matcher.group("amount"));
         String item = matcher.group("item");
+        String amount = matcher.group("amount");
+        if (item == null || amount == null) return "empty field";
+        int finalAmount = Integer.parseInt(amount);
 
         if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
             return "The required field is empty, buying failed";
@@ -552,7 +562,8 @@ public class GameController {
     public static String acceptTradeItem(Matcher matcher){
         String id = matcher.group("id");
         String message = matcher.group("message");
-        if (id.isEmpty() || message.isEmpty()) return "Required field is empty, accepting trade failed";
+        if (message != null) message = message.replaceAll("\"", "");
+        if (id == null || message == null || message.equals("")) return "empty field";
         int id1 = Integer.parseInt(matcher.group("id"));
 
         int tradesToBeAccepted = 0;
