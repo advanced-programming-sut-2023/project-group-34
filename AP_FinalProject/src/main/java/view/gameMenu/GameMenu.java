@@ -51,6 +51,14 @@ public class GameMenu {
                 System.out.println(response);
             } else if ((matcher = Commands.getOutput(command, Commands.SELECT_BUILDING)) != null){
                 System.out.println(GameController.selectBuilding(matcher));
+            } else if ((Commands.getOutput(command, Commands.REPAIR) != null)){
+                System.out.println(GameController.repairCurrentBuilding());
+            } else if ((matcher = Commands.getOutput(command, Commands.SELECT_UNIT)) != null){
+                System.out.println(GameController.selectUnits(matcher));
+            } else if (Commands.getOutput(command, Commands.DESELECT_BUILDING) != null){
+                System.out.println(GameController.deselectBuilding());
+            } else if (Commands.getOutput(command, Commands.DESELECT_TROOP) != null){
+                System.out.println(GameController.deselectBuilding());
             }
         }
     }

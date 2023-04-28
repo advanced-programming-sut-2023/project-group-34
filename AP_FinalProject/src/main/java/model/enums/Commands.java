@@ -59,9 +59,11 @@ public enum Commands {
     SHOW_MAP_DETAILS("(?=.*-x (?<x>\\S+))(?=.*-y (?<y>\\d+))^Show\\s+map\\s+details\\s*( *-[xy] \\S+){2}$"),
     MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d+))?(?=.*\\s+left\\s+(?<left>-?\\d+))?(?=.*\\s+right\\s+(?<right>-?\\d+))?(?=.*\\s+down\\s+(?<down>-?\\d+))?(\\s+(down|up|right|left)\\s+-?\\d+){1,4}"),
     SELECT_BUILDING("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+building\\s*( *-[xy] \\S+){2}$"),
+    DESELECT_BUILDING("Deselect\\s+building"),
     CREATE_UNIT("(?=.*-t (?<type>(\".+\"|\\S+)))(?=.*-c (?<count>\\d+))^Create\\s+unit\\s*( *-[tc] (\".+\"|\\S+)){2}$"),
     REPAIR("Repair"),
-    SELECT_UNIT("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+unit\\s*( *-[xy] \\S+){2}$");
+    SELECT_UNIT("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+unit\\s*( *-[xy] \\S+){2}$"),
+    DESELECT_TROOP("Deselect\\s+troop");
 
 
     private final String regex;

@@ -3,15 +3,14 @@ package controller;
 import model.Game;
 import model.Trade;
 import model.building.Building;
-import model.building.Gate;
 import model.building.GateType;
-import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
 import model.enums.Direction;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import model.forces.human.Human;
+import model.forces.human.Troop;
 import model.user.User;
 import model.map.Block;
 import view.gameMenu.GameMenu;
@@ -53,7 +52,7 @@ public class GameController {
         int xLocation = Integer.parseInt(matcher.group("x"));
         int yLocation = Integer.parseInt(matcher.group("y"));
 
-        if (xLocation < 1 || yLocation < 1 || xLocation > 400 || yLocation > 400)
+        if (xLocation < 1 || yLocation < 1 || xLocation > 399 || yLocation > 399)
             return "Invalid coordinates, selecting building failed";
 
         if (currentGame.getMap().getABlock(xLocation, yLocation).getBuilding() != null)
@@ -65,6 +64,12 @@ public class GameController {
 
         selectedBuilding = currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0);
         return "Building selected successfully";
+    }
+
+    public static String deselectBuilding(){
+        if (selectedBuilding == null) return "You have no building selected, deselecting building failed";
+        else selectedBuilding = null;
+        return "Building deselected successfully";
     }
 
     public Building getCurrentBuilding() {
@@ -220,12 +225,55 @@ public class GameController {
     }
 
     public static String repairCurrentBuilding () {
-        return null;
+        if (selectedBuilding.getHP() == selectedBuilding.getMaxHP())
+            return "There is nothing to repair in this building, repairing failed";
+
+        int x = selectedBuilding.getBlock().getLocationI() - 1;
+        int y = selectedBuilding.getBlock().getLocationJ() - 1;
+
+        for (int i = x; i < x + 3; i++){
+            for (int j = y; j < y + 3; y++) {
+                if (i < 0 || i > 399 || j < 0 || j > 399){
+                    continue;
+                }
+                for (Human human : currentGame.getMap().getABlock(i, j).getHumans()){
+                    if (!human.getGovernment().equals(selectedBuilding.getGovernment())){
+                        return "There are enemy troops near this building, repairing failed";
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<Resources, Integer> entry : selectedBuilding.getCost().entrySet()) {
+            double resourceNeeded = Math.ceil(((double) selectedBuilding.getHP()/selectedBuilding.getMaxHP()) * entry.getValue());
+            if (currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(entry.getKey()) < resourceNeeded)
+                return "You do not have enough resources to repair this building, repairing failed";
+            else
+                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                        put(entry.getKey(), currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                                get(entry.getKey())-resourceNeeded);
+        }
+        return "Building repaired successfully";
     }
 
 
     public static String selectUnits (Matcher matcher) {
-        return null;
+        int xLocation = Integer.parseInt(matcher.group("x"));
+        int yLocation = Integer.parseInt(matcher.group("y"));
+        if (xLocation < 0 | xLocation > 399 | yLocation < 0 | yLocation > 399)
+            return "Invalid coordinates, selecting unit failed";
+        for (Human human : currentGame.getMap().getABlock(xLocation, yLocation).getHumans()){
+            if (human instanceof Troop && human.getGovernment().equals(currentGame.getCurrentGovernment())){
+                selectedHumans.add(human);
+            }
+        }
+        return "Troops selected successfully";
+    }
+
+    public static String deselectUnits(){
+        if (selectedHumans.isEmpty()) return "You have no troops selected";
+        else selectedHumans.clear();
+        return "Troops deselected successfully";
     }
 
     public static String moveSelectedUnits (Matcher matcher) {
