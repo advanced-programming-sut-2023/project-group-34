@@ -7,8 +7,7 @@ import model.user.Password;
 
 import java.util.regex.Matcher;
 
-import static controller.UserController.passwordChecker;
-import static controller.UserController.randomUsernameGenerator;
+import static controller.UserController.*;
 
 public class StarterMenu {
 
@@ -22,13 +21,33 @@ public class StarterMenu {
             if ((matcher = model.enums.Commands.getOutput (input, Commands.CREATE_USER)) != null) {
                 String username;
                 String password;
+                String email = matcher.group("email");
                 String response = UserController.registerUserPart1(matcher);
+                String slogan = matcher.group("slogan");
+                String nickname = matcher.group("nickname");
+                boolean flag = slogan.equals("random");
+                Password passwordObject;
                 if (response != null) return response;
                 else {
                     if ((username = usernameCheck(matcher)).equals("Couldn't create user: username in use!"))
                         System.out.println("Couldn't create user: username in use!");
                     else {
-                        if ((password = passwordCheck(matcher)).equals(//errors)) sout(password);
+                        if ((password = passwordCheck(matcher)).equals("Couldn't create user: weak password(doesn't have needed chars)!") ||
+                                password.equals("Couldn't create user: weak password(less than 6 chars)!") ||
+                                password.equals("Couldn't create user: confirmation failed!"))
+                            System.out.println(password);
+                        else {
+                            passwordObject = new Password(password);
+                            slogan = sloganHandler(matcher);
+                            if (flag)System.out.println("Your slogan is: \"" +
+                                    slogan +
+                                    "\"");
+                            response = pickSecurityQuestion(passwordObject, Commands.getOutput(Runner.getScn().nextLine(), Commands.PICK_QUESTION));
+                            if (response != null) System.out.println(response);
+                            else {
+                                System.out.println(registerUser(username, passwordObject, email, nickname, slogan));
+                            }
+                        }
                     }
                 }
 
@@ -73,7 +92,7 @@ public class StarterMenu {
                     username +
                     "\" instead?(Yes/No)");
             if (Runner.getScn().nextLine().equals("No")) return "Couldn't create user: username in use!";
-            return username;
         }
+        return username;
     }
 }

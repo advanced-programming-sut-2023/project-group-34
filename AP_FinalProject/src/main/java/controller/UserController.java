@@ -58,60 +58,64 @@ public class UserController {
         return null;
     }
 
-    public static String registerUser(Matcher matcher){
-        String username = matcher.group("username");
-        if (username != null) username = username.replaceAll("\"", "");
-        String password = matcher.group("password");
-        if (password != null) password = password.replaceAll("\"", "");
-        String passwordConfirmation = matcher.group("passwordConfirmation");
-        if (passwordConfirmation != null) passwordConfirmation = passwordConfirmation.replaceAll("\"", "");
-        String email = matcher.group("email");
-        if (email != null) email = email.replaceAll("\"", "");
-        String nickname = matcher.group("nickname");
-        if (nickname != null) nickname = nickname.replaceAll("\"", "");
-        String slogan = matcher.group("slogan");
-        if (slogan != null) slogan = slogan.replaceAll("\"", "");
-        if (username == null ||
-                username.isEmpty() ||
-                password == null ||
-                password.isEmpty() ||
-                nickname == null ||
-                nickname.isEmpty() ||
-                email == null ||
-                email.equals("") ||
-                (matcher.group("sloganFlag") != null && (slogan == null || slogan.isEmpty()))) return "Couldn't create user: empty field!";
-        if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
-        if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
-        if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
-        return null;
+    public static String registerUser(String username, Password password, String email, String nickname, String slogan){
+//        String username = matcher.group("username");
+//        if (username != null) username = username.replaceAll("\"", "");
+//        String password = matcher.group("password");
+//        if (password != null) password = password.replaceAll("\"", "");
+//        String passwordConfirmation = matcher.group("passwordConfirmation");
+//        if (passwordConfirmation != null) passwordConfirmation = passwordConfirmation.replaceAll("\"", "");
+//        String email = matcher.group("email");
+//        if (email != null) email = email.replaceAll("\"", "");
+//        String nickname = matcher.group("nickname");
+//        if (nickname != null) nickname = nickname.replaceAll("\"", "");
+//        String slogan = matcher.group("slogan");
+//        if (slogan != null) slogan = slogan.replaceAll("\"", "");
+//        if (username == null ||
+//                username.isEmpty() ||
+//                password == null ||
+//                password.isEmpty() ||
+//                nickname == null ||
+//                nickname.isEmpty() ||
+//                email == null ||
+//                email.equals("") ||
+//                (matcher.group("sloganFlag") != null && (slogan == null || slogan.isEmpty()))) return "Couldn't create user: empty field!";
+//        if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
+//        if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
+//        if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
+//        return null;
         //
-        if (getUserByUsername(username) != null) {
-            username = randomUsernameGenerator(username);
-            if (StarterMenu.usernameCheck(username).equals("No")) return "Couldn't create user: username in use!";
-        }
-        return username;
-        //
-        if (password.equals("random")) {
-            password = Password.randomPassword();
-            passwordConfirmation = StarterMenu.passwordCheck(password);
-        }
-        if (passwordChecker(password) != null) return passwordChecker(password);
-        if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
-        return password;
-        //
-        if (slogan != null && slogan.equals("random")) slogan = randomSloganGenerator();
-        model.user.Password passwordObject = new Password(password);
-        String result = pickSecurityQuestion(passwordObject);
-        if (result != null) return result;
-        User user = new model.user.User(username, passwordObject, nickname, email);
+//        if (getUserByUsername(username) != null) {
+//            username = randomUsernameGenerator(username);
+//            if (StarterMenu.usernameCheck(username).equals("No")) return "Couldn't create user: username in use!";
+//        }
+//        return username;
+
+//        if (password.equals("random")) {
+//            password = Password.randomPassword();
+//            passwordConfirmation = StarterMenu.passwordCheck(password);
+//        }
+//        if (passwordChecker(password) != null) return passwordChecker(password);
+//        if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
+//        return password;
+
+//        slogan = sloganHandler(slogan);
+//        model.user.Password passwordObject = new Password(password);
+//        String result = pickSecurityQuestion(passwordObject);
+//        if (result != null) return result;
+        User user = new model.user.User(username, password, nickname, email);
         if (slogan != null) user.setSlogan(slogan);
         User.updateDataBase();
         return "User created successfully!";
     }
 
-    public static String pickSecurityQuestion(Password password) {
-        String input = controller.Runner.getScn().nextLine();
-        Matcher matcher = model.enums.Commands.getOutput(input, Commands.PICK_QUESTION);
+    public static String sloganHandler(Matcher matcher) {
+        String slogan = matcher.group("slogan");
+        if (slogan != null && slogan.equals("random")) slogan = randomSloganGenerator();
+        return slogan;
+    }
+
+    public static String pickSecurityQuestion(Password password, Matcher matcher) {
         if (matcher == null) return "Picking security Question failed: Invalid command!";
         String securityQuestionNumberString = matcher.group("questionNumber");
         if (securityQuestionNumberString != null) securityQuestionNumberString = securityQuestionNumberString.replaceAll("\"", "");
