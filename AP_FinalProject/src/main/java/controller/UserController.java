@@ -11,7 +11,6 @@ import model.enums.Slogan;
 
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 import java.util.regex.Matcher;
 
 public class UserController {
@@ -32,6 +31,31 @@ public class UserController {
                 }
             }
         }
+    }
+
+    public static String registerUserPart1(Matcher matcher) {String username = matcher.group("username");
+        if (username != null) username = username.replaceAll("\"", "");
+        String password = matcher.group("password");
+        if (password != null) password = password.replaceAll("\"", "");
+        String email = matcher.group("email");
+        if (email != null) email = email.replaceAll("\"", "");
+        String nickname = matcher.group("nickname");
+        if (nickname != null) nickname = nickname.replaceAll("\"", "");
+        String slogan = matcher.group("slogan");
+        if (slogan != null) slogan = slogan.replaceAll("\"", "");
+        if (username == null ||
+                username.isEmpty() ||
+                password == null ||
+                password.isEmpty() ||
+                nickname == null ||
+                nickname.isEmpty() ||
+                email == null ||
+                email.equals("") ||
+                (matcher.group("sloganFlag") != null && (slogan == null || slogan.isEmpty()))) return "Couldn't create user: empty field!";
+        if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
+        if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
+        if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
+        return null;
     }
 
     public static String registerUser(Matcher matcher){
@@ -57,26 +81,25 @@ public class UserController {
                 email.equals("") ||
                 (matcher.group("sloganFlag") != null && (slogan == null || slogan.isEmpty()))) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
-        if (getUserByUsername(username) != null) {
-            username = randomUsernameGenerator(username);
-            System.out.println("Username already used! do you like to use\"" +
-                    username +
-                    "\" instead?(Yes/No)");
-            String response = Runner.getScn().nextLine().trim();
-            if (response.equals("No")) return "Couldn't create user: username in use!";
-        }
-        if (password.equals("random")) {
-            password = Password.randomPassword();
-            System.out.println("Your random password is: " +
-                    password +
-                    "\nPlease re-enter your password here:");
-            passwordConfirmation = controller.Runner.getScn().nextLine();
-        }
-        if (passwordChecker(password) != null) return passwordChecker(password);
-        if (slogan != null && slogan.equals("random")) slogan = randomSloganGenerator();
-        if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
         if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
+        return null;
+        //
+        if (getUserByUsername(username) != null) {
+            username = randomUsernameGenerator(username);
+            if (StarterMenu.usernameCheck(username).equals("No")) return "Couldn't create user: username in use!";
+        }
+        return username;
+        //
+        if (password.equals("random")) {
+            password = Password.randomPassword();
+            passwordConfirmation = StarterMenu.passwordCheck(password);
+        }
+        if (passwordChecker(password) != null) return passwordChecker(password);
+        if (!password.equals(passwordConfirmation)) return "Couldn't create user: password confirmation failed!";
+        return password;
+        //
+        if (slogan != null && slogan.equals("random")) slogan = randomSloganGenerator();
         model.user.Password passwordObject = new Password(password);
         String result = pickSecurityQuestion(passwordObject);
         if (result != null) return result;

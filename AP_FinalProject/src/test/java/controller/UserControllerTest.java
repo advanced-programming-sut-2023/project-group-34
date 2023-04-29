@@ -55,6 +55,12 @@ class UserControllerTest {
         assertEquals("Couldn't create user: invalid email!", response);
     }
 
+    @Test
+    void isRegisterWorking(){
+        Matcher matcher = Commands.getOutput("user create -u ahmad111 -p 12F%34fsdfS 12F%34fsdfS -e alidada@gmail.com -n hamed", Commands.CREATE_USER);
+        String response = UserController.registerUser(matcher);
+        assertEquals("User created successfully!", response);
+    }
 
 
 
