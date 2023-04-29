@@ -82,7 +82,7 @@ public class UserController {
         if (result != null) return result;
         User user = new model.user.User(username, passwordObject, nickname, email);
         if (slogan != null) user.setSlogan(slogan);
-        //User.updateDataBase();
+        User.updateDataBase();
         return "User created successfully!";
     }
 

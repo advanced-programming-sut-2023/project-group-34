@@ -11,11 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class User {
     private String name;
@@ -209,7 +205,12 @@ public class User {
         //TODO needs to be checked by ALIZADEH
         try (FileReader reader = new FileReader("Users.json")) {
             //TODO Convert JSON File to Java Object
-            List<User> userObjects = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
+            ArrayList<User> userObjects = new Gson().fromJson(reader, new TypeToken<ArrayList<User>>() {}.getType());
+            if (userObjects != null){
+                for (int i = 0; i < userObjects.size(); i++) {
+                    users.add(userObjects.get(i));
+                }
+            }
         } catch (IOException e) {
 //            e.printStackTrace();
         }
