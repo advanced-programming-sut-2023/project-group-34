@@ -183,13 +183,32 @@ public class User {
         this.currentScore = currentScore;
     }
 
+    public static void currentUserJsonSaver() {
+        try (FileWriter writer = new FileWriter("currentUser.json")) {
+            Gson gson = new Gson();
+            gson.toJson(currentUser, writer);
+        } catch (IOException ignored) {
+        }
+    }
+
+    public static void loadCurrentUser() {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader("currentUser.json")) {
+            User currentUser = gson.fromJson(reader, User.class);
+            User.setCurrentUser(currentUser);
+        } catch (IOException ignored) {
+        }
+    }
+
     public static void stayLoggedIn() {
         isLoggedIn = true;
+        currentUserJsonSaver();
     }
 
     public static void logout() {
         currentUser = null;
         isLoggedIn = false;
+        currentUserJsonSaver();
     }
 
     public static void updateDataBase() {
