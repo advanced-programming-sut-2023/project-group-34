@@ -38,14 +38,18 @@ public class MainController {
     }
 
     public static String changeUsername (Matcher matcher){
-        String username = matcher.group("username");
-        username = username.replaceAll("\"", "");
 
-        if (username.isEmpty()) return "The username field is empty, changing username failed";
+        if (matcher.group("username") == null || matcher.group("username").isEmpty()){
+            return "The username field is empty, changing username failed";
+        }
+
+        String username = matcher.group("username");
+        if (username != null)
+            username = username.replaceAll("\"", "");
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
 
-        if (UserController.getUserByUsername(username) != null) return "Username already exists, changing username failed";
+        if (UserController.getUserByUsername(username) != null && !username.equals(User.currentUser.getName())) return "Username already exists, changing username failed";
 
         if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
 
@@ -55,9 +59,12 @@ public class MainController {
     }
 
     public static String changeNickname (Matcher matcher){
+        if (matcher.group("nickname") == null || matcher.group("nickname").isEmpty()){
+            return "The nickname field is empty, changing nickname failed";
+        }
+
         String nickname = matcher.group("nickname");
         nickname = nickname.replaceAll("\"", "");
-        if (nickname.isEmpty()) return "The nickname field is empty, changing nickname failed";
 
         if (User.currentUser.getNickname().equals(nickname)) return "Your nickname is already this, changing nickname failed";
 
