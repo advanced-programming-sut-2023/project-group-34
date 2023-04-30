@@ -27,6 +27,16 @@ public class GameMap {
         this.name = name;
     }
 
+    public GameMap(GameMap sample) {
+        map = new Block[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                map[i][j] = new Block(sample.getABlock(i, j));
+            }
+        }
+        this.name = sample.name;
+    }
+
     public Block[][] getMap() {
         return map;
     }

@@ -31,6 +31,12 @@ public class Block {
         this.locationJ = locationJ;
     }
 
+    public Block(Block sample) {
+        this.blockType = sample.getBlockType();
+        this.locationI = sample.locationI;
+        this.locationJ = sample.locationJ;
+    }
+
     public ArrayList<Human> getHumans() {
         return humans;
     }
