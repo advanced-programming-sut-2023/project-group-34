@@ -1,6 +1,7 @@
 package controller;
 
 import model.Dictionaries;
+import model.Game;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.building.BuildingType;
@@ -318,7 +319,7 @@ public class MainController {
         return currentGameMap;
     }
 
-    private static void setCurrentGameMap(GameMap currentGameMap) {
+    public static void setCurrentGameMap(GameMap currentGameMap) {
         MainController.currentGameMap = currentGameMap;
     }
 }

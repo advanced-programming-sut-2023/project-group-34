@@ -221,18 +221,22 @@ public class User {
     }
 
     public static void loadAllUsersFromDataBase() {
-        //TODO needs to be checked by ALIZADEH
         try (FileReader reader = new FileReader("Users.json")) {
-            //TODO Convert JSON File to Java Object
             ArrayList<User> userObjects = new Gson().fromJson(reader, new TypeToken<ArrayList<User>>() {}.getType());
             if (userObjects != null){
                 for (int i = 0; i < userObjects.size(); i++) {
                     users.add(userObjects.get(i));
                 }
             }
-        } catch (IOException e) {
-//            e.printStackTrace();
+        } catch (IOException ignored) {
         }
+    }
+
+    public GameMap getMapByName (String name) {
+        for (GameMap customMap : customMaps) {
+            if (customMap.name.equals(name)) return customMap;
+        }
+        return null;
     }
 
     public ArrayList<GameMap> getCustomMaps() {
