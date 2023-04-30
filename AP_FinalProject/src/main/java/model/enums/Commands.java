@@ -51,6 +51,8 @@ public enum Commands {
             "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
+    EDIT_OLD_MAP("Edit -m (?<mapName>\".+\"|\\S*)"),
+    NEW_MAP("New map -n (?<mapName>\".+\"|\\S*)"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),
     TRADE_MENU("Enter\\s+shop\\s+menu"),
     SHOW_MAP("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map(\\s+-[xy]\\s+\\d*){2}$"),

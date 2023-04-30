@@ -12,7 +12,26 @@ public class MapEditingMenu {
         String input;
         Matcher matcher;
         while (true){
-            //TODO: set current map???
+            input = Runner.getScn().nextLine().trim();
+            if ((matcher = Commands.getOutput(input, Commands.NEW_MAP)) != null) {
+                String response = MainController.newMap(matcher);
+                if (response == null) {
+                    System.out.println("Map created successfully. You can start editing!");
+                    break;
+                }
+                System.out.println(response);
+            }
+            else if ((matcher = Commands.getOutput(input, Commands.EDIT_OLD_MAP)) != null) {
+                String response = MainController.editMap(matcher);
+                if (response == null) {
+                    System.out.println("Map loaded successfully. You can start editing!");
+                    break;
+                }
+                System.out.println(response);
+            }
+            else System.out.println("Invalid command!");
+        }
+        while (true){
             input = Runner.getScn().nextLine().trim();
             if ((matcher = Commands.getOutput(input, Commands.SET_TEXTURE)) != null)
                 System.out.println(MainController.changeBlockFloorType(matcher));
@@ -28,6 +47,7 @@ public class MapEditingMenu {
                 System.out.println(MainController.dropUnit(matcher));
             else if (Commands.getOutput(input, Commands.BACK) != null) {
                 System.out.println("Back to main menu");
+                MainController.resetCurrentMap();
                 return "main menu";
             }
             else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)

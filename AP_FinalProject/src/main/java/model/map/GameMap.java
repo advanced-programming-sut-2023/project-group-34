@@ -10,19 +10,21 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class GameMap {
+    public final String name;
     private final Block[][] map;
 
     private final int size = 400;
 
     private Block UpLeftCornerBlock;
 
-    public GameMap() {
+    public GameMap(String name) {
         map = new Block[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 map[i][j] = new Block(i , j);
             }
         }
+        this.name = name;
     }
 
     public Block[][] getMap() {
