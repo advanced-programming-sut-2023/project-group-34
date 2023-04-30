@@ -1,9 +1,9 @@
 package controller;
 
+import com.sun.tools.javac.Main;
 import model.enums.Commands;
 import model.user.Password;
 import model.user.User;
-import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Matcher;
@@ -80,6 +80,74 @@ class ProfileMenuTest {
         assertEquals("reza", User.currentUser.getNickname());
 
     }
+
+    @Test
+    void emptyChangePasswordOldField(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o -n 1234", Commands.CHANGE_PASSWORD);
+        assertEquals("The old password filed is empty, changing password failed", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void emptyChangePasswordNewField(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234 -n ", Commands.CHANGE_PASSWORD);
+        assertEquals("The new password filed is empty, changing password failed", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void checkPasswordValidation(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#12 -n 1234", Commands.CHANGE_PASSWORD);
+        assertEquals("weak password(less than 6 chars)!", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void checkPasswordValidation1(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#12 -n 1234567sA", Commands.CHANGE_PASSWORD);
+        assertEquals("weak password(doesn't have needed chars)!", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void isCurrentPasswordCorrect(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#149 -n 123456As#", Commands.CHANGE_PASSWORD);
+        assertEquals("Incorrect current password, changing password failed", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void isCurrentPasswordDifferent(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#12 -n 1234As#12", Commands.CHANGE_PASSWORD);
+        assertEquals("Your new password has to be different from your current password, changing password failed", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void runChangePasswordPart1(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -n 4567As#12 -o 1234As#12", Commands.CHANGE_PASSWORD);
+        assertEquals("good for now", MainController.changePasswordPart1(matcher));
+    }
+
+    @Test
+    void passwordConfirmation(){
+        createUser("ahmad", "ali@gmail.com");
+        String newPass = "4567As#12";
+        String confirmation = "56895dfd$2";
+        assertEquals("confirmation password does not match the initial password, changing password failed", MainController.changePasswordPart2(newPass, confirmation));
+
+    }
+
+    @Test
+    void runChangePasswordPart2(){
+        createUser("ahmad", "ali@gmail.com");
+        String newPass = "4567As#12";
+        String confirmation = "4567As#12";
+        assertEquals("Password changed successfully", MainController.changePasswordPart2(newPass, confirmation));
+        assertTrue(User.currentUser.getPassword().checkPassword(newPass));
+    }
+
 
 
 }

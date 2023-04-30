@@ -14,7 +14,7 @@ public enum Commands {
     CHANGE_NICKNAME("\\s*Profile\\s+change\\s+-n(\\s+(?<nickname>\"[^\"]*\"|\\S*))?\\s*"),
     CHANGE_EMAIL("\\s*Profile\\s+change\\s+-e(\\s+(?<email>\"[^\"]*\"|\\S*))?\\s*"),
     CHANGE_SLOGAN("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]*\"|\\S*))?\\s*"),
-    CHANGE_PASSWORD("\\s*Profile\\s+change\\s+password(?=.*\\s+-o\\s+(?<oldPass>\"[^\"]*\"|\\S*))(?=.*\\s+-n\\s+(?<newPass>\"[^\"]*\"|\\S*))(\\s+-[on]\\s+(\"[^\"]*\"|\\S*)){2}\\s*"),
+    CHANGE_PASSWORD("\\s*Profile\\s+change\\s+password(?=.*\\s+-o\\s*(?<oldPass>(\"[^\"]*\"|[^- ]*)))(?=.*\\s+-n\\s*(?<newPass>(\"[^\"]*\"|[^- ]*)))(\\s+-[on]\\s*(\"[^\"]*\"|\\S*)){2}\\s*"),
     CHANGE_PASSWORD_RANDOMLY("(?=.*\\s+-o\\s+(?<oldPass>\".+\"|\\S*))(?=.*\\s+-n\\s+random)^\\s*Profile\\s+change\\s+password(\\s+-[on]\\s+(\".+\"|\\S*)){2}\\s*$"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),

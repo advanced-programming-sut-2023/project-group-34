@@ -34,7 +34,15 @@ public class ProfileMenu {
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD_RANDOMLY)) != null){
                 System.out.println(MainController.changePasswordRandomly(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){
-                System.out.println(MainController.changePassword(matcher));
+                String response = MainController.changePasswordPart1(matcher);
+                if (!response.equals("good for now"))
+                    System.out.println(response);
+                else {
+                    String newPass = matcher.group("newPass");
+                    System.out.println("Please renter your new password for confirmation");
+                    String confirmationPassword = Runner.getScn().nextLine();
+                    System.out.println(MainController.changePasswordPart2(newPass, confirmationPassword));
+                }
             } else if (Commands.getOutput(command, Commands.DISPLAY_HIGHS_CORE) != null){
                 System.out.println(User.currentUser.getScore());
             } else if (Commands.getOutput(command, Commands.DISPLAY_SLOGAN) != null){

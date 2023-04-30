@@ -154,9 +154,9 @@ public class UserController {
     }
 
     public static String passwordChecker(String password){
-        if (password.length() < 6) return "Couldn't create user: weak password(less than 6 chars)!";
+        if (password.length() < 6) return "weak password(less than 6 chars)!";
         if (!Validations.check(password, Validations.STRONG_PASSWORD))
-            return "Couldn't create user: weak password(doesn't have needed chars)!";
+            return "weak password(doesn't have needed chars)!";
         return null;
     }
 

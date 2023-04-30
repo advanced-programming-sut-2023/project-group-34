@@ -73,32 +73,36 @@ public class MainController {
         return "Nickname changed successfully";
     }
 
-    public static String changePassword(Matcher matcher){
+    public static String changePasswordPart1(Matcher matcher){
+        if (matcher.group("oldPass") == null || matcher.group("oldPass").isEmpty())
+            return "The old password filed is empty, changing password failed";
+
+        if (matcher.group("newPass") == null || matcher.group("newPass").isEmpty())
+            return "The new password filed is empty, changing password failed";
+
         String finalOldPass = matcher.group("oldPass");
         String finalNewPass = matcher.group("newPass");
 
-        if (finalOldPass.isEmpty() || finalNewPass.isEmpty())
-            return "The required field is empty, changing password failed";
-
         String response = UserController.passwordChecker(finalNewPass);
-        if (!response.isEmpty()) return response;
+        if (response != null && !response.isEmpty()) return response;
 
-        if (User.currentUser.getPassword().checkPassword(finalOldPass))
+        if (!User.currentUser.getPassword().checkPassword(finalOldPass))
             return "Incorrect current password, changing password failed";
 
         if (User.currentUser.getPassword().checkPassword(finalNewPass))
             return "Your new password has to be different from your current password, changing password failed";
+        return "good for now";
+    }
 
-        System.out.println("Please renter your new password for confirmation");
-        String finalNewPass1 = Runner.getScn().nextLine();
+    public static String changePasswordPart2(String givenPassword, String confirmationPassword){
+        if (!givenPassword.equals(confirmationPassword)) return "confirmation password does not match the initial password, changing password failed";
 
-        if (!finalNewPass1.equals(finalNewPass))
-            return "Confirmation failed, changing password failed";
-
-        User.currentUser.getPassword().setPasswordName(finalNewPass1);
+        User.currentUser.getPassword().setPasswordName(givenPassword);
         User.updateDataBase();
         return "Password changed successfully";
     }
+
+
 
     public static String changePasswordRandomly(Matcher matcher){
 
