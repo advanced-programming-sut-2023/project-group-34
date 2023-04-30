@@ -2,6 +2,7 @@ package model.building;
 
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
+import model.forces.WarEquipment;
 import model.forces.human.Engineer;
 import model.forces.human.Human;
 import model.forces.human.Troop;
@@ -14,7 +15,8 @@ import java.util.HashMap;
 public class Maker extends Building{
     private final ArrayList<MakeAble> output;
 
-    private double outputRate;
+    private final double outputRate;
+    private  double currentOutPutRate;
     private final double inputRate;
     private final double capacity;
 
@@ -33,12 +35,13 @@ public class Maker extends Building{
         this.inputRate = inputRate;
         this.input = input;
         numberOfCurrentWorkers = 0;
+        currentOutPutRate = outputRate;
     }
 
     @Override
     public void process() {
         if(this.buildingType == MakerType.QUARRY) {
-            currentAmount += outputRate;
+            currentAmount += currentOutPutRate;
             currentAmount = Math.min(currentAmount, capacity);
             return;
         }
@@ -49,16 +52,16 @@ public class Maker extends Building{
             input.use(tempInputRate , government);
         }
         for(MakeAble makeAble : output) {
-            makeAble.add(Math.floor((tempInputRate * outputRate) / inputRate), government);
+            makeAble.add(Math.floor((tempInputRate * currentOutPutRate) / inputRate), government);
             if(makeAble.getLeftCapacity(government) < 0) {
-                makeAble.use(-makeAble.getLeftCapacity(government), government);
+                makeAble.use(-makeAble.getLeftCapacity(government) , government);
             }
         }
     }
     @Override
     public void destroy() {
         for (Human human : this.block.getHumans()) {
-            if(!(human instanceof Troop || human instanceof Engineer)) {
+            if(!(human instanceof WarEquipment)) {
                 human.die();
             }
         }
@@ -103,10 +106,7 @@ public class Maker extends Building{
 
     public void setCurrentOutputRate(int integrityRate) {
         integrityRate *= 5;
-        this.outputRate = (outputRate * (integrityRate+100))/100;
-    }
-    public void setOutputRate(int outputRate) {
-        this.outputRate = outputRate;
+        this.currentOutPutRate = (outputRate * (integrityRate+100))/100;
     }
 
     public void addWorkers(int numberOfWorkers) {

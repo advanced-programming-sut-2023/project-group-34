@@ -2,6 +2,7 @@ package model.building;
 
 import model.enums.make_able.Resources;
 import model.forces.SiegeMachine.SiegeMachine;
+import model.forces.WarEquipment;
 import model.forces.human.Human;
 import model.government.Government;
 import model.map.Block;
@@ -16,14 +17,9 @@ public class DeathPit extends Building {
 
     @Override
     public void process() {
-        for(Human human : this.block.getHumans()) {
-            if(!human.getGovernment().equals(this.government)) {
-                human.die();
-            }
-        }
-        for (SiegeMachine siegeMachine : block.getSiegeMachines()) {
-            if(!siegeMachine.getGovernment().equals(government)) {
-                siegeMachine.die();
+        for (WarEquipment warEquipment : block.getWarEquipments()) {
+            if(!warEquipment.getGovernment().equals(government)) {
+                warEquipment.die();
             }
         }
         destroy();

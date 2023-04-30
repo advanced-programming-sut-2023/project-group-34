@@ -4,13 +4,16 @@ import model.Game;
 import model.Trade;
 import model.building.Building;
 import model.building.GateType;
+import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
 import model.enums.Direction;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
+import model.forces.WarEquipment;
 import model.forces.human.Human;
 import model.forces.human.Troop;
+import model.map.GameMap;
 import model.user.User;
 import model.map.Block;
 import view.gameMenu.GameMenu;
@@ -22,9 +25,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public class GameController {
-    private static Game currentGame;
-    private static Building selectedBuilding;
-    private static ArrayList<Human> selectedHumans = new ArrayList<>();
+    public static Game currentGame;
+    public static Building selectedBuilding;
+    public static ArrayList<WarEquipment> selectedWarEquipment = new ArrayList<>();
 
     public static String run(){
         while (true) {
@@ -79,17 +82,10 @@ public class GameController {
     private String deselectCurrentBuilding () { return null;}
 
     private static String deselectHumans () {
-        selectedHumans.clear();
+        selectedWarEquipment.clear();
         return null;
     }
 
-    public static ArrayList<Human> getSelectedHumans() {
-        return selectedHumans;
-    }
-
-    public static void setSelectedHumans(ArrayList<Human> selectedHumans) {
-        GameController.selectedHumans = selectedHumans;
-    }
 
     public static String setMapLocation (int x, int y) {
         if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";
@@ -200,6 +196,8 @@ public class GameController {
     }
 
     public static String setFoodRate(Matcher matcher){
+        if(!selectedBuilding.getBuildingType().equals(GeneralBuildingsType.FOOD_STORAGE))
+            return "you have not choose food storage";
         int foodRate = Integer.parseInt(matcher.group("foodRate"));
         if (foodRate < -2 || foodRate > 2) return "Invalid food rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setFoodRate(foodRate);
@@ -222,8 +220,8 @@ public class GameController {
                 if (i < 0 || i > 399 || j < 0 || j > 399){
                     continue;
                 }
-                for (Human human : currentGame.getMap().getABlock(i, j).getHumans()){
-                    if (!human.getGovernment().equals(selectedBuilding.getGovernment())){
+                for (WarEquipment warEquipment : currentGame.getMap().getABlock(i, j).getWarEquipments()){
+                    if (!warEquipment.getGovernment().equals(selectedBuilding.getGovernment())){
                         return "There are enemy troops near this building, repairing failed";
                     }
                 }
@@ -248,17 +246,17 @@ public class GameController {
         int yLocation = Integer.parseInt(matcher.group("y"));
         if (xLocation < 0 | xLocation > 399 | yLocation < 0 | yLocation > 399)
             return "Invalid coordinates, selecting unit failed";
-        for (Human human : currentGame.getMap().getABlock(xLocation, yLocation).getHumans()){
-            if (human instanceof Troop && human.getGovernment().equals(currentGame.getCurrentGovernment())){
-                selectedHumans.add(human);
+        for (WarEquipment warEquipment: currentGame.getMap().getABlock(xLocation, yLocation).getWarEquipments()){
+            if (warEquipment.getGovernment().equals(currentGame.getCurrentGovernment())){
+                selectedWarEquipment.add(warEquipment);
             }
         }
         return "Troops selected successfully";
     }
 
     public static String deselectUnits(){
-        if (selectedHumans.isEmpty()) return "You have no troops selected";
-        else selectedHumans.clear();
+        if (selectedWarEquipment.isEmpty()) return "You have no troops selected";
+        else selectedWarEquipment.clear();
         return "Troops deselected successfully";
     }
 
@@ -273,10 +271,53 @@ public class GameController {
     }
 
     public static String attackTheBlock (Matcher matcher) {
-        return null;
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(selectedWarEquipment.isEmpty()) {
+            return "You have to choose a unit first";
+        }
+        boolean flag = false;
+        Block OpponentBlock = currentGame.getMap().getABlock(x , y);
+        for(WarEquipment warEquipment : selectedWarEquipment) {
+            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , warEquipment.getBlock()) > warEquipment.getFireRange()) {
+                continue;
+            }
+            flag = true;
+            for(int i = 0; i < OpponentBlock.getWarEquipments().size() ; i++) {
+                OpponentBlock.getWarEquipments().get(i).getHurt(warEquipment.getDamage());
+                if(OpponentBlock.getWarEquipments().get(i).getHP() < 0) {
+                    OpponentBlock.getWarEquipments().get(i).die();
+                }
+            }
+        }
     }
 
-    public static String arialAttack(Matcher matcher) { return null;}
+    public static String arialAttack(Matcher matcher) {
+        //TODO set errors for blockType
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(selectedWarEquipment.isEmpty()) {
+            return "You have to choose a unit first";
+        }
+        boolean flag = false;
+        Block OpponentBlock = currentGame.getMap().getABlock(x , y);
+        for(WarEquipment warEquipment : selectedWarEquipment) {
+            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , warEquipment.getBlock()) > warEquipment.getFireRange() || warEquipment.getFireRange() <= 1) {
+                continue;
+            }
+            flag = true;
+            for(int i = 0; i < OpponentBlock.getWarEquipments().size() ; i++) {
+                OpponentBlock.getWarEquipments().get(i).getHurt(warEquipment.getDamage());
+                if(OpponentBlock.getWarEquipments().get(i).getHP() < 0) {
+                    OpponentBlock.getWarEquipments().get(i).die();
+                }
+            }
+        }
+        if(!flag) {
+            return "that block is out of range!";
+        }
+        return "arial attack was successful";
+    }
 
     public static String pourOil (Matcher matcher) {
         return null;

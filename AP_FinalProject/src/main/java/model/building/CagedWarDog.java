@@ -17,7 +17,7 @@ public class CagedWarDog extends Building{
     public void process() {
         int numberOfDogs = 4;
         for (int i = 0; i < numberOfDogs; i++) {
-            TroopType.WAR_DOG.Maker(block , government);
+            TroopType.WAR_DOG.Creator(block , government);
         }
         destroy();
     }

@@ -1,6 +1,7 @@
 package model.map;
 
 import model.building.Building;
+import model.building.BuildingType;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.forces.SiegeMachine.SiegeMachine;
@@ -22,7 +23,7 @@ public class Block {
 
     private ArrayList<Building> building = new ArrayList<>();
 
-    private final ArrayList<SiegeMachine> siegeMachines = new ArrayList<>();
+    private final ArrayList<WarEquipment> warEquipments = new ArrayList<>();
     private int resourcesCapacity;
     private boolean isPassable;
     private final int locationI;
@@ -124,11 +125,20 @@ public class Block {
         else return null;
     }
 
-    public ArrayList<SiegeMachine> getSiegeMachines() {
-        return siegeMachines;
+    public ArrayList<WarEquipment> getWarEquipments() {
+        return warEquipments;
     }
 
-    public void addSiegeMachines(SiegeMachine siegeMachine) {
-        this.siegeMachines.add(siegeMachine);
+    public void addWarEquipment(WarEquipment warEquipment) {
+        this.warEquipments.add(warEquipment);
+    }
+
+    public boolean containsThisBuilding(BuildingType buildingType) {
+        for(Building building1 : this.getBuilding()) {
+            if(building1.getBuildingType().equals(buildingType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

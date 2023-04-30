@@ -43,8 +43,8 @@ public enum TroopType {
     final int defensiveRange;
     final int fireRange;
     final int aggressiveRange;
-    public void Maker(Block block, Government government) {
-         block.getHumans().add(new Troop(this.HP, block, this.damage, this.canDig,this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this, this.price));
+    public void Creator(Block block, Government government) {
+         block.getWarEquipments().add(new Troop(this.HP, block, this.damage, this.canDig,this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this, this.price));
     }
 }
 

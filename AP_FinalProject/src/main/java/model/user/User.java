@@ -206,12 +206,10 @@ public class User {
     }
 
     public static void loadAllUsersFromDataBase() {
-        //TODO needs to be checked by ALIZADEH
         try (FileReader reader = new FileReader("Users.json")) {
             //TODO Convert JSON File to Java Object
             List<User> userObjects = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
-        } catch (IOException e) {
-//            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 

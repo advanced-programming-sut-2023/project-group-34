@@ -46,7 +46,7 @@ public class Troop extends Human implements WarEquipment {
 
     @Override
     public void fight(WarEquipment opponent) {
-        //TODO first attack conquer machines
+
     }
 
     @Override
@@ -100,4 +100,25 @@ public class Troop extends Human implements WarEquipment {
     public void setVisible(boolean visible) {
         isVisible = visible;
     }
+    public static HashMap<TroopType, String> troopsNameString = new HashMap<>(
+            Map.ofEntries(
+                    Map.entry(TroopType.ARCHER, "archer"),
+                    Map.entry(TroopType.CROSS_BOW_MAN, "crossbow man"),
+                    Map.entry(TroopType.SPEAR_MAN, "spear man"),
+                    Map.entry(TroopType.PIKE_MAN, "pike man"),
+                    Map.entry(TroopType.MACE_MAN, "mace man"),
+                    Map.entry(TroopType.SWORDS_MAN, "swords man"),
+                    Map.entry(TroopType.KNIGHT, "knight"),
+                    Map.entry(TroopType.TUNNELER, "tunneler"),
+                    Map.entry(TroopType.LADDER_MAN, "ladder man"),
+                    Map.entry(TroopType.BLACK_MONK, "black monk"),
+                    Map.entry(TroopType.ARCHER_BOW, "archer bow"),
+                    Map.entry(TroopType.SLAVE, "slave"),
+                    Map.entry(TroopType.SLINGER, "slinger"),
+                    Map.entry(TroopType.ASSASSIN, "assassin"),
+                    Map.entry(TroopType.HORSE_ARCHER, "horse archer"),
+                    Map.entry(TroopType.ARAB_SWORD_MAN, "arab swords man"),
+                    Map.entry(TroopType.FIRE_THROWERS, "fire thrower")
+            )
+    );
 }

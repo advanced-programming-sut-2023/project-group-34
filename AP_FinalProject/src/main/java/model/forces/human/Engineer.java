@@ -1,9 +1,10 @@
 package model.forces.human;
 
+import model.forces.WarEquipment;
 import model.government.Government;
 import model.map.Block;
 
-public class Engineer extends Human{
+public class Engineer extends Human implements WarEquipment {
     private final int price;
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government, int price) {
@@ -24,5 +25,25 @@ public class Engineer extends Human{
 
     public int getPrice() {
         return price;
+    }
+
+    @Override
+    public int getFireRange() {
+        return 0;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
+
+    @Override
+    public void fight(WarEquipment opponent) {
+
+    }
+
+    @Override
+    public void addRange(int amount) {
+
     }
 }

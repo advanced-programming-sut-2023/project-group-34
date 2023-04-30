@@ -25,6 +25,7 @@ public class Human {
         HP = 1;
         this.damage = 0;
         this.government = government;
+        government.getHumans().add(this);
     }
     public Human (int HP , int maxHP , Block block , int damage , boolean canDig , boolean canClimb , Government government) {
         this.maxHP = maxHP;
@@ -34,6 +35,7 @@ public class Human {
         this.canClimb = canClimb;
         this.government = government;
         this.block = block;
+        government.getHumans().add(this);
     }
 
     public void die() {
@@ -53,8 +55,8 @@ public class Human {
         return HP;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
+    public void changeHP(int amount) {
+        this.HP += amount;
     }
 
     public Government getGovernment() {

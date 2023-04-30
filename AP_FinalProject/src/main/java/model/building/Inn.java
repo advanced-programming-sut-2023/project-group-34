@@ -1,6 +1,7 @@
 package model.building;
 
 import model.enums.make_able.Food;
+import model.forces.WarEquipment;
 import model.forces.human.Engineer;
 import model.forces.human.Human;
 import model.forces.human.Troop;
@@ -27,7 +28,7 @@ public class Inn extends Building{
     @Override
     public void destroy() {
         for (Human human : this.block.getHumans()) {
-            if(!(human instanceof Troop || human instanceof Engineer)) {
+            if(!(human instanceof WarEquipment)) {
                 human.die();
             }
         }

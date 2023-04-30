@@ -1,10 +1,13 @@
 package controller;
 
 import model.Dictionaries;
+import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.building.BuildingType;
 import model.building.MakerType;
+import model.enums.make_able.Resources;
+import model.enums.make_able.Weapons;
 import model.map.Block;
 import model.map.GameMap;
 import model.user.Password;
@@ -15,14 +18,15 @@ import view.ProfileMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class MainController {
 
     public static GameMap currentGameMap;
 
-    public static String run(){
-        while (true){
+    public static String run() {
+        while (true) {
             String response = MainMenu.run();
             switch (response) {
                 case "profile menu" -> ProfileMenu.run();
@@ -37,7 +41,7 @@ public class MainController {
         }
     }
 
-    public static String changeUsername (Matcher matcher){
+    public static String changeUsername(Matcher matcher) {
         String username = matcher.group("username");
         username = username.replaceAll("\"", "");
 
@@ -45,28 +49,31 @@ public class MainController {
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
 
-        if (UserController.getUserByUsername(username) != null) return "Username already exists, changing username failed";
+        if (UserController.getUserByUsername(username) != null)
+            return "Username already exists, changing username failed";
 
-        if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
+        if (User.currentUser.getName().equals(username))
+            return "You username is already this, changing username failed";
 
         User.currentUser.setName(username);
         //Info has to be changed in Json as well
         return "Username successfully changed";
     }
 
-    public static String changeNickname (Matcher matcher){
+    public static String changeNickname(Matcher matcher) {
         String nickname = matcher.group("nickname");
         nickname = nickname.replaceAll("\"", "");
         if (nickname.isEmpty()) return "The nickname field is empty, changing nickname failed";
 
-        if (User.currentUser.getNickname().equals(nickname)) return "Your nickname is already this, changing nickname failed";
+        if (User.currentUser.getNickname().equals(nickname))
+            return "Your nickname is already this, changing nickname failed";
 
         User.currentUser.setNickname(nickname);
         //Info has to be changed in Json as well
         return "Nickname changed successfully";
     }
 
-    public static String changePassword(Matcher matcher){
+    public static String changePassword(Matcher matcher) {
         String finalOldPass = matcher.group("oldPass");
         String finalNewPass = matcher.group("newPass");
 
@@ -93,7 +100,7 @@ public class MainController {
         return "Password changed successfully";
     }
 
-    public static String changePasswordRandomly(Matcher matcher){
+    public static String changePasswordRandomly(Matcher matcher) {
 
         String finalOldPass = matcher.group("oldPass");
 
@@ -104,7 +111,7 @@ public class MainController {
 
         String finalNewPass = Password.randomPasswordGenerator();
 
-        while(finalNewPass.equals(finalOldPass)) {
+        while (finalNewPass.equals(finalOldPass)) {
             finalNewPass = Password.randomPasswordGenerator();
         }
 
@@ -113,7 +120,7 @@ public class MainController {
         return "Password changed successfully";
     }
 
-    public static String changeEmail(Matcher matcher){
+    public static String changeEmail(Matcher matcher) {
         String email = matcher.group("email");
         if (email.isEmpty()) return "The email field is empty, changing email failed";
 
@@ -128,7 +135,7 @@ public class MainController {
         return "Email changed successfully";
     }
 
-    public static String changeSlogan(Matcher matcher){
+    public static String changeSlogan(Matcher matcher) {
         String slogan = matcher.group("slogan");
         slogan = slogan.replaceAll("\"", "");
         if (slogan.isEmpty()) return "The slogan field is empty, changing slogan failed";
@@ -141,13 +148,13 @@ public class MainController {
         return "Slogan changed successfully";
     }
 
-    public static String changeSloganRandomly(Matcher matcher){
-        String newSlogan =  UserController.randomSloganGenerator();
+    public static String changeSloganRandomly(Matcher matcher) {
+        String newSlogan = UserController.randomSloganGenerator();
         User.currentUser.setSlogan(newSlogan);
         return "Slogan changed successfully";
     }
 
-    public static String removeSlogan(Matcher matcher){
+    public static String removeSlogan(Matcher matcher) {
         if (User.currentUser.getSlogan().isEmpty()) return "Your slogan field is already empty, removing slogan failed";
 
         //Info has to be changed in Json as well
@@ -155,12 +162,12 @@ public class MainController {
         return "Slogan removed successfully";
     }
 
-    public static String displaySlogan(){
+    public static String displaySlogan() {
         if (User.currentUser.getSlogan().isEmpty()) return "Slogan is empty!";
         else return User.currentUser.getSlogan();
     }
 
-    public static String showProfile(){
+    public static String showProfile() {
         String theWholeProfile = "";
         theWholeProfile = theWholeProfile.concat("Username: " + User.currentUser.getName() + "\n");
         theWholeProfile = theWholeProfile.concat("Nickname: " + User.currentUser.getNickname() + "\n");
@@ -171,7 +178,7 @@ public class MainController {
         return theWholeProfile;
     }
 
-    public static String changeBlockFloorType(Matcher matcher){
+    public static String changeBlockFloorType(Matcher matcher) {
         BlockType blockType = BlockType.stringToBlockType(matcher.group("type"));
         if (blockType == null) return "Invalid texture!";
         String x = matcher.group("singleX");
@@ -181,21 +188,20 @@ public class MainController {
             int y1 = Integer.parseInt(matcher.group("y1"));
             int y2 = Integer.parseInt(matcher.group("y2"));
             return currentGameMap.setRectangleTexture(x1, x2, y1, y2, blockType);
-        }
-        else {
+        } else {
             int x1 = Integer.parseInt(x);
             int y1 = Integer.parseInt(matcher.group("singleY"));
             return currentGameMap.setRectangleTexture(x1, x1, y1, y1, blockType);
         }
     }
 
-    public static String clearBlock(Matcher matcher){
+    public static String clearBlock(Matcher matcher) {
         int i = Integer.parseInt(matcher.group("yAxis"));
         int j = Integer.parseInt(matcher.group("xAxis"));
         return currentGameMap.clearBlock(i, j);
     }
 
-    public static String dropRock(Matcher matcher){
+    public static String dropRock(Matcher matcher) {
         String direction = matcher.group("direction");
         int y = Integer.parseInt(matcher.group("yAxis"));
         int x = Integer.parseInt(matcher.group("xAxis"));
@@ -204,76 +210,107 @@ public class MainController {
             case "south" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
             case "west" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
             case "east" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
-            case "random" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
+            case "random" ->
+                    currentGameMap.setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
             default -> "Invalid direction!";
         };
     }
 
-    public static String dropTree(Matcher matcher){
+    public static String dropTree(Matcher matcher) {
         BlockFillerType blockFillerType = BlockFillerType.stringToType(matcher.group("type"));
         if (blockFillerType == null) return "Invalid type!";
         int i = Integer.parseInt(matcher.group("yIndex"));
         int j = Integer.parseInt(matcher.group("xIndex"));
         if (!currentGameMap.checkBounds(i, j)) return "Out of bounds!";
-        if (!(currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GRASS) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GROUND))) return "Can't put a tree here!";
+        if (!(currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GRASS) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GROUND)))
+            return "Can't put a tree here!";
         currentGameMap.getMap()[i][j].setBLockFiller(blockFillerType);
         return "Success!";
     }
 
-    private static String checkBlockType(Block block , BuildingType buildingType) {
-        if((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) &&
+    private static String checkBlockType(Block block, BuildingType buildingType) {
+        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) &&
                 (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
             return "You can't put farm on that ground!";
         }
-        if((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
+        if ((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
             return "You only can put quarry on rocks!";
         }
-        if(buildingType.equals(MakerType.IRON_MINE) && !block.getBlockType().equals(BlockType.IRON)) {
+        if (buildingType.equals(MakerType.IRON_MINE) && !block.getBlockType().equals(BlockType.IRON)) {
             return "You can only put iron mine on iron!";
         }
-        if(buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
+        if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
             return "You can only put pitch rig on plains!";
         }
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND , BlockType.STONY_GROUND , BlockType.GRASS , BlockType.MEADOW , BlockType.DENSE_MEADOW));
-        if(!goodBlockTypes.contains(block.getBlockType())) {
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        if (!goodBlockTypes.contains(block.getBlockType())) {
             return "You can put anything on that block!";
         }
         return "OK";
     }
+
     public static String dropBuilding(Matcher matcher) {
 
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
 
-        if (!currentGameMap.checkBounds(x , y)) {
+        if (!currentGameMap.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";
         }
-        if (!Dictionaries.buildingDictionary.containsKey(type))
-        {
+        if (!Dictionaries.buildingDictionary.containsKey(type)) {
             return "Invalid building name!";
         }
-        Block block = currentGameMap.getABlock(x , y);
+        Block block = currentGameMap.getABlock(x, y);
         BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
-        if(!checkBlockType(block , buildingType).equals("OK")) {
-            return checkBlockType(block , buildingType);
+        if (!checkBlockType(block, buildingType).equals("OK")) {
+            return checkBlockType(block, buildingType);
+        }
+        if (buildingType.equals(GeneralBuildingsType.FOOD_STORAGE)) {
+            Block tempBlock;
+            boolean flag = false;
+            outer:
+            for (int i = x - 1; i <= x + 1; i++) {
+                for (int j = y - 1; j <= j + 1; j++) {
+                    if(i < 0 || j < 0) {
+                        continue;
+                    }
+                    tempBlock = currentGameMap.getABlock(i , j);
+                    if(GameMap.getDistanceBetweenTwoBlocks(tempBlock , block) == 1 && tempBlock.containsThisBuilding(buildingType)) {
+                        flag = true;
+                        break outer;
+                    }
+                }
+            }
+            if(!flag) {
+                return "you have to put a food storage near other food storages";
+            }
+        }
+        boolean isGameStarted = User.currentUser.getGovernment() != null;
+        if (isGameStarted) {
+            for (Map.Entry<Resources, Integer> entry : buildingType.getCost().entrySet()) {
+                if (entry.getValue() > entry.getKey().getAmount(User.currentUser.getGovernment())) {
+                    return "You dont have enough " + entry.getKey().toString() + " to make this building";
+                }
+                entry.getKey().use(entry.getValue(), User.currentUser.getGovernment());
+            }
         }
         buildingType.create(User.currentUser.getGovernment(), block);
         return "Building created successfully!";
     }
 
-    public static String dropUnit(Matcher matcher){
+    public static String dropUnit(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
         int count = Integer.parseInt(matcher.group("count"));
-        if (!currentGameMap.checkBounds(x , y)) {
+        if (!currentGameMap.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";
         }
         //TODO add dictionary for troops;
-        Block block = currentGameMap.getABlock(x , y);
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND , BlockType.STONY_GROUND , BlockType.GRASS , BlockType.MEADOW , BlockType.DENSE_MEADOW));
-        if(!goodBlockTypes.contains(block.getBlockType())) {
+        Block block = currentGameMap.getABlock(x, y);
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        if (!goodBlockTypes.contains(block.getBlockType())) {
             return "You can put anything on that block!";
         }
         return "Units added successfully!";
