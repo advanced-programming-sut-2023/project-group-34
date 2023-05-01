@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 public class Password {
+    public String getPasswordName() {
+        return passwordName;
+    }
+
     private String passwordName;
     private SecurityQuestion securityQuestion;
     private String answer;

@@ -21,6 +21,14 @@ class ProfileMenuTest {
         user.setSlogan(slogan);
         User.setCurrentUser(user);
     }
+
+    void createUser1(String username, String gmail){
+        String password = "1234As#12";
+        Password password1 = new Password(password);
+        password1.setPasswordName(password);
+        User user = new User(username, password1, "hamed", gmail);
+        User.setCurrentUser(user);
+    }
     @Test
     void emptyChangeUserError(){
         createUser("ahmad", "ali@gmail.com");
@@ -147,6 +155,96 @@ class ProfileMenuTest {
         assertEquals("Password changed successfully", MainController.changePasswordPart2(newPass, confirmation));
         assertTrue(User.currentUser.getPassword().checkPassword(newPass));
     }
+
+    @Test
+    void emptyChangePasswordRandomly(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -n random -o", Commands.CHANGE_PASSWORD_RANDOMLY);
+        assertEquals("The required field is empty, changing password failed", MainController.changePasswordRandomly(matcher));
+    }
+
+    @Test
+    void wrongOldPassChangePasswordRandomly(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#1234 -n random", Commands.CHANGE_PASSWORD);
+        assertEquals("Incorrect current password, changing password failed", MainController.changePasswordRandomly(matcher));
+    }
+
+    @Test
+    void runChangePasswordRandomly(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#12 -n random", Commands.CHANGE_PASSWORD);
+        String oldPass = matcher.group("oldPass");
+        Password password = new Password(oldPass);
+        assertEquals("Password changed successfully", MainController.changePasswordRandomly(matcher));
+        assertFalse(password.checkPassword(User.currentUser.getPassword().getPasswordName()));
+    }
+
+    @Test
+    void emailEmptyField(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   -e  ", Commands.CHANGE_EMAIL);
+        assertEquals("The required field is empty, changing email failed", MainController.changeEmail(matcher));
+    }
+
+    @Test
+    void checkEmailFormat(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   -e  abbasagha", Commands.CHANGE_EMAIL);
+        assertEquals("Email's format is invalid, changing email failed", MainController.changeEmail(matcher));
+    }
+
+    @Test
+    void checkAlreadyUsedEmail(){
+        createUser("ahmad", "ali@gmail.com");
+        createUser("hamed", "reza@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   -e  ali@gmail.com", Commands.CHANGE_EMAIL);
+        assertEquals("Email already exists, changing email failed", MainController.changeEmail(matcher));
+    }
+
+    @Test
+    void theSameEmailChecker(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   -e  ali@gmail.com", Commands.CHANGE_EMAIL);
+        assertEquals("Your email is already this, changing email failed", MainController.changeEmail(matcher));
+    }
+
+    @Test
+    void runEmailChanger(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile  change   -e  reza@gmail.com", Commands.CHANGE_EMAIL);
+        String email = matcher.group("email");
+        assertEquals("Email changed successfully", MainController.changeEmail(matcher));
+        assertEquals(email, User.currentUser.getEmail());
+    }
+
+    @Test
+    void removeEmptySlogan(){
+        createUser1("dadash", "a@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile    remove   slogan", Commands.CHANGE_EMAIL);
+        assertEquals("Your slogan field is already empty, removing slogan failed", MainController.removeSlogan(matcher));
+    }
+
+    @Test
+    void runRemoveSlogan(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile    remove   slogan", Commands.CHANGE_EMAIL);
+        assertEquals("Slogan removed successfully", MainController.removeSlogan(matcher));
+        assertNull(User.currentUser.getSlogan());
+    }
+
+    @Test
+    void runChangeSloganRandomly(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile    remove   slogan  random", Commands.CHANGE_EMAIL);
+        String oldSlogan = User.currentUser.getSlogan();
+        assertEquals("Slogan changed successfully", MainController.changeSloganRandomly(matcher));
+        assertNotEquals(oldSlogan, User.currentUser.getSlogan());
+    }
+
+
+
+
 
 
 

@@ -106,19 +106,18 @@ public class MainController {
 
     public static String changePasswordRandomly(Matcher matcher){
 
-        String finalOldPass = matcher.group("oldPass");
+        if (matcher.group("oldPass") == null || matcher.group("oldPass").isEmpty())
+            return "The required field is empty, changing password failed";
 
-        if (finalOldPass.isEmpty()) return "The required field is empty, changing password failed";
+        String finalOldPass = matcher.group("oldPass");
 
         if (!User.currentUser.getPassword().checkPassword(finalOldPass))
             return "Incorrect current password, changing password failed";
 
-        String finalNewPass = Password.randomPasswordGenerator();
-
+        String finalNewPass = Password.randomPassword();
         while(finalNewPass.equals(finalOldPass)) {
-            finalNewPass = Password.randomPasswordGenerator();
+            finalNewPass = Password.randomPassword();
         }
-
 
         User.currentUser.getPassword().setPasswordName(finalNewPass);
         User.updateDataBase();
@@ -126,15 +125,16 @@ public class MainController {
     }
 
     public static String changeEmail(Matcher matcher){
+        if (matcher.group("email") == null || matcher.group("email").isEmpty())
+            return "The required field is empty, changing email failed";
+
         String email = matcher.group("email");
-        if (email.isEmpty()) return "The email field is empty, changing email failed";
 
         if (!UserController.emailChecker(email)) return "Email's format is invalid, changing email failed";
 
-        if (UserController.isEmailAlreadyUsed(email)) return "Email already exists, changing email failed";
+        if (UserController.isEmailAlreadyUsed(email) && !User.currentUser.getEmail().equals(email)) return "Email already exists, changing email failed";
 
         if (User.currentUser.getEmail().equals(email)) return "Your email is already this, changing email failed";
-
 
         User.currentUser.setEmail(email);
         User.updateDataBase();
@@ -149,7 +149,6 @@ public class MainController {
         if (!User.currentUser.getSlogan().isEmpty() && User.currentUser.getSlogan().equals(slogan))
             return "Your slogan is already this, changing slogan failed";
 
-        //Info has to be changed in Json as well
         User.currentUser.setSlogan(slogan);
         User.updateDataBase();
         return "Slogan changed successfully";
@@ -157,13 +156,17 @@ public class MainController {
 
     public static String changeSloganRandomly(Matcher matcher){
         String newSlogan =  UserController.randomSloganGenerator();
+        while (newSlogan.equals(User.currentUser.getSlogan())){
+            newSlogan = UserController.randomSloganGenerator();
+        }
+
         User.currentUser.setSlogan(newSlogan);
         User.updateDataBase();
         return "Slogan changed successfully";
     }
 
     public static String removeSlogan(Matcher matcher){
-        if (User.currentUser.getSlogan().isEmpty()) return "Your slogan field is already empty, removing slogan failed";
+        if (User.currentUser.getSlogan() == null || User.currentUser.getSlogan().isEmpty()) return "Your slogan field is already empty, removing slogan failed";
 
         User.currentUser.setSlogan(null);
         User.updateDataBase();
