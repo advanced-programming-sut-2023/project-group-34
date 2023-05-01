@@ -14,6 +14,7 @@ public class ProfileMenu {
         while (true){
             String command = Runner.getScn().nextLine();
             command = command.trim();
+            command = command.concat(" ");
             if ((matcher = Commands.getOutput(command, Commands.CHANGE_USER)) != null){
                 String response = MainController.changeUsername(matcher);
                 System.out.println(MainController.changeUsername(matcher));
@@ -30,7 +31,6 @@ public class ProfileMenu {
                 System.out.println(MainController.removeSlogan(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_SLOGAN)) != null){
                 System.out.println(MainController.changeSlogan(matcher));
-                //There might be a conflict here
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD_RANDOMLY)) != null){
                 System.out.println(MainController.changePasswordRandomly(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){

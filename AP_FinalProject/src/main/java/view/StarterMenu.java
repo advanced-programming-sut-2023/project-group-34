@@ -18,6 +18,7 @@ public class StarterMenu {
         while (true){
             input = controller.Runner.getScn ().nextLine ();
             input = input.trim ();
+            input = input.concat(" ");
             if ((matcher = model.enums.Commands.getOutput (input, Commands.CREATE_USER)) != null) {
                 String username;
                 String password;
@@ -25,16 +26,22 @@ public class StarterMenu {
                 String response = UserController.registerUserPart1(matcher);
                 String slogan = matcher.group("slogan");
                 String nickname = matcher.group("nickname");
-                boolean flag = slogan.equals("random");
+                boolean flag = false;
+                if (slogan != null) {
+                    flag = slogan.equals("random");
+                }
                 Password passwordObject;
-                if (response != null) return response;
+                if (response != null) {
+                    System.out.println(response);
+                    continue;
+                }
                 else {
                     if ((username = usernameCheck(matcher)).equals("Couldn't create user: username in use!"))
                         System.out.println("Couldn't create user: username in use!");
                     else {
-                        if ((password = passwordCheck(matcher)).equals("Couldn't create user: weak password(doesn't have needed chars)!") ||
-                                password.equals("Couldn't create user: weak password(less than 6 chars)!") ||
-                                password.equals("Couldn't create user: confirmation failed!"))
+                        if ((password = passwordCheck(matcher)).equals("weak password(doesn't have needed chars)!") ||
+                                password.equals("weak password(less than 6 chars)!") ||
+                                password.equals("confirmation failed!"))
                             System.out.println(password);
                         else {
                             passwordObject = new Password(password);
@@ -77,7 +84,7 @@ public class StarterMenu {
             System.out.println("Your random password is: " +
                     password +
                     "\nPlease re-enter your password here:");
-            if (!Runner.getScn().nextLine().equals(password)) return "Couldn't create user: confirmation failed!";
+            if (!Runner.getScn().nextLine().equals(password)) return "confirmation failed!";
         }
         if (passwordChecker(password) != null) return passwordChecker(password);
         return password;
