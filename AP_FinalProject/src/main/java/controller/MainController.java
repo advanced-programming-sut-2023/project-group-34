@@ -15,11 +15,12 @@ import view.ProfileMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class MainController {
 
-    public static GameMap currentGameMap;
+    private static GameMap currentGameMap;
 
     public static String run(){
         while (true){
@@ -198,19 +199,19 @@ public class MainController {
             int x2 = Integer.parseInt(matcher.group("x2"));
             int y1 = Integer.parseInt(matcher.group("y1"));
             int y2 = Integer.parseInt(matcher.group("y2"));
-            return currentGameMap.setRectangleTexture(x1, x2, y1, y2, blockType);
+            return getCurrentGameMap().setRectangleTexture(x1, x2, y1, y2, blockType);
         }
         else {
             int x1 = Integer.parseInt(x);
             int y1 = Integer.parseInt(matcher.group("singleY"));
-            return currentGameMap.setRectangleTexture(x1, x1, y1, y1, blockType);
+            return getCurrentGameMap().setRectangleTexture(x1, x1, y1, y1, blockType);
         }
     }
 
     public static String clearBlock(Matcher matcher){
         int i = Integer.parseInt(matcher.group("yAxis"));
         int j = Integer.parseInt(matcher.group("xAxis"));
-        return currentGameMap.clearBlock(i, j);
+        return getCurrentGameMap().clearBlock(i, j);
     }
 
     public static String dropRock(Matcher matcher){
@@ -218,11 +219,11 @@ public class MainController {
         int y = Integer.parseInt(matcher.group("yAxis"));
         int x = Integer.parseInt(matcher.group("xAxis"));
         return switch (direction) {
-            case "north" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
-            case "south" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
-            case "west" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
-            case "east" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
-            case "random" -> currentGameMap.setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
+            case "north" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
+            case "south" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
+            case "west" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
+            case "east" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
+            case "random" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
             default -> "Invalid direction!";
         };
     }
@@ -232,9 +233,9 @@ public class MainController {
         if (blockFillerType == null) return "Invalid type!";
         int i = Integer.parseInt(matcher.group("yIndex"));
         int j = Integer.parseInt(matcher.group("xIndex"));
-        if (!currentGameMap.checkBounds(i, j)) return "Out of bounds!";
-        if (!(currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GRASS) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || currentGameMap.getMap()[i][j].getBlockType().equals(BlockType.GROUND))) return "Can't put a tree here!";
-        currentGameMap.getMap()[i][j].setBLockFiller(blockFillerType);
+        if (!getCurrentGameMap().checkBounds(i, j)) return "Out of bounds!";
+        if (!(getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GRASS) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GROUND))) return "Can't put a tree here!";
+        getCurrentGameMap().getMap()[i][j].setBLockFiller(blockFillerType);
         return "Success!";
     }
 
@@ -264,14 +265,14 @@ public class MainController {
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
 
-        if (!currentGameMap.checkBounds(x , y)) {
+        if (!getCurrentGameMap().checkBounds(x , y)) {
             return "Index out of bound! try between 0 and 399";
         }
         if (!Dictionaries.buildingDictionary.containsKey(type))
         {
             return "Invalid building name!";
         }
-        Block block = currentGameMap.getABlock(x , y);
+        Block block = getCurrentGameMap().getABlock(x , y);
         BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
         if(!checkBlockType(block , buildingType).equals("OK")) {
             return checkBlockType(block , buildingType);
@@ -285,11 +286,11 @@ public class MainController {
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
         int count = Integer.parseInt(matcher.group("count"));
-        if (!currentGameMap.checkBounds(x , y)) {
+        if (!getCurrentGameMap().checkBounds(x , y)) {
             return "Index out of bound! try between 0 and 399";
         }
         //TODO add dictionary for troops;
-        Block block = currentGameMap.getABlock(x , y);
+        Block block = getCurrentGameMap().getABlock(x , y);
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND , BlockType.STONY_GROUND , BlockType.GRASS , BlockType.MEADOW , BlockType.DENSE_MEADOW));
         if(!goodBlockTypes.contains(block.getBlockType())) {
             return "You can put anything on that block!";
@@ -297,4 +298,41 @@ public class MainController {
         return "Units added successfully!";
     }
 
+    public static String newMap(Matcher matcher) {
+        String name = matcher.group("mapName");
+        if (name != null) name = name.replaceAll("\"", "");
+        if (name == null || name.equals("")) return "Empty field!";
+        for (GameMap customMap : User.currentUser.getCustomMaps()) {
+            if (customMap.name.equals(name)) return "You already hava a map with the name given!";
+        }
+        GameMap customMap = new GameMap(name);
+        User.currentUser.getCustomMaps().add(customMap);
+        setCurrentGameMap(customMap);
+        return null;
+    }
+
+    public static String editMap(Matcher matcher) {
+        String name = matcher.group("mapName");
+        if (name != null) name = name.replaceAll("\"", "");
+        if (name == null || name.equals("")) return "Empty field!";
+        for (GameMap customMap : User.currentUser.getCustomMaps()) {
+            if (customMap.name.equals(name)) {
+                setCurrentGameMap(customMap);
+                return null;
+            }
+        }
+        return "No map with the name given!";
+    }
+
+    public static void resetCurrentMap() {
+        setCurrentGameMap(null);
+    }
+
+    private static GameMap getCurrentGameMap() {
+        return currentGameMap;
+    }
+
+    private static void setCurrentGameMap(GameMap currentGameMap) {
+        MainController.currentGameMap = currentGameMap;
+    }
 }

@@ -238,10 +238,4 @@ public class User {
     public ArrayList<GameMap> getCustomMaps() {
         return customMaps;
     }
-
-    public GameMap newCustomMap() {
-        GameMap map = new GameMap();
-        this.customMaps.add(map);
-        return map;
-    }
 }
