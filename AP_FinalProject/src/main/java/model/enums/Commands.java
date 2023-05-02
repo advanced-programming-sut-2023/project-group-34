@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    CREATE_USER("\\s*user\\s+create(?=.*\\s+-u(\\s+(?<username>\"[^\"]*\"|[^- ]*))?)(?=.*(\\s+-p\\s+(?<password>\"[^\"]*\"|[^- ]*)\\s+(?<passwordConfirmation>\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]*\"|[^- ]*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]*\"|[^- ]*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|[^- ]*))?((\\s+-[unse](\\s+(\"[^\"]*\"|[^- ]*))?)|(\\s+-p\\s+(\"[^\"]*\"|[^- ]*)\\s+(\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random)){4,5} "),
+    CREATE_USER("\\s*user\\s+create(?=.*\\s+-u(\\s+(?<username>\"[^\"]*\"|[^- ]*))?)(?=.*(\\s+-p\\s+(?<password>\"[^\"]*\"|[^- ]*)\\s+(?<passwordConfirmation>\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]*\"|[^- ]*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]*\"|[^- ]*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|[^- ]*))?((\\s+-[unse](\\s+(\"[^\"]*\"|[^- ]*))?)|(\\s+-p\\s+(\"[^\"]*\"|[^- ]*)\\s+(\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random)){4,5}"),
     PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s*(?<questionNumber>\\d*)\\s+-a\\s*(?<answer>\"[^\"]*\"|\\S*)\\s+-c\\s+(?<answerConfirm>\"[^\"]*\"|\\S*)\\s*"),
     LOGIN("(?=.*-u\\s+(?<username>\"[^\"]*\"|[^- ]*))(?=.*-p\\s+(?<password>\"[^\"]*\"|[^- ]*))^\\s*user\\s+login(\\s+-[up]\\s*(\"[^\"]*\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),

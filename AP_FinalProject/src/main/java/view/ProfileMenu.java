@@ -14,7 +14,6 @@ public class ProfileMenu {
         while (true){
             String command = Runner.getScn().nextLine();
             command = command.trim();
-            command = command.concat(" ");
             if ((matcher = Commands.getOutput(command, Commands.CHANGE_USER)) != null){
                 String response = MainController.changeUsername(matcher);
                 System.out.println(MainController.changeUsername(matcher));

@@ -18,7 +18,6 @@ public class StarterMenu {
         while (true){
             input = controller.Runner.getScn ().nextLine ();
             input = input.trim ();
-            input = input.concat(" ");
             if ((matcher = model.enums.Commands.getOutput (input, Commands.CREATE_USER)) != null) {
                 String username;
                 String password;
@@ -49,6 +48,10 @@ public class StarterMenu {
                             if (flag)System.out.println("Your slogan is: \"" +
                                     slogan +
                                     "\"");
+                            System.out.println("Pick a security question:" + "\n");
+                            System.out.println("1. What is my father's name?");
+                            System.out.println("2. What is my first pet's name?");
+                            System.out.println("3. What is my mother's last name?");
                             response = pickSecurityQuestion(passwordObject, Commands.getOutput(Runner.getScn().nextLine(), Commands.PICK_QUESTION));
                             if (response != null) System.out.println(response);
                             else {
@@ -71,7 +74,9 @@ public class StarterMenu {
             }
             else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
                 System.out.println("Starter Menu");
-            else
+            else if (input.equals("exit")){
+                return "exit";
+            } else
                 System.out.println("Invalid Command");
         }
     }

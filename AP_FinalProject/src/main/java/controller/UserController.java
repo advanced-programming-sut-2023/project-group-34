@@ -43,6 +43,8 @@ public class UserController {
         if (nickname != null) nickname = nickname.replaceAll("\"", "");
         String slogan = matcher.group("slogan");
         if (slogan != null) slogan = slogan.replaceAll("\"", "");
+        String passwordConfirmation = matcher.group("passwordConfirmation");
+        if (passwordConfirmation != null) passwordConfirmation = passwordConfirmation.replaceAll("\"", "");
         if (username == null ||
                 username.isEmpty() ||
                 password == null ||
@@ -51,10 +53,13 @@ public class UserController {
                 nickname.isEmpty() ||
                 email == null ||
                 email.equals("") ||
+                (passwordConfirmation == null && !password.equals("random"))||
+                (passwordConfirmation.isEmpty() && !password.equals("random")) ||
                 (matcher.group("sloganFlag") != null && (slogan == null || slogan.isEmpty()))) return "Couldn't create user: empty field!";
         if (!Validations.check(username, Validations.VALID_USERNAME)) return "Couldn't create user: invalid username!";
         if (isEmailAlreadyUsed(email)) return "Couldn't create user: email already in use!";
-        if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email!";
+        if (!Validations.check(email, Validations.VALID_EMAIL)) return "Couldn't create user: invalid email format!";
+        if (!password.equals(passwordConfirmation) && !password.equals("random")) return "Password and its confirmation do not match";
         return null;
     }
 
@@ -77,6 +82,10 @@ public class UserController {
         if (securityQuestionNumberString != null) securityQuestionNumberString = securityQuestionNumberString.replaceAll("\"", "");
         else return "empty field";
         if (securityQuestionNumberString.equals("")) return "empty field";
+        if (matcher.group("answer") == null || matcher.group("answer").isEmpty())
+            return "empty field";
+        if (matcher.group("answerConfirm") == null || matcher.group("answerConfirm").isEmpty())
+            return "empty field";
         int secQNum = Integer.parseInt(securityQuestionNumberString);
         if (secQNum > 3) return "Picking security Question failed: Invalid security Question!";
         String answer = matcher.group("answer");
