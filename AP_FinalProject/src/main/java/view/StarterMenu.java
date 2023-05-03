@@ -38,6 +38,11 @@ public class StarterMenu {
                     if ((username = usernameCheck(matcher)).equals("Couldn't create user: username in use!"))
                         System.out.println("Couldn't create user: username in use!");
                     else {
+                        slogan = sloganHandler(matcher);
+                        if (flag)System.out.println("Your slogan is: \"" +
+                                slogan +
+                                "\"");
+                        flag = false;
                         if ((password = passwordCheck(matcher)).equals("weak password(doesn't have needed chars)!") ||
                                 password.equals("weak password(less than 6 chars)!") ||
                                 password.equals("confirmation failed!"))
@@ -66,7 +71,7 @@ public class StarterMenu {
                 String result = UserController.loginUser(matcher);
                 System.out.println(result);
                 if (result.equals("Username and password did not match!")) UserController.wrongPasswordsEntered();
-                else if (result.equals("User logged in")) return result;
+                else if (result.equals("User logged in")) return "main menu";
             }
             else if (Commands.getOutput (input, Commands.ENTER_FORGOT_PASSWORD_MENU) != null) {
                 System.out.println("Entered forgot password menu!");
@@ -98,7 +103,7 @@ public class StarterMenu {
     public static String usernameCheck(Matcher matcher) {
         String username = matcher.group("username");
         if (username != null) username = username.replaceAll("\"", "");
-        if (username.equals("random")) {
+        if (UserController.getUserByUsername(username) != null) {
             username = randomUsernameGenerator(username);
             System.out.println("Username already used! do you like to use\"" +
                     username +
