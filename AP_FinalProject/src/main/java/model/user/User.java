@@ -242,9 +242,9 @@ public class User {
                     users.add(userObjects.get(i));
                 }
             }
+            loadCurrentUser();
         } catch (IOException ignored) {
         }
-        loadCurrentUser();
     }
 
     public GameMap getMapByName (String name) {
