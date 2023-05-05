@@ -3,7 +3,6 @@ package controller;
 import model.Dictionaries;
 import model.Game;
 import model.building.*;
-import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.government.Government;
 import model.map.Block;
@@ -16,12 +15,11 @@ import view.ProfileMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.regex.Matcher;
 
+import static controller.MapEditingController.setCurrentGameMap;
+
 public class MainController {
-    
-    private static GameMap currentGameMap;
     
     public static String run () {
         while (true) {
@@ -179,106 +177,18 @@ public class MainController {
         return theWholeProfile;
     }
     
-    public static String changeBlockFloorType (Matcher matcher) {
-        BlockType blockType = BlockType.stringToBlockType(matcher.group("type"));
-        if (blockType == null) return "Invalid texture!";
-        String x = matcher.group("singleX");
-        if (x == null) {
-            int x1 = Integer.parseInt(matcher.group("x1"));
-            int x2 = Integer.parseInt(matcher.group("x2"));
-            int y1 = Integer.parseInt(matcher.group("y1"));
-            int y2 = Integer.parseInt(matcher.group("y2"));
-            return getCurrentGameMap().setRectangleTexture(x1, x2, y1, y2, blockType);
-        } else {
-            int x1 = Integer.parseInt(x);
-            int y1 = Integer.parseInt(matcher.group("singleY"));
-            return getCurrentGameMap().setRectangleTexture(x1, x1, y1, y1, blockType);
-        }
-    }
-    
-    public static String clearBlock (Matcher matcher) {
-        int i = Integer.parseInt(matcher.group("yAxis"));
-        int j = Integer.parseInt(matcher.group("xAxis"));
-        return getCurrentGameMap().clearBlock(i, j);
-    }
-    
-    public static String dropRock (Matcher matcher) {
-        String direction = matcher.group("direction");
-        int y = Integer.parseInt(matcher.group("yAxis"));
-        int x = Integer.parseInt(matcher.group("xAxis"));
-        return switch (direction) {
-            case "north" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
-            case "south" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
-            case "west" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
-            case "east" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
-            case "random" ->
-                    getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
-            default -> "Invalid direction!";
-        };
-    }
-    
-    public static String dropTree (Matcher matcher) {
-        BlockFillerType blockFillerType = BlockFillerType.stringToType(matcher.group("type"));
-        if (blockFillerType == null) return "Invalid type!";
-        int i = Integer.parseInt(matcher.group("yIndex"));
-        int j = Integer.parseInt(matcher.group("xIndex"));
-        if (!getCurrentGameMap().checkBounds(i, j)) return "Out of bounds!";
-        if (!(getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GRASS) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GROUND)))
-            return "Can't put a tree here!";
-        getCurrentGameMap().getMap()[i][j].setBLockFiller(blockFillerType);
-        return "Success!";
-    }
-    
-    private static String checkBlockType (Block block, BuildingType buildingType) {
-        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) && (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
-            return "You can't put farm on that ground!";
-        }
-        if ((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
-            return "You only can put quarry on rocks!";
-        }
-        if (buildingType.equals(MakerType.IRON_MINE) && !block.getBlockType().equals(BlockType.IRON)) {
-            return "You can only put iron mine on iron!";
-        }
-        if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
-            return "You can only put pitch rig on plains!";
-        }
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
-        if (!goodBlockTypes.contains(block.getBlockType())) {
-            return "You can put anything on that block!";
-        }
-        return "OK";
-    }
-    
-    public static String dropBuilding (Matcher matcher) {
-        
-        int x = Integer.parseInt(matcher.group("xIndex"));
-        int y = Integer.parseInt(matcher.group("yIndex"));
-        String type = matcher.group("type");
-        
-        if (!getCurrentGameMap().checkBounds(x, y)) {
-            return "Index out of bound! try between 0 and 399";
-        }
-        if (!Dictionaries.buildingDictionary.containsKey(type)) {
-            return "Invalid building name!";
-        }
-        Block block = getCurrentGameMap().getABlock(x, y);
-        BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
-        if (!checkBlockType(block, buildingType).equals("OK")) {
-            return checkBlockType(block, buildingType);
-        }
-        buildingType.create(User.currentUser.getGovernment(), block);
-        return "Building created successfully!";
-    }
-    
     public static String setKeep (String username, int x, int y) {
-        if (!currentGameMap.checkBounds(y, x)) return "Keep out of bounds!";
+        if (!GameController.getGame().getMap().checkBounds(y, x)) return "Keep out of bounds!";
         User currentPlayer = User.getUserByUsername(username);
         if (currentPlayer == null) return "No user with the id given!";
         if (GameController.getCurrentGame().getPlayers().contains(currentPlayer)) return "User already added!";
         //todo: add color enum
+        Block block = GameController.getGame().getMap().getABlock(y, x);
+        String response = checkBlockType(block, GateType.KEEP);
+        if (!response.equals("OK")) return response;
         currentPlayer.setGovernment(new Government(currentPlayer, ""));
         GameController.getCurrentGame().addPlayer(currentPlayer);
-        GateType.KEEP.create(currentPlayer.getGovernment(), currentGameMap.getABlock(y, x));
+        GateType.KEEP.create(currentPlayer.getGovernment(), block);
         return null;
         //TODO: Current map?!
         //TODO: Separate different controllers
@@ -288,25 +198,7 @@ public class MainController {
         String mapName = matcher.group("mapName").trim().replaceAll("\"", "");
         if (mapName.isEmpty()) return "Empty field!";
         GameController.setCurrentGame(new Game(new GameMap(User.currentUser.getMapByName(mapName))));
-        MainController.currentGameMap = GameController.getCurrentGame().getMap();
         return null;
-    }
-    
-    public static String dropUnit (Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("xIndex"));
-        int y = Integer.parseInt(matcher.group("yIndex"));
-        String type = matcher.group("type");
-        int count = Integer.parseInt(matcher.group("count"));
-        if (!getCurrentGameMap().checkBounds(x, y)) {
-            return "Index out of bound! try between 0 and 399";
-        }
-        //TODO add dictionary for troops;
-        Block block = getCurrentGameMap().getABlock(x, y);
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
-        if (!goodBlockTypes.contains(block.getBlockType())) {
-            return "You can put anything on that block!";
-        }
-        return "Units added successfully!";
     }
     
     public static String newMap (Matcher matcher) {
@@ -335,15 +227,61 @@ public class MainController {
         return "No map with the name given!";
     }
     
-    public static void resetCurrentMap () {
-        setCurrentGameMap(null);
+    private static String checkBlockType (Block block, BuildingType buildingType) {
+        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) && (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
+            return "You can't put farm on that ground!";
+        }
+        if ((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
+            return "You only can put quarry on rocks!";
+        }
+        if (buildingType.equals(MakerType.IRON_MINE) && !block.getBlockType().equals(BlockType.IRON)) {
+            return "You can only put iron mine on iron!";
+        }
+        if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
+            return "You can only put pitch rig on plains!";
+        }
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        if (!goodBlockTypes.contains(block.getBlockType())) {
+            return "You can put anything on that block!";
+        }
+        return "OK";
     }
     
-    private static GameMap getCurrentGameMap () {
-        return currentGameMap;
+    public static String dropBuilding (GameMap map, Matcher matcher) {
+        
+        int x = Integer.parseInt(matcher.group("xIndex"));
+        int y = Integer.parseInt(matcher.group("yIndex"));
+        String type = matcher.group("type");
+        
+        if (!map.checkBounds(x, y)) {
+            return "Index out of bound! try between 0 and 399";
+        }
+        if (!Dictionaries.buildingDictionary.containsKey(type)) {
+            return "Invalid building name!";
+        }
+        Block block = map.getABlock(x, y);
+        BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
+        if (!checkBlockType(block, buildingType).equals("OK")) {
+            return checkBlockType(block, buildingType);
+        }
+        buildingType.create(User.currentUser.getGovernment(), block);
+        return "Building created successfully!";
     }
     
-    public static void setCurrentGameMap (GameMap currentGameMap) {
-        MainController.currentGameMap = currentGameMap;
+    public static String dropUnit (GameMap map, Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("xIndex"));
+        int y = Integer.parseInt(matcher.group("yIndex"));
+        String type = matcher.group("type");
+        int count = Integer.parseInt(matcher.group("count"));
+        if (!map.checkBounds(x, y)) {
+            return "Index out of bound! try between 0 and 399";
+        }
+        //TODO add dictionary for troops;
+        Block block = map.getABlock(x, y);
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        if (!goodBlockTypes.contains(block.getBlockType())) {
+            return "You can put anything on that block!";
+        }
+        return "Units added successfully!";
     }
 }
