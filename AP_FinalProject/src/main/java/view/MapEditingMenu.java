@@ -1,7 +1,7 @@
 package view;
 
-import com.sun.tools.javac.Main;
 import controller.MainController;
+import controller.MapEditingController;
 import controller.Runner;
 import model.enums.Commands;
 
@@ -34,20 +34,20 @@ public class MapEditingMenu {
         while (true){
             input = Runner.getScn().nextLine().trim();
             if ((matcher = Commands.getOutput(input, Commands.SET_TEXTURE)) != null)
-                System.out.println(MainController.changeBlockFloorType(matcher));
+                System.out.println(MapEditingController.changeBlockFloorType(matcher));
             else if ((matcher = Commands.getOutput(input, Commands.CLEAR)) != null)
-                System.out.println(MainController.clearBlock(matcher));
+                System.out.println(MapEditingController.clearBlock(matcher));
             else if ((matcher = Commands.getOutput(input, Commands.DROP_ROCK)) != null)
-                System.out.println(MainController.dropRock(matcher));
+                System.out.println(MapEditingController.dropRock(matcher));
             else if ((matcher = Commands.getOutput(input, Commands.DROP_TREE)) != null)
-                System.out.println(MainController.dropTree(matcher));
+                System.out.println(MapEditingController.dropTree(matcher));
             else if ((matcher = Commands.getOutput(input, Commands.DROP_BUILDING)) != null)
-                System.out.println(MainController.dropBuilding(matcher));
+                System.out.println(MainController.dropBuilding(MapEditingController.getCurrentGameMap(), matcher));
             else if ((matcher = Commands.getOutput(input, Commands.DROP_UNIT)) != null)
-                System.out.println(MainController.dropUnit(matcher));
+                System.out.println(MainController.dropUnit(MapEditingController.getCurrentGameMap(), matcher));
             else if (Commands.getOutput(input, Commands.BACK) != null) {
                 System.out.println("Back to main menu");
-                MainController.resetCurrentMap();
+                MapEditingController.resetCurrentMap();
                 return "main menu";
             }
             else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)

@@ -28,8 +28,6 @@ public class User {
     private int currentScore = 0;
 
     private ArrayList<GameMap> customMaps;
-    //TODO: json
-
     private ArrayList<Trade> myTrades = new ArrayList<>();
     private Queue<Trade> notificationsList = new LinkedList<>();
 
@@ -155,7 +153,7 @@ public class User {
         this.government = government;
     }
 
-    public User getUserByUsername(String name){
+    public static User getUserByUsername(String name){
         for (User user : users){
             if (user.getName().equals(name))
                 return user;
@@ -190,12 +188,27 @@ public class User {
         } catch (IOException ignored) {
         }
     }
-
+    
+    @Override
+    public boolean equals (Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return score == user.score && currentScore == user.currentScore && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(nickname, user.nickname) && Objects.equals(email, user.email) && Objects.equals(slogan, user.slogan) && Objects.equals(government, user.government) && sloganTypes == user.sloganTypes && Objects.equals(customMaps, user.customMaps) && Objects.equals(myTrades, user.myTrades) && Objects.equals(notificationsList, user.notificationsList);
+    }
+    
+    @Override
+    public int hashCode () {
+        return Objects.hash(name, password, nickname, email, slogan, score, government, sloganTypes, currentScore, customMaps, myTrades, notificationsList);
+    }
+    
     public static void loadCurrentUser() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("currentUser.json")) {
             User currentUser = gson.fromJson(reader, User.class);
-            User.setCurrentUser(currentUser);
+            for (User user : users) {
+                if (user.equals(currentUser)) User.setCurrentUser(currentUser);
+            }
         } catch (IOException ignored) {
         }
     }
@@ -218,20 +231,27 @@ public class User {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (isLoggedIn) currentUserJsonSaver();
     }
 
     public static void loadAllUsersFromDataBase() {
         try (FileReader reader = new FileReader("Users.json")) {
-            //TODO Convert JSON File to Java Object
             ArrayList<User> userObjects = new Gson().fromJson(reader, new TypeToken<ArrayList<User>>() {}.getType());
             if (userObjects != null){
                 for (int i = 0; i < userObjects.size(); i++) {
                     users.add(userObjects.get(i));
                 }
             }
-        } catch (IOException e) {
-//            e.printStackTrace();
+            loadCurrentUser();
+        } catch (IOException ignored) {
         }
+    }
+
+    public GameMap getMapByName (String name) {
+        for (GameMap customMap : customMaps) {
+            if (customMap.name.equals(name)) return customMap;
+        }
+        return null;
     }
 
     public ArrayList<GameMap> getCustomMaps() {

@@ -1,6 +1,8 @@
 package controller;
 
 import model.Dictionaries;
+import model.Game;
+import model.building.*;
 import model.building.DrawBridgeType;
 import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
@@ -9,6 +11,7 @@ import model.building.BuildingType;
 import model.building.MakerType;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
+import model.government.Government;
 import model.map.Block;
 import model.map.GameMap;
 import model.user.Password;
@@ -22,11 +25,11 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import static controller.MapEditingController.setCurrentGameMap;
+
 public class MainController {
 
-    public static GameMap currentGameMap;
-
-    public static String run() {
+    public static String run () {
         while (true) {
             String response = MainMenu.run();
             switch (response) {
@@ -209,58 +212,58 @@ public class MainController {
         return theWholeProfile;
     }
 
-    public static String changeBlockFloorType(Matcher matcher) {
-        BlockType blockType = BlockType.stringToBlockType(matcher.group("type"));
-        if (blockType == null) return "Invalid texture!";
-        String x = matcher.group("singleX");
-        if (x == null) {
-            int x1 = Integer.parseInt(matcher.group("x1"));
-            int x2 = Integer.parseInt(matcher.group("x2"));
-            int y1 = Integer.parseInt(matcher.group("y1"));
-            int y2 = Integer.parseInt(matcher.group("y2"));
-            return getCurrentGameMap().setRectangleTexture(x1, x2, y1, y2, blockType);
+    public static String setKeep (String username, int x, int y) {
+        if (!GameController.getGame().getMap().checkBounds(y, x)) return "Keep out of bounds!";
+        User currentPlayer = User.getUserByUsername(username);
+        if (currentPlayer == null) return "No user with the id given!";
+        if (GameController.getCurrentGame().getPlayers().contains(currentPlayer)) return "User already added!";
+        //todo: add color enum
+        Block block = GameController.getGame().getMap().getABlock(y, x);
+        String response = checkBlockType(block, GateType.KEEP);
+        if (!response.equals("OK")) return response;
+        currentPlayer.setGovernment(new Government(currentPlayer, ""));
+        GameController.getCurrentGame().addPlayer(currentPlayer);
+        GateType.KEEP.create(currentPlayer.getGovernment(), block);
+        return null;
+        //TODO: Current map?!
+        //TODO: Separate different controllers
+    }
+
+    public static String createNewGame (Matcher matcher) {
+        String mapName = matcher.group("mapName").trim().replaceAll("\"", "");
+        if (mapName.isEmpty()) return "Empty field!";
+        GameController.setCurrentGame(new Game(new GameMap(User.currentUser.getMapByName(mapName))));
+        return null;
+    }
+
+    public static String newMap (Matcher matcher) {
+        String name = matcher.group("mapName");
+        if (name != null) name = name.replaceAll("\"", "");
+        if (name == null || name.equals("")) return "Empty field!";
+        for (GameMap customMap : User.currentUser.getCustomMaps()) {
+            if (customMap.name.equals(name)) return "You already hava a map with the name given!";
         }
-        else {
-            int x1 = Integer.parseInt(x);
-            int y1 = Integer.parseInt(matcher.group("singleY"));
-            return getCurrentGameMap().setRectangleTexture(x1, x1, y1, y1, blockType);
+        GameMap customMap = new GameMap(name);
+        User.currentUser.getCustomMaps().add(customMap);
+        setCurrentGameMap(customMap);
+        return null;
+    }
+
+    public static String editMap (Matcher matcher) {
+        String name = matcher.group("mapName");
+        if (name != null) name = name.replaceAll("\"", "");
+        if (name == null || name.equals("")) return "Empty field!";
+        for (GameMap customMap : User.currentUser.getCustomMaps()) {
+            if (customMap.name.equals(name)) {
+                setCurrentGameMap(customMap);
+                return null;
+            }
         }
+        return "No map with the name given!";
     }
 
-    public static String clearBlock(Matcher matcher) {
-        int i = Integer.parseInt(matcher.group("yAxis"));
-        int j = Integer.parseInt(matcher.group("xAxis"));
-        return getCurrentGameMap().clearBlock(i, j);
-    }
-
-    public static String dropRock(Matcher matcher) {
-        String direction = matcher.group("direction");
-        int y = Integer.parseInt(matcher.group("yAxis"));
-        int x = Integer.parseInt(matcher.group("xAxis"));
-        return switch (direction) {
-            case "north" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
-            case "south" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
-            case "west" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
-            case "east" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
-            case "random" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
-            default -> "Invalid direction!";
-        };
-    }
-
-    public static String dropTree(Matcher matcher) {
-        BlockFillerType blockFillerType = BlockFillerType.stringToType(matcher.group("type"));
-        if (blockFillerType == null) return "Invalid type!";
-        int i = Integer.parseInt(matcher.group("yIndex"));
-        int j = Integer.parseInt(matcher.group("xIndex"));
-        if (!getCurrentGameMap().checkBounds(i, j)) return "Out of bounds!";
-        if (!(getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GRASS) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GROUND))) return "Can't put a tree here!";
-        getCurrentGameMap().getMap()[i][j].setBLockFiller(blockFillerType);
-        return "Success!";
-    }
-
-    private static String checkBlockType(Block block, BuildingType buildingType) {
-        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) &&
-                (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
+    private static String checkBlockType (Block block, BuildingType buildingType) {
+        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) && (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
             return "You can't put farm on that ground!";
         }
         if ((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
@@ -279,19 +282,19 @@ public class MainController {
         return "OK";
     }
 
-    public static String dropBuilding(Matcher matcher) {
+    public static String dropBuilding (GameMap map, Matcher matcher) {
 
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
 
-        if (!getCurrentGameMap().checkBounds(x , y)) {
+        if (!map.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";
         }
         if (!Dictionaries.buildingDictionary.containsKey(type)) {
             return "Invalid building name!";
         }
-        Block block = getCurrentGameMap().getABlock(x , y);
+        Block block = map.getABlock(x, y);
         BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
         if (!checkBlockType(block, buildingType).equals("OK")) {
             return checkBlockType(block, buildingType);
@@ -336,58 +339,20 @@ public class MainController {
         return "Building created successfully!";
     }
 
-    public static String dropUnit(Matcher matcher) {
+    public static String dropUnit (GameMap map, Matcher matcher) {
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
         int count = Integer.parseInt(matcher.group("count"));
-        if (!getCurrentGameMap().checkBounds(x , y)) {
+        if (!map.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";
         }
         //TODO add dictionary for troops;
-        Block block = getCurrentGameMap().getABlock(x , y);
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND , BlockType.STONY_GROUND , BlockType.GRASS , BlockType.MEADOW , BlockType.DENSE_MEADOW));
-        if(!goodBlockTypes.contains(block.getBlockType())) {
+        Block block = map.getABlock(x, y);
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        if (!goodBlockTypes.contains(block.getBlockType())) {
             return "You can put anything on that block!";
         }
         return "Units added successfully!";
-    }
-
-    public static String newMap(Matcher matcher) {
-        String name = matcher.group("mapName");
-        if (name != null) name = name.replaceAll("\"", "");
-        if (name == null || name.equals("")) return "Empty field!";
-        for (GameMap customMap : User.currentUser.getCustomMaps()) {
-            if (customMap.name.equals(name)) return "You already hava a map with the name given!";
-        }
-        GameMap customMap = new GameMap(name);
-        User.currentUser.getCustomMaps().add(customMap);
-        setCurrentGameMap(customMap);
-        return null;
-    }
-
-    public static String editMap(Matcher matcher) {
-        String name = matcher.group("mapName");
-        if (name != null) name = name.replaceAll("\"", "");
-        if (name == null || name.equals("")) return "Empty field!";
-        for (GameMap customMap : User.currentUser.getCustomMaps()) {
-            if (customMap.name.equals(name)) {
-                setCurrentGameMap(customMap);
-                return null;
-            }
-        }
-        return "No map with the name given!";
-    }
-
-    public static void resetCurrentMap() {
-        setCurrentGameMap(null);
-    }
-
-    private static GameMap getCurrentGameMap() {
-        return currentGameMap;
-    }
-
-    private static void setCurrentGameMap(GameMap currentGameMap) {
-        MainController.currentGameMap = currentGameMap;
     }
 }

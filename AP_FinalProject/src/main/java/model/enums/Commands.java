@@ -49,6 +49,7 @@ public enum Commands {
             "(?=.*-wa\\s+(?<wantedAmount>\\d*))(?=.*-w\\s+(?<wanted>\\S*))(?=.*-o\\s+(?<offered>\\S*))" +
             "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
+    NEW_GAME("New game -m (?<mapName>\".+\"|\\S*)"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
     EDIT_OLD_MAP("Edit -m (?<mapName>\".+\"|\\S*)"),
     NEW_MAP("New map -n (?<mapName>\".+\"|\\S*)"),
@@ -57,7 +58,6 @@ public enum Commands {
     SHOW_MAP("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map(\\s+-[xy]\\s+\\d*){2}$"),
     SHOW_MAP_DETAILS("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map\\s+details(\\s+-[xy]\\s+\\d*){2}$"),
     MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d*))?(?=.*\\s+left\\s+(?<left>-?\\d*))?(?=.*\\s+right\\s+(?<right>-?\\d*))?(?=.*\\s+down\\s+(?<down>-?\\d*))?(\\s+(down|up|right|left)\\s+-?\\d*){1,4}"),
-
     SELECT_BUILDING("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+building\\s*( *-[xy] \\S+){2}$"),
     DESELECT_BUILDING("Deselect\\s+building"),
     CREATE_UNIT("(?=.*-t (?<type>(\".+\"|\\S+)))(?=.*-c (?<count>\\d+))^Create\\s+unit\\s*( *-[tc] (\".+\"|\\S+)){2}$"),
