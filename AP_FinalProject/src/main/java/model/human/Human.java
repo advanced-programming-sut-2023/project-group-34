@@ -1,4 +1,4 @@
-package model.forces.human;
+package model.human;
 
 import model.building.Building;
 import model.enums.Direction;
@@ -15,6 +15,7 @@ public class Human {
     private ArrayList<Direction> rout = new ArrayList<>();
     private final int damage;
     private int currentDamage;
+    private boolean isVisible = true;
     private boolean canClimb;
     private boolean canDig;
     private Block block;
@@ -44,8 +45,9 @@ public class Human {
     public void move(int x , int y) {
 
     }
-    public void decreaseHP(int damage) {
-
+    public void getHit(int damage) {
+        HP -= damage;
+        if(HP < 0) die();
     }
     public int getMaxHP() {
         return maxHP;
@@ -53,10 +55,6 @@ public class Human {
 
     public int getHP() {
         return HP;
-    }
-
-    public void changeHP(int amount) {
-        this.HP += amount;
     }
 
     public Government getGovernment() {
@@ -113,5 +111,20 @@ public class Human {
     public void setCurrentRate(int moralityRate) {
         moralityRate *= 5;
         this.currentDamage = (damage * (moralityRate+100))/100;
+    }
+
+    public int getCurrentDamage() {
+        return currentDamage;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+    public boolean isThereAWay(Block block) {
+        return true;
     }
 }

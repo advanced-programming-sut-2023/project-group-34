@@ -1,10 +1,8 @@
 package model.building;
 
 import model.enums.make_able.Resources;
-import model.forces.SiegeMachine.SiegeMachine;
-import model.forces.WarEquipment;
-import model.forces.human.Human;
 import model.government.Government;
+import model.human.Human;
 import model.map.Block;
 
 import java.util.HashMap;
@@ -17,9 +15,9 @@ public class DeathPit extends Building {
 
     @Override
     public void process() {
-        for (WarEquipment warEquipment : block.getWarEquipments()) {
-            if(!warEquipment.getGovernment().equals(government)) {
-                warEquipment.die();
+        for (Human human : block.getTroops()) {
+            if(!human.getGovernment().equals(government)) {
+                human.die();
             }
         }
         destroy();
@@ -31,8 +29,5 @@ public class DeathPit extends Building {
         government.getBuildings().remove(this);
     }
 
-    public void deployTrap() {
-
-    }
 
 }

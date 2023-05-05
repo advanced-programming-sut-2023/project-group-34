@@ -36,4 +36,9 @@ public enum GeneralBuildingsType implements BuildingType{
     public void create(Government government, Block block) {
         block.addBuilding(new GeneralBuilding(government , block , this.HP , this.cost , this , this.capacity));
     }
+
+    @Override
+    public HashMap<Resources, Integer> getCost() {
+       return this.cost;
+    }
 }

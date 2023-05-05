@@ -2,10 +2,7 @@ package model.building;
 
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
-import model.forces.WarEquipment;
-import model.forces.human.Engineer;
-import model.forces.human.Human;
-import model.forces.human.Troop;
+import model.human.Human;
 import model.government.Government;
 import model.map.Block;
 

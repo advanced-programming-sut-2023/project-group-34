@@ -14,4 +14,9 @@ public enum OilSmelterType implements BuildingType{
     public void create(Government government, Block block) {
         block.addBuilding(new OilSmelter(government , block , 500 , new HashMap<>(Map.ofEntries(Map.entry(Resources.IRON , 10) , Map.entry(Resources.GOLD , 100))) , 4));
     }
+
+    @Override
+    public HashMap<Resources, Integer> getCost() {
+        return new HashMap<>(Map.ofEntries(Map.entry(Resources.IRON , 10)));
+    }
 }

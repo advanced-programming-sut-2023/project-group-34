@@ -1,7 +1,7 @@
 package model.building;
 
 import model.enums.make_able.Resources;
-import model.forces.human.Engineer;
+import model.human.Engineer;
 import model.government.Government;
 import model.map.Block;
 
@@ -32,9 +32,15 @@ public class OilSmelter extends Building{
         return rate;
     }
 
-    public void addEngineer(Engineer engineer) {
+    public void setEngineer(Engineer engineer) {
         this.engineer = engineer;
     }
 
+    public void giveOil() {
+        numberOfOils--;
+    }
 
+    public int getNumberOfOils() {
+        return numberOfOils;
+    }
 }

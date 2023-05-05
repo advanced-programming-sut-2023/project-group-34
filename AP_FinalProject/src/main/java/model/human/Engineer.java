@@ -1,15 +1,17 @@
-package model.forces.human;
+package model.human;
 
-import model.forces.WarEquipment;
+import model.building.Building;
+import model.building.OilSmelter;
 import model.government.Government;
 import model.map.Block;
 
-public class Engineer extends Human implements WarEquipment {
+public class Engineer extends Human{
     private final int price;
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government, int price) {
         super(0, 0 , block, 0, false, true , government);
         this.price = price;
+        useOil();
     }
     public void equipWithOil() {
 
@@ -28,22 +30,24 @@ public class Engineer extends Human implements WarEquipment {
     }
 
     @Override
-    public int getFireRange() {
-        return 0;
-    }
-
-    @Override
     public void setVisible(boolean visible) {
 
     }
 
-    @Override
-    public void fight(WarEquipment opponent) {
-
+    public void useOil() {
+        boolean flag = false;
+        for(Building building : getGovernment().getBuildings()) {
+            if(!(building instanceof OilSmelter oilSmelter)) {
+                continue;
+            }
+            flag = true;
+            if(oilSmelter.getNumberOfOils() < 1) {
+                continue;
+            }
+            oilSmelter.giveOil();
+            isEquippedWithOil = true;
+        }
+        if(!flag) isEquippedWithOil = false;
     }
 
-    @Override
-    public void addRange(int amount) {
-
-    }
 }

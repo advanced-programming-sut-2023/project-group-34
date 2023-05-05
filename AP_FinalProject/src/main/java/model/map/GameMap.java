@@ -3,12 +3,10 @@ package model.map;
 import model.building.Building;
 import model.enums.BlockType;
 import model.enums.Direction;
-import model.forces.WarEquipment;
+import model.human.Human;
 
-import java.beans.Introspector;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class GameMap {
@@ -163,8 +161,5 @@ public class GameMap {
 
     public void setUpLeftCorner (int x, int y) {
         setUpLeftCornerBlock(map[y][x]);
-    }
-    public static boolean isThereAWay(WarEquipment warEquipment , Block destination) {
-        return true;
     }
 }

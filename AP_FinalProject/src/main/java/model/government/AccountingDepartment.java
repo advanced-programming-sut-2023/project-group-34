@@ -1,11 +1,10 @@
 package model.government;
 
-import model.Dictionaries;
 import model.building.*;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
-import model.forces.human.Human;
-import model.forces.human.Troop;
+import model.human.Human;
+import model.human.Troop;
 import model.map.Block;
 
 public class AccountingDepartment {

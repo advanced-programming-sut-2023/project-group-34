@@ -25,4 +25,10 @@ public enum GateType implements BuildingType{
     public void create(Government government , Block block) {
         block.addBuilding(new Gate(government , block , HP , cost , this , population , false));
     }
+
+    @Override
+    public HashMap<Resources, Integer> getCost() {
+       return this.cost;
+    }
+
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import model.Dictionaries;
+import model.building.DrawBridgeType;
 import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
@@ -266,13 +267,19 @@ public class MainController {
         if (!checkBlockType(block, buildingType).equals("OK")) {
             return checkBlockType(block, buildingType);
         }
+        if(buildingType.equals(DrawBridgeType.DRAW_BRIDGE)) {
+            ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.SEA , BlockType.RIVER , BlockType.DITCH , BlockType.LAKE));
+            if(!(goodBlockTypes.contains(block.getBlockType()))) {
+                return "you can not put a draw bridge on that block!";
+            }
+        }
         if (buildingType.equals(GeneralBuildingsType.FOOD_STORAGE)) {
             Block tempBlock;
             boolean flag = false;
             outer:
             for (int i = x - 1; i <= x + 1; i++) {
                 for (int j = y - 1; j <= j + 1; j++) {
-                    if(i < 0 || j < 0) {
+                    if(i < 0 || j < 0 || i > 399 || j > 399) {
                         continue;
                     }
                     tempBlock = currentGameMap.getABlock(i , j);
@@ -295,7 +302,8 @@ public class MainController {
                 entry.getKey().use(entry.getValue(), User.currentUser.getGovernment());
             }
         }
-        buildingType.create(User.currentUser.getGovernment(), block);
+        else buildingType.create(null , block);
+        block.setPassable(false);
         return "Building created successfully!";
     }
 

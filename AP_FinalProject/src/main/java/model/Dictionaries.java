@@ -2,7 +2,7 @@ package model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import model.forces.human.TroopType;
+import model.human.TroopType;
 import model.building.*;
 
 public class Dictionaries  {

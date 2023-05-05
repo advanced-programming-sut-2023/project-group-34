@@ -1,12 +1,13 @@
 package model.building;
 
 import model.enums.make_able.Food;
-import model.forces.WarEquipment;
-import model.forces.human.Engineer;
-import model.forces.human.Human;
-import model.forces.human.Troop;
+import model.enums.make_able.Resources;
+import model.human.Human;
 import model.government.Government;
 import model.map.Block;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Inn extends Building{
 
@@ -15,7 +16,7 @@ public class Inn extends Building{
     private final int popularityRate = 2;
     private final double aleUsage = 2;
     public Inn(Government government, Block block) {
-        super(government, block, 0, null, InnType.INN);
+        super(government, block, 1000, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 100) , Map.entry(Resources.WOOD , 20))), InnType.INN);
     }
 
     @Override
