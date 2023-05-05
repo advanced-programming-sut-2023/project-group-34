@@ -221,7 +221,6 @@ public class User {
     }
 
     public static void loadAllUsersFromDataBase() {
-        //TODO needs to be checked by ALIZADEH
         try (FileReader reader = new FileReader("Users.json")) {
             //TODO Convert JSON File to Java Object
             ArrayList<User> userObjects = new Gson().fromJson(reader, new TypeToken<ArrayList<User>>() {}.getType());
@@ -237,5 +236,11 @@ public class User {
 
     public ArrayList<GameMap> getCustomMaps() {
         return customMaps;
+    }
+
+    public GameMap newCustomMap() {
+        GameMap map = new GameMap();
+        this.customMaps.add(map);
+        return map;
     }
 }

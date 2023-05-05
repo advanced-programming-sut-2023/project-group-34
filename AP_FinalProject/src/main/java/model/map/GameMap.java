@@ -3,8 +3,8 @@ package model.map;
 import model.building.Building;
 import model.enums.BlockType;
 import model.enums.Direction;
+import model.human.Human;
 
-import java.beans.Introspector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -103,6 +103,9 @@ public class GameMap {
 
      public Block getUpLeftCornerBlock() {
          return UpLeftCornerBlock;
+     }
+     public static int getDistanceBetweenTwoBlocks(Block a , Block b) {
+        return Math.abs(a.getLocationI() - b.getLocationI()) + Math.abs(a.getLocationJ() - b.getLocationJ());
      }
 
     public void setUpLeftCornerBlock(Block upLeftCornerBlock) {

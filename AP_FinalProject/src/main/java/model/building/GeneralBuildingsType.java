@@ -5,19 +5,18 @@ import model.government.Government;
 import model.map.Block;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public enum GeneralBuildingsType implements BuildingType{
-    RESOURCES_STORAGE(190 , 250 , new HashMap<>()),
-    FOOD_STORAGE(250 , 250 , new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 5)))),
-    ARMOUR_STORAGE(50 , 450 , new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 5)))),
-    BARRACK(0 , 450 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 15)))),
-    MERCENARY(0 , 450 , new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 10)))),
-    ENGINEER_GUILD(0 ,450 , new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 10), Map.entry(Resources.GOLD, 100)))),
-    TUNNELERS_GUILD(0 ,450 ,new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 10), Map.entry(Resources.GOLD, 100)))),
-    SIEGE_TENT(0 , 50 , new HashMap<>()),
-    CHURCH(0 , 700 , new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD, 250)))),
-    CATHEDRAL(0 , 5000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD, 1000))));
+    RESOURCES_STORAGE(0 , 0 , null),
+    FOOD_STORAGE(0 , 0 , null),
+    ARMOUR_STORAGE(0 , 0 , null),
+    BARRACK(0 , 0 , null),
+    MERCENARY(0 , 0 , null),
+    ENGINEER_GUILD(0 ,0 , null),
+    TUNNELERS_GUILD(0 ,0 ,null),
+    SIEGE_TENT(0 , 0 , null),
+    CHURCH(0 , 0 , null),
+    CATHEDRAL(0 , 0 , null);
 
     private final int capacity;
     private final int HP;
@@ -36,5 +35,10 @@ public enum GeneralBuildingsType implements BuildingType{
     @Override
     public void create(Government government, Block block) {
         block.addBuilding(new GeneralBuilding(government , block , this.HP , this.cost , this , this.capacity));
+    }
+
+    @Override
+    public HashMap<Resources, Integer> getCost() {
+       return this.cost;
     }
 }

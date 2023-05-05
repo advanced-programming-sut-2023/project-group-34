@@ -1,16 +1,16 @@
 package controller;
 
+import model.Dictionaries;
 import model.Game;
 import model.Trade;
-import model.building.Building;
-import model.building.GateType;
+import model.building.*;
 import model.enums.BlockFillerType;
 import model.enums.Direction;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
-import model.forces.human.Human;
-import model.forces.human.Troop;
+import model.human.*;
+import model.map.GameMap;
 import model.user.User;
 import model.map.Block;
 import view.gameMenu.GameMenu;
@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public class GameController {
-    private static Game currentGame;
-    private static Building selectedBuilding;
-    private static ArrayList<Human> selectedHumans = new ArrayList<>();
+    public static Game currentGame;
+    public static Building selectedBuilding;
+    public static ArrayList<Human> selectedWarEquipment = new ArrayList<>();
 
     public static String run(){
         while (true) {
@@ -79,17 +79,10 @@ public class GameController {
     private String deselectCurrentBuilding () { return null;}
 
     private static String deselectHumans () {
-        selectedHumans.clear();
+        selectedWarEquipment.clear();
         return null;
     }
 
-    public static ArrayList<Human> getSelectedHumans() {
-        return selectedHumans;
-    }
-
-    public static void setSelectedHumans(ArrayList<Human> selectedHumans) {
-        GameController.selectedHumans = selectedHumans;
-    }
 
     public static String setMapLocation (int x, int y) {
         if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";
@@ -98,26 +91,12 @@ public class GameController {
     }
 
     public static String showMiniMap (Matcher matcher) {
-        StringBuilder output = new StringBuilder();
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         String response = setMapLocation(x, y);
         if (response != null) return response;
-        Block[][] map = currentGame.getMap().getMiniMap();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (map[i][j].getTroops().length != 0) output.append("S ");
-                else if (map[i][j].getBuilding().size() != 0) output.append("B ");
-                else if (map[i][j].getBLockFiller() != null && !map[i][j].getBLockFiller().equals(BlockFillerType.STAIR))
-                    output.append("T ");
-                else output.append(map[i][j].getBlockType().toString(), 0, 2);
-                output.append(' ');
-            }
-            output.append('\n');
-        }
-        return output.toString();
+        return showMiniMap();
     }
-
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
@@ -214,6 +193,8 @@ public class GameController {
     }
 
     public static String setFoodRate(Matcher matcher){
+        if(!selectedBuilding.getBuildingType().equals(GeneralBuildingsType.FOOD_STORAGE))
+            return "you have not choose food storage";
         int foodRate = Integer.parseInt(matcher.group("foodRate"));
         if (foodRate < -2 || foodRate > 2) return "Invalid food rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setFoodRate(foodRate);
@@ -221,23 +202,61 @@ public class GameController {
     }
 
     public static String createUnit (Matcher matcher) {
-        return null;
+        String type = matcher.group("type");
+        int count = Integer.parseInt(matcher.group("count"));
+        if(count < 1) return "Invalid count!";
+        if(type.equals("engineer")) {
+
+        }
+        if(type.equals("tunneler")) {
+
+        }
+        //TODO check if space in name is ok
+        if(type.equals("ladder man")) {
+
+        }
+        if(!Dictionaries.troopDictionary.containsKey(type)) {
+            return "there is no such type!";
+        }
+        return "unit created successfully!";
+    }
+
+    public static String moveSelectedUnits (Matcher matcher) {
+        int y = Integer.parseInt(matcher.group("y"));
+        int x = Integer.parseInt(matcher.group("x"));
+        if(x < 0 || x > 399 || y < 0 || y > 399) {
+            return "please enter a point in the map";
+        }
+        if(selectedWarEquipment.isEmpty()) {
+            return "You have to choose a unit first";
+        }
+        Block block = currentGame.getMap().getABlock(x , y);
+        boolean flag = false;
+        for (Human human : selectedWarEquipment) {
+            if(human.isThereAWay(block)) {
+                flag = true;
+                human.setBlock(block);
+            }
+        }
+        if(!flag) {
+            return "Nobody from selected unit can rich there!";
+        }
+        return "Units reached successfully!";
     }
 
     public static String repairCurrentBuilding () {
         if (selectedBuilding.getHP() == selectedBuilding.getMaxHP())
             return "There is nothing to repair in this building, repairing failed";
-
         int x = selectedBuilding.getBlock().getLocationI() - 1;
         int y = selectedBuilding.getBlock().getLocationJ() - 1;
 
         for (int i = x; i < x + 3; i++){
             for (int j = y; j < y + 3; y++) {
-                if (i < 0 || i > 399 || j < 0 || j > 399){
+                if (!currentGame.getMap().checkBounds(i , j)){
                     continue;
                 }
-                for (Human human : currentGame.getMap().getABlock(i, j).getHumans()){
-                    if (!human.getGovernment().equals(selectedBuilding.getGovernment())){
+                for (Human warEquipment : currentGame.getMap().getABlock(i, j).getHumans()){
+                    if (!warEquipment.getGovernment().equals(selectedBuilding.getGovernment())){
                         return "There are enemy troops near this building, repairing failed";
                     }
                 }
@@ -248,52 +267,305 @@ public class GameController {
             double resourceNeeded = Math.ceil(((double) selectedBuilding.getHP()/selectedBuilding.getMaxHP()) * entry.getValue());
             if (currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(entry.getKey()) < resourceNeeded)
                 return "You do not have enough resources to repair this building, repairing failed";
-            else
-                currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
-                        put(entry.getKey(), currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
-                                get(entry.getKey())-resourceNeeded);
+        }
+        for (Map.Entry<Resources, Integer> entry : selectedBuilding.getCost().entrySet()) {
+            double resourceNeeded = Math.ceil(((double) selectedBuilding.getHP() / selectedBuilding.getMaxHP()) * entry.getValue());
+            currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                    put(entry.getKey(), currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
+                            get(entry.getKey()) - resourceNeeded);
         }
         return "Building repaired successfully";
     }
 
 
+    public static String arialAttack(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!currentGame.getMap().checkBounds(x , y)) {
+            return "please enter a point in the map";
+        }
+        if(selectedWarEquipment.isEmpty()) {
+            return "You have to choose a unit first";
+        }
+        boolean flag = false;
+        Block OpponentBlock = currentGame.getMap().getABlock(x , y);
+        if(OpponentBlock.getHumans().isEmpty()) {
+            return "there is no enemy in that block";
+        }
+        for(Human human : selectedWarEquipment) {
+            if(!(human instanceof Troop warEquipment)) {
+                continue;
+            }
+            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , warEquipment.getBlock()) > warEquipment.getFireRange() || warEquipment.getFireRange() <= 1) {
+                continue;
+            }
+            flag = true;
+            for(Human enemy : OpponentBlock.getHumans()) {
+                if(!enemy.isVisible() || enemy.getGovernment().equals(warEquipment.getGovernment())) {
+                    continue;
+                }
+                enemy.getHit(warEquipment.getCurrentDamage());
+            }
+        }
+        if(!flag) {
+            return "that block is out of range!";
+        }
+        selectedWarEquipment.clear();
+        return "arial attack was successful";
+    }
+
     public static String selectUnits (Matcher matcher) {
         int xLocation = Integer.parseInt(matcher.group("x"));
         int yLocation = Integer.parseInt(matcher.group("y"));
-        if (xLocation < 0 | xLocation > 399 | yLocation < 0 | yLocation > 399)
+        if (!currentGame.getMap().checkBounds(xLocation , yLocation))
             return "Invalid coordinates, selecting unit failed";
-        for (Human human : currentGame.getMap().getABlock(xLocation, yLocation).getHumans()){
-            if (human instanceof Troop && human.getGovernment().equals(currentGame.getCurrentGovernment())){
-                selectedHumans.add(human);
+        boolean flag = false;
+        for (Human warEquipment: currentGame.getMap().getABlock(xLocation, yLocation).getHumans()){
+            if (warEquipment.getGovernment().equals(currentGame.getCurrentGovernment())){
+                flag = true;
+                selectedWarEquipment.add(warEquipment);
             }
         }
+        if(!flag) return "there is no troop in that block!";
         return "Troops selected successfully";
     }
 
     public static String deselectUnits(){
-        if (selectedHumans.isEmpty()) return "You have no troops selected";
-        else selectedHumans.clear();
+        if (selectedWarEquipment.isEmpty()) return "You have no troops selected";
+        else selectedWarEquipment.clear();
         return "Troops deselected successfully";
     }
 
-    public static String moveSelectedUnits (Matcher matcher) {
-        return null;
+    public static String closeBridge() {
+        if(selectedBuilding == null || !selectedBuilding.getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE)) {
+            return "You have to select a gate first!";
+        }
+        DrawBridge bridge = (DrawBridge) selectedBuilding;
+        if(bridge.isUP()) {
+            return "bridge is already closed!";
+        }
+        bridge.setUP(true);
+        return "bridge successfully closed!";
     }
 
-    public static String patrolUnit(Matcher matcher) { return null;}
-
-    public static String changeSelectedUnitState (Matcher matcher) {
-        return null;
+    public static String patrolUnit(Matcher matcher) {
+        int y1 = Integer.parseInt(matcher.group("y1"));
+        int y2 = Integer.parseInt(matcher.group("y2"));
+        int x1 = Integer.parseInt(matcher.group("x1"));
+        int x2 = Integer.parseInt(matcher.group("x2"));
+        if(selectedWarEquipment.isEmpty()) {
+            return "You have to choose a unit first";
+        }
+        if(!currentGame.getMap().checkBounds(x1 , y1)) {
+            return "please enter a point in the map";
+        }
+        if(!currentGame.getMap().checkBounds(x2 , y2)) {
+            return "please enter a point in the map";
+        }
+        Block block2 = currentGame.getMap().getABlock(x2 , y2);
+        Block block1 = currentGame.getMap().getABlock(x1 , y1);
+        if(!block1.isPassable() || !block2.isPassable()) {
+            return "these blocks are not passable";
+        }
+        boolean flag = false;
+        Block tempBlock;
+        for(Human human : selectedWarEquipment) {
+            tempBlock = human.getBlock();
+            if(!human.isThereAWay(block1)) {
+                continue;
+            }
+            human.setBlock(block1);
+            if(!human.isThereAWay(block2)) {
+                human.setBlock(tempBlock);
+                continue;
+            }
+            flag = true;
+            //TODO patrol between
+        }
+        if(!flag) {
+            return "Nobody from selected unit can patrol between those two blocks";
+        }
+        return "unit is patrolling successfully!";
     }
 
-    public static String attackTheBlock (Matcher matcher) {
-        return null;
+    public static String openBridge() {
+        if(selectedBuilding == null || !selectedBuilding.getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE)) {
+            return "You have to select a gate first!";
+        }
+        DrawBridge bridge = (DrawBridge) selectedBuilding;
+        if(!bridge.isUP()) {
+            return "bridge is already open!";
+        }
+        bridge.setUP(false);
+        return "bridge successfully opened!";
     }
 
-    public static String arialAttack(Matcher matcher) { return null;}
+    public static String attackTheBlock (Matcher matcher){
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(selectedWarEquipment.isEmpty()) {
+            return "You have to choose a unit first";
+        }
+        if(currentGame.getMap().checkBounds(x , y)) {
+            return "please enter a point in the map";
+        }
+        Block OpponentBlock = currentGame.getMap().getABlock(x , y);
+        if(!OpponentBlock.getBuilding().isEmpty()) {
+            for(Human human1 : selectedWarEquipment) {
+                if(human1 instanceof SiegeMachine siegeMachine) {
+                    if(siegeMachine.getType().equals(SiegeType.CATAPULT)) {
+                        if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
+                            continue;
+                        }
+                    }
+                    if (siegeMachine.getType().equals(SiegeType.STABLE_CATAPULT)) {
+                        if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
+                            continue;
+                        }
+                    }
+                    OpponentBlock.getBuilding().get(0).getHit(siegeMachine.getDamage());
+                }
+                if (!(human1 instanceof Troop human)) {
+                    continue;
+                }
+                if(human.getFireRange() > 1) continue;
+                if(human.isThereAWay(OpponentBlock)) {
+                    OpponentBlock.getBuilding().get(0).getHit(human.getDamage());
+                }
+            }
+        }
+        if(OpponentBlock.getHumans().isEmpty()) {
+            return "there is no enemy in that block";
+        }
+        boolean flag = false;
+        for(Human human1 : selectedWarEquipment) {
+            if(human1 instanceof SiegeMachine siegeMachine) {
+                if(siegeMachine.getType().equals(SiegeType.FIRE_XBOW)) {
+                    if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
+                        continue;
+                    }
+                    for(Human enemy : OpponentBlock.getHumans()){
+                        if(!enemy.isVisible() || enemy.getGovernment().equals(siegeMachine.getGovernment())) {
+                            continue;
+                        }
+                        enemy.getHit(siegeMachine.getCurrentDamage());
+                        flag = true;
+                    }
+                    continue;
+                }
+            }
+            if(!(human1 instanceof Troop human)) {
+                continue;
+            }
+            if(human.getFireRange() > 1) {
+                if(GameMap.getDistanceBetweenTwoBlocks(human.getBlock() , OpponentBlock) > human.getFireRange()) {
+                    continue;
+                }
+                for(Human enemy : OpponentBlock.getHumans()){
+                    if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+                        continue;
+                    }
+                    enemy.getHit(human.getCurrentDamage());
+                    flag = true;
+                    break;
+                }
+                continue;
+            }
+            if(!human.isThereAWay(OpponentBlock)) {
+                continue;
+            }
+            if(human.getFireRange() <= 1) {
+                human.setBlock(OpponentBlock);
+                for(Human enemy : OpponentBlock.getHumans()) {
+                    if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+                        continue;
+                    }
+                    enemy.getHit(human.getCurrentDamage());
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        selectedWarEquipment.clear();
+        if(!flag) {
+            return "no troop in selected building cat commit damage!";
+        }
+        return "Attack implemented successfully";
+    }
 
+    private static ArrayList<Block> getEngineerTarget(String d , Block block) {
+        int x = block.getLocationI();
+        int y = block.getLocationJ();
+        ArrayList<Block> result = new ArrayList<>();
+        switch (d) {
+            case "left" -> {
+                for (int i = x - 3; i <= x - 1; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (!currentGame.getMap().checkBounds(i, j)) continue;
+                        result.add(currentGame.getMap().getABlock(i, j));
+                    }
+                }
+            }
+            case "up" -> {
+                for (int i = x - 1; i <= x + 1; i++) {
+                    for (int j = y - 3; j < y; j++) {
+                        if (!currentGame.getMap().checkBounds(i, j)) continue;
+                        result.add(currentGame.getMap().getABlock(i, j));
+                    }
+                }
+            }
+            case "right" -> {
+                for (int i = x + 1; i <= x + 3; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (!currentGame.getMap().checkBounds(i, j)) continue;
+                        result.add(currentGame.getMap().getABlock(i, j));
+                    }
+                }
+            }
+
+            default -> {
+                for (int i = x - 3; i < x; i++) {
+                    for (int j = y + 1; j <= y + 3; j++) {
+                        if (!currentGame.getMap().checkBounds(i, j)) continue;
+                        result.add(currentGame.getMap().getABlock(i, j));
+                    }
+                }
+            }
+        }
+        return result;
+    }
     public static String pourOil (Matcher matcher) {
-        return null;
+        String direction = matcher.group("d");
+        ArrayList<Block> target = getEngineerTarget(direction , selectedWarEquipment.get(0).getBlock());
+        if(target.isEmpty()) {
+            return "that is the corner of the map and no blocks can get hit!";
+        }
+        boolean flag = false;
+        for(Human human : selectedWarEquipment){
+            if(!(human instanceof Engineer engineer)) {
+                continue;
+            }
+            if(!engineer.isEquippedWithOil()) continue;
+            flag = true;
+            for(Block block : target) {
+                if(!block.getBuilding().isEmpty()) {
+                    block.getBuilding().get(0).getHit(engineer.getDamage());
+                    continue;
+                }
+                for(Human enemy : block.getHumans()) {
+                    if(!human.isVisible()) {
+                        if(human instanceof Troop troop && troop.getTroopType() == TroopType.ASSASSIN) {
+                            enemy.getHit(engineer.getDamage());
+                        }
+                        continue;
+                    }
+                    enemy.getHit(engineer.getDamage());
+                }
+            }
+            engineer.useOil();
+        }
+        if(!flag) return "There is no engineer in the selected humans";
+        return "Deployed fire successfully!";
     }
 
     public static String digTunnel (Matcher matcher) {
@@ -477,7 +749,7 @@ public class GameController {
     }
 
     public static String showTradeDetails(Trade trade){
-        String finalString = new String();
+        String finalString = "";
         finalString = finalString.concat("Sender: " + trade.getSender().getName() + "  ");
         finalString = finalString.concat("Resource offered: " + trade.getOfferedNumber() + " " + trade.getOffered() + "  ");
         if (trade.getOffered() == null)
@@ -489,7 +761,7 @@ public class GameController {
     }
 
     public static String showTradeNotification(){
-        String finalString = new String();
+        String finalString = "";
 
         if (currentGame.getCurrentGovernment().getOwner().getNotificationsList().isEmpty())
             return "You have no new requests";

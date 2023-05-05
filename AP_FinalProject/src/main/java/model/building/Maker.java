@@ -2,9 +2,7 @@ package model.building;
 
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
-import model.forces.human.Engineer;
-import model.forces.human.Human;
-import model.forces.human.Troop;
+import model.human.Human;
 import model.government.Government;
 import model.map.Block;
 
@@ -14,29 +12,33 @@ import java.util.HashMap;
 public class Maker extends Building{
     private final ArrayList<MakeAble> output;
 
-    private double outputRate;  //مقدار تولید شده به ازای هر واحد ورودی
+    private final double outputRate;
+    private  double currentOutPutRate;
     private final double inputRate;
     private final double capacity;
-    private double currentAmount = 0;
-    private final MakeAble input;
-    private final int numberOfWorkers;
-    private int numberOfCurrentWorkers;
 
+    private double currentAmount = 0;
+
+    private final MakeAble input;
+    private final int numberOfMaxWorkers;
+    private int numberOfCurrentWorkers;
     public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity
-            , int HP, int numberOfWorkers, HashMap<Resources, Integer> cost, BuildingType buildingType, int inputRate, MakeAble input) {
+            , int HP, int numberOfMaxWorkers, HashMap<Resources, Integer> cost, BuildingType buildingType, int inputRate, MakeAble input) {
         super(government, block, HP , cost, buildingType);
         this.output = output;
         this.outputRate = outputRate;
         this.capacity = capacity;
-        this.numberOfWorkers = numberOfWorkers;
+        this.numberOfMaxWorkers = numberOfMaxWorkers;
         this.inputRate = inputRate;
         this.input = input;
         numberOfCurrentWorkers = 0;
+        currentOutPutRate = outputRate;
     }
+
     @Override
     public void process() {
         if(this.buildingType == MakerType.QUARRY) {
-            currentAmount += outputRate;
+            currentAmount += currentOutPutRate;
             currentAmount = Math.min(currentAmount, capacity);
             return;
         }
@@ -47,17 +49,16 @@ public class Maker extends Building{
             input.use(tempInputRate , government);
         }
         for(MakeAble makeAble : output) {
-            makeAble.add(tempInputRate * outputRate , government);
+            makeAble.add(Math.floor((tempInputRate * currentOutPutRate) / inputRate), government);
             if(makeAble.getLeftCapacity(government) < 0) {
-                makeAble.use(-makeAble.getLeftCapacity(government), government);
+                makeAble.use(-makeAble.getLeftCapacity(government) , government);
             }
         }
     }
-
     @Override
     public void destroy() {
         for (Human human : this.block.getHumans()) {
-            if(!(human instanceof Troop || human instanceof Engineer)) {
+            if(!(human instanceof WarEquipment)) {
                 human.die();
             }
         }
@@ -80,8 +81,8 @@ public class Maker extends Building{
         return capacity;
     }
 
-    public int getNumberOfWorkers() {
-        return numberOfWorkers;
+    public int getNumberOfMaxWorkers() {
+        return numberOfMaxWorkers;
     }
 
     public int getNumberOfCurrentWorkers() {
@@ -99,16 +100,21 @@ public class Maker extends Building{
     public MakeAble getInput() {
         return input;
     }
+
     public void setCurrentOutputRate(int integrityRate) {
         integrityRate *= 5;
-        this.outputRate = (outputRate * (integrityRate+100))/100;
-    }
-
-    public void setOutputRate(int outputRate) {
-        this.outputRate = outputRate;
+        this.currentOutPutRate = (outputRate * (integrityRate+100))/100;
     }
 
     public void addWorkers(int numberOfWorkers) {
         this.numberOfCurrentWorkers += numberOfWorkers;
+    }
+
+    public double getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void use(double amount) {
+        this.currentAmount -= amount;
     }
 }

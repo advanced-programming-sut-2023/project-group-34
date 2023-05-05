@@ -34,6 +34,10 @@ public abstract class Building {
 
     public abstract void process();
     public abstract void destroy();
+    public void getHit(int damage) {
+        HP -= damage;
+        if(HP < 0) destroy();
+    }
 
     public HashMap<Resources, Integer> getCost() {
         return cost;

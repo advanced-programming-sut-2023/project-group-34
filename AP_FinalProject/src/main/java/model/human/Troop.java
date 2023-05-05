@@ -1,50 +1,46 @@
-package model.forces.human;
+package model.human;
 
 import model.building.Building;
 import model.enums.TroopStage;
-import model.enums.make_able.Weapons;
-import model.forces.WarEquipment;
+import model.enums.make_able.MakeAble;
 import model.government.Government;
 import model.map.Block;
 
 import java.util.*;
 
-public class Troop extends Human implements WarEquipment {
+public class Troop extends Human {
     private final static ArrayList<Troop> troops = new ArrayList<>();
     private final int defensiveRange;
     private int fireRange;
     private final int aggressiveRange;
     private final TroopType troopType;
-
+    private final int speed;
     private TroopStage troopStage;
-    private final int price;
-
-    protected Troop(int HP, Block block, int damage, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int price) {
+    private final HashMap<MakeAble , Integer> cost;
+    protected Troop(int HP, Block block, int damage, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int price, int speed, HashMap<MakeAble, Integer> cost) {
         super(HP, HP , block, damage, canDig, canClimb, government);
         this.defensiveRange = defensiveRange;
         this.fireRange = fireRange;
         this.aggressiveRange = aggressiveRange;
         this.troopType = troopType;
-        this.price = price;
+        this.speed = speed;
+        this.cost = cost;
+        if(troopType == TroopType.ASSASSIN) setVisible(false);
     }
 
     public Troop enemyLocator(){
         return null;
     }
 
-
-    public int getAggressiveRange() {
-        return aggressiveRange;
+    public void addRange(int amount) {
+        fireRange += amount;
     }
 
-    @Override
     public int getFireRange() {
         return fireRange;
     }
-
-    @Override
-    public void fight(WarEquipment opponent) {
-        //TODO first attack conquer machines
+    public int getAggressiveRange() {
+        return aggressiveRange;
     }
 
     public void setFireRange(int fireRange) {
@@ -65,7 +61,7 @@ public class Troop extends Human implements WarEquipment {
     }
 
     public static void createUnit(Building humanMaker , int number , TroopType troopType) {
-        //TODO
+
     }
 
     public TroopType getTroopType() {
@@ -80,9 +76,6 @@ public class Troop extends Human implements WarEquipment {
         this.troopStage = troopStage;
     }
 
-    public int getPrice() {
-        return price;
-    }
 
     public static HashMap<TroopType, String> troopsNameString = new HashMap<>(
             Map.ofEntries(
@@ -105,4 +98,12 @@ public class Troop extends Human implements WarEquipment {
                     Map.entry(TroopType.FIRE_THROWERS, "fire thrower")
             )
     );
+
+    public HashMap<MakeAble, Integer> getCost() {
+        return cost;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
 }

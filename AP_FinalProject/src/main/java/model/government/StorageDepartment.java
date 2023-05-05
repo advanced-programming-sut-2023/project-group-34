@@ -21,7 +21,7 @@ public class StorageDepartment {
         return resourcesMaxCapacity;
     }
 
-    public void setResourcesMaxCapacity(int resourcesMaxCapacity) {
+    public void setResourcesMaxCapacity(double resourcesMaxCapacity) {
         this.resourcesMaxCapacity = resourcesMaxCapacity;
     }
 
@@ -29,7 +29,7 @@ public class StorageDepartment {
         return weaponsMaxCapacity;
     }
 
-    public void setWeaponsMaxCapacity(int weaponsMaxCapacity) {
+    public void setWeaponsMaxCapacity(double weaponsMaxCapacity) {
         this.weaponsMaxCapacity = weaponsMaxCapacity;
     }
 
@@ -37,7 +37,7 @@ public class StorageDepartment {
         return foodMaxCapacity;
     }
 
-    public void setFoodMaxCapacity(Double foodMaxCapacity) {
+    public void setFoodMaxCapacity(double foodMaxCapacity) {
         this.foodMaxCapacity = foodMaxCapacity;
     }
 

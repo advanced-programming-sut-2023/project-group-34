@@ -1,7 +1,7 @@
 package model.government;
 
 import model.building.Building;
-import model.forces.human.Human;
+import model.human.Human;
 import model.user.Color;
 import model.user.User;
 

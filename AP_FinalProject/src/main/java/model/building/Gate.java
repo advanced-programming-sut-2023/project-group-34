@@ -1,8 +1,8 @@
 package model.building;
 
 import model.enums.make_able.Resources;
-import model.forces.WarEquipment;
 import model.government.Government;
+import model.human.Human;
 import model.map.Block;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class Gate extends Building {
 
     private final int population;
     private boolean isVertical;
-    private final ArrayList<WarEquipment> warEquipments = new ArrayList<>();
+    private final ArrayList<Human> warEquipments = new ArrayList<>();
     public Gate(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int population, boolean isVertical) {
         super(government, block, HP, cost, buildingType);
         this.population = population;

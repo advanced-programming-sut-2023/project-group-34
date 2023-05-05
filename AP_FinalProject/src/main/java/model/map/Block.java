@@ -1,10 +1,11 @@
 package model.map;
 
 import model.building.Building;
+import model.building.BuildingType;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
-import model.forces.human.Human;
-import model.forces.human.Troop;
+import model.human.Human;
+import model.human.Troop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,14 +13,14 @@ import java.util.HashMap;
 public class Block {
     private BlockFillerType bLockFiller;
     private BlockType blockType;
-    private ArrayList<Human> humans;
 
     public BlockFillerType getBLockFiller() {
         return bLockFiller;
     }
 
-    private ArrayList<Building> building;
+    private ArrayList<Building> building = new ArrayList<>();
 
+    private final ArrayList <Human> humans = new ArrayList<>();
     private int resourcesCapacity;
     private boolean isPassable;
     private final int locationI;
@@ -81,10 +82,6 @@ public class Block {
         this.bLockFiller = bLockFiller;
     }
 
-    public void setHumans(ArrayList<Human> humans) {
-        this.humans = humans;
-    }
-
     public void setBuilding(ArrayList<Building> building) {
         this.building = building;
     }
@@ -125,5 +122,14 @@ public class Block {
         else if (blockType.equals(BlockType.BOULDER)) return "stone";
         else if (blockType.equals(BlockType.OIL)) return "oil";
         else return null;
+    }
+
+    public boolean containsThisBuilding(BuildingType buildingType) {
+        for(Building building1 : this.getBuilding()) {
+            if(building1.getBuildingType().equals(buildingType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
