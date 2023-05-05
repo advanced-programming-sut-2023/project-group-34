@@ -116,14 +116,6 @@ public class Block {
         return result;
     }
 
-    public String resource() {
-        if (bLockFiller == null || bLockFiller.equals(BlockFillerType.STAIR)) return bLockFiller.toString();
-        else if (blockType.equals(BlockType.IRON)) return "iron";
-        else if (blockType.equals(BlockType.BOULDER)) return "stone";
-        else if (blockType.equals(BlockType.OIL)) return "oil";
-        else return null;
-    }
-
     public boolean containsThisBuilding(BuildingType buildingType) {
         for(Building building1 : this.getBuilding()) {
             if(building1.getBuildingType().equals(buildingType)) {

@@ -1,6 +1,7 @@
 package model.map;
 
 import model.building.Building;
+import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.enums.Direction;
 import model.human.Human;
@@ -149,6 +150,16 @@ public class GameMap {
             //TODO: toString is gonna print a camelCase name!!!
         }
         return details.toString();
+    }
+    
+    public String resource(Block block) {
+        BlockFillerType blockFiller = block.getBLockFiller();
+        BlockType blockType = block.getBlockType();
+        if (blockFiller != null && !blockFiller.equals(BlockFillerType.STAIR)) return blockFiller.toString();
+        else if (blockType.equals(BlockType.IRON)) return "iron";
+        else if (blockType.equals(BlockType.BOULDER)) return "stone";
+        else if (blockType.equals(BlockType.OIL)) return "oil";
+        else return null;
     }
 
     public String setRectangleTexture(int x1, int x2, int y1, int y2, BlockType blockType) {
