@@ -13,7 +13,7 @@ public class Game {
     private  ArrayList<Trade> allTrades = new ArrayList<>();
     private int numberOfRoundsPassed = 0;
 
-    private final GameMap map;
+    private final GameMap map;//TODO: Set it
     public Game(GameMap map) {
         this.map = map;
     }
@@ -24,6 +24,10 @@ public class Game {
 
     public ArrayList<User> getPlayers() {
         return players;
+    }
+    
+    public void addPlayer (User user) {
+        players.add(user);
     }
 
 

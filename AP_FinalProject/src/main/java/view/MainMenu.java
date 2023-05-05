@@ -2,8 +2,8 @@ package view;
 
 import controller.GameController;
 import controller.MainController;
+import controller.Runner;
 import model.enums.Commands;
-import model.map.GameMap;
 import model.user.User;
 
 import java.util.regex.Matcher;
@@ -26,15 +26,12 @@ public class MainMenu {
                 System.out.println("You just entered map editing menu");
                 return "mapEditing menu";
             } else if ((matcher = Commands.getOutput(input, Commands.NEW_GAME)) != null) {
-                String mapName = matcher.group("mapName");
-                if (mapName != null) mapName = mapName.replaceAll("\"", "");
-                String playersCountString = matcher.group("playersCount");
-                if (mapName == null || mapName.equals("") || playersCountString == null) {
-                    System.out.println("Empty field!");
+                String response = MainController.createNewGame(matcher);
+                if (response != null) {
+                    System.out.println(response);
                     continue;
                 }
-                MainController.setCurrentGameMap(new GameMap(User.currentUser.getMapByName(mapName)));
-                int numberOfPlayers = Integer.parseInt(playersCountString);
+                setKeeps();
                 //TODO: Complete with Arshia! Drop keeps.
                 GameController.run();
             } else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null){
@@ -43,6 +40,35 @@ public class MainMenu {
                 System.out.println("Invalid Command");
             }
             //TODO The part that starts a game with multiple users needs to be implemented
+        }
+    }
+    
+    private static void setKeeps () {
+        int playersCount;
+        System.out.println("Please enter the number of players:");
+        playersCount = Runner.getScn().nextInt();
+        String response;
+        while (true) {
+            System.out.println("Please enter your location x axis:");
+            int x = Runner.getScn().nextInt();
+            System.out.println("Please enter your location y axis:");
+            int y = Runner.getScn().nextInt();
+            response = MainController.setKeep(User.currentUser.getName(), x, y);
+            if (response != null) System.out.println(response);
+            else break;
+        }
+        for (int i = 2; i <= playersCount; i++) {
+            while (true) {
+                System.out.println("Please enter player " + i + " username:");
+                String username = Runner.getScn().nextLine().trim();
+                System.out.println("Please enter player " + i + " location x axis:");
+                int x = Runner.getScn().nextInt();
+                System.out.println("Please enter player " + i + " location y axis:");
+                int y = Runner.getScn().nextInt();
+                response = MainController.setKeep(username, x, y);
+                if (response != null) System.out.println(response);
+                else break;
+            }
         }
     }
 }

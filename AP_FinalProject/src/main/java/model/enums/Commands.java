@@ -50,8 +50,7 @@ public enum Commands {
             "(?=.*-wa\\s+(?<wantedAmount>\\d*))(?=.*-w\\s+(?<wanted>\\S*))(?=.*-o\\s+(?<offered>\\S*))" +
             "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
-    NEW_GAME("New game(?=.* -m (?<mapName>\".+\"|\\S*))(?=.* -c (?<playersCount>\\d*))( -[mc] \\S*){2}"),
-    SET_KEEP("Set keep(?=.* -u (?<username>\".+\"|\\S*))(?=.* -x (?<xAxis>\\d*))(?=.* -y (?<yAxis>\\d*))( -[uxy] \\S*){3}"),
+    NEW_GAME("New game -m (?<mapName>\".+\"|\\S*)"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
     EDIT_OLD_MAP("Edit -m (?<mapName>\".+\"|\\S*)"),
     NEW_MAP("New map -n (?<mapName>\".+\"|\\S*)"),

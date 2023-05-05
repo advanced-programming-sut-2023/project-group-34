@@ -155,7 +155,7 @@ public class User {
         this.government = government;
     }
 
-    public User getUserByUsername(String name){
+    public static User getUserByUsername(String name){
         for (User user : users){
             if (user.getName().equals(name))
                 return user;

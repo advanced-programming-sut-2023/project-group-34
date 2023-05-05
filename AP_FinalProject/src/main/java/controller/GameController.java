@@ -39,7 +39,15 @@ public class GameController {
             }
         }
     }
-
+    
+    public static void setCurrentGame (Game currentGame) {
+        GameController.currentGame = currentGame;
+    }
+    
+    public static Game getCurrentGame () {
+        return currentGame;
+    }
+    
     public static Game getGame() {
         return currentGame;
     }
