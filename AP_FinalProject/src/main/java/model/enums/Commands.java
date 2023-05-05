@@ -4,18 +4,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Commands {
-    CREATE_USER("\\s*user\\s+create(?=.*\\s+-u(\\s+(?<username>\"[^\"]*\"|[^- ]*))?)(?=.*(\\s+-p\\s+(?<password>\"[^\"]*\"|[^- ]*)\\s+(?<passwordConfirmation>\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random))(?=.*\\s-e\\s+(?<email>\"[^\"]*\"|[^- ]*))(?=.*\\s-n\\s+(?<nickname>\"[^\"]*\"|[^- ]*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|[^- ]*))?((\\s+-[unse](\\s+(\"[^\"]*\"|[^- ]*))?)|(\\s+-p\\s+(\"[^\"]*\"|[^- ]*)\\s+(\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random)){4,5}"),
-    PICK_QUESTION("\\s*question\\s+pick\\s+-q\\s*(?<questionNumber>\\d*)\\s+-a\\s*(?<answer>\"[^\"]*\"|\\S*)\\s+-c\\s+(?<answerConfirm>\"[^\"]*\"|\\S*)\\s*"),
-    LOGIN("(?=.*-u\\s+(?<username>\"[^\"]*\"|[^- ]*))(?=.*-p\\s+(?<password>\"[^\"]*\"|[^- ]*))^\\s*user\\s+login(\\s+-[up]\\s*(\"[^\"]*\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
+    CREATE_USER("\\s*user\\s+create(?=.*\\s+-u((\\s+|$)(?<username>\"[^\"]*\"|[^- ]*))?)(?=.*(\\s+-p(\\s+|$)(?<password>\"[^\"]*\"|[^- ]*)(\\s+|$)(?<passwordConfirmation>\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random|\\s+-p))(?=.*\\s-e(\\s+|$)(?<email>\"[^\"]*\"|[^- ]*))(?=.*\\s-n(\\s+|$)(?<nickname>\"[^\"]*\"|[^- ]*))(?=.*\\s(?<sloganFlag>-s)\\s+(?<slogan>\"[^\"]*\"|[^- ]*))?((\\s+-[unse](\\s+(\"[^\"]*\"|[^- ]*))?)|\\s+-p|(\\s+-p\\s+(\"[^\"]*\"|[^- ]*)\\s+(\"[^\"]*\"|[^- ]*)|\\s+-p\\s+random)){4,5}"),
+    PICK_QUESTION("\\s*question\\s+pick(?=.*\\s+-q(\\s+|$)(?<questionNumber>\\d*))(?=.*\\s+-a(\\s+|$)(?<answer>\"[^\"]*\"|\\S*))(?=.*\\s+-c(\\s+|$)(?<answerConfirm>\"[^\"]*\"|\\S*))(\\s+-[qac](\\s+(\"[^\"]*\"|[^- ]*))?){3}\\s*"),
+    LOGIN("(?=.*-u(\\s+|$)(?<username>\"[^\"]*\"|[^- ]*))(?=.*-p(\\s+|$)(?<password>\"[^\"]*\"|[^- ]*))^\\s*user\\s+login(\\s+-[up]\\s*(\"[^\"]*\"|\\S*)|\\s+(?<flag>--stay-logged-in)){2,3}\\s*"),
     ENTER_FORGOT_PASSWORD_MENU("\\s*enter\\s+forgot\\s+password\\s+menu\\s*"),
-    FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password\\s+-u\\s+(?<username>\"[^\"]*\"|\\S*)\\s*"),
+    FORGOT_PASSWORD("\\s*forgot\\s+my\\s+password\\s+-u(\\s+|$)(?<username>\"[^\"]*\"|\\S*)\\s*"),
     LOGOUT("\\s*user\\s+logout\\s*"),
-    CHANGE_USER("\\s*Profile\\s+change\\s+username\\s+-u(\\s+(?<username>\"[^\"]*\"|\\S*))?\\s*"),
-    CHANGE_NICKNAME("\\s*Profile\\s+change\\s+-n(\\s+(?<nickname>\"[^\"]*\"|\\S*))?\\s*"),
-    CHANGE_EMAIL("\\s*Profile\\s+change\\s+-e(\\s+(?<email>\"[^\"]*\"|\\S*))?\\s*"),
-    CHANGE_SLOGAN("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+(?<slogan>\"[^\"]*\"|\\S*))?\\s*"),
-    CHANGE_PASSWORD("\\s*Profile\\s+change\\s+password(?=.*\\s+-o\\s+(?<oldPass>(\"[^\"]*\"|[^- ]*)))(?=.*\\s+-n\\s+(?<newPass>(\"[^\"]*\"|[^- ]*)))(\\s+-[on]\\s*(\"[^\"]*\"|\\S*)){2}\\s*"),
-    CHANGE_PASSWORD_RANDOMLY("(?=.*\\s+-o\\s+(?<oldPass>\".+\"|[^- ]*))(?=.*\\s+-n\\s+(?<newPass>random))^\\s*Profile\\s+change\\s+password(\\s+-[on]\\s*(\".+\"|\\S*)){2}\\s*$"),
+    CHANGE_USER("\\s*Profile\\s+change\\s+username\\s+-u(\\s+|$)(?<username>\"[^\"]*\"|\\S*)\\s*"),
+    CHANGE_NICKNAME("\\s*Profile\\s+change\\s+-n(\\s+|$)(?<nickname>\"[^\"]*\"|\\S*)\\s*"),
+    CHANGE_EMAIL("\\s*Profile\\s+change\\s+-e(\\s+|$)(?<email>\"[^\"]*\"|\\S*)\\s*"),
+    CHANGE_SLOGAN("\\s*Profile\\s+change\\s+slogan\\s+-s(\\s+|$)(?<slogan>\"[^\"]*\"|\\S*)\\s*"),
+    CHANGE_PASSWORD("\\s*Profile\\s+change\\s+password(?=.*\\s+-o(\\s+|$)(?<oldPass>(\"[^\"]*\"|[^- ]*)))(?=.*\\s+-n(\\s+|$)(?<newPass>(\"[^\"]*\"|[^- ]*)))(\\s+-[on]\\s*(\"[^\"]*\"|\\S*)){2}\\s*"),
+    CHANGE_PASSWORD_RANDOMLY("(?=.*\\s+-o(\\s+|$)(?<oldPass>\".+\"|[^- ]*))(?=.*\\s+-n(\\s+|$)(?<newPass>random))^\\s*Profile\\s+change\\s+password(\\s+-[on]\\s*(\".+\"|\\S*)){2}\\s*$"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
     SET_TEXTURE("\\s*settexture(?=.*\\s+-t\\s+(?<type>\\S*))((?=.*\\s+-x\\s*(?<singleX>\\d*))(?=.*\\s+-y\\s*(?<singleY>\\d*))(\\s*-[xyt]\\s+\\S*){3}|(?=.*\\s+-x1\\s*(?<x1>\\d*))(?=.*\\s+-y1\\s*(?<y1>\\d*))(?=.*\\s+-x2\\s*(?<x2>\\d*))(?=.*\\s+-y2\\s*(?<y2>\\d*))(\\s*-([xy][12]|t)\\s+\\S*){5})\\s*"),
@@ -63,7 +63,17 @@ public enum Commands {
     CREATE_UNIT("(?=.*-t (?<type>(\".+\"|\\S+)))(?=.*-c (?<count>\\d+))^Create\\s+unit\\s*( *-[tc] (\".+\"|\\S+)){2}$"),
     REPAIR("Repair"),
     SELECT_UNIT("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+unit\\s*( *-[xy] \\S+){2}$"),
-    DESELECT_TROOP("Deselect\\s+troop");
+    DESELECT_TROOP("Deselect\\s+troop"),
+    ATTACK("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Attack(\\s+-[xy]\\s+\\d*){2}$"),
+    MOVE_UNIT("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Move\\s+unit(\\s+-[xy]\\s+\\d*){2}$"),
+    ARIAL_ATTACK("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Arial\\s+attack(\\s+-[xy]\\s+\\d*){2}$"),
+    CLOSE_BRIDGE("Close\\s+bridge"),
+    OPEN_BRIDGE("Open\\s+bridge"),
+    DESELECT_UNIT("Deselect\\s+unit"),
+    PATROL_UNIT("(?=.*-x1\\s+(?<x1>\\d*))(?=.*-x2\\s+(?<x2>\\d*))(?=.*-y1\\s+(?<y1>\\d*))(?=.*-y2\\s+(?<y2>\\d*))^Patrol(\\s+-[xy][1-2]\\s+\\d*){4}"),
+    DIG_TUNNEL("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Dig\\s+tunnel(\\s+-[xy]\\s+\\d*){2}$"),
+    DISBAND_UNIT("Disband\\s+unit"),
+    BUILD_EQUIPMENT("Build\\s+equipment\\s+-t\\s*(?<type>(\\S+|\".+\"))*");
 
 
 

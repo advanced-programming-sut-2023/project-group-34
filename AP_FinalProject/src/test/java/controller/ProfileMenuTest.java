@@ -176,8 +176,13 @@ class ProfileMenuTest {
         Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#12 -n random", Commands.CHANGE_PASSWORD);
         String oldPass = matcher.group("oldPass");
         Password password = new Password(oldPass);
-        assertEquals("Password changed successfully", MainController.changePasswordRandomly1(matcher));
+        assertEquals("good for now", MainController.changePasswordRandomly1(matcher));
         assertFalse(password.checkPassword(User.currentUser.getPassword().getPasswordName()));
+    }
+
+    @Test
+    void runChangePasswordRandomly2(){
+
     }
 
     @Test
@@ -211,7 +216,7 @@ class ProfileMenuTest {
 
     @Test
     void runEmailChanger(){
-        createUser("ahmad", "ali@gmail.com");
+        createUser("ahmad", "aa@gmail.com");
         Matcher matcher = Commands.getOutput("Profile  change   -e  reza@gmail.com", Commands.CHANGE_EMAIL);
         String email = matcher.group("email");
         assertEquals("Email changed successfully", MainController.changeEmail(matcher));
@@ -240,6 +245,28 @@ class ProfileMenuTest {
         String oldSlogan = User.currentUser.getSlogan();
         assertEquals("Slogan changed successfully", MainController.changeSloganRandomly(matcher));
         assertNotEquals(oldSlogan, User.currentUser.getSlogan());
+    }
+
+    @Test
+    void emptySloganField(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile    change   slogan -s ", Commands.CHANGE_SLOGAN);
+        assertEquals("The slogan field is empty, changing slogan failed", MainController.changeSlogan(matcher));
+    }
+
+    @Test
+    void usingTheSameSlogan(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile    change   slogan -s \"Let's go\"", Commands.CHANGE_SLOGAN);
+        assertEquals("Your slogan is already this, changing slogan failed", MainController.changeSlogan(matcher));
+    }
+
+    @Test
+    void runChangeSlogan(){
+        createUser("ahmad", "ali@gmail.com");
+        Matcher matcher = Commands.getOutput("Profile    change   slogan -s \"You will get what you deserve\"", Commands.CHANGE_SLOGAN);
+        assertEquals("Slogan changed successfully", MainController.changeSlogan(matcher));
+
     }
 
 
