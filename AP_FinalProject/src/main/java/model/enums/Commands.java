@@ -66,6 +66,7 @@ public enum Commands {
     DESELECT_TROOP("Deselect\\s+troop");
 
 
+
     private final String regex;
 
     Commands(String regex) {

@@ -48,14 +48,14 @@ class ProfileMenuTest {
         createUser("ahmad", "ali@gmail.com");
         createUser("hamed", "reza@gmail.com");
         Matcher matcher = Commands.getOutput("Profile change username -u ahmad", Commands.CHANGE_USER);
-        assertEquals("Username already exists, changing username failed", MainController.changeUsername(matcher));
+        assertEquals("Username already exists", MainController.changeUsername(matcher));
     }
 
     @Test
     void theSameUsername(){
         createUser("ahmad", "ali@gmail.com");
         Matcher matcher = Commands.getOutput("Profile change username -u ahmad", Commands.CHANGE_USER);
-        assertEquals("You username is already this, changing username failed", MainController.changeUsername(matcher));
+        assertEquals("Your username is already this, changing username failed", MainController.changeUsername(matcher));
     }
 
     @Test
@@ -160,14 +160,14 @@ class ProfileMenuTest {
     void emptyChangePasswordRandomly(){
         createUser("ahmad", "ali@gmail.com");
         Matcher matcher = Commands.getOutput("Profile  change   password -n random -o", Commands.CHANGE_PASSWORD_RANDOMLY);
-        assertEquals("The required field is empty, changing password failed", MainController.changePasswordRandomly(matcher));
+        assertEquals("The required field is empty, changing password failed", MainController.changePasswordRandomly1(matcher));
     }
 
     @Test
     void wrongOldPassChangePasswordRandomly(){
         createUser("ahmad", "ali@gmail.com");
         Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#1234 -n random", Commands.CHANGE_PASSWORD);
-        assertEquals("Incorrect current password, changing password failed", MainController.changePasswordRandomly(matcher));
+        assertEquals("Incorrect current password, changing password failed", MainController.changePasswordRandomly1(matcher));
     }
 
     @Test
@@ -176,7 +176,7 @@ class ProfileMenuTest {
         Matcher matcher = Commands.getOutput("Profile  change   password -o 1234As#12 -n random", Commands.CHANGE_PASSWORD);
         String oldPass = matcher.group("oldPass");
         Password password = new Password(oldPass);
-        assertEquals("Password changed successfully", MainController.changePasswordRandomly(matcher));
+        assertEquals("Password changed successfully", MainController.changePasswordRandomly1(matcher));
         assertFalse(password.checkPassword(User.currentUser.getPassword().getPasswordName()));
     }
 

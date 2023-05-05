@@ -50,12 +50,13 @@ public class MainController {
 
         if (!UserController.nameChecker(username)) return "Username's format is invalid, changing username failed";
 
-        if (UserController.getUserByUsername(username) != null && !username.equals(User.currentUser.getName())) return "Username already exists, changing username failed";
+        if (UserController.getUserByUsername(username) != null && !username.equals(User.currentUser.getName())) return "Username already exists";
 
-        if (User.currentUser.getName().equals(username)) return "You username is already this, changing username failed";
+        if (User.currentUser.getName().equals(username)) return "Your username is already this, changing username failed";
 
         User.currentUser.setName(username);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Username successfully changed";
     }
 
@@ -71,6 +72,7 @@ public class MainController {
 
         User.currentUser.setNickname(nickname);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Nickname changed successfully";
     }
 
@@ -100,12 +102,13 @@ public class MainController {
 
         User.currentUser.getPassword().setPasswordName(givenPassword);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Password changed successfully";
     }
 
 
 
-    public static String changePasswordRandomly(Matcher matcher){
+    public static String changePasswordRandomly1(Matcher matcher) {
 
         if (matcher.group("oldPass") == null || matcher.group("oldPass").isEmpty())
             return "The required field is empty, changing password failed";
@@ -115,15 +118,19 @@ public class MainController {
         if (!User.currentUser.getPassword().checkPassword(finalOldPass))
             return "Incorrect current password, changing password failed";
 
-        String finalNewPass = Password.randomPassword();
-        while(finalNewPass.equals(finalOldPass)) {
-            finalNewPass = Password.randomPassword();
-        }
+        return "good for now";
+    }
 
-        User.currentUser.getPassword().setPasswordName(finalNewPass);
+    public static String changePasswordRandomly2(String givenPass, String confirmationPass){
+        if (!givenPass.equals(confirmationPass)) return "Confirmation failed";
+
+        User.currentUser.getPassword().setPasswordName(givenPass);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Password changed successfully";
     }
+
+
 
     public static String changeEmail(Matcher matcher){
         if (matcher.group("email") == null || matcher.group("email").isEmpty())
@@ -139,6 +146,7 @@ public class MainController {
 
         User.currentUser.setEmail(email);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Email changed successfully";
     }
 
@@ -147,11 +155,12 @@ public class MainController {
         slogan = slogan.replaceAll("\"", "");
         if (slogan.isEmpty()) return "The slogan field is empty, changing slogan failed";
 
-        if (!User.currentUser.getSlogan().isEmpty() && User.currentUser.getSlogan().equals(slogan))
+        if (User.currentUser.getSlogan() != null && !User.currentUser.getSlogan().isEmpty() && User.currentUser.getSlogan().equals(slogan))
             return "Your slogan is already this, changing slogan failed";
 
         User.currentUser.setSlogan(slogan);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Slogan changed successfully";
     }
 
@@ -163,6 +172,7 @@ public class MainController {
 
         User.currentUser.setSlogan(newSlogan);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Slogan changed successfully";
     }
 
@@ -171,11 +181,12 @@ public class MainController {
 
         User.currentUser.setSlogan(null);
         User.updateDataBase();
+        User.stayLoggedIn();
         return "Slogan removed successfully";
     }
 
     public static String displaySlogan(){
-        if (User.currentUser.getSlogan().isEmpty()) return "Slogan is empty!";
+        if (User.currentUser.getSlogan() == null || User.currentUser.getSlogan().isEmpty()) return "Slogan is empty!";
         else return User.currentUser.getSlogan();
     }
 
@@ -184,9 +195,9 @@ public class MainController {
         theWholeProfile = theWholeProfile.concat("Username: " + User.currentUser.getName() + "\n");
         theWholeProfile = theWholeProfile.concat("Nickname: " + User.currentUser.getNickname() + "\n");
         theWholeProfile = theWholeProfile.concat("Email: " + User.currentUser.getEmail() + "\n");
-        if (!User.currentUser.getSlogan().isEmpty())
+        if (User.currentUser.getSlogan() != null && !User.currentUser.getSlogan().isEmpty())
             theWholeProfile = theWholeProfile.concat("Slogan: " + User.currentUser.getSlogan() + "\n");
-        theWholeProfile = theWholeProfile.concat("High score: " + User.currentUser.getScore() + "\n");
+        theWholeProfile = theWholeProfile.concat("High score: " + User.currentUser.getScore());
         return theWholeProfile;
     }
 

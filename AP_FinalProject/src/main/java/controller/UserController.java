@@ -151,31 +151,38 @@ public class UserController {
         else return randomUsernameGenerator(currentUsername + "1");
     }
 
-    public static String forgotPassword(Matcher matcher){
+    public static String forgotPassword(Matcher matcher) {
         String username = matcher.group("username");
         if (username != null) username = username.replaceAll("\"", "");
         else return "empty field";
         if (username.equals("")) return "empty field";
         User user = getUserByUsername(username);
         if (user == null) return "No user with the id given!";
-        Password password = user.getPassword();
-        System.out.println(password.getSecurityQuestion());
-        String answer = Runner.getScn().nextLine();
-        if (!password.checkAnswer(answer)) return "Wrong answer!";
-        System.out.println("Enter new password:");
-        String newPassword = Runner.getScn().nextLine();
-        if (newPassword.equals("random")) {
-            newPassword = Password.randomPassword();
-            System.out.println("Your random password is: " +
-                    newPassword);
-        }
-        if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
-        System.out.println("Re-enter your password:");
-        String confirm = Runner.getScn().nextLine();
-        if (!confirm.equals(newPassword)) return "confirmation failed!";
-        password.setPasswordName(newPassword);
-        return "success!";
+        return "good for now";
     }
+
+        public static String forgotPassword2(String answer, Password password){
+            if (!password.checkAnswer(answer)) return "Wrong answer!";
+            return "enter password";
+        }
+
+
+        public static String forgotPassword3(String newPassword) {
+            if (newPassword.equals("random")) {
+                newPassword = Password.randomPassword();
+                System.out.println("Your random password is: " +
+                        newPassword);
+            }
+            if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
+            return "go to confirmation";
+        }
+
+        public static String forgotPassword4(String confirm, String newPassword, Password password) {
+            if (!confirm.equals(newPassword)) return "confirmation failed!";
+            password.setPasswordName(newPassword);
+            return "success!";
+        }
+
 
     private static int wrongPasswordsCount = 0;
 

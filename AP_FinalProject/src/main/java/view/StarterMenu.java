@@ -105,7 +105,7 @@ public class StarterMenu {
         if (username != null) username = username.replaceAll("\"", "");
         if (UserController.getUserByUsername(username) != null) {
             username = randomUsernameGenerator(username);
-            System.out.println("Username already used! do you like to use\"" +
+            System.out.println("Username already used! do you like to use \"" +
                     username +
                     "\" instead?(Yes/No)");
             if (Runner.getScn().nextLine().equals("No")) return "Couldn't create user: username in use!";

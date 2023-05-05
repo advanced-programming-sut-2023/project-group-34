@@ -4,6 +4,7 @@ import controller.MainController;
 import controller.Runner;
 import controller.UserController;
 import model.enums.Commands;
+import model.user.Password;
 import model.user.User;
 
 import java.util.regex.Matcher;
@@ -16,9 +17,21 @@ public class ProfileMenu {
             command = command.trim();
             if ((matcher = Commands.getOutput(command, Commands.CHANGE_USER)) != null){
                 String response = MainController.changeUsername(matcher);
-                System.out.println(MainController.changeUsername(matcher));
-                if (response.equals("Username already exists, changing username failed")){
-                    System.out.println(UserController.randomUsernameGenerator(matcher.group("username")));
+                if (response.equals("Username already exists")){
+                    System.out.println(response);
+                    response = StarterMenu.usernameCheck(matcher);
+                    String newRandomUsername = null;
+                    if (response.equals("Couldn't create user: username in use!"))
+                        System.out.println("Couldn't create user: username in use!");
+                    else
+                        newRandomUsername = response;
+                    if (newRandomUsername != null) {
+                        User.currentUser.setName(newRandomUsername);
+                        System.out.println("Username successfully changed");
+                        User.updateDataBase();
+                    }
+                } else {
+                    System.out.println(response);
                 }
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_NICKNAME)) != null){
                 System.out.println(MainController.changeNickname(matcher));
@@ -31,7 +44,14 @@ public class ProfileMenu {
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_SLOGAN)) != null){
                 System.out.println(MainController.changeSlogan(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD_RANDOMLY)) != null){
-                System.out.println(MainController.changePasswordRandomly(matcher));
+                String response = MainController.changePasswordRandomly1(matcher);
+                if (response.equals("good for now")){
+                    String newPass = Password.randomPassword();
+                    System.out.println("Your new password is " + newPass + "\n" + "Please renter your new password for confirmation");
+                    response = Runner.getScn().nextLine();
+                    System.out.println(MainController.changePasswordRandomly2(newPass, response));
+                } else
+                    System.out.println(response);
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){
                 String response = MainController.changePasswordPart1(matcher);
                 if (!response.equals("good for now"))

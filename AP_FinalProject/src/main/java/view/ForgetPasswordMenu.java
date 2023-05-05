@@ -1,5 +1,6 @@
 package view;
 
+import controller.MainController;
 import controller.Runner;
 import controller.UserController;
 import model.enums.Commands;
@@ -14,8 +15,32 @@ public class ForgetPasswordMenu {
             input = Runner.getScn().nextLine();
             input = input.trim();
             if ((matcher = Commands.getOutput (input, Commands.FORGOT_PASSWORD)) != null) {
-                System.out.println(UserController.forgotPassword(matcher));
-                //return;
+                String response = UserController.forgotPassword(matcher);
+                if (response.equals("good for now")){
+                    String username = matcher.group("username");
+                    System.out.println(UserController.getUserByUsername(username).getPassword().getSecurityQuestion());
+                    String answer = Runner.scn.nextLine();
+                    response = UserController.forgotPassword2(answer, UserController.getUserByUsername(username).getPassword());
+                    if (response.equals("enter password")){
+                        System.out.println("Please enter your new password");
+                        String firstPassword = Runner.getScn().nextLine();
+                        response = UserController.forgotPassword3(firstPassword);
+                        if (response.equals("go to confirmation")){
+                            System.out.println("Please re-enter your password for confirmation");
+                            String confirmationPassword = Runner.scn.nextLine();
+                            System.out.println(UserController.forgotPassword4(confirmationPassword, firstPassword, UserController.getUserByUsername(username).getPassword()));
+                            continue;
+                        } else {
+                            System.out.println(response);
+                            continue;
+                        }
+                    } else {
+                        System.out.println(response);
+                        continue;
+                    }
+                } else System.out.println(response);{
+                    continue;
+                }
             }
             else if (Commands.getOutput(input, Commands.BACK) != null) return;
             else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
