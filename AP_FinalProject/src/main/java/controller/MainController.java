@@ -314,7 +314,7 @@ public class MainController {
                     if(i < 0 || j < 0 || i > 399 || j > 399) {
                         continue;
                     }
-                    tempBlock = currentGameMap.getABlock(i , j);
+                    tempBlock = map.getABlock(i , j);
                     if(GameMap.getDistanceBetweenTwoBlocks(tempBlock , block) == 1 && tempBlock.containsThisBuilding(buildingType)) {
                         flag = true;
                         break outer;

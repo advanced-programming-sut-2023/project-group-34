@@ -2,6 +2,7 @@ package view;
 
 import controller.Runner;
 import controller.UserController;
+import model.Captcha;
 import model.enums.Commands;
 import model.user.Password;
 
@@ -16,7 +17,7 @@ public class StarterMenu {
         String input;
         Matcher matcher;
         while (true){
-            input = controller.Runner.getScn ().nextLine ();
+            input = Runner.getScn().nextLine();
             input = input.trim ();
             if ((matcher = model.enums.Commands.getOutput (input, Commands.CREATE_USER)) != null) {
                 String username;
@@ -60,6 +61,19 @@ public class StarterMenu {
                             response = pickSecurityQuestion(passwordObject, Commands.getOutput(Runner.getScn().nextLine(), Commands.PICK_QUESTION));
                             if (response != null) System.out.println(response);
                             else {
+                                Captcha captcha = new Captcha();
+                                int code = captcha.getTheOriginalCode();
+                                System.out.println(captcha.generateCaptcha());
+                                System.out.println("PLease enter this captcha to complete your registration");
+                                int codeResponse = Integer.parseInt(Runner.getScn().nextLine());
+                                while(codeResponse != code){
+                                    System.out.println("Wrong number please try again");
+                                    captcha = new Captcha();
+                                    System.out.println(captcha.generateCaptcha());
+                                    System.out.println("PLease enter this captcha to complete your registration");
+                                    code = captcha.getTheOriginalCode();
+                                    codeResponse = Integer.parseInt(Runner.getScn().nextLine());
+                                }
                                 System.out.println(registerUser(username, passwordObject, email, nickname, slogan));
                             }
                         }

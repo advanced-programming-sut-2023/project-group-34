@@ -1,5 +1,6 @@
 package controller;
 
+import model.Captcha;
 import model.user.User;
 import model.enums.Commands;
 import model.enums.Validations;
@@ -161,27 +162,29 @@ public class UserController {
         return "good for now";
     }
 
-        public static String forgotPassword2(String answer, Password password){
-            if (!password.checkAnswer(answer)) return "Wrong answer!";
-            return "enter password";
-        }
+    public static String forgotPassword2(String answer, Password password){
+        if (!password.checkAnswer(answer)) return "Wrong answer!";
+        return "enter password";
+    }
 
 
-        public static String forgotPassword3(String newPassword) {
-            if (newPassword.equals("random")) {
-                newPassword = Password.randomPassword();
-                System.out.println("Your random password is: " +
-                        newPassword);
-            }
-            if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
-            return "go to confirmation";
+    public static String forgotPassword3(String newPassword) {
+        if (newPassword.equals("random")) {
+            newPassword = Password.randomPassword();
+            System.out.println("Your random password is: " +
+                    newPassword);
         }
+        if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
+        return "go to confirmation";
+    }
 
-        public static String forgotPassword4(String confirm, String newPassword, Password password) {
-            if (!confirm.equals(newPassword)) return "confirmation failed!";
-            password.setPasswordName(newPassword);
-            return "success!";
-        }
+    public static String forgotPassword4(String confirm, String newPassword, Password password) {
+        if (!confirm.equals(newPassword)) return "confirmation failed!";
+        password.setPasswordName(newPassword);
+        return "success!";
+    }
+
+
 
 
     private static int wrongPasswordsCount = 0;
