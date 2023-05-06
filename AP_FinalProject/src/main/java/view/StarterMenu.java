@@ -61,31 +61,30 @@ public class StarterMenu {
                             response = pickSecurityQuestion(passwordObject, Commands.getOutput(Runner.getScn().nextLine(), Commands.PICK_QUESTION));
                             if (response != null) System.out.println(response);
                             else {
-                                Captcha captcha = new Captcha();
-                                int code = captcha.getTheOriginalCode();
-                                System.out.println(captcha.generateCaptcha());
-                                System.out.println("PLease enter this captcha to complete your registration");
-                                int codeResponse = Integer.parseInt(Runner.getScn().nextLine());
-                                while(codeResponse != code){
-                                    System.out.println("Wrong number please try again");
-                                    captcha = new Captcha();
-                                    System.out.println(captcha.generateCaptcha());
-                                    System.out.println("PLease enter this captcha to complete your registration");
-                                    code = captcha.getTheOriginalCode();
-                                    codeResponse = Integer.parseInt(Runner.getScn().nextLine());
-                                }
-                                System.out.println(registerUser(username, passwordObject, email, nickname, slogan));
+                                response = captchaFunction();
+                                if (response.equals("captcha is set")) {
+                                    System.out.println(registerUser(username, passwordObject, email, nickname, slogan));
+                                } else
+                                    System.out.println(response);
                             }
                         }
                     }
                 }
-
             }
             else if ((matcher = Commands.getOutput (input, Commands.LOGIN)) != null) {
                 String result = UserController.loginUser(matcher);
-                System.out.println(result);
-                if (result.equals("Username and password did not match!")) UserController.wrongPasswordsEntered();
-                else if (result.equals("User logged in")) return "main menu";
+                if (!result.equals("User logged in"))
+                    System.out.println(result);
+                if (result.equals("Username and password didn’t match!")) UserController.wrongPasswordsEntered();
+                if (result.equals("User logged in")) {
+                    result = captchaFunction();
+                    if (result.equals("captcha is set")) {
+                        System.out.println("User logged in");
+                        return "main menu";
+                    }
+                    else
+                        System.out.println(result);
+                }
             }
             else if (Commands.getOutput (input, Commands.ENTER_FORGOT_PASSWORD_MENU) != null) {
                 System.out.println("Entered forgot password menu!");
@@ -125,5 +124,26 @@ public class StarterMenu {
             if (Runner.getScn().nextLine().equals("No")) return "Couldn't create user: username in use!";
         }
         return username;
+    }
+
+    public static String captchaFunction(){
+        Captcha captcha = new Captcha();
+        int code = captcha.getTheOriginalCode();
+        System.out.println(captcha.generateCaptcha());
+        System.out.println("PLease enter this captcha to complete your registration");
+        String codeResponse = Runner.getScn().nextLine();
+        if (codeResponse.equals("back")) return "";
+        int codeResponse1 = Integer.parseInt(codeResponse);
+        while(codeResponse1 != code) {
+            System.out.println("Wrong number please try again");
+            captcha = new Captcha();
+            System.out.println(captcha.generateCaptcha());
+            System.out.println("PLease enter this captcha to complete your registration");
+            code = captcha.getTheOriginalCode();
+            String codeResponse2 = Runner.getScn().nextLine();
+            if (codeResponse2.equals("back")) return "";
+            codeResponse1 = Integer.parseInt(codeResponse2);
+        }
+        return "captcha is set";
     }
 }
