@@ -138,7 +138,7 @@ public class GameController {
     public static String getBlockDetails (Matcher matcher) {
         int x = Integer.parseInt(matcher.group("xAxis"));
         int y = Integer.parseInt(matcher.group("yAxis"));
-        return currentGame.getMap().showDetails(x, y);
+        return MainController.showDetails(currentGame.getMap(), x, y);
     }
 
     public static String showPopularity () {

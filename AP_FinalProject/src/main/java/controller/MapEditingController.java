@@ -2,6 +2,7 @@ package controller;
 
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
+import model.map.Block;
 import model.map.GameMap;
 
 import java.util.regex.Matcher;
@@ -26,18 +27,18 @@ public class MapEditingController {
             int x2 = Integer.parseInt(matcher.group("x2"));
             int y1 = Integer.parseInt(matcher.group("y1"));
             int y2 = Integer.parseInt(matcher.group("y2"));
-            return getCurrentGameMap().setRectangleTexture(x1, x2, y1, y2, blockType);
+            return setRectangleTexture(getCurrentGameMap(), x1, x2, y1, y2, blockType);
         } else {
             int x1 = Integer.parseInt(x);
             int y1 = Integer.parseInt(matcher.group("singleY"));
-            return getCurrentGameMap().setRectangleTexture(x1, x1, y1, y1, blockType);
+            return setRectangleTexture(getCurrentGameMap(), x1, x1, y1, y1, blockType);
         }
     }
     
     public static String clearBlock (Matcher matcher) {
         int i = Integer.parseInt(matcher.group("yAxis"));
         int j = Integer.parseInt(matcher.group("xAxis"));
-        return getCurrentGameMap().clearBlock(i, j);
+        return clearBlock(getCurrentGameMap(), i, j);
     }
     
     public static String dropRock (Matcher matcher) {
@@ -45,12 +46,12 @@ public class MapEditingController {
         int y = Integer.parseInt(matcher.group("yAxis"));
         int x = Integer.parseInt(matcher.group("xAxis"));
         return switch (direction) {
-            case "north" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
-            case "south" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);
-            case "west" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.WEST_ROCK);
-            case "east" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.EAST_ROCK);
+            case "north" -> setRectangleTexture(getCurrentGameMap(), x, x, y, y, BlockType.NORTH_ROCK);
+            case "south" -> setRectangleTexture(getCurrentGameMap(), x, x, y, y, BlockType.SOUTH_ROCK);
+            case "west" -> setRectangleTexture(getCurrentGameMap(), x, x, y, y, BlockType.WEST_ROCK);
+            case "east" -> setRectangleTexture(getCurrentGameMap(), x, x, y, y, BlockType.EAST_ROCK);
             case "random" ->
-                    getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
+                    setRectangleTexture(getCurrentGameMap(), x, x, y, y, BlockType.values()[Runner.getRandomNumber(4)]);
             default -> "Invalid direction!";
         };
     }
@@ -69,5 +70,21 @@ public class MapEditingController {
     
     public static void resetCurrentMap () {
         setCurrentGameMap(null);
+    }
+    
+    public static String clearBlock(GameMap gameMap, int i, int j) {
+        if (!gameMap.checkBounds(i, j)) return "Out of bounds!";
+        gameMap.getMap()[i][j] = new Block(i, j);
+        return "Success!";
+    }
+    
+    public static String setRectangleTexture(GameMap gameMap, int x1, int x2, int y1, int y2, BlockType blockType) {
+        if (!(gameMap.checkBounds(y1, x1) && gameMap.checkBounds(y2, x2))) return "Out of bounds!";
+        for (; y1 <= y2; y1++){
+            for (int j = x1; j <= x2; j++) {
+                gameMap.getMap()[y1][j].setBlockType(blockType);
+            }
+        }
+        return "Success!";
     }
 }

@@ -6,6 +6,7 @@ import model.building.*;
 import model.building.DrawBridgeType;
 import model.building.GeneralBuildingsType;
 import model.enums.BlockFillerType;
+import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.building.BuildingType;
 import model.building.MakerType;
@@ -22,6 +23,8 @@ import view.ProfileMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -354,5 +357,51 @@ public class MainController {
             return "You can put anything on that block!";
         }
         return "Units added successfully!";
+    }
+    
+    public static String resource (Block block) {
+        BlockFillerType blockFiller = block.getBLockFiller();
+        BlockType blockType = block.getBlockType();
+        if (blockFiller != null && !blockFiller.equals(BlockFillerType.STAIR)) return blockFiller.toString();
+        else if (blockType.equals(BlockType.IRON)) return "iron";
+        else if (blockType.equals(BlockType.BOULDER)) return "stone";
+        else if (blockType.equals(BlockType.OIL)) return "oil";
+        else return null;
+    }
+    
+    //TODO functions with String output go out side of model
+    public static String showDetails(GameMap gameMap, int x, int y) {
+        if (x >= gameMap.getSize() || y >= gameMap.getSize() || x < 0 || y < 0) return "Out of bounds!";
+        Block block = gameMap.getMap()[y][x];
+        StringBuilder details = new StringBuilder();
+        HashMap<String, Integer> troops = block.troops();
+        Set<String> troopTypes = troops.keySet();
+        details.append("details:");
+        details.append("\n" +
+                "block type: ");
+        details.append(block.getBlockType().toString());
+        details.append("\n" +
+                "resource: ");
+        details.append(resource(block));
+        details.append("\n" +
+                "amount: ");
+        details.append(block.getResourcesCapacity());
+        details.append("\n" +
+                "troops:");
+        for (String troopType : troopTypes) {
+            details.append("\n")
+                    .append(troopType)
+                    .append(": ")
+                    .append(troops.get(troopType));
+        }
+        details.append("\n" +
+                "buildings:");
+        for (Building building : block.getBuilding())
+        {
+            details.append("\n")
+                    .append(building.toString());
+            //TODO: toString is gonna print a camelCase name!!!
+        }
+        return details.toString();
     }
 }

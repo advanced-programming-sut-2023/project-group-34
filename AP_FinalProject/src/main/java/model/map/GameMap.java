@@ -1,14 +1,9 @@
 package model.map;
 
-import model.building.Building;
-import model.enums.BlockFillerType;
-import model.enums.BlockType;
 import model.enums.Direction;
 import model.human.Human;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 public class GameMap {
     public final String name;
@@ -116,68 +111,15 @@ public class GameMap {
     public Block getABlock(int i , int j) {
         return map[i][j];
     }
-    //TODO functions with String output go out side of model
-    public String showDetails(int x, int y) {
-        if (x >= size || y >= size || x < 0 || y < 0) return "Out of bounds!";
-        Block block = map[y][x];
-        StringBuilder details = new StringBuilder();
-        HashMap<String, Integer> troops = block.troops();
-        Set<String> troopTypes = troops.keySet();
-        details.append("details:");
-        details.append("\n" +
-                "block type: ");
-        details.append(block.getBlockType().toString());
-        details.append("\n" +
-                "resource: ");
-        details.append(block.resource());
-        details.append("\n" +
-                "amount: ");
-        details.append(block.getResourcesCapacity());
-        details.append("\n" +
-                "troops:");
-        for (String troopType : troopTypes) {
-            details.append("\n")
-                    .append(troopType)
-                    .append(": ")
-                    .append(troops.get(troopType));
-        }
-        details.append("\n" +
-                "buildings:");
-        for (Building building : block.getBuilding())
-        {
-            details.append("\n")
-                    .append(building.toString());
-            //TODO: toString is gonna print a camelCase name!!!
-        }
-        return details.toString();
+    
+    public String getName () {
+        return name;
     }
     
-    public String resource(Block block) {
-        BlockFillerType blockFiller = block.getBLockFiller();
-        BlockType blockType = block.getBlockType();
-        if (blockFiller != null && !blockFiller.equals(BlockFillerType.STAIR)) return blockFiller.toString();
-        else if (blockType.equals(BlockType.IRON)) return "iron";
-        else if (blockType.equals(BlockType.BOULDER)) return "stone";
-        else if (blockType.equals(BlockType.OIL)) return "oil";
-        else return null;
+    public int getSize () {
+        return size;
     }
-
-    public String setRectangleTexture(int x1, int x2, int y1, int y2, BlockType blockType) {
-        if (!(checkBounds(y1, x1) && checkBounds(y2, x2))) return "Out of bounds!";
-        for (; y1 <= y2; y1++){
-            for (int j = x1; j <= x2; j++) {
-                map[y1][j].setBlockType(blockType);
-            }
-        }
-        return "Success!";
-    }
-
-    public String clearBlock(int i, int j) {
-        if (!checkBounds(i, j)) return "Out of bounds!";
-        map[i][j] = new Block(i, j);
-        return "Success!";
-    }
-
+    
     public boolean checkBounds(int i, int j) {
         return i >= 0 && i < size && j >= 0 && j < size;
     }
