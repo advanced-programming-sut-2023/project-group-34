@@ -28,11 +28,6 @@ public class Inn extends Building{
 
     @Override
     public void destroy() {
-        for (Human human : this.block.getHumans()) {
-            if(!(human instanceof WarEquipment)) {
-                human.die();
-            }
-        }
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
     }
