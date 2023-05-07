@@ -75,7 +75,7 @@ public class StarterMenu {
                 String result = UserController.loginUser(matcher);
                 if (!result.equals("User logged in"))
                     System.out.println(result);
-                if (result.equals("Username and password didn’t match!")) UserController.wrongPasswordsEntered();
+                if (result.equals("Username and password did not match!")) UserController.wrongPasswordsEntered();
                 if (result.equals("User logged in")) {
                     result = captchaFunction();
                     if (result.equals("captcha is set")) {
@@ -130,19 +130,29 @@ public class StarterMenu {
         Captcha captcha = new Captcha();
         int code = captcha.getTheOriginalCode();
         System.out.println(captcha.generateCaptcha());
-        System.out.println("PLease enter this captcha to complete your registration");
+        System.out.println("PLease enter this captcha to finish your work");
         String codeResponse = Runner.getScn().nextLine();
+        int codeResponse1;
         if (codeResponse.equals("back")) return "";
-        int codeResponse1 = Integer.parseInt(codeResponse);
+        try{
+            codeResponse1 = Integer.parseInt(codeResponse);
+        } catch (NumberFormatException ex){
+            return "invalid command";
+        }
         while(codeResponse1 != code) {
             System.out.println("Wrong number please try again");
             captcha = new Captcha();
             System.out.println(captcha.generateCaptcha());
-            System.out.println("PLease enter this captcha to complete your registration");
+            System.out.println("PLease enter this captcha to finish your work");
             code = captcha.getTheOriginalCode();
             String codeResponse2 = Runner.getScn().nextLine();
             if (codeResponse2.equals("back")) return "";
-            codeResponse1 = Integer.parseInt(codeResponse2);
+            try{
+                codeResponse1 = Integer.parseInt(codeResponse2);
+            } catch (NumberFormatException ex){
+                return "invalid command";
+            }
+
         }
         return "captcha is set";
     }

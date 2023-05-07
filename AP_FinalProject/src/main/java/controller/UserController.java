@@ -136,7 +136,7 @@ public class UserController {
         if (password.equals("") || username.equals("")) return "empty field";
         model.user.User user;
         if ((user = getUserByUsername(username)) == null) return "No user with the given username!";
-        if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
+        if (!user.getPassword().checkPassword(password)) return "Username and password did not match!";
         model.user.User.setCurrentUser(user);
         if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
         wrongPasswordsCount = 0;
@@ -178,10 +178,16 @@ public class UserController {
         return "go to confirmation";
     }
 
-    public static String forgotPassword4(String confirm, String newPassword, Password password) {
+    public static String forgotPassword4(String confirm, String newPassword) {
         if (!confirm.equals(newPassword)) return "confirmation failed!";
-        password.setPasswordName(newPassword);
-        return "success!";
+        return "good for now";
+    }
+
+    public static String setForgotPassword(String newPass, Password password){
+        password.setPasswordName(newPass);
+        User.updateDataBase();
+        User.stayLoggedIn();
+        return "Password changed successfully";
     }
 
 
@@ -192,7 +198,7 @@ public class UserController {
     public static void wrongPasswordsEntered(){
         //TODO: improve mechanism
         wrongPasswordsCount++;
-        if (wrongPasswordsCount % 5 != 0) {
+        if (wrongPasswordsCount % 5 == 0) {
             System.out.println("you are locked!");
             try {
                 Thread.sleep(wrongPasswordsCount * 2000L);

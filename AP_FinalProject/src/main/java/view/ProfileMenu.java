@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.tools.javac.Main;
 import controller.MainController;
 import controller.Runner;
 import controller.UserController;
@@ -8,6 +9,8 @@ import model.user.Password;
 import model.user.User;
 
 import java.util.regex.Matcher;
+
+import static controller.UserController.registerUser;
 
 public class ProfileMenu {
     public static String run(){
@@ -49,7 +52,19 @@ public class ProfileMenu {
                     String newPass = Password.randomPassword();
                     System.out.println("Your new password is " + newPass + "\n" + "Please renter your new password for confirmation");
                     response = Runner.getScn().nextLine();
-                    System.out.println(MainController.changePasswordRandomly2(newPass, response));
+                    String response1 = MainController.changePasswordRandomly2(newPass, response);
+                    if (response1.equals("good for now")){
+                        response = StarterMenu.captchaFunction();
+                        if (response.equals("captcha is set")) {
+                            System.out.println(MainController.changePasswordRandomly3(newPass));
+                        } else {
+                            System.out.println(response);
+                            continue;
+                        }
+                    } else {
+                        System.out.println(response1);
+                        continue;
+                    }
                 } else
                     System.out.println(response);
             } else if ((matcher = Commands.getOutput(command, Commands.CHANGE_PASSWORD)) != null){
@@ -60,7 +75,17 @@ public class ProfileMenu {
                     String newPass = matcher.group("newPass");
                     System.out.println("Please renter your new password for confirmation");
                     String confirmationPassword = Runner.getScn().nextLine();
-                    System.out.println(MainController.changePasswordPart2(newPass, confirmationPassword));
+                    response = MainController.changePasswordPart2(newPass, confirmationPassword);
+                    if (response.equals("good for now")){
+                        response = StarterMenu.captchaFunction();
+                        if (response.equals("captcha is set")){
+                            System.out.println(MainController.setChangePassword(newPass));
+                        } else {
+                            System.out.println(response);
+                        }
+                    } else {
+                        System.out.println(response);
+                    }
                 }
             } else if (Commands.getOutput(command, Commands.DISPLAY_HIGHS_CORE) != null){
                 System.out.println(User.currentUser.getScore());

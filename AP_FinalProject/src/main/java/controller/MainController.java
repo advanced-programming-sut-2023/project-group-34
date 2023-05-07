@@ -110,11 +110,14 @@ public class MainController {
 
     public static String changePasswordPart2(String givenPassword, String confirmationPassword){
         if (!givenPassword.equals(confirmationPassword)) return "confirmation password does not match the initial password, changing password failed";
+        return "good for now";
+    }
 
-        User.currentUser.getPassword().setPasswordName(givenPassword);
+    public static String setChangePassword(String newPass){
+        User.currentUser.getPassword().setPasswordName(newPass);
         User.updateDataBase();
         User.stayLoggedIn();
-        return "Password changed successfully";
+        return "password changed successfully";
     }
 
 
@@ -134,8 +137,11 @@ public class MainController {
 
     public static String changePasswordRandomly2(String givenPass, String confirmationPass){
         if (!givenPass.equals(confirmationPass)) return "Confirmation failed";
+        return "good for now";
+    }
 
-        User.currentUser.getPassword().setPasswordName(givenPass);
+    public static String changePasswordRandomly3(String newPass){
+        User.currentUser.getPassword().setPasswordName(newPass);
         User.updateDataBase();
         User.stayLoggedIn();
         return "Password changed successfully";
