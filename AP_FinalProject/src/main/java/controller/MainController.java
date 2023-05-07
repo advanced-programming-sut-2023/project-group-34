@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import static controller.MapEditingController.getCurrentGameMap;
 import static controller.MapEditingController.setCurrentGameMap;
 
 public class MainController {
@@ -317,7 +318,7 @@ public class MainController {
                     if(i < 0 || j < 0 || i > 399 || j > 399) {
                         continue;
                     }
-                    tempBlock = currentGameMap.getABlock(i , j);
+                    tempBlock = map.getABlock(i , j);
                     if(GameMap.getDistanceBetweenTwoBlocks(tempBlock , block) == 1 && tempBlock.containsThisBuilding(buildingType)) {
                         flag = true;
                         break outer;
@@ -362,7 +363,7 @@ public class MainController {
     public static String resource (Block block) {
         BlockFillerType blockFiller = block.getBLockFiller();
         BlockType blockType = block.getBlockType();
-        if (blockFiller != null && !blockFiller.equals(BlockFillerType.STAIR)) return blockFiller.toString();
+        if (blockFiller != null) return blockFiller.toString();
         else if (blockType.equals(BlockType.IRON)) return "iron";
         else if (blockType.equals(BlockType.BOULDER)) return "stone";
         else if (blockType.equals(BlockType.OIL)) return "oil";

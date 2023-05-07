@@ -19,6 +19,7 @@ public class Dictionaries  {
         buildingDictionary.put("circle tower" , DefenciveBuildingType.CIRCLE_TOWER);
         buildingDictionary.put("low wall" , DefenciveBuildingType.LOW_WALL);
         buildingDictionary.put("high wall" , DefenciveBuildingType.HIGH_WALL);
+        buildingDictionary.put("stairs" , DefenciveBuildingType.STAIRS);
         buildingDictionary.put("caged war dogs" , CagedWarDogType.CAGED_WAR_DOG);
         buildingDictionary.put("cathedral" , GeneralBuildingsType.CATHEDRAL);
         buildingDictionary.put("church" , GeneralBuildingsType.CHURCH);

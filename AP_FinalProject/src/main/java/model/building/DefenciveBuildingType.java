@@ -8,13 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum DefenciveBuildingType implements BuildingType{
-    LOOKOUT_TOWER( 4, 4 , 5 , 2500 ,new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 10)))),
-    PERIMETER_TOWER(2 , 2,  15,  10000  , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 10)))),
-    DEFENCIVE_TURRET(6 , 6 , 20 , 12000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 15)))),
-    SQUARE_TOWER(8 , 8 , 35 , 16000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 35)))),
-    CIRCLE_TOWER(10 , 10, 40 , 20000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 40)))),
-    LOW_WALL(2 , 2 , 5 , 400 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 1)))),
-    HIGH_WALL(4 , 4 , 5 , 600 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 2))));
+    LOOKOUT_TOWER( 25, 25 , 0 , 2500 ,new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 10)))),
+    PERIMETER_TOWER(10 , 10,  0,  10000  , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 10)))),
+    DEFENCIVE_TURRET(15 , 15 , 0 , 12000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 15)))),
+    SQUARE_TOWER(20 , 20 , 1 , 16000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 35)))),
+    CIRCLE_TOWER(20 , 20, 1 , 20000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 40)))),
+    LOW_WALL(4 , 4 , 0 , 400 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 1)))),
+    STAIRS(0 , 0 , 0 , 300 , new HashMap<>(Map.ofEntries(Map.entry(Resources.IRON , 5)))),
+    HIGH_WALL(8 , 8 , 0 , 600 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 2))));
 
     private final int fireRange;
     private final int defendRange;

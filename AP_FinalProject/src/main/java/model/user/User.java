@@ -258,9 +258,10 @@ public class User {
         return customMaps;
     }
 
-    public GameMap newCustomMap() {
-        GameMap map = new GameMap();
-        this.customMaps.add(map);
-        return map;
-    }
+//    public GameMap newCustomMap() {
+//        //todo: check for usage
+//        GameMap map = new GameMap();
+//        this.customMaps.add(map);
+//        return map;
+//    }
 }

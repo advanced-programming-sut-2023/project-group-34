@@ -5,8 +5,7 @@ public enum BlockFillerType {
     CHERRY,
     OLIVE,
     COCONUT,
-    DATE,
-    STAIR;
+    DATE;
 
     @Override
     public String toString() {

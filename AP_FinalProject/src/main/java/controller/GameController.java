@@ -105,6 +105,7 @@ public class GameController {
         if (response != null) return response;
         return showMiniMap();
     }
+
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
@@ -112,7 +113,7 @@ public class GameController {
             for (int j = 0; j < 10; j++) {
                 if (map[i][j].getTroops().length != 0) output.append("S ");
                 else if (map[i][j].getBuilding().size() != 0) output.append("B ");
-                else if (map[i][j].getBLockFiller() != null && !map[i][j].getBLockFiller().equals(BlockFillerType.STAIR))
+                else if (map[i][j].getBLockFiller() != null)
                     output.append("T ");
                 else output.append(map[i][j].getBlockType().toString(), 0, 2);
                 output.append(' ');
@@ -255,6 +256,7 @@ public class GameController {
     public static String repairCurrentBuilding () {
         if (selectedBuilding.getHP() == selectedBuilding.getMaxHP())
             return "There is nothing to repair in this building, repairing failed";
+
         int x = selectedBuilding.getBlock().getLocationI() - 1;
         int y = selectedBuilding.getBlock().getLocationJ() - 1;
 
