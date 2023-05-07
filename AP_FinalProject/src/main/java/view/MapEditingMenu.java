@@ -29,6 +29,9 @@ public class MapEditingMenu {
                 }
                 System.out.println(response);
             }
+            else if (Commands.getOutput(input, Commands.BACK) != null)
+                return "";
+
             else System.out.println("Invalid command!");
         }
         while (true){

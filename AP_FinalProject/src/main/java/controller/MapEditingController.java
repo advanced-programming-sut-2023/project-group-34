@@ -35,8 +35,8 @@ public class MapEditingController {
     }
     
     public static String clearBlock (Matcher matcher) {
-        int i = Integer.parseInt(matcher.group("yAxis"));
-        int j = Integer.parseInt(matcher.group("xAxis"));
+        int i = Integer.parseInt(matcher.group("yIndex"));
+        int j = Integer.parseInt(matcher.group("xIndex"));
         return getCurrentGameMap().clearBlock(i, j);
     }
     
