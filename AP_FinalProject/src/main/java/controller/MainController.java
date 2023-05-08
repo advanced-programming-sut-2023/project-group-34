@@ -281,9 +281,10 @@ public class MainController {
         if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
             return "You can only put pitch rig on plains!";
         }
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND,
+                BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
         if (!goodBlockTypes.contains(block.getBlockType())) {
-            return "You can put anything on that block!";
+            return "You cannot put anything on that block!";
         }
         return "OK";
     }
@@ -301,6 +302,9 @@ public class MainController {
             return "Invalid building name!";
         }
         Block block = map.getABlock(x, y);
+        System.out.println(block.getBlockType());
+        if(!block.getBuilding().isEmpty())
+            return "You already have building in that block!";
         BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
         if (!checkBlockType(block, buildingType).equals("OK")) {
             return checkBlockType(block, buildingType);

@@ -20,7 +20,8 @@ public abstract class Building {
         this.buildingType = buildingType;
         this.HP = HP;
         maxHP = HP;
-        government.addBuilding(this);
+        if (government != null)
+            government.addBuilding(this);
     }
 
 

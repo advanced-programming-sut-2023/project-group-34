@@ -42,8 +42,8 @@ public class MapEditingController {
     
     public static String dropRock (Matcher matcher) {
         String direction = matcher.group("direction");
-        int y = Integer.parseInt(matcher.group("yAxis"));
-        int x = Integer.parseInt(matcher.group("xAxis"));
+        int y = Integer.parseInt(matcher.group("yIndex"));
+        int x = Integer.parseInt(matcher.group("xIndex"));
         return switch (direction) {
             case "north" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.NORTH_ROCK);
             case "south" -> getCurrentGameMap().setRectangleTexture(x, x, y, y, BlockType.SOUTH_ROCK);

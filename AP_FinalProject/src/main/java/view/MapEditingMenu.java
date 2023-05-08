@@ -32,6 +32,9 @@ public class MapEditingMenu {
             else if (Commands.getOutput(input, Commands.BACK) != null)
                 return "";
 
+            else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
+                System.out.println("Map Editing Menu");
+
             else System.out.println("Invalid command!");
         }
         while (true){
