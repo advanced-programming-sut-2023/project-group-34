@@ -4,11 +4,11 @@ import model.government.Government;
 import model.map.Block;
 
 public enum SiegeType {
-    BATTERING_RAM(-1 , 50 , 2000, 0,1000, 50),
-    SIEGE_TOWER(-1 , 20 , -1, 0,1000, 50),
-    CATAPULT(20 , 5 , 100, 0,1000, 50),
-    STABLE_CATAPULT(20 , 0 , 500,0,1000, 50),
-    FIRE_XBOW(30 , 8 , 500 , 0,1000, 50);
+    BATTERING_RAM(-1 , 50000 , 2000, 0,1000, 50 , 4),
+    SIEGE_TOWER(-1 , 20 , -1, 0,1000, 50 , 4),
+    CATAPULT(20 , 5 , 100, 0,1000, 50 , 2),
+    STABLE_CATAPULT(20 , 0 , 500,0,1000, 50 , 3),
+    FIRE_XBOW(30 , 8 , 500 , 0,1000, 50 , 2);
 
 
 
@@ -29,8 +29,7 @@ public enum SiegeType {
         this.numberOfEngineer = numberOfEngineer;
     }
     public void creator(Block block , Government government) {
-        block.getHumans().add(new SiegeMachine(HP , HP , block , damage , defendRate,false , false , government , this, speed, price, range));
-        block.getHumans().add(new SiegeMachine(HP , HP , block , damage , false , false , government , this, speed, price, range, numberOfEngineer));
+        block.getHumans().add(new SiegeMachine(HP , HP , block , damage , defendRate,false , false , government , this, speed, price, range , numberOfEngineer));
     }
 
     public int getPrice() {

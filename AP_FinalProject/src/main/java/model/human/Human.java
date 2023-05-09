@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class Human {
     private final int maxHP;
-    private static final ArrayList<Human> humans = new ArrayList<>();
     private int HP;
     private Government government;
     private ArrayList<Direction> rout = new ArrayList<>();
