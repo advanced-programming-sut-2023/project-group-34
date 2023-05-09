@@ -282,9 +282,4 @@ public class User {
         return customMaps;
     }
 
-//    public GameMap newCustomMap() {
-//        GameMap map = new GameMap();
-//        this.customMaps.add(map);
-//        return map;
-//    }
 }

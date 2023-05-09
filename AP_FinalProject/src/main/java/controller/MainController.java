@@ -18,13 +18,12 @@ import model.user.Password;
 import model.user.User;
 import view.MainMenu;
 import view.MapEditingMenu;
-import view.ProfileMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
-
+import view.*;
 import static controller.MapEditingController.setCurrentGameMap;
 
 public class MainController {

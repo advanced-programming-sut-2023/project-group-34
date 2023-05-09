@@ -76,7 +76,6 @@ public class Troop extends Human {
         this.troopStage = troopStage;
     }
 
-
     public static HashMap<TroopType, String> troopsNameString = new HashMap<>(
             Map.ofEntries(
                     Map.entry(TroopType.ARCHER, "archer"),

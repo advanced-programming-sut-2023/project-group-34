@@ -2,6 +2,7 @@ package model.human;
 
 import model.building.Building;
 import model.enums.Direction;
+import model.enums.TroopStage;
 import model.government.Government;
 import model.map.Block;
 
@@ -19,6 +20,7 @@ public class Human {
     private boolean canClimb;
     private boolean canDig;
     private Block block;
+    private TroopStage troopStage = TroopStage.STANDING;
     private boolean isUnemployed = true;
     public Human(Block block , Government government){
         this.block = block;
@@ -45,6 +47,9 @@ public class Human {
 
     }
     public void move(int x , int y) {
+
+    }
+    public void Wappaaah() {
 
     }
     public void getHit(int damage) {
@@ -140,5 +145,13 @@ public class Human {
 
     public void setUnemployed(boolean unemployed) {
         isUnemployed = unemployed;
+    }
+
+    public TroopStage getTroopStage() {
+        return troopStage;
+    }
+
+    public void setTroopStage(TroopStage troopStage) {
+        this.troopStage = troopStage;
     }
 }
