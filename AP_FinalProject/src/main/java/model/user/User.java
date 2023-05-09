@@ -21,7 +21,7 @@ public class User {
     private String slogan;
     private static ArrayList<User> users = new ArrayList<>();
     public static User currentUser;
-    private static Boolean isLoggedIn;
+    private static Boolean isLoggedIn = false;
     private int score;
     private Government government;
     private Slogan sloganTypes;
@@ -229,26 +229,44 @@ public class User {
         isLoggedIn = false;
         currentUserJsonSaver();
     }
-
+    
     public static void updateDataBase() {
         String usersListAsJSON = new Gson().toJson(users);
         try (FileWriter file = new FileWriter("Users.json")) {
             file.write(usersListAsJSON);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         if (isLoggedIn) currentUserJsonSaver();
     }
-
+    
+    public void saveUserMaps() {
+        String mapsAsJson = new Gson().toJson(customMaps);
+        try (FileWriter file = new FileWriter(this.name + "Maps.json")) {
+            file.write(mapsAsJson);
+        } catch (IOException ignored) {
+        }
+    }
+    
     public static void loadAllUsersFromDataBase() {
         try (FileReader reader = new FileReader("Users.json")) {
             ArrayList<User> userObjects = new Gson().fromJson(reader, new TypeToken<ArrayList<User>>() {}.getType());
             if (userObjects != null){
                 for (int i = 0; i < userObjects.size(); i++) {
+                    userObjects.get(i).loadUserMapsFromDataBase();
                     users.add(userObjects.get(i));
                 }
             }
             loadCurrentUser();
+        } catch (IOException ignored) {
+        }
+    }
+    public void loadUserMapsFromDataBase() {
+        try (FileReader reader = new FileReader(this.name + "Maps.json")) {
+            ArrayList<GameMap> userMaps = new Gson().fromJson(reader, new TypeToken<ArrayList<GameMap>>() {}.getType());
+            this.customMaps = new ArrayList<>();
+            if (userMaps != null) {
+                customMaps.addAll(userMaps);
+            }
         } catch (IOException ignored) {
         }
     }

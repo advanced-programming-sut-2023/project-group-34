@@ -4,6 +4,7 @@ import controller.MainController;
 import controller.MapEditingController;
 import controller.Runner;
 import model.enums.Commands;
+import model.user.User;
 
 import java.util.regex.Matcher;
 
@@ -60,6 +61,7 @@ public class MapEditingMenu {
                 System.out.println("Map Editing Menu");
 
             else System.out.println("Invalid command!");
+            User.getCurrentUser().saveUserMaps();
         }
     }
 }
