@@ -18,11 +18,11 @@ public enum Commands {
     CHANGE_PASSWORD_RANDOMLY("(?=.*\\s+-o(\\s+|$)(?<oldPass>\".+\"|[^- ]*))(?=.*\\s+-n(\\s+|$)(?<newPass>random))^\\s*Profile\\s+change\\s+password(\\s+-[on]\\s*(\".+\"|\\S*)){2}\\s*$"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
-    SET_TEXTURE("\\s*settexture(?=.*\\s+-t\\s+(?<type>\\S*))((?=.*\\s+-x\\s*(?<singleX>\\d*))(?=.*\\s+-y\\s*(?<singleY>\\d*))(\\s*-[xyt]\\s+\\S*){3}|(?=.*\\s+-x1\\s*(?<x1>\\d*))(?=.*\\s+-y1\\s*(?<y1>\\d*))(?=.*\\s+-x2\\s*(?<x2>\\d*))(?=.*\\s+-y2\\s*(?<y2>\\d*))(\\s*-([xy][12]|t)\\s+\\S*){5})\\s*"),
+    SET_TEXTURE("\\s*settexture(?=.*\\s+-t\\s+(?<type>\\S*))((?=.*\\s+-x(\\s+|$)(?<singleX>\\d*))(?=.*\\s+-y(\\s+|$)(?<singleY>\\d*))(\\s*-[xyt]\\s+\\S*){3}|(?=.*\\s+-x1\\s*(?<x1>\\d*))(?=.*\\s+-y1\\s*(?<y1>\\d*))(?=.*\\s+-x2\\s*(?<x2>\\d*))(?=.*\\s+-y2\\s*(?<y2>\\d*))(\\s*-([xy][12]|t)\\s+\\S*){5})\\s*"),
     CLEAR("\\s*clear(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(\\s+-[xy]\\s+\\d*){2}\\s*"),
     DROP_ROCK("\\s*droprock(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-d\\s+(?<direction>\\S*))(\\s+-[xyd]\\s+\\S*){3}\\s*"),
     DROP_TREE("\\s*droptree(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xyt]\\s+\\S*){3}\\s*"),
-    DROP_BUILDING("\\s*dropbuilding(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xyt]\\s+\\S*){3}\\s*"),
+    DROP_BUILDING("\\s*dropbuilding(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-t\\s+(?<type>.+))(\\s+-[xyt]\\s+\\S*|.+){3}\\s*"),
     DROP_UNIT("\\s*droptree(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-c\\s+(?<count>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xytc]\\s+\\S*){4}\\s*"),
     BACK("\\s*back\\s*"),
     DISPLAY_HIGHS_CORE("Profile\\s+display\\s+highscore"),
@@ -73,7 +73,11 @@ public enum Commands {
     PATROL_UNIT("(?=.*-x1\\s+(?<x1>\\d*))(?=.*-x2\\s+(?<x2>\\d*))(?=.*-y1\\s+(?<y1>\\d*))(?=.*-y2\\s+(?<y2>\\d*))^Patrol(\\s+-[xy][1-2]\\s+\\d*){4}"),
     DIG_TUNNEL("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Dig\\s+tunnel(\\s+-[xy]\\s+\\d*){2}$"),
     DISBAND_UNIT("Disband\\s+unit"),
-    BUILD_EQUIPMENT("Build\\s+equipment\\s+-t\\s*(?<type>(\\S+|\".+\"))*");
+    BUILD_EQUIPMENT("(?=.*-x(\\s+|$)(?<x>\\d*))(?=.*-y(\\s+|$)(?<y>\\d*))(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment(\\s+-[xyt]\\s+(\".+\"|\\S+)){3}$"),
+    POUR_OIL("(?=.*-d(\\s+|$)(?<direction>\\S+))^Pour\\s+oil(\\s+-[d]\\s+\\S+){1}$"),
+    DIG_DITCH("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Dig\\s+ditch(\\s+-[xy]\\s+\\d*){2}$"),
+    FILL_DITCH("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Fill\\s+ditch(\\s+-[xy]\\s+\\d*){2}$"),
+    DROP_STAIRS("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Drop\\s+stairs(\\s+-[xy]\\s+\\d*){2}$");
 
 
 

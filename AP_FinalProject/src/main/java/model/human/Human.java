@@ -14,6 +14,7 @@ public class Human {
     private Government government;
     private ArrayList<Direction> rout = new ArrayList<>();
     private final int damage;
+    private final int defendRate;
     private int currentDamage;
     private boolean isVisible = true;
     private boolean canClimb;
@@ -25,10 +26,11 @@ public class Human {
         maxHP = 1;
         HP = 1;
         this.damage = 0;
+        this.defendRate = 0;
         this.government = government;
         government.getHumans().add(this);
     }
-    public Human (int HP , int maxHP , Block block , int damage , boolean canDig , boolean canClimb , Government government) {
+    public Human (int HP , int maxHP , Block block , int damage , int defendRate, boolean canDig , boolean canClimb , Government government) {
         this.maxHP = maxHP;
         this.HP = HP;
         this.damage = damage;
@@ -37,6 +39,7 @@ public class Human {
         this.government = government;
         this.block = block;
         government.getHumans().add(this);
+        this.defendRate = defendRate;
     }
 
     public void die() {
@@ -75,6 +78,10 @@ public class Human {
 
     public int getDamage() {
         return damage;
+    }
+
+    public int getDefendRate() {
+        return defendRate;
     }
 
     public Boolean getCanClimb() {

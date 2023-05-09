@@ -9,7 +9,7 @@ public class Engineer extends Human{
     private final int price;
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government, int price) {
-        super(0, 0 , block, 0, false, true , government);
+        super(0, 0 , block, 0, 0, false, true , government);
         this.price = price;
         useOil();
     }

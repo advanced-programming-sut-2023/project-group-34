@@ -17,7 +17,8 @@ public class Gate extends Building {
         super(government, block, HP, cost, buildingType);
         this.population = population;
         this.isVertical = isVertical;
-        government.changeMaxPopulation(population);
+        if (government != null)
+            government.changeMaxPopulation(population);
     }
 
 

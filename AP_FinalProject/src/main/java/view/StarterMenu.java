@@ -2,6 +2,7 @@ package view;
 
 import controller.Runner;
 import controller.UserController;
+import model.Captcha;
 import model.enums.Commands;
 import model.user.Password;
 
@@ -16,7 +17,7 @@ public class StarterMenu {
         String input;
         Matcher matcher;
         while (true){
-            input = controller.Runner.getScn ().nextLine ();
+            input = Runner.getScn().nextLine();
             input = input.trim ();
             if ((matcher = model.enums.Commands.getOutput (input, Commands.CREATE_USER)) != null) {
                 String username;
@@ -60,18 +61,30 @@ public class StarterMenu {
                             response = pickSecurityQuestion(passwordObject, Commands.getOutput(Runner.getScn().nextLine(), Commands.PICK_QUESTION));
                             if (response != null) System.out.println(response);
                             else {
-                                System.out.println(registerUser(username, passwordObject, email, nickname, slogan));
+                                response = captchaFunction();
+                                if (response.equals("captcha is set")) {
+                                    System.out.println(registerUser(username, passwordObject, email, nickname, slogan));
+                                } else
+                                    System.out.println(response);
                             }
                         }
                     }
                 }
-
             }
             else if ((matcher = Commands.getOutput (input, Commands.LOGIN)) != null) {
                 String result = UserController.loginUser(matcher);
-                System.out.println(result);
+                if (!result.equals("User logged in"))
+                    System.out.println(result);
                 if (result.equals("Username and password did not match!")) UserController.wrongPasswordsEntered();
-                else if (result.equals("User logged in")) return "main menu";
+                if (result.equals("User logged in")) {
+                    result = captchaFunction();
+                    if (result.equals("captcha is set")) {
+                        System.out.println("User logged in");
+                        return "main menu";
+                    }
+                    else
+                        System.out.println(result);
+                }
             }
             else if (Commands.getOutput (input, Commands.ENTER_FORGOT_PASSWORD_MENU) != null) {
                 System.out.println("Entered forgot password menu!");
@@ -111,5 +124,36 @@ public class StarterMenu {
             if (Runner.getScn().nextLine().equals("No")) return "Couldn't create user: username in use!";
         }
         return username;
+    }
+
+    public static String captchaFunction(){
+        Captcha captcha = new Captcha();
+        int code = captcha.getTheOriginalCode();
+        System.out.println(captcha.generateCaptcha());
+        System.out.println("PLease enter this captcha to finish your work");
+        String codeResponse = Runner.getScn().nextLine();
+        int codeResponse1;
+        if (codeResponse.equals("back")) return "";
+        try{
+            codeResponse1 = Integer.parseInt(codeResponse);
+        } catch (NumberFormatException ex){
+            return "invalid command";
+        }
+        while(codeResponse1 != code) {
+            System.out.println("Wrong number please try again");
+            captcha = new Captcha();
+            System.out.println(captcha.generateCaptcha());
+            System.out.println("PLease enter this captcha to finish your work");
+            code = captcha.getTheOriginalCode();
+            String codeResponse2 = Runner.getScn().nextLine();
+            if (codeResponse2.equals("back")) return "";
+            try{
+                codeResponse1 = Integer.parseInt(codeResponse2);
+            } catch (NumberFormatException ex){
+                return "invalid command";
+            }
+
+        }
+        return "captcha is set";
     }
 }

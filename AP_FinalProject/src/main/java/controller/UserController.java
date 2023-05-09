@@ -1,5 +1,6 @@
 package controller;
 
+import model.Captcha;
 import model.user.User;
 import model.enums.Commands;
 import model.enums.Validations;
@@ -135,7 +136,7 @@ public class UserController {
         if (password.equals("") || username.equals("")) return "empty field";
         model.user.User user;
         if ((user = getUserByUsername(username)) == null) return "No user with the given username!";
-        if (!user.getPassword().checkPassword(password)) return "Username and password didn’t match!";
+        if (!user.getPassword().checkPassword(password)) return "Username and password did not match!";
         model.user.User.setCurrentUser(user);
         if (matcher.group("flag") != null) model.user.User.stayLoggedIn();
         wrongPasswordsCount = 0;
@@ -161,27 +162,35 @@ public class UserController {
         return "good for now";
     }
 
-        public static String forgotPassword2(String answer, Password password){
-            if (!password.checkAnswer(answer)) return "Wrong answer!";
-            return "enter password";
-        }
+    public static String forgotPassword2(String answer, Password password){
+        if (!password.checkAnswer(answer)) return "Wrong answer!";
+        return "enter password";
+    }
 
 
-        public static String forgotPassword3(String newPassword) {
-            if (newPassword.equals("random")) {
-                newPassword = Password.randomPassword();
-                System.out.println("Your random password is: " +
-                        newPassword);
-            }
-            if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
-            return "go to confirmation";
+    public static String forgotPassword3(String newPassword) {
+        if (newPassword.equals("random")) {
+            newPassword = Password.randomPassword();
+            System.out.println("Your random password is: " +
+                    newPassword);
         }
+        if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";
+        return "go to confirmation";
+    }
 
-        public static String forgotPassword4(String confirm, String newPassword, Password password) {
-            if (!confirm.equals(newPassword)) return "confirmation failed!";
-            password.setPasswordName(newPassword);
-            return "success!";
-        }
+    public static String forgotPassword4(String confirm, String newPassword) {
+        if (!confirm.equals(newPassword)) return "confirmation failed!";
+        return "good for now";
+    }
+
+    public static String setForgotPassword(String newPass, Password password){
+        password.setPasswordName(newPass);
+        User.updateDataBase();
+        User.stayLoggedIn();
+        return "Password changed successfully";
+    }
+
+
 
 
     private static int wrongPasswordsCount = 0;
@@ -189,7 +198,7 @@ public class UserController {
     public static void wrongPasswordsEntered(){
         //TODO: improve mechanism
         wrongPasswordsCount++;
-        if (wrongPasswordsCount % 5 != 0) {
+        if (wrongPasswordsCount % 5 == 0) {
             System.out.println("you are locked!");
             try {
                 Thread.sleep(wrongPasswordsCount * 2000L);

@@ -206,8 +206,14 @@ public class User {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("currentUser.json")) {
             User currentUser = gson.fromJson(reader, User.class);
-            for (User user : users) {
-                if (user.equals(currentUser)) User.setCurrentUser(currentUser);
+            if (currentUser == null) {
+                User.setCurrentUser(null);
+                User.stayLoggedIn();
+            }
+            else {
+                for (User user : users) {
+                    if (Objects.equals(user.getName(), currentUser.getName())) User.setCurrentUser(currentUser);
+                }
             }
         } catch (IOException ignored) {
         }
@@ -258,9 +264,9 @@ public class User {
         return customMaps;
     }
 
-    public GameMap newCustomMap() {
-        GameMap map = new GameMap();
-        this.customMaps.add(map);
-        return map;
-    }
+//    public GameMap newCustomMap() {
+//        GameMap map = new GameMap();
+//        this.customMaps.add(map);
+//        return map;
+//    }
 }

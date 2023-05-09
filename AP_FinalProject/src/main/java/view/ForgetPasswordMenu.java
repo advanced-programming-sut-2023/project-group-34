@@ -28,7 +28,19 @@ public class ForgetPasswordMenu {
                         if (response.equals("go to confirmation")){
                             System.out.println("Please re-enter your password for confirmation");
                             String confirmationPassword = Runner.scn.nextLine();
-                            System.out.println(UserController.forgotPassword4(confirmationPassword, firstPassword, UserController.getUserByUsername(username).getPassword()));
+                            response = UserController.forgotPassword4(confirmationPassword, firstPassword);
+                            if (response.equals("good for now")){
+                                response = StarterMenu.captchaFunction();
+                                if (response.equals("captcha is set"))
+                                    System.out.println(UserController.setForgotPassword(firstPassword, UserController.getUserByUsername(matcher.group("username")).getPassword()));
+                                else {
+                                    System.out.println(response);
+                                    continue;
+                                }
+                            } else {
+                                System.out.println(response);
+                                continue;
+                            }
                             continue;
                         } else {
                             System.out.println(response);

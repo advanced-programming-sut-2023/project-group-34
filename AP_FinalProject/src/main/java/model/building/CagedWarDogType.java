@@ -10,7 +10,7 @@ import java.util.Map;
 
 public enum CagedWarDogType implements BuildingType{
     CAGED_WAR_DOG;
-    private static final HashMap<Resources ,Integer> cost = new HashMap<>()
+    private static final HashMap<Resources ,Integer> cost = new HashMap<>();
 
     @Override
     public void create(Government government, Block block) {
