@@ -17,8 +17,8 @@ public class Troop extends Human {
     private final int speed;
     private TroopStage troopStage;
     private final HashMap<MakeAble , Integer> cost;
-    protected Troop(int HP, Block block, int damage, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int price, int speed, HashMap<MakeAble, Integer> cost) {
-        super(HP, HP , block, damage, canDig, canClimb, government);
+    protected Troop(int HP, Block block, int damage, int defendRate, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int speed, HashMap<MakeAble, Integer> cost) {
+        super(HP, HP , block, damage, defendRate, canDig, canClimb, government);
         this.defensiveRange = defensiveRange;
         this.fireRange = fireRange;
         this.aggressiveRange = aggressiveRange;
@@ -86,8 +86,6 @@ public class Troop extends Human {
                     Map.entry(TroopType.MACE_MAN, "mace man"),
                     Map.entry(TroopType.SWORDS_MAN, "swords man"),
                     Map.entry(TroopType.KNIGHT, "knight"),
-                    Map.entry(TroopType.TUNNELER, "tunneler"),
-                    Map.entry(TroopType.LADDER_MAN, "ladder man"),
                     Map.entry(TroopType.BLACK_MONK, "black monk"),
                     Map.entry(TroopType.ARCHER_BOW, "archer bow"),
                     Map.entry(TroopType.SLAVE, "slave"),

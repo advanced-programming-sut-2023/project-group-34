@@ -301,8 +301,7 @@ public class MainController {
         if (!Dictionaries.buildingDictionary.containsKey(type)) {
             return "Invalid building name!";
         }
-        Block block = map.getABlock(x, y);
-        System.out.println(block.getBlockType());
+        Block block = map.getABlock(y, x);
         if(!block.getBuilding().isEmpty())
             return "You already have building in that block!";
         BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
