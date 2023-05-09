@@ -18,8 +18,10 @@ public class CagedWarDog extends Building{
         int numberOfDogs = 4;
         for (int i = 0; i < numberOfDogs; i++) {
             TroopType.WAR_DOG.Creator(block , government);
+            if(government.getHumans().contains(this)) {
+                government.getHumans().remove(this);
+            }
         }
-        destroy();
     }
 
     @Override

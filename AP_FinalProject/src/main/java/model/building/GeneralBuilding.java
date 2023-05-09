@@ -30,11 +30,11 @@ public class GeneralBuilding extends Building{
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
         if (buildingType.equals(GeneralBuildingsType.FOOD_STORAGE)) {
-            government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getFoodMaxCapacity() + capacity);
+            government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getFoodMaxCapacity() - capacity);
         } else if (buildingType.equals(GeneralBuildingsType.ARMOUR_STORAGE)) {
-            government.getStorageDepartment().setWeaponsMaxCapacity(government.getStorageDepartment().getWeaponsMaxCapacity() + capacity);
+            government.getStorageDepartment().setWeaponsMaxCapacity(government.getStorageDepartment().getWeaponsMaxCapacity() - capacity);
         } else if (buildingType.equals(GeneralBuildingsType.RESOURCES_STORAGE)) {
-            government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getResourcesMaxCapacity()+ capacity);
+            government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getResourcesMaxCapacity() - capacity);
         }
     }
 

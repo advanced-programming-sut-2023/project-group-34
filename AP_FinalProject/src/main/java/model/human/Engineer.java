@@ -40,10 +40,10 @@ public class Engineer extends Human{
             if(!(building instanceof OilSmelter oilSmelter)) {
                 continue;
             }
-            flag = true;
-            if(oilSmelter.getNumberOfOils() < 1) {
+            if(oilSmelter.getNumberOfOils() < 1 || oilSmelter.getEngineer() == null) {
                 continue;
             }
+            flag = true;
             oilSmelter.giveOil();
             isEquippedWithOil = true;
         }

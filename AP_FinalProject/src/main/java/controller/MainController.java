@@ -275,7 +275,9 @@ public class MainController {
         if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
             return "You can only put pitch rig on plains!";
         }
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW,
+                BlockType.DENSE_MEADOW , BlockType.BEACH, BlockType.PLAIN));
+
         if (!goodBlockTypes.contains(block.getBlockType())) {
             return "You can put anything on that block!";
         }
@@ -314,7 +316,7 @@ public class MainController {
                     if(i < 0 || j < 0 || i > 399 || j > 399) {
                         continue;
                     }
-                    tempBlock = currentGameMap.getABlock(i , j);
+                    tempBlock = map.getABlock(i , j);
                     if(GameMap.getDistanceBetweenTwoBlocks(tempBlock , block) == 1 && tempBlock.containsThisBuilding(buildingType)) {
                         flag = true;
                         break outer;

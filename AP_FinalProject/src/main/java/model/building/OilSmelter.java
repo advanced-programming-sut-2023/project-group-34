@@ -32,6 +32,9 @@ public class OilSmelter extends Building{
         return rate;
     }
 
+    public Engineer getEngineer() {
+        return engineer;
+    }
     public void setEngineer(Engineer engineer) {
         this.engineer = engineer;
     }

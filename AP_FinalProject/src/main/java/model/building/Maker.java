@@ -42,6 +42,10 @@ public class Maker extends Building{
             currentAmount = Math.min(currentAmount, capacity);
             return;
         }
+        if(this.buildingType == MakerType.WOOD_CUTTER) {
+            return;
+            //TODO add this in controller dont have access to map
+        }
         double tempInputRate;
         if(input == null) tempInputRate = inputRate;
         else {
@@ -59,6 +63,9 @@ public class Maker extends Building{
     public void destroy() {
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
+        for(Human human : block.getHumans()) {
+            if(!human.isUnemployed()) human.die();
+        }
     }
 
 
@@ -84,8 +91,8 @@ public class Maker extends Building{
         return numberOfCurrentWorkers;
     }
 
-    public void addWorker(Human human) {
-
+    public void addWorker() {
+        this.numberOfCurrentWorkers++;
     }
 
     public double getInputRate() {

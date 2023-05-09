@@ -2,8 +2,11 @@ package model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import model.human.SiegeType;
 import model.human.TroopType;
 import model.building.*;
+
+import static model.human.SiegeType.*;
 
 public class Dictionaries  {
     public static BiMap<String , BuildingType> buildingDictionary = HashBiMap.create();
@@ -58,14 +61,15 @@ public class Dictionaries  {
     public static BiMap<String, TroopType> troopDictionary = HashBiMap.create();
     static {
         troopDictionary.put("archer", TroopType.ARCHER);
+        troopDictionary.put("engineer", TroopType.ARCHER);
         troopDictionary.put("cross bow man", TroopType.CROSS_BOW_MAN);
         troopDictionary.put("spear man", TroopType.SPEAR_MAN);
         troopDictionary.put("pike man", TroopType.PIKE_MAN);
         troopDictionary.put("mace man", TroopType.MACE_MAN);
         troopDictionary.put("swords man", TroopType.SWORDS_MAN);
         troopDictionary.put("knight", TroopType.KNIGHT);
-        troopDictionary.put("tunneler", TroopType.TUNNELER);
-        troopDictionary.put("ladder man", TroopType.LADDER_MAN);
+        troopDictionary.put("tunneler", TroopType.ARCHER);
+        troopDictionary.put("ladder man", TroopType.ARCHER);
         troopDictionary.put("black monk", TroopType.BLACK_MONK);
         troopDictionary.put("archer bow", TroopType.ARCHER_BOW);
         troopDictionary.put("slave", TroopType.SLAVE);
@@ -74,5 +78,14 @@ public class Dictionaries  {
         troopDictionary.put("horse archer", TroopType.HORSE_ARCHER);
         troopDictionary.put("arab sword man", TroopType.ARAB_SWORD_MAN);
         troopDictionary.put("fire thrower", TroopType.FIRE_THROWERS);
+    }
+
+    public static BiMap<String , SiegeType> siegeMachineDictionary = HashBiMap.create();
+    static {
+        siegeMachineDictionary.put("battering ram" , BATTERING_RAM);
+        siegeMachineDictionary.put("siege tower" , SIEGE_TOWER);
+        siegeMachineDictionary.put("catapult" , CATAPULT);
+        siegeMachineDictionary.put("stable catapult",STABLE_CATAPULT);
+        siegeMachineDictionary.put("fire xbow" , FIRE_XBOW);
     }
 }

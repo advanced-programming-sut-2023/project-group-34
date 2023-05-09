@@ -148,6 +148,12 @@ public class AccountingDepartment {
     private void changeCurrentPopulation() {
         double foodLeft = edibleFood();
         Block block = null;
+        for(Building building : government.getBuildings()) {
+            if(building.getBuildingType().equals(GateType.KEEP)) {
+                block = building.getBlock();
+                break;
+            }
+        }
         int populationToBeAdded = (int) ((foodLeft + government.getTotalPopularity())/(2 * ((foodRate * 0.5) + 1)));
         for (Building building : government.getBuildings()){
             if (building.getBuildingType().equals(GateType.KEEP)){
@@ -180,8 +186,6 @@ public class AccountingDepartment {
                 government.addToHuman(human);
             }
         }
-
-        government.setPopulation(government.getPopulation()+populationToBeAdded);
     }
 
 

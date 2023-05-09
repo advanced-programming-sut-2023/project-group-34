@@ -36,7 +36,10 @@ public abstract class Building {
     public abstract void destroy();
     public void getHit(int damage) {
         HP -= damage;
-        if(HP < 0) destroy();
+        if(HP < 0) {
+            destroy();
+            block.setPassable(true);
+        }
     }
 
     public HashMap<Resources, Integer> getCost() {

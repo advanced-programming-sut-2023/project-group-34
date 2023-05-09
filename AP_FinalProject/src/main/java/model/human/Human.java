@@ -19,7 +19,7 @@ public class Human {
     private boolean canClimb;
     private boolean canDig;
     private Block block;
-    private boolean isUnemployed;
+    private boolean isUnemployed = true;
     public Human(Block block , Government government){
         this.block = block;
         maxHP = 1;
@@ -126,5 +126,13 @@ public class Human {
     }
     public boolean isThereAWay(Block block) {
         return true;
+    }
+
+    public boolean isUnemployed() {
+        return isUnemployed;
+    }
+
+    public void setUnemployed(boolean unemployed) {
+        isUnemployed = unemployed;
     }
 }

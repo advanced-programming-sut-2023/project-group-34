@@ -2,6 +2,7 @@ package model.government;
 
 import model.building.Building;
 import model.human.Human;
+import model.map.Block;
 import model.user.Color;
 import model.user.User;
 
@@ -12,7 +13,6 @@ public class Government {
     private final ArrayList<Building> buildings = new ArrayList<>();
     private final ArrayList<Human> humans = new ArrayList<>();
     private int totalPopularity;
-    private int population;
     private int maxPopulation;
     private final Color color;
     private final StorageDepartment storageDepartment = new StorageDepartment();
@@ -28,11 +28,7 @@ public class Government {
     }
 
     public int getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
+        return humans.size();
     }
 
     public int getMaxPopulation() {
@@ -74,7 +70,6 @@ public class Government {
     public StorageDepartment getStorageDepartment() {
         return storageDepartment;
     }
-
 
     public Color getColor() {
         return color;

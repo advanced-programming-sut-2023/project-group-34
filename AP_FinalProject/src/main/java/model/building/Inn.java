@@ -12,7 +12,6 @@ import java.util.Map;
 public class Inn extends Building{
 
     private  int numberOfWorkers = 0;
-    private final int numberOfMaxWorkers = 1;
     private final int popularityRate = 2;
     private final double aleUsage = 2;
     public Inn(Government government, Block block) {
@@ -30,6 +29,9 @@ public class Inn extends Building{
     public void destroy() {
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
+        for(Human human : block.getHumans()) {
+            if(!human.isUnemployed()) human.die();
+        }
     }
 
     public int getNumberOfWorkers() {
@@ -49,6 +51,7 @@ public class Inn extends Building{
     }
 
     public int getNumberOfMaxWorkers() {
+        int numberOfMaxWorkers = 1;
         return numberOfMaxWorkers;
     }
 }

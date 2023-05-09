@@ -12,8 +12,10 @@ import java.util.HashMap;
 
 public class Block {
     private BlockFillerType bLockFiller;
-    private BlockType blockType;
 
+    private int blockFillerAmount;
+
+    private BlockType blockType;
     public BlockFillerType getBLockFiller() {
         return bLockFiller;
     }
@@ -21,11 +23,11 @@ public class Block {
     private ArrayList<Building> building = new ArrayList<>();
 
     private final ArrayList <Human> humans = new ArrayList<>();
+
     private int resourcesCapacity;
     private boolean isPassable;
     private final int locationI;
     private final int locationJ;
-
     public Block(int locationI, int locationJ) {
         this.blockType = BlockType.GROUND;
         this.locationI = locationI;
@@ -33,6 +35,7 @@ public class Block {
     }
 
     public Block(Block sample) {
+        this.bLockFiller = sample.getBLockFiller();
         this.blockType = sample.getBlockType();
         this.locationI = sample.locationI;
         this.locationJ = sample.locationJ;
@@ -89,10 +92,10 @@ public class Block {
     public void addBuilding(Building building) {
         this.building.add(building);
     }
+
     public void removeBuilding(Building building) {
         this.building.remove(building);
     }
-
     public Troop[] getTroops() {
         ArrayList<Troop> troops = new ArrayList<>();
         for (Human human : humans) {
@@ -131,5 +134,17 @@ public class Block {
             }
         }
         return false;
+    }
+
+    public int getBlockFillerAmount() {
+        return blockFillerAmount;
+    }
+
+    public void useBlockFillerAmount(int amount) {
+        this.blockFillerAmount -= amount;
+        if(blockFillerAmount < 0) {
+            blockFillerAmount = 0;
+            bLockFiller = null;
+        }
     }
 }
