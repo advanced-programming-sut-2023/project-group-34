@@ -90,10 +90,11 @@ public class Router {
     }
     private boolean canGoThere (Node node) {
         //TODO: different troops canClimb & latter
-        if (unpassable(node.getCurrentBlock()) || unpassable(node.getParent().getCurrentBlock())) return false;
+        if (unpassable(node.getCurrentBlock())) return false;
         if (troopType.equals(TroopType.ASSASSIN)) return true;
-        if (node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS) ||
-                node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS))
+        if (troopType.isCanClimb() && node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding && ((DefenciveBuilding) node.getCurrentBlock().getBuilding().get(0)).isHasLadder()) return true;
+        if (troopType.isCanClimb() && (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)) ||
+                (node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)))
             return true;
         if (node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding ||
                 node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE) ||

@@ -18,14 +18,18 @@ public class DefenciveBuilding extends Building{
     private final int defendRange;
     private final ArrayList<Human> warEquipments = new ArrayList<>();
     private final int capacity;
+    private boolean hasLadder;
     //TODO set this
     private final HashMap<Direction, Boolean> isPassableFromThisDirection = new HashMap<>(Map.ofEntries(Map.entry(Direction.EAST , false) , Map.entry(Direction.NORTH , false) , Map.entry(Direction.SOUTH , false) , Map.entry(Direction.WEST , false)));
-
+    
+    
+    
     protected DefenciveBuilding(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int fireRange, int defendRange, int capacity) {
         super(government, block, HP, cost, buildingType);
         this.fireRange = fireRange;
         this.defendRange = defendRange;
         this.capacity = capacity;
+        hasLadder = false;
     }
     @Override
     public void process() {
@@ -56,7 +60,13 @@ public class DefenciveBuilding extends Building{
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
     }
-
+    public boolean isHasLadder () {
+        return hasLadder;
+    }
+    
+    public void setHasLadder (boolean hasLadder) {
+        this.hasLadder = hasLadder;
+    }
     public int getFireRange() {
         return fireRange;
     }
