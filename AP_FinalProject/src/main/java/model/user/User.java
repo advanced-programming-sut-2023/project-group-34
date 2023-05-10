@@ -1,5 +1,6 @@
 package model.user;
 
+import com.thoughtworks.xstream.XStream;
 import model.Trade;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -241,21 +242,29 @@ public class User {
         if (isLoggedIn) currentUserJsonSaver();
     }
     
+//    public void saveUserMaps() {
+//        String mapsAsJson = new Gson().toJson(customMaps);
+//        try (FileWriter file = new FileWriter(this.name + "Maps.json")) {
+//            file.write(mapsAsJson);
+//        } catch (IOException ignored) {
+//        }
+//    }
     public void saveUserMaps() {
-        String mapsAsJson = new Gson().toJson(customMaps);
-        try (FileWriter file = new FileWriter(this.name + "Maps.json")) {
-            file.write(mapsAsJson);
-        } catch (IOException ignored) {
-        }
+        XStream xstream = new XStream();
+        String mapsAsXml = xstream.toXML(this.getCustomMaps());
+        try (FileWriter file = new FileWriter(this.name + "Maps.xml")) {
+            file.write(mapsAsXml);
+        } catch (IOException ignored) { }
     }
+    
     
     public static void loadAllUsersFromDataBase() {
         try (FileReader reader = new FileReader("Users.json")) {
             ArrayList<User> userObjects = new Gson().fromJson(reader, new TypeToken<ArrayList<User>>() {}.getType());
             if (userObjects != null){
-                for (int i = 0; i < userObjects.size(); i++) {
-                    userObjects.get(i).loadUserMapsFromDataBase();
-                    users.add(userObjects.get(i));
+                users.addAll(userObjects);
+                for (int i = 0; i < users.size(); i++) {
+                    users.get(i).loadUserMapsFromDataBase();
                 }
             }
             loadCurrentUser();
@@ -263,8 +272,11 @@ public class User {
         }
     }
     public void loadUserMapsFromDataBase() {
-        try (FileReader reader = new FileReader(this.name + "Maps.json")) {
-            ArrayList<GameMap> userMaps = new Gson().fromJson(reader, new TypeToken<ArrayList<GameMap>>() {}.getType());
+        XStream xstream = new XStream();
+        XStream.setupDefaultSecurity(xstream);
+        xstream.allowTypesByWildcard(new String[] {"**"});
+        try (FileReader reader = new FileReader(this.name + "Maps.xml")) {
+            ArrayList<GameMap> userMaps = (ArrayList<GameMap>) xstream.fromXML(reader);
             this.customMaps = new ArrayList<>();
             if (userMaps != null) {
                 customMaps.addAll(userMaps);
@@ -272,6 +284,18 @@ public class User {
         } catch (IOException ignored) {
         }
     }
+
+
+//    public void loadUserMapsFromDataBase() {
+//        try (FileReader reader = new FileReader(this.name + "Maps.json")) {
+//            ArrayList<GameMap> userMaps = new Gson().fromJson(reader, new TypeToken<ArrayList<GameMap>>() {}.getType());
+//            this.customMaps = new ArrayList<>();
+//            if (userMaps != null) {
+//                customMaps.addAll(userMaps);
+//            }
+//        } catch (IOException ignored) {
+//        }
+//    }
 
     public GameMap getMapByName (String name) {
         for (GameMap customMap : customMaps) {
