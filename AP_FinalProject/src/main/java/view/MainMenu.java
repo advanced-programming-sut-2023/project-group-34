@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import controller.MainController;
 import controller.Runner;
+import controller.UserController;
 import model.enums.Commands;
 import model.user.User;
 
@@ -46,13 +47,13 @@ public class MainMenu {
     private static void setKeeps () {
         int playersCount;
         System.out.println("Please enter the number of players:");
-        playersCount = Runner.getScn().nextInt();
+        playersCount = Integer.parseInt(Runner.getScn().nextLine());
         String response;
         while (true) {
             System.out.println("Please enter your location x axis:");
-            int x = Runner.getScn().nextInt();
+            int x = Integer.parseInt(Runner.getScn().nextLine());
             System.out.println("Please enter your location y axis:");
-            int y = Runner.getScn().nextInt();
+            int y = Integer.parseInt(Runner.getScn().nextLine());
             response = MainController.setKeep(User.currentUser.getName(), x, y);
             if (response != null) System.out.println(response);
             else break;
@@ -60,11 +61,11 @@ public class MainMenu {
         for (int i = 2; i <= playersCount; i++) {
             while (true) {
                 System.out.println("Please enter player " + i + " username:");
-                String username = Runner.getScn().nextLine().trim();
+                String username = Runner.getScn().nextLine();
                 System.out.println("Please enter player " + i + " location x axis:");
-                int x = Runner.getScn().nextInt();
+                int x = Integer.parseInt(Runner.getScn().nextLine());
                 System.out.println("Please enter player " + i + " location y axis:");
-                int y = Runner.getScn().nextInt();
+                int y = Integer.parseInt(Runner.getScn().nextLine());
                 response = MainController.setKeep(username, x, y);
                 if (response != null) System.out.println(response);
                 else break;

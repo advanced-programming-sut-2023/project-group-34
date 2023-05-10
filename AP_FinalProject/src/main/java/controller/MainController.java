@@ -235,6 +235,7 @@ public class MainController {
     }
 
     public static String createNewGame (Matcher matcher) {
+        User.currentUser.loadUserMapsFromDataBase();
         String mapName = matcher.group("mapName").trim().replaceAll("\"", "");
         if (mapName.isEmpty()) return "Empty field!";
         GameController.setCurrentGame(new Game(new GameMap(User.currentUser.getMapByName(mapName))));
@@ -280,10 +281,11 @@ public class MainController {
         if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
             return "You can only put pitch rig on plains!";
         }
+
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW,
                 BlockType.DENSE_MEADOW , BlockType.BEACH, BlockType.PLAIN));
 
-        if (!goodBlockTypes.contains(block.getBlockType())) {
+        if (!goodBlockTypes.contains(block.getBlockType()) && !Dictionaries.buildingDictionary.inverse().get(DrawBridgeType.DRAW_BRIDGE).equals("drawbridge")) {
             return "You cannot put anything on that block!";
         }
         return "OK";
@@ -342,6 +344,7 @@ public class MainController {
                 }
                 entry.getKey().use(entry.getValue(), User.currentUser.getGovernment());
             }
+            buildingType.create(User.currentUser.getGovernment(), block); //There could be a problem here with current user
         }
         else buildingType.create(null , block);
         block.setPassable(false);

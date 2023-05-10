@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 
 public class MapEditingMenu {
     public static String run(){
+        User.currentUser.loadUserMapsFromDataBase();
         String input;
         Matcher matcher;
         while (true){
@@ -55,13 +56,13 @@ public class MapEditingMenu {
             else if (Commands.getOutput(input, Commands.BACK) != null) {
                 System.out.println("Back to main menu");
                 MapEditingController.resetCurrentMap();
+                User.getCurrentUser().saveUserMaps();
                 return "main menu";
             }
             else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null)
                 System.out.println("Map Editing Menu");
 
             else System.out.println("Invalid command!");
-            User.getCurrentUser().saveUserMaps();
         }
     }
 }

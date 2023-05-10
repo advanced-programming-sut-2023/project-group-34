@@ -24,7 +24,7 @@ public enum TroopType {
     ASSASSIN(60 , 6, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 60), Map.entry(Weapons.SWORD, 1))), 30 , 4,false , false , 3 , 0 ,5),
     HORSE_ARCHER(80 , 10, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 80), Map.entry(Weapons.HORSE, 1), Map.entry(Weapons.BOW, 1))), 20 ,4,false , false , 6 ,8 ,8),
     ARAB_SWORD_MAN(90 , 10, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 80), Map.entry(Weapons.SWORD, 1), Map.entry(Weapons.METAL_ARMOUR, 1))), 40 , 8,false , false ,3  ,0 , 5 ),
-    WAR_DOG(50 , 10, new HashMap<>(), 10 , 0,false , false , 0 , 0 , 0),
+    WAR_DOG(50 , 10, new HashMap<>(), 10 , 0,false , false , 7 , 0 , 10),
     FIRE_THROWERS(40 , 10, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 100))), 40 , 4,false , false ,3 , 5 , 5);
 
 

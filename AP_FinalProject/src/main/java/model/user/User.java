@@ -3,8 +3,10 @@ package model.user;
 import model.Trade;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import model.building.Building;
 import model.enums.Slogan;
 import model.government.Government;
+import model.map.Block;
 import model.map.GameMap;
 
 import java.io.File;
