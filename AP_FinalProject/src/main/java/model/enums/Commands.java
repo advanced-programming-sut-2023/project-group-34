@@ -63,7 +63,7 @@ public enum Commands {
     DESELECT_BUILDING("Deselect\\s+building"),
     CREATE_UNIT("(?=.*-t (?<type>(\".+\"|\\S+)))(?=.*-c (?<count>\\d+))^Create\\s+unit\\s*( *-[tc] (\".+\"|\\S+)){2}$"),
     REPAIR("Repair"),
-    SELECT_UNIT("(?=.*-x (?<x>\\d+))(?=.*-y (?<y>\\d+))^Select\\s+unit\\s*( *-[xy] \\S+){2}$"),
+    SELECT_UNIT("\\s*Select\\s+unit(?=.*\\s+-x(\\s+|$)(?<x>\\d*))(?=.*\\s+-y(\\s+|$)(?<y>\\d*))(?=.*\\s+-t(\\s+|$)(?<type>\"[^\"]*\"|\\S*))(\\s+-[xty](\\s+(\"[^\"]*\"|[^- ]*))?){3}\\s*"),
     ATTACK("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Attack(\\s+-[xy]\\s+\\d*){2}$"),
     MOVE_UNIT("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Move\\s+unit(\\s+-[xy]\\s+\\d*){2}$"),
     ARIAL_ATTACK("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Arial\\s+attack(\\s+-[xy]\\s+\\d*){2}$"),

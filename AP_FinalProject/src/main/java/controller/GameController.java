@@ -245,6 +245,7 @@ public class GameController {
 
     public static String createUnit (Matcher matcher) {
         String type = matcher.group("type");
+        type = type.replaceAll("\"", "");
         int count = Integer.parseInt(matcher.group("count"));
         if(selectedBuilding == null) {
             return "You have to choose a building first!";
@@ -258,6 +259,7 @@ public class GameController {
             for (int i = 0; i < count; i++) {
                 place.getHumans().add(new Engineer(place , currentGame.getCurrentGovernment()));
             }
+            return "engineers trained successfully!";
         }
         if(type.equals("tunneler")) {
             if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD).equals("OK")) {
@@ -266,6 +268,7 @@ public class GameController {
             for (int i = 0; i < count; i++) {
                 place.getHumans().add(new Tunneler(place , currentGame.getCurrentGovernment()));
             }
+            return "tunnelers trained successfully!";
         }
         if(type.equals("ladder man")) {
             if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK).equals("OK")) {
@@ -274,6 +277,7 @@ public class GameController {
             for (int i = 0; i < count; i++) {
                 place.getHumans().add(new LadderMan(place , currentGame.getCurrentGovernment()));
             }
+            return "ladder men trained successfully!";
         }
         if(!Dictionaries.troopDictionary.containsKey(type)) {
             return "there is no such type!";
@@ -281,8 +285,11 @@ public class GameController {
         ArrayList<TroopType> arabs = new ArrayList<>(Arrays.asList(TroopType.ASSASSIN, TroopType.ARAB_SWORD_MAN,
                 TroopType.FIRE_THROWERS, TroopType.HORSE_ARCHER, TroopType.SLAVE, TroopType.SLINGER, TroopType.ARCHER_BOW));
         TroopType troopType = Dictionaries.troopDictionary.get(type);
+        if(troopType.equals(TroopType.BLACK_MONK) && !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.CATHEDRAL)) {
+            return "You have to train black monks only in cathedrals!";
+        }
         if(     (arabs.contains(troopType) && !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.MERCENARY)) ||
-                (!arabs.contains(troopType) && !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.BARRACK))) {
+                ((!arabs.contains(troopType) && !troopType.equals(TroopType.BLACK_MONK))&& !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.BARRACK))) {
             return "you have to select a related building!";
         }
         for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {

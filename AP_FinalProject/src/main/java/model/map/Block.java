@@ -1,11 +1,11 @@
 package model.map;
 
+import model.Dictionaries;
 import model.building.Building;
 import model.building.BuildingType;
 import model.enums.BlockFillerType;
 import model.enums.BlockType;
-import model.human.Human;
-import model.human.Troop;
+import model.human.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,10 +110,28 @@ public class Block {
     public HashMap<String, Integer> troops() {
         HashMap<String, Integer> result = new HashMap<>();
         for (Human human : humans) {
-            if (!(human instanceof Troop)) continue;
-            String type = Troop.troopsNameString.get(((Troop) human).getTroopType());
+            if (human instanceof Troop troop) {
+            String type = Dictionaries.troopDictionary.inverse().get(troop.getTroopType());
             if (result.containsKey(type)) result.replace(type, result.get(type) + 1);
             else result.put(type, 1);
+            }
+            if (human instanceof SiegeMachine siegeMachine) {
+                String type = Dictionaries.siegeMachineDictionary.inverse().get(siegeMachine.getType());
+                if (result.containsKey(type)) result.replace(type, result.get(type) + 1);
+                else result.put(type, 1);
+            }
+            if(human instanceof Engineer) {
+                if (result.containsKey("engineer")) result.replace("engineer", result.get("engineer") + 1);
+                else result.put("engineer", 1);
+            }
+            if(human instanceof Tunneler) {
+                if (result.containsKey("tunneler")) result.replace("tunneler", result.get("tunneler") + 1);
+                else result.put("tunneler", 1);
+            }
+            if(human instanceof LadderMan) {
+                if (result.containsKey("ladder man")) result.replace("ladder man", result.get("ladder man") + 1);
+                else result.put("ladder man", 1);
+            }
         }
         return result;
     }
