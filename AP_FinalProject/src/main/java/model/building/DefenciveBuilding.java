@@ -22,8 +22,7 @@ public class DefenciveBuilding extends Building{
     private boolean hasLadder = false;
     private int occupation;
 
-    private final HashMap<Direction, Boolean> isPassableFromThisDirection = new HashMap<>(Map.ofEntries(Map.entry(Direction.EAST , false) , Map.entry(Direction.NORTH , false) , Map.entry(Direction.SOUTH , false) , Map.entry(Direction.WEST , false)));
-    protected DefenciveBuilding(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int fireRange, int defendRange, int capacity) {
+       protected DefenciveBuilding(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int fireRange, int defendRange, int capacity) {
         super(government, block, HP, cost, buildingType);
         this.fireRange = fireRange;
         this.defendRange = defendRange;
@@ -83,10 +82,6 @@ public class DefenciveBuilding extends Building{
         return false;
     }
 
-    public HashMap<Direction, Boolean> getIsPassableFromThisDirection() {
-        return isPassableFromThisDirection;
-    }
-
     public void addHuman(Human troop) {
         this.warEquipments.add(troop);
         troop.setVisible(false);
@@ -109,11 +104,4 @@ public class DefenciveBuilding extends Building{
         this.occupation = occupation;
     }
 
-    public boolean isHasLadder() {
-        return hasLadder;
-    }
-
-    public void setHasLadder(boolean hasLadder) {
-        this.hasLadder = hasLadder;
-    }
 }

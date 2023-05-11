@@ -97,8 +97,8 @@ public class Router {
         if (unpassable(node.getCurrentBlock())) return false;
         if (troopType.equals(TroopType.ASSASSIN)) return true;
         if (troopType.isCanClimb() && node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding && ((DefenciveBuilding) node.getCurrentBlock().getBuilding().get(0)).isHasLadder()) return true;
-        if (troopType.isCanClimb() && (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)) ||
-                (node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)))
+        if (troopType.isCanClimb() && (node.getCurrentBlock().getBuilding().size() != 0) ||
+                (node.getParent().getCurrentBlock().getBuilding().size() != 0 ))
             return true;
         if (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding) {
             return node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding;

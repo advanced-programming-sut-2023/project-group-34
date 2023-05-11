@@ -17,7 +17,7 @@ public class Troop extends Human {
     private TroopStage troopStage;
     private final HashMap<MakeAble , Integer> cost;
     protected Troop(int HP, Block block, int damage, int defendRate, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int speed, HashMap<MakeAble, Integer> cost) {
-        super(HP, HP , block, damage, defendRate, canDig, canClimb, government);
+        super(HP, HP , block, damage, defendRate, canDig, canClimb, government , speed);
         this.defensiveRange = defensiveRange;
         this.fireRange = fireRange;
         this.aggressiveRange = aggressiveRange;

@@ -10,7 +10,7 @@ public class SiegeMachine extends Human{
     private final int range;
     private final int numberOfEngineers;
     public SiegeMachine(int HP, int maxHP, Block block, int damage , int defendRate, boolean canDig, boolean canClimb, Government government, SiegeType type, int speed, int price, int range, int numberOfEngineers) {
-        super(HP, maxHP, block, damage , defendRate , canDig, canClimb, government);
+        super(HP, maxHP, block, damage , defendRate , canDig, canClimb, government , speed);
         this.type = type;
         this.speed = speed;
         this.price = price;

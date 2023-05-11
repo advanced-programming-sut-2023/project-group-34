@@ -153,21 +153,6 @@ public class Human {
         return way.size() <= this.speed;
     }
 
-    public boolean isUnemployed() {
-        return isUnemployed;
-    }
-
-    public void setUnemployed(boolean unemployed) {
-        isUnemployed = unemployed;
-    }
-
-    public TroopStage getTroopStage() {
-        return troopStage;
-    }
-
-    public void setTroopStage(TroopStage troopStage) {
-        this.troopStage = troopStage;
-    }
     public void applyMoves() {
         if (speed >= getRoute().size()) {
             this.setBlock(getRoute().get(getRoute().size() - 1));

@@ -8,7 +8,7 @@ import model.map.Block;
 public class Engineer extends Human{
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government) {
-        super(0, 0 , block, 0, 0, false, true , government);
+        super(0, 0 , block, 0, 0, false, true , government , 4);
         if(government != null) useOil();
     }
     public void equipWithOil() {

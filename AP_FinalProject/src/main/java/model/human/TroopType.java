@@ -53,9 +53,6 @@ public enum TroopType {
     final int aggressiveRange;
     final int defendRate;
 
-    public int getPrice () {
-        return price;
-    }
 
     public int getHP () {
         return HP;
@@ -63,10 +60,6 @@ public enum TroopType {
 
     public int getSpeed () {
         return speed;
-    }
-
-    public HashMap<MakeAble, Integer> getCost () {
-        return cost;
     }
 
     public int getDamage () {
