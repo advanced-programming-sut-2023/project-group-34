@@ -19,15 +19,17 @@ public class GeneralBuilding extends Building{
         } else if (buildingType.equals(GeneralBuildingsType.ARMOUR_STORAGE)) {
             government.getStorageDepartment().setWeaponsMaxCapacity(government.getStorageDepartment().getWeaponsMaxCapacity() + capacity);
         } else if (buildingType.equals(GeneralBuildingsType.RESOURCES_STORAGE)) {
-            government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getResourcesMaxCapacity()+ capacity);
+            government.getStorageDepartment().setResourcesMaxCapacity((government.getStorageDepartment().getResourcesMaxCapacity()+ capacity));
             giveAway();
         }
     }
 
     public void giveAway() {
+        int counter = 0;
         for(Building building : government.getBuildings()) {
-            if(building.getBuildingType().equals(GeneralBuildingsType.RESOURCES_STORAGE)) {
-                return;
+            if (building.getBuildingType().equals(GeneralBuildingsType.RESOURCES_STORAGE)) {
+                counter++;
+                if (counter >= 2) return;
             }
         }
         for(Resources resources : Resources.values()) {

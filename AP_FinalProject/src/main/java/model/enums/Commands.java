@@ -82,7 +82,10 @@ public enum Commands {
     ADD_WORKER("Add\\s+worker\\s+(?<n>\\d+)"),
     BUILD_EQUIP_ON_TOWER("(?=.*-x(\\s+|$)(?<x>\\d*))(?=.*-y(\\s+|$)(?<y>\\d*))(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment\\s+on\\s+tower(\\s+-[xyt]\\s+(\".+\"|\\S+)){3}$"),
     PUT_LADDER("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Put\\s+ladder(\\s+-[xy]\\s+\\d*){2}$"),
-    SET_TROOP_STATE("Set\\s+state(\\s+|$)(?<state>(\\S+))*");
+    SET_TROOP_STATE("Set\\s+state(\\s+|$)(?<state>(\\S+))*"),
+    FOOD_LEFT("Food\\s+left"),
+    RESOURCE_LEFT("Resource\\s+left"),
+    WEAPONS_LEFT("Weapons\\s+left");
 
 
 

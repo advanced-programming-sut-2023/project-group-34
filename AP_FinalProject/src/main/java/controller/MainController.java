@@ -225,6 +225,7 @@ public class MainController {
         if (GameController.getCurrentGame().getPlayers().contains(currentPlayer)) return "User already added!";
         //todo: add color enum
         Block block = GameController.currentGame.getMap().getABlock(y, x);
+        if (!block.getBuilding().isEmpty()) return "You cannot place the keep here, another building is here already";
         String response = checkBlockType(block, GateType.KEEP);
         if (!response.equals("OK")) return response;
         currentPlayer.setGovernment(new Government(currentPlayer, ""));

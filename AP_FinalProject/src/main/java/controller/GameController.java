@@ -1230,6 +1230,30 @@ public class GameController {
         return finalString.substring(0 , finalString.length() - 2);
     }
 
+    public static String foodResource(){
+        String finalString = "";
+        for (Map.Entry<Food, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getFoodStorage().entrySet()){
+            finalString = finalString.concat("Item: " + entry.getKey().getName() +  " Amount: " + entry.getValue() + "\n");
+        }
+        return finalString;
+    }
+
+    public static String Resource(){
+        String finalString = "";
+        for (Map.Entry<Resources, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getResourcesStorage().entrySet()){
+            finalString = finalString.concat("Item: " + entry.getKey().getName() +  " Amount: " + entry.getValue() + "\n");
+        }
+        return finalString;
+    }
+
+    public static String weaponsResource(){
+        String finalString = "";
+        for (Map.Entry<Weapons, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getWeaponsStorage().entrySet()){
+            finalString = finalString.concat("Item: " + entry.getKey().getName() +  " Amount: " + entry.getValue() + "\n");
+        }
+        return finalString;
+    }
+
     public static String showTradeDetails(Trade trade){
         String finalString = "";
         finalString = finalString.concat("Sender: " + trade.getSender().getName() + "  ");

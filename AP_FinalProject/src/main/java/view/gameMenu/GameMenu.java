@@ -113,6 +113,12 @@ public class GameMenu {
                 System.out.println(MainController.dropBuilding(GameController.currentGame.getMap(), matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.SET_TROOP_STATE)) != null){
                 System.out.println(GameController.setTroopState(matcher));
+            } else if(Commands.getOutput(command, Commands.FOOD_LEFT) != null){
+                System.out.println(GameController.foodResource());
+            } else if (Commands.getOutput(command, Commands.RESOURCE_LEFT) != null){
+                System.out.println(GameController.Resource());
+            } else if (Commands.getOutput(command, Commands.WEAPONS_LEFT) != null){
+                System.out.println(GameController.weaponsResource());
             } else {
                 System.out.println("Invalid command!");
             }
