@@ -5,16 +5,13 @@ import model.Game;
 import model.building.*;
 import model.building.DrawBridgeType;
 import model.building.GeneralBuildingsType;
-import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.building.BuildingType;
 import model.building.MakerType;
 import model.enums.make_able.Resources;
-import model.enums.make_able.Weapons;
 import model.government.Government;
 import model.map.Block;
 import model.map.GameMap;
-import model.user.Password;
 import model.user.User;
 import view.MainMenu;
 import view.MapEditingMenu;
@@ -228,10 +225,30 @@ public class MainController {
         if (!response.equals("OK")) return response;
         currentPlayer.setGovernment(new Government(currentPlayer, ""));
         GameController.getCurrentGame().addPlayer(currentPlayer);
+        response = placeFoodStorage(x, y, currentPlayer.getGovernment());
+        if (!response.equals("food storage placed in successfully")) return response;
         GateType.KEEP.create(currentPlayer.getGovernment(), block);
         return null;
         //TODO: Current map?!
         //TODO: Separate different controllers
+    }
+
+    private static String placeFoodStorage(int x, int y, Government government){
+        Block block;
+        int flag = 0;
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                block = GameController.getGame().getMap().getABlock(y+j, x+i);
+                String response = checkBlockType(block, GeneralBuildingsType.FOOD_STORAGE);
+                if (response.equals("OK")) {
+                    GeneralBuildingsType.FOOD_STORAGE.create(government, block);
+                    flag++;
+                    break;
+                }
+            }
+        }
+        if (flag == 0) return "You cannot place your keep here";
+        return "food storage placed in successfully";
     }
 
     public static String createNewGame (Matcher matcher) {
