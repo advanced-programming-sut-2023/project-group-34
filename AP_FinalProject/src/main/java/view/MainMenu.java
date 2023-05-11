@@ -5,6 +5,7 @@ import controller.MainController;
 import controller.Runner;
 import controller.UserController;
 import model.enums.Commands;
+import model.map.GameMap;
 import model.user.User;
 
 import java.util.regex.Matcher;

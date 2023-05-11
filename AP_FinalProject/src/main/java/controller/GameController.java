@@ -15,6 +15,7 @@ import model.human.*;
 import model.map.GameMap;
 import model.user.User;
 import model.map.Block;
+import view.BackgroundColor;
 import view.gameMenu.GameMenu;
 import view.gameMenu.MapMenu;
 import view.gameMenu.ShopMenu;
@@ -113,12 +114,15 @@ public class GameController {
         Block[][] map = currentGame.getMap().getMiniMap();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (map[i][j].getTroops().length != 0) output.append("S ");
-                else if (map[i][j].getBuilding().size() != 0) output.append("B ");
+                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "S " + "\u001B[0m");
+                else if (map[i][j].getBuilding().size() != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
                 else if (map[i][j].getBLockFiller() != null && !map[i][j].getBLockFiller().equals(BlockFillerType.STAIR))
-                    output.append("T ");
-                else output.append(map[i][j].getBlockType().toString(), 0, 2);
-                output.append(' ');
+                    output.append(BackgroundColor.dictionary(map[i][j]) + "T " + "\u001B[0m");
+                else {
+                    String abbreviation= map[i][j].getBlockType().toString().substring(0,2);
+                    output.append(BackgroundColor.dictionary(map[i][j]) + abbreviation + "\u001B[0m");
+                }
+                output.append(BackgroundColor.dictionary(map[i][j]) + ' ' + "\u001B[0m");
             }
             output.append('\n');
         }
@@ -139,8 +143,8 @@ public class GameController {
     }
 
     public static String getBlockDetails (Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("xAxis"));
-        int y = Integer.parseInt(matcher.group("yAxis"));
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         return currentGame.getMap().showDetails(x, y);
     }
 
@@ -263,10 +267,10 @@ public class GameController {
 
         for (int i = x; i < x + 3; i++){
             for (int j = y; j < y + 3; y++) {
-                if (!currentGame.getMap().checkBounds(i , j)){
+                if (!currentGame.getMap().checkBounds(j , i)){
                     continue;
                 }
-                for (Human warEquipment : currentGame.getMap().getABlock(i, j).getHumans()){
+                for (Human warEquipment : currentGame.getMap().getABlock(j, i).getHumans()){
                     if (!warEquipment.getGovernment().equals(selectedBuilding.getGovernment())){
                         return "There are enemy troops near this building, repairing failed";
                     }

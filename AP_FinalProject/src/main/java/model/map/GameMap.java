@@ -150,8 +150,7 @@ public class GameMap {
         for (Building building : block.getBuilding())
         {
             details.append("\n")
-                    .append(building.toString());
-            //TODO: toString is gonna print a camelCase name!!!
+                    .append(building.getBuildingType().toString());
         }
         return details.toString();
     }

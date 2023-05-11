@@ -97,6 +97,21 @@ public class GameMenu {
                 System.out.println(GameController.disband());
             } else if ((matcher = Commands.getOutput(command, Commands.FILL_DITCH)) != null) {
                 System.out.println(GameController.fillDitch(matcher));
+            } else if (command.equals("exit")){
+                System.out.println("Are you sure you want to finish this game?");
+                String response = Runner.getScn().nextLine();
+                if (response.equals("yes"))
+                    return "back";
+            }
+            if (GameController.currentGame.getPlayers().size() == 1){
+                String username = GameController.currentGame.getPlayers().get(0).getName();
+                GameController.currentGame.getPlayers().get(0).setScore(GameController.currentGame.getPlayers().get(0).getScore()+100);
+                //TODO set every player's government in keep destroy method to null after they lose
+                //TODO reset the map
+                GameController.currentGame.getPlayers().get(0).setGovernment(null);
+                GameController.currentGame.getPlayers().clear();
+                System.out.println(username + ", You are the winner. Congratulation!");
+                return "back";
             }
         }
     }
