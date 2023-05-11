@@ -92,7 +92,6 @@ public class Block {
     public void addBuilding(Building building) {
         this.building.add(building);
     }
-
     public void removeBuilding(Building building) {
         this.building.remove(building);
     }

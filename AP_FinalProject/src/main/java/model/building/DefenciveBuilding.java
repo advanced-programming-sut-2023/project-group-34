@@ -60,7 +60,13 @@ public class DefenciveBuilding extends Building{
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
     }
+    public boolean isHasLadder () {
+        return hasLadder;
+    }
 
+    public void setHasLadder (boolean hasLadder) {
+        this.hasLadder = hasLadder;
+    }
     public int getFireRange() {
         return fireRange;
     }

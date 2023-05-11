@@ -52,9 +52,51 @@ public enum TroopType {
     final int fireRange;
     final int aggressiveRange;
     final int defendRate;
+
+    public int getPrice () {
+        return price;
+    }
+
+    public int getHP () {
+        return HP;
+    }
+
+    public int getSpeed () {
+        return speed;
+    }
+
+    public HashMap<MakeAble, Integer> getCost () {
+        return cost;
+    }
+
+    public int getDamage () {
+        return damage;
+    }
+
+    public boolean isCanDig () {
+        return canDig;
+    }
+
+    public boolean isCanClimb () {
+        return canClimb;
+    }
+
+    public int getDefensiveRange () {
+        return defensiveRange;
+    }
+
+    public int getFireRange () {
+        return fireRange;
+    }
+
+    public int getAggressiveRange () {
+        return aggressiveRange;
+    }
+
     public void Creator(Block block, Government government) {
          block.getHumans().add(new Troop(this.HP, block, this.damage, this.defendRate, this.canDig, this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this,this.speed, this.cost));
     }
+
     public HashMap<MakeAble , Integer> getCost() {
         return cost;
     }

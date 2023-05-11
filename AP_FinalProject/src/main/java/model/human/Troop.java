@@ -14,7 +14,6 @@ public class Troop extends Human {
     private int fireRange;
     private final int aggressiveRange;
     private final TroopType troopType;
-    private final int speed;
     private TroopStage troopStage;
     private final HashMap<MakeAble , Integer> cost;
     protected Troop(int HP, Block block, int damage, int defendRate, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int speed, HashMap<MakeAble, Integer> cost) {
@@ -23,7 +22,6 @@ public class Troop extends Human {
         this.fireRange = fireRange;
         this.aggressiveRange = aggressiveRange;
         this.troopType = troopType;
-        this.speed = speed;
         this.cost = cost;
         if(troopType == TroopType.ASSASSIN) setVisible(false);
     }
@@ -98,9 +96,5 @@ public class Troop extends Human {
 
     public HashMap<MakeAble, Integer> getCost() {
         return cost;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 }

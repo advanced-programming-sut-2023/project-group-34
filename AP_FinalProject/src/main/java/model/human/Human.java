@@ -1,10 +1,13 @@
 package model.human;
 
+import controller.GameController;
 import model.building.Building;
 import model.enums.Direction;
 import model.enums.TroopStage;
 import model.government.Government;
 import model.map.Block;
+import model.map.findroute.Router;
+import view.gameMenu.GameMenu;
 
 import java.util.ArrayList;
 
@@ -12,16 +15,18 @@ public class Human {
     private final int maxHP;
     private int HP;
     private Government government;
-    private ArrayList<Direction> rout = new ArrayList<>();
+    private ArrayList<Block> route = new ArrayList<>();
     private final int damage;
     private final int defendRate;
     private int currentDamage;
     private boolean isVisible = true;
     private boolean canClimb;
+    private final int speed;
     private boolean canDig;
     private Block block;
     private TroopStage troopStage = TroopStage.STANDING;
     private boolean isUnemployed = true;
+
     public Human(Block block , Government government){
         this.block = block;
         maxHP = 1;
@@ -30,8 +35,9 @@ public class Human {
         this.defendRate = 0;
         this.government = government;
         government.getHumans().add(this);
+        this.speed = 0;
     }
-    public Human (int HP , int maxHP , Block block , int damage , int defendRate, boolean canDig , boolean canClimb , Government government) {
+    public Human (int HP , int maxHP , Block block , int damage , int defendRate, boolean canDig , boolean canClimb , Government government, int speed) {
         this.maxHP = maxHP;
         this.HP = HP;
         this.damage = damage;
@@ -41,6 +47,7 @@ public class Human {
         this.block = block;
         government.getHumans().add(this);
         this.defendRate = defendRate;
+        this.speed = speed;
     }
 
     public void die() {
@@ -55,6 +62,10 @@ public class Human {
     public void getHit(int damage) {
         HP -= damage;
         if(HP < 0) die();
+    }
+
+    public int getSpeed () {
+        return speed;
     }
     public int getMaxHP() {
         return maxHP;
@@ -72,12 +83,8 @@ public class Human {
         this.government = government;
     }
 
-    public ArrayList<Direction> getRout() {
-        return rout;
-    }
-
-    public void setRout(ArrayList<Direction> rout) {
-        this.rout = rout;
+    public ArrayList<Block> getRoute () {
+        return route;
     }
 
     public int getDamage() {
@@ -108,6 +115,10 @@ public class Human {
         return block;
     }
 
+    public void setRoute (ArrayList<Block> route) {
+        this.route = route;
+    }
+
     public void setBlock(Block block) {
         this.block = block;
     }
@@ -135,8 +146,39 @@ public class Human {
     public void setVisible(boolean visible) {
         isVisible = visible;
     }
-    public boolean isThereAWay(Block block) {
-        return true;
+    public boolean isThereAWay(Block block)
+    {
+        Router router = new Router(GameController.currentGame.getMap(), this.block, block, (Troop) this);
+        ArrayList<Block> way = router.findBestRoute();
+        return way.size() <= this.speed;
+    }
+
+    public boolean isUnemployed() {
+        return isUnemployed;
+    }
+
+    public void setUnemployed(boolean unemployed) {
+        isUnemployed = unemployed;
+    }
+
+    public TroopStage getTroopStage() {
+        return troopStage;
+    }
+
+    public void setTroopStage(TroopStage troopStage) {
+        this.troopStage = troopStage;
+    }
+    public void applyMoves() {
+        if (speed >= getRoute().size()) {
+            this.setBlock(getRoute().get(getRoute().size() - 1));
+            setRoute(new ArrayList<>());
+        }
+        else {
+            this.setBlock(getRoute().get(speed - 1));
+            for (int i = 0; i < speed; i++) {
+                getRoute().remove(0);
+            }
+        }
     }
 
     public boolean isUnemployed() {

@@ -14,6 +14,7 @@ import model.enums.make_able.Weapons;
 import model.government.Government;
 import model.human.*;
 import model.map.GameMap;
+import model.map.findroute.Router;
 import model.user.User;
 import model.map.Block;
 import view.BackgroundColor;
@@ -95,8 +96,29 @@ public class GameController {
         selectedWarEquipment.clear();
         return null;
     }
-
-
+    public static String moveUnit (Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if (currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
+        Router router = new Router(currentGame.getMap(), selectedWarEquipment.get(0).getBlock(), currentGame.getMap().getABlock(y, x), (Troop) selectedWarEquipment.get(0));
+        ArrayList<Block> route = router.findBestRoute();
+        if (route == null) return "Can't reach there!";
+        if (route.size() == 0) return "You are already in the destination given!";
+        for (Human human : selectedWarEquipment) {
+            human.setRoute(new ArrayList<>(route));
+            human.applyMoves();
+        }
+        return null;
+        //todo: Arshia check it!
+    }
+    public static void applyAllOngoingMoves() {
+        //todo: next turn
+        for (User player : currentGame.getPlayers()) {
+            for (Human human : player.getGovernment().getHumans()) {
+                human.applyMoves();
+            }
+        }
+    }
     public static String setMapLocation (int x, int y) {
         if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";
         currentGame.getMap().setUpLeftCorner(x, y);

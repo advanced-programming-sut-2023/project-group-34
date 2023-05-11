@@ -22,8 +22,12 @@ import view.MapEditingMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.Map;
 import java.util.regex.Matcher;
+
+import static controller.MapEditingController.getCurrentGameMap;
 import view.*;
 import static controller.MapEditingController.setCurrentGameMap;
 
