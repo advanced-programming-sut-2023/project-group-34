@@ -187,7 +187,10 @@ public class User {
     public static void currentUserJsonSaver() {
         try (FileWriter writer = new FileWriter("currentUser.json")) {
             Gson gson = new Gson();
-            gson.toJson(currentUser.name, writer);
+            if (currentUser != null)
+                gson.toJson(currentUser.name, writer);
+            else
+                gson.toJson(null, writer);
         } catch (IOException ignored) {
         }
     }
