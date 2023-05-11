@@ -16,6 +16,7 @@ public class Game {
     private final GameMap map;//TODO: Set it
     public Game(GameMap map) {
         this.map = map;
+        setCurrentGovernment(User.currentUser.getGovernment());
     }
 
     public GameMap getMap() {

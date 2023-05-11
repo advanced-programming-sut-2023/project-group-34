@@ -8,6 +8,7 @@ import model.building.GeneralBuildingsType;
 import model.enums.BlockType;
 import model.building.BuildingType;
 import model.building.MakerType;
+import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.human.Engineer;
@@ -218,15 +219,16 @@ public class MainController {
     }
 
     public static String setKeep (String username, int x, int y) {
-        if (!GameController.getGame().getMap().checkBounds(y, x)) return "Keep out of bounds!";
+        if (!GameController.currentGame.getMap().checkBounds(y, x)) return "Keep out of bounds!";
         User currentPlayer = User.getUserByUsername(username);
         if (currentPlayer == null) return "No user with the id given!";
         if (GameController.getCurrentGame().getPlayers().contains(currentPlayer)) return "User already added!";
         //todo: add color enum
-        Block block = GameController.getGame().getMap().getABlock(y, x);
+        Block block = GameController.currentGame.getMap().getABlock(y, x);
         String response = checkBlockType(block, GateType.KEEP);
         if (!response.equals("OK")) return response;
         currentPlayer.setGovernment(new Government(currentPlayer, ""));
+        if (currentPlayer.equals(User.currentUser)) GameController.currentGame.setCurrentGovernment(currentPlayer.getGovernment());
         GameController.getCurrentGame().addPlayer(currentPlayer);
         response = placeFoodStorage(x, y, currentPlayer.getGovernment());
         if (!response.equals("food storage placed in successfully")) return response;
@@ -239,18 +241,25 @@ public class MainController {
     private static String placeFoodStorage(int x, int y, Government government){
         Block block;
         int flag = 0;
+        outer:
         for (int i = -1; i < 2; i++) {
+            inner:
             for (int j = -1; j < 2; j++) {
+                if (!GameController.getGame().getMap().checkBounds(y+j, x+i))
+                    continue;
                 block = GameController.getGame().getMap().getABlock(y+j, x+i);
                 String response = checkBlockType(block, GeneralBuildingsType.FOOD_STORAGE);
                 if (response.equals("OK")) {
                     GeneralBuildingsType.FOOD_STORAGE.create(government, block);
                     flag++;
-                    break;
+                    break outer;
                 }
             }
         }
         if (flag == 0) return "You cannot place your keep here";
+        if(Food.BREAD.getLeftCapacity(government) >= 50) {
+               Food.BREAD.add(50 , government);
+        }
         return "food storage placed in successfully";
     }
 
@@ -259,6 +268,7 @@ public class MainController {
         String mapName = matcher.group("mapName").trim().replaceAll("\"", "");
         if (mapName.isEmpty()) return "Empty field!";
         GameController.setCurrentGame(new Game(new GameMap(User.currentUser.getMapByName(mapName))));
+        GameController.currentGame.setCurrentGovernment(User.currentUser.getGovernment());
         return null;
     }
 
@@ -301,18 +311,20 @@ public class MainController {
         if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
             return "You can only put pitch rig on plains!";
         }
-
+        if(buildingType.equals(DrawBridgeType.DRAW_BRIDGE)) {
+            ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.LAKE , BlockType.SEA , BlockType.RIVER , BlockType.DITCH));
+            if(goodBlockTypes.contains(block.getBlockType())) return "OK";
+            return "You can not put draw bridge on that block!";
+        }
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW,
                 BlockType.DENSE_MEADOW , BlockType.BEACH, BlockType.PLAIN));
-
-        if (!goodBlockTypes.contains(block.getBlockType()) && !Dictionaries.buildingDictionary.inverse().get(DrawBridgeType.DRAW_BRIDGE).equals("drawbridge")) {
+        if (!goodBlockTypes.contains(block.getBlockType()) && !buildingType.equals(DrawBridgeType.DRAW_BRIDGE)) {
             return "You cannot put anything on that block!";
         }
         return "OK";
     }
 
     public static String dropBuilding (GameMap map, Matcher matcher) {
-
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");

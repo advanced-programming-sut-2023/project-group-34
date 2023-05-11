@@ -120,11 +120,11 @@ public class Block {
     }
 
     public String resource() {
-        if(bLockFiller != null) return bLockFiller.toString();
+        if (bLockFiller != null) return bLockFiller.toString();
         if (blockType.equals(BlockType.IRON)) return "iron";
         if (blockType.equals(BlockType.BOULDER)) return "stone";
         if (blockType.equals(BlockType.OIL)) return "oil";
-        return null;
+        else return null;
     }
 
     public boolean containsThisBuilding(BuildingType buildingType) {

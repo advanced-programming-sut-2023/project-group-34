@@ -5,15 +5,15 @@ import model.government.Government;
 
 public enum Weapons implements MakeAble {
 
-    LEATHER_ARMOUR(0, "leather armour"),
-    MACE(0, "mace"),
-    SWORD(0, "sword"),
-    METAL_ARMOUR(0, "metal armour"),
-    BOW(0, "bow"),
-    CROSSBOW(0, "crossbow"),
-    SPEAR(0, "spear"),
-    PIKE(0, "pike"),
-    HORSE(0, "horse");
+    LEATHER_ARMOUR(10, "leather armour"),
+    MACE(15, "mace"),
+    SWORD(20, "sword"),
+    METAL_ARMOUR(30, "metal armour"),
+    BOW(10, "bow"),
+    CROSSBOW(15, "crossbow"),
+    SPEAR(10, "spear"),
+    PIKE(20, "pike"),
+    HORSE(40, "horse");
 
     private int price;
     private String name;

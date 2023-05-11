@@ -6,6 +6,7 @@ import model.Trade;
 import model.building.*;
 import model.enums.BlockType;
 import model.enums.Direction;
+import model.enums.TroopStage;
 import model.enums.make_able.Food;
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
@@ -64,16 +65,17 @@ public class GameController {
         int xLocation = Integer.parseInt(matcher.group("x"));
         int yLocation = Integer.parseInt(matcher.group("y"));
 
-        if (xLocation < 1 || yLocation < 1 || xLocation > 399 || yLocation > 399)
+        if (xLocation < 0 || yLocation < 0 || xLocation > 399 || yLocation > 399)
             return "Invalid coordinates, selecting building failed";
-        if (currentGame.getMap().getABlock(xLocation, yLocation).getBuilding() != null)
+
+        if (currentGame.getMap().getABlock(yLocation, xLocation).getBuilding() == null)
             return "There is no building in this block, selecting building failed";
 
-        if (!currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0).getGovernment().getOwner()
+        if (!currentGame.getMap().getABlock(yLocation, xLocation).getBuilding().get(0).getGovernment().getOwner()
                 .getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
             return "You do not own this building, selecting building failed";
 
-        selectedBuilding = currentGame.getMap().getABlock(xLocation, yLocation).getBuilding().get(0);
+        selectedBuilding = currentGame.getMap().getABlock(yLocation, xLocation).getBuilding().get(0);
         return "Building selected successfully";
     }
 
@@ -114,7 +116,11 @@ public class GameController {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "S " + "\u001B[0m");
-                else if (map[i][j].getBuilding().size() != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
+                else if (map[i][j].getBuilding().size() != 0)
+                    if (map[i][j].getBuilding().get(0).equals(DeathPitType.DEATH_PIT) && map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
+                        output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
+                    else
+                        output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
                 else if (map[i][j].getBLockFiller() != null)
                     output.append(BackgroundColor.dictionary(map[i][j]) + "T " + "\u001B[0m");
                 else {
@@ -153,9 +159,9 @@ public class GameController {
 
     public static String showPopularityFactors () {
         String finalString = "";
-        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity());
-        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate());
-        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity());
+        finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity() + "\n");
+        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate() + "\n");
+        finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity() + "\n");
         finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity());
         return finalString;
     }
@@ -163,11 +169,11 @@ public class GameController {
     public static String showFoodList () {
         String finalString = "";
         finalString = finalString.concat("Bread: " + currentGame.getCurrentGovernment()
-                .getStorageDepartment().foodStorage.get(Food.BREAD));
+                .getStorageDepartment().foodStorage.get(Food.BREAD) + "\n");
         finalString = finalString.concat("Meat: " + currentGame.getCurrentGovernment()
-                .getStorageDepartment().foodStorage.get(Food.MEAT));
+                .getStorageDepartment().foodStorage.get(Food.MEAT) + "\n");
         finalString = finalString.concat("Apple: " + currentGame.getCurrentGovernment()
-                .getStorageDepartment().foodStorage.get(Food.APPLE));
+                .getStorageDepartment().foodStorage.get(Food.APPLE) + "\n");
         finalString = finalString.concat("Cheese: " + currentGame.getCurrentGovernment()
                 .getStorageDepartment().foodStorage.get(Food.CHEESE));
         return finalString;
@@ -190,7 +196,7 @@ public class GameController {
 
 
     public static String setTaxRate (Matcher matcher) {
-        if(!(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.KEEP)) {
+        if(selectedBuilding == null || !(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.KEEP)) {
             return "You have not selected the right building";
         }
         int taxRate = Integer.parseInt(matcher.group("taxRate"));
@@ -207,8 +213,8 @@ public class GameController {
     }
 
     public static String setFoodRate(Matcher matcher){
-        if(!selectedBuilding.getBuildingType().equals(GeneralBuildingsType.FOOD_STORAGE))
-            return "you have not choose food storage";
+        if(selectedBuilding == null || !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.FOOD_STORAGE))
+            return "you have not chosen a food storage";
         int foodRate = Integer.parseInt(matcher.group("foodRate"));
         if (foodRate < -2 || foodRate > 2) return "Invalid food rate";
         currentGame.getCurrentGovernment().getAccountingDepartment().setFoodRate(foodRate);
@@ -1070,7 +1076,7 @@ public class GameController {
         double finalPrice = (currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount)*4)/5;
 
         if (finalPrice == 0) return "The product you are looking for does not exit, selling failed";
-        if (!capacityCheckerForSelling(item, finalAmount)) return "You do not have enough to sell, buying failed";
+        if (!capacityCheckerForSelling(item, finalAmount)) return "You do not have enough to sell, selling failed";
 
         currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
                 put(Resources.GOLD, currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
@@ -1091,7 +1097,7 @@ public class GameController {
 
         double finalPrice = currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount);
 
-        if (finalPrice == 0) return "The product you are looking for does not exit, buying failed";
+        if (finalPrice == 0 && !item.equals("gold")) return "The product you are looking for does not exit, buying failed";
 
         if (finalPrice > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(Resources.GOLD))
             return "You do not have enough gold to buy this item, buying failed";
@@ -1106,7 +1112,7 @@ public class GameController {
         return "Item purchased successfully";
     }
 
-    public static boolean capacityCheckerForBuying(String name, int amount){
+    private static boolean capacityCheckerForBuying(String name, int amount){
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
                 if (currentGame.getCurrentGovernment().getStorageDepartment().getResourcesMaxCapacity()
@@ -1133,24 +1139,24 @@ public class GameController {
         return false;
     }
 
-    public static boolean capacityCheckerForSelling(String name, int amount){
+    private static boolean capacityCheckerForSelling(String name, int amount){
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
-                if (currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(resources) - amount > 0)
+                if (currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(resources) - amount >= 0)
                     return true;
             }
         }
 
         for (Weapons weapons : Weapons.values()){
             if (weapons.getName().equals(name)) {
-                if (currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.get(weapons) - amount > 0)
+                if (currentGame.getCurrentGovernment().getStorageDepartment().weaponsStorage.get(weapons) - amount >= 0)
                     return true;
             }
         }
 
         for (Food food : Food.values()){
             if (food.getName().equals(name)) {
-                if (currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.get(food) - amount > 0)
+                if (currentGame.getCurrentGovernment().getStorageDepartment().foodStorage.get(food) - amount >= 0)
                     return true;
             }
         }
@@ -1158,7 +1164,7 @@ public class GameController {
     }
 
 
-    public static void changeStorage(String name, int amount, int coefficient){
+    private static void changeStorage(String name, int amount, int coefficient){
         amount *= coefficient;
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)) {
@@ -1191,8 +1197,8 @@ public class GameController {
     private static String getResourcesPriceList(){
         String finalString = "";
         for (Map.Entry<Resources, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getResourcesStorage().entrySet()){
-            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
-                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue() + "\n");
+            finalString = finalString.concat("Item: " + entry.getKey().getName() + " Buying Price: " +
+                    entry.getKey().getPrice() + " Selling Price: " + (entry.getKey().getPrice()*4)/5 + " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
     }
@@ -1200,8 +1206,8 @@ public class GameController {
     private static String getFoodPriceList(){
         String finalString = "";
         for (Map.Entry<Food, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getFoodStorage().entrySet()){
-            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
-                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue() + "\n");
+            finalString = finalString.concat("Item: " + entry.getKey().getName() + " Buying Price: " +
+                    entry.getKey().getPrice() + " Selling Price: " + (entry.getKey().getPrice()*4)/5 + " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
     }
@@ -1209,8 +1215,8 @@ public class GameController {
     private static String getWeaponPriceList(){
         String finalString = "";
         for (Map.Entry<Weapons, Double> entry : currentGame.getCurrentGovernment().getStorageDepartment().getWeaponsStorage().entrySet()){
-            finalString = finalString.concat("Item: " + entry.getKey().getName() + "Buying Price: " +
-                    entry.getKey().getPrice() + "Selling Price: " + (entry.getKey().getPrice()*4)/5 + "Amount: " + entry.getValue() + "\n");
+            finalString = finalString.concat("Item: " + entry.getKey().getName() + " Buying Price: " +
+                    entry.getKey().getPrice() + " Selling Price: " + (entry.getKey().getPrice()*4)/5 + " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
     }
@@ -1447,6 +1453,27 @@ public class GameController {
                 finalString = finalString.concat(showTradeDetails(trade) + "\n");
         }
         return finalString;
+    }
+
+    public static String setTroopState(Matcher matcher){
+        String state = matcher.group("state");
+        if (!state.equals("defensive") && !state.equals("standing") && !state.equals("aggressive"))
+            return "Invalid state, setting state failed";
+        for (Human human : selectedWarEquipment){
+            if (human instanceof LadderMan || human instanceof Tunneler || human instanceof SiegeMachine){
+
+            } else {
+                switch (state){
+                    case "aggressive":
+                        human.setTroopStage(TroopStage.AGGRESSIVE);
+                    case "standing":
+                        human.setTroopStage(TroopStage.STANDING);
+                    case "defensive":
+                        human.setTroopStage(TroopStage.DEFENSIVE);
+                }
+            }
+        }
+        return "Troops' stage switched successfully";
     }
 
 

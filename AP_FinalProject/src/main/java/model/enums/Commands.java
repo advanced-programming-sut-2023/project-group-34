@@ -31,8 +31,8 @@ public enum Commands {
     DISPLAY_SLOGAN("Profile\\s+display\\s+slogan"),
     CURRENT_MENU("Show\\s+current\\s+menu"),
     SHOW_PRICE_LIST("Show\\s+price\\s+list"),
-    BUY_ITEM("(?=.*-i\\s+(?<item>\\S*))(?=.*-a\\s+(?<amount>\\d*))^Buy\\s*(\\s+-[ia]\\s+\\S*){2}$"),
-    SELL_ITEM("(?=.*-i\\s+(?<item>\\S*))(?=.*-a\\s+(?<amount>\\d*))^Sell\\s*(\\s+-[ia]\\s+\\S*){2}$"),
+    BUY_ITEM("(?=.*-i\\s+(?<item>\\S*))(?=.*-a\\s+(?<amount>[-]?\\d*))^Buy\\s*(\\s+-[ia]\\s+\\S*){2}$"),
+    SELL_ITEM("(?=.*-i\\s+(?<item>\\S*))(?=.*-a\\s+(?<amount>[-]?\\d*))^Sell\\s*(\\s+-[ia]\\s+\\S*){2}$"),
     SHOW_POPULARITY_FACTORS("Show\\s+popularity\\s+factors"),
     SHOW_POPULARITY("Show\\s+popularity"),
     SHOW_FOOD_LIST("Show\\s+food\\s+list"),
@@ -55,7 +55,7 @@ public enum Commands {
     EDIT_OLD_MAP("Edit -m (?<mapName>\".+\"|\\S*)"),
     NEW_MAP("New map -n (?<mapName>\".+\"|\\S*)"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),
-    TRADE_MENU("Enter\\s+shop\\s+menu"),
+    TRADE_MENU("Enter\\s+trade\\s+menu"),
     SHOW_MAP("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map(\\s+-[xy]\\s+\\d*){2}$"),
     SHOW_MAP_DETAILS("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Show\\s+map\\s+details(\\s+-[xy]\\s+\\d*){2}$"),
     MOVE_MAP("map(?=.*\\s+up\\s+(?<up>-?\\d*))?(?=.*\\s+left\\s+(?<left>-?\\d*))?(?=.*\\s+right\\s+(?<right>-?\\d*))?(?=.*\\s+down\\s+(?<down>-?\\d*))?(\\s+(down|up|right|left)\\s+-?\\d*){1,4}"),
@@ -81,7 +81,8 @@ public enum Commands {
     DEPLOY_CAGED("Deploy\\s+caged\\s+war\\s+dog"),
     ADD_WORKER("Add\\s+worker\\s+(?<n>\\d+)"),
     BUILD_EQUIP_ON_TOWER("(?=.*-x(\\s+|$)(?<x>\\d*))(?=.*-y(\\s+|$)(?<y>\\d*))(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment\\s+on\\s+tower(\\s+-[xyt]\\s+(\".+\"|\\S+)){3}$"),
-    PUT_LADDER("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Put\\s+ladder(\\s+-[xy]\\s+\\d*){2}$");
+    PUT_LADDER("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Put\\s+ladder(\\s+-[xy]\\s+\\d*){2}$"),
+    SET_TROOP_STATE("Set\\s+state(\\s+|$)(?<state>(\\S+))*");
 
 
 
