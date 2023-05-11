@@ -187,7 +187,7 @@ public class User {
     public static void currentUserJsonSaver() {
         try (FileWriter writer = new FileWriter("currentUser.json")) {
             Gson gson = new Gson();
-            gson.toJson(currentUser, writer);
+            gson.toJson(currentUser.name, writer);
         } catch (IOException ignored) {
         }
     }
@@ -208,16 +208,8 @@ public class User {
     public static void loadCurrentUser() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("currentUser.json")) {
-            User currentUser = gson.fromJson(reader, User.class);
-            if (currentUser == null) {
-                User.setCurrentUser(null);
-                User.stayLoggedIn();
-            }
-            else {
-                for (User user : users) {
-                    if (Objects.equals(user.getName(), currentUser.getName())) User.setCurrentUser(currentUser);
-                }
-            }
+            String currentUserName = gson.fromJson(reader, String.class);
+            currentUser = getUserByUsername(currentUserName);
         } catch (IOException ignored) {
         }
     }
