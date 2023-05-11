@@ -3,14 +3,14 @@ package model.enums.make_able;
 import model.government.Government;
 
 public enum Food implements MakeAble {
-    APPLE(0, "apple"),
-    MEAT(0, "meat"),
-    BREAD(0, "bread"),
-    ALE(0, "ale"),
-    CHEESE(0, "cheese"),
-    WHEAT(0, "wheat"),
-    HOP(0, "hop"),
-    FLOUR(0, "flour");
+    APPLE(10, "apple"),
+    MEAT(10, "meat"),
+    BREAD(10, "bread"),
+    ALE(5, "ale"),
+    CHEESE(10, "cheese"),
+    WHEAT(2, "wheat"),
+    HOP(2, "hop"),
+    FLOUR(5, "flour");
 
     private int price;
     private String name;

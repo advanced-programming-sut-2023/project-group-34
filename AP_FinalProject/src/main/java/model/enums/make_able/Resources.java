@@ -3,11 +3,11 @@ package model.enums.make_able;
 import model.government.Government;
 
 public enum Resources implements MakeAble {
-    GHIR(0, "ghir"),
+    GHIR(5, "ghir"),
     GOLD(0, "gold"),
-    WOOD(0, "wood"),
-    IRON(0, "iron"),
-    STONE(0, "stone");
+    WOOD(5, "wood"),
+    IRON(5, "iron"),
+    STONE(5, "stone");
 
     private int price;
     private String name;
@@ -34,7 +34,7 @@ public enum Resources implements MakeAble {
     }
     @Override
     public double getAmount(Government government) {
-        return government.getStorageDepartment().getFoodStorage().get(this);
+        return government.getStorageDepartment().getResourcesStorage().get(this);
     }
 
     public int getPrice() {

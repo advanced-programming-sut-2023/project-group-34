@@ -3,7 +3,10 @@ package view.gameMenu;
 import controller.GameController;
 import controller.MainController;
 import controller.Runner;
+import model.building.Maker;
+import model.building.MakerType;
 import model.enums.Commands;
+import model.user.User;
 import org.checkerframework.checker.units.qual.C;
 
 import java.util.regex.Matcher;
@@ -13,6 +16,9 @@ public class GameMenu {
         Matcher matcher;
 
         while (true){
+            if (GameController.selectedBuilding != null && GameController.selectedBuilding.getBuildingType().equals(MakerType.SHOP)){
+                return "shop menu";
+            }
             String command = Runner.getScn().nextLine();
             command = command.trim();
 
@@ -37,9 +43,6 @@ public class GameMenu {
             } else if (Commands.getOutput(command, Commands.TRADE_MENU) != null){
                 System.out.println("You just entered trade menu");
                 return "trade menu";
-            } else if (Commands.getOutput(command, Commands.SHOP_MENU) != null){
-                System.out.println("You just entered shop menu");
-                return "shop menu";
             } else if (Commands.getOutput(command, Commands.CURRENT_MENU) != null){
                 System.out.println("Gaming Menu");
             } else if ((matcher = Commands.getOutput(command, Commands.MOVE_MAP)) != null){
@@ -100,8 +103,18 @@ public class GameMenu {
             } else if (command.equals("exit")){
                 System.out.println("Are you sure you want to finish this game?");
                 String response = Runner.getScn().nextLine();
-                if (response.equals("yes"))
+                if (response.equals("yes")) {
+                    for (User user : GameController.currentGame.getPlayers())
+                        user.setGovernment(null);
+                    GameController.currentGame = null;
                     return "back";
+                }
+            } else if ((matcher = Commands.getOutput(command, Commands.DROP_BUILDING)) != null){
+                System.out.println(MainController.dropBuilding(GameController.currentGame.getMap(), matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.SET_TROOP_STATE)) != null){
+                System.out.println(GameController.setTroopState(matcher));
+            } else {
+                System.out.println("Invalid command!");
             }
             if (GameController.currentGame.getPlayers().size() == 1){
                 String username = GameController.currentGame.getPlayers().get(0).getName();

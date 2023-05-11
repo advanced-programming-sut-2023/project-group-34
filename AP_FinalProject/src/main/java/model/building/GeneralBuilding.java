@@ -1,5 +1,6 @@
 package model.building;
 
+import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.map.Block;
@@ -12,6 +13,7 @@ public class GeneralBuilding extends Building{
     protected GeneralBuilding(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int capacity) {
         super(government, block, HP, cost, buildingType);
         this.capacity = capacity;
+        if(government == null) return;
         if (buildingType.equals(GeneralBuildingsType.FOOD_STORAGE)) {
             government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getFoodMaxCapacity() + capacity);
         } else if (buildingType.equals(GeneralBuildingsType.ARMOUR_STORAGE)) {
@@ -20,6 +22,7 @@ public class GeneralBuilding extends Building{
             government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getResourcesMaxCapacity()+ capacity);
         }
     }
+
 
     @Override
     public void process() {

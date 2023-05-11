@@ -120,14 +120,11 @@ public class Block {
     }
 
     public String resource() {
-        if (bLockFiller == null || bLockFiller.equals(BlockFillerType.STAIR))
-            if (bLockFiller != null)
-                return bLockFiller.toString();
-        else if (blockType.equals(BlockType.IRON)) return "iron";
-        else if (blockType.equals(BlockType.BOULDER)) return "stone";
-        else if (blockType.equals(BlockType.OIL)) return "oil";
+        if (bLockFiller != null) return bLockFiller.toString();
+        if (blockType.equals(BlockType.IRON)) return "iron";
+        if (blockType.equals(BlockType.BOULDER)) return "stone";
+        if (blockType.equals(BlockType.OIL)) return "oil";
         else return null;
-        return null;
     }
 
     public boolean containsThisBuilding(BuildingType buildingType) {
