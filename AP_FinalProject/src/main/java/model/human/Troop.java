@@ -50,6 +50,18 @@ public class Troop extends Human {
     public int getDefensiveRange() {
         return defensiveRange;
     }
+    public void applyMoves() {
+        if (speed > getRoute().size()) {
+            this.setBlock(getRoute().get(getRoute().size() - 1));
+            setRoute(new ArrayList<>());
+        }
+        else {
+            this.setBlock(getRoute().get(speed - 1));
+            for (int i = 0; i < speed; i++) {
+                getRoute().remove(i);
+            }
+        }
+    }
 
     @Override
     public void move(int x ,  int y) {

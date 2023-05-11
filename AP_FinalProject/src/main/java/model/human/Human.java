@@ -12,7 +12,7 @@ public class Human {
     private static final ArrayList<Human> humans = new ArrayList<>();
     private int HP;
     private Government government;
-    private ArrayList<Direction> rout = new ArrayList<>();
+    private ArrayList<Block> route = new ArrayList<>();
     private final int damage;
     private int currentDamage;
     private boolean isVisible = true;
@@ -64,15 +64,11 @@ public class Human {
     public void setGovernment(Government government) {
         this.government = government;
     }
-
-    public ArrayList<Direction> getRout() {
-        return rout;
+    
+    public ArrayList<Block> getRoute () {
+        return route;
     }
-
-    public void setRout(ArrayList<Direction> rout) {
-        this.rout = rout;
-    }
-
+    
     public int getDamage() {
         return damage;
     }
@@ -96,7 +92,11 @@ public class Human {
     public Block getBlock() {
         return block;
     }
-
+    
+    public void setRoute (ArrayList<Block> route) {
+        this.route = route;
+    }
+    
     public void setBlock(Block block) {
         this.block = block;
     }
