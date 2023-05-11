@@ -51,6 +51,7 @@ public enum Commands {
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
     NEW_GAME("New game -m (?<mapName>\".+\"|\\S*)"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
+    SHOW_MAP_LIST("Show\\s+maps"),
     EDIT_OLD_MAP("Edit -m (?<mapName>\".+\"|\\S*)"),
     NEW_MAP("New map -n (?<mapName>\".+\"|\\S*)"),
     SHOP_MENU("Enter\\s+shop\\s+menu"),

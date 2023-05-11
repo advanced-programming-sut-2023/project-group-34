@@ -13,6 +13,7 @@ public class MapEditingMenu {
         User.currentUser.loadUserMapsFromDataBase();
         String input;
         Matcher matcher;
+        if (!MainController.showUserMaps().equals("User has no custom maps yet!")) System.out.println(MainController.showUserMaps());
         while (true){
             input = Runner.getScn().nextLine().trim();
             if ((matcher = Commands.getOutput(input, Commands.NEW_MAP)) != null) {
