@@ -75,7 +75,6 @@ public class Government {
         return storageDepartment;
     }
 
-
     public Color getColor() {
         return color;
     }

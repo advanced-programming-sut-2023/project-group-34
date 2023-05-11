@@ -14,16 +14,14 @@ public class Troop extends Human {
     private int fireRange;
     private final int aggressiveRange;
     private final TroopType troopType;
-    private final int speed;
     private TroopStage troopStage;
     private final HashMap<MakeAble , Integer> cost;
-    protected Troop(int HP, Block block, int damage, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int price, int speed, HashMap<MakeAble, Integer> cost) {
-        super(HP, HP , block, damage, canDig, canClimb, government);
+    protected Troop(int HP, Block block, int damage, int defendRate, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int speed, HashMap<MakeAble, Integer> cost) {
+        super(HP, HP , block, damage, defendRate, canDig, canClimb, government, speed);
         this.defensiveRange = defensiveRange;
         this.fireRange = fireRange;
         this.aggressiveRange = aggressiveRange;
         this.troopType = troopType;
-        this.speed = speed;
         this.cost = cost;
         if(troopType == TroopType.ASSASSIN) setVisible(false);
     }
@@ -49,18 +47,6 @@ public class Troop extends Human {
 
     public int getDefensiveRange() {
         return defensiveRange;
-    }
-    public void applyMoves() {
-        if (speed > getRoute().size()) {
-            this.setBlock(getRoute().get(getRoute().size() - 1));
-            setRoute(new ArrayList<>());
-        }
-        else {
-            this.setBlock(getRoute().get(speed - 1));
-            for (int i = 0; i < speed; i++) {
-                getRoute().remove(i);
-            }
-        }
     }
 
     @Override
@@ -88,7 +74,6 @@ public class Troop extends Human {
         this.troopStage = troopStage;
     }
 
-
     public static HashMap<TroopType, String> troopsNameString = new HashMap<>(
             Map.ofEntries(
                     Map.entry(TroopType.ARCHER, "archer"),
@@ -98,8 +83,6 @@ public class Troop extends Human {
                     Map.entry(TroopType.MACE_MAN, "mace man"),
                     Map.entry(TroopType.SWORDS_MAN, "swords man"),
                     Map.entry(TroopType.KNIGHT, "knight"),
-                    Map.entry(TroopType.TUNNELER, "tunneler"),
-                    Map.entry(TroopType.LADDER_MAN, "ladder man"),
                     Map.entry(TroopType.BLACK_MONK, "black monk"),
                     Map.entry(TroopType.ARCHER_BOW, "archer bow"),
                     Map.entry(TroopType.SLAVE, "slave"),
@@ -113,9 +96,5 @@ public class Troop extends Human {
 
     public HashMap<MakeAble, Integer> getCost() {
         return cost;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 }

@@ -102,10 +102,17 @@ public class GameController {
         if (route.size() == 0) return "You are already in the destination given!";
         for (Human human : selectedWarEquipment) {
             human.setRoute(new ArrayList<>(route));
-            ((Troop) human).applyMoves();
+            human.applyMoves();
         }
         return null;
         //todo: Arshia check it!
+    }
+    public static void applyAllOngoingMoves() {
+        for (User player : currentGame.getPlayers()) {
+            for (Human human : player.getGovernment().getHumans()) {
+                human.applyMoves();
+            }
+        }
     }
     public static String setMapLocation (int x, int y) {
         if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";

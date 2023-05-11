@@ -93,7 +93,7 @@ public enum TroopType {
     }
     
     public void Creator(Block block, Government government) {
-         block.getHumans().add(new Troop(this.HP, block, this.damage, this.canDig,this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this, this.price, this.speed, this.cost));
+         block.getHumans().add(new Troop(this.HP, block, this.damage, this.defensiveRange, this.canDig,this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this, this.speed, this.cost));
     }
 }
 
