@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 
 public class MainMenu {
     public static String run(){
+        User.getCurrentUser().loadUserMapsFromDataBase();
         String input;
         Matcher matcher;
         while (true){
@@ -35,6 +36,8 @@ public class MainMenu {
                 setKeeps();
                 //TODO: Complete with Arshia! Drop keeps.
                 GameController.run();
+            } else if (Commands.getOutput(input, Commands.SHOW_MAP_LIST) != null) {
+                System.out.println(MainController.showUserMaps());
             } else if (Commands.getOutput(input, Commands.CURRENT_MENU) != null){
                 System.out.println("Main Menu");
             } else {

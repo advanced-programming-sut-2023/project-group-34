@@ -367,6 +367,23 @@ public class MainController {
         block.setPassable(false);
         return "Building created successfully!";
     }
+    public static String showUserMaps () {
+        StringBuilder output = new StringBuilder();
+        output.append(User.getCurrentUser().getName()).append(" maps:");
+        int i = 0;
+        for (; i < User.getCurrentUser().getCustomMaps().size(); i++) {
+            output.append('\n');
+            output.append(i + 1);
+            output.append(" )--Name--> ");
+            output.append(User.getCurrentUser().getCustomMaps().get(i).name);
+            output.append(" | --Size--> ");
+            output.append(User.getCurrentUser().getCustomMaps().get(i).getSize());
+            output.append(" X ");
+            output.append(User.getCurrentUser().getCustomMaps().get(i).getSize());
+        }
+        if (i == 0) return "User has no custom maps yet!";
+        return output.toString();
+    }
 
     public static String dropUnit (GameMap map, Matcher matcher) {
         int x = Integer.parseInt(matcher.group("xIndex"));
