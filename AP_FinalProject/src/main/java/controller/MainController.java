@@ -10,6 +10,9 @@ import model.building.BuildingType;
 import model.building.MakerType;
 import model.enums.make_able.Resources;
 import model.government.Government;
+import model.human.Engineer;
+import model.human.LadderMan;
+import model.human.Tunneler;
 import model.map.Block;
 import model.map.GameMap;
 import model.user.User;
@@ -353,15 +356,16 @@ public class MainController {
                 return "you have to put a food storage near other food storages";
             }
         }
-        boolean isGameStarted = User.currentUser.getGovernment() != null;
+        boolean isGameStarted = GameController.currentGame != null;
         if (isGameStarted) {
+            Government government = GameController.currentGame.getCurrentGovernment();
             for (Map.Entry<Resources, Integer> entry : buildingType.getCost().entrySet()) {
-                if (entry.getValue() > entry.getKey().getAmount(User.currentUser.getGovernment())) {
+                if (entry.getValue() > entry.getKey().getAmount(government)) {
                     return "You dont have enough " + entry.getKey().toString() + " to make this building";
                 }
-                entry.getKey().use(entry.getValue(), User.currentUser.getGovernment());
+                entry.getKey().use(entry.getValue(), government);
             }
-            buildingType.create(User.currentUser.getGovernment(), block); //There could be a problem here with current user
+            buildingType.create(government , block);
         }
         else buildingType.create(null , block);
         block.setPassable(false);
@@ -393,11 +397,39 @@ public class MainController {
         if (!map.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";
         }
-        //TODO add dictionary for troops;
         Block block = map.getABlock(x, y);
-        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
+        if(!block.getBuilding().isEmpty()) return "You can not drop unit on buildings!";
+        ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND,
+                                                           BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
         if (!goodBlockTypes.contains(block.getBlockType())) {
-            return "You can put anything on that block!";
+            return "You can not put anything on that block!";
+        }
+        if(count < 1) {
+            return "Invalid number for count!";
+        }
+        Government government = GameController.currentGame == null ? null : GameController.getGame().getCurrentGovernment();
+        if(type.equals("engineer")) {
+            for (int i = 0; i < count; i++) {
+                block.getHumans().add(new Engineer(block , government));
+            }
+        }
+        else if(type.equals("ladder man")) {
+            for (int i = 0; i < count; i++) {
+                block.getHumans().add(new LadderMan(block , government));
+            }
+        }
+        else if(type.equals("tunneler")) {
+            for (int i = 0; i < count; i++) {
+                block.getHumans().add(new Tunneler(block , government));
+            }
+        }
+        else if(Dictionaries.siegeMachineDictionary.containsKey(type)) {
+            for (int i = 0; i < count; i++) {
+                Dictionaries.siegeMachineDictionary.get(type).creator(block , government);
+            }
+        }
+        else if(Dictionaries.troopDictionary.containsKey(type)) {
+            Dictionaries.troopDictionary.get(type).Creator(block , government);
         }
         return "Units added successfully!";
     }

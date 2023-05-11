@@ -10,7 +10,7 @@ public class Game {
     private final ArrayList<User> players = new ArrayList<>();
 
     private Government currentGovernment;
-    private  ArrayList<Trade> allTrades = new ArrayList<>();
+    private final ArrayList<Trade> allTrades = new ArrayList<>();
     private int numberOfRoundsPassed = 0;
 
     private final GameMap map;//TODO: Set it

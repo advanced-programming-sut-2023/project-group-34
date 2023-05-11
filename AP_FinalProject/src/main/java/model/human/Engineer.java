@@ -6,12 +6,10 @@ import model.government.Government;
 import model.map.Block;
 
 public class Engineer extends Human{
-    private final int price;
     private boolean isEquippedWithOil = false;
-    public Engineer(Block block, Government government, int price) {
+    public Engineer(Block block, Government government) {
         super(0, 0 , block, 0, 0, false, true , government);
-        this.price = price;
-        useOil();
+        if(government != null) useOil();
     }
     public void equipWithOil() {
 
@@ -24,11 +22,6 @@ public class Engineer extends Human{
     public void setEquippedWithOil(boolean equippedWithOil) {
         isEquippedWithOil = equippedWithOil;
     }
-
-    public int getPrice() {
-        return price;
-    }
-
     @Override
     public void setVisible(boolean visible) {
 

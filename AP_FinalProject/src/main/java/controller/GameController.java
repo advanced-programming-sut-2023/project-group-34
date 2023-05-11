@@ -4,10 +4,10 @@ import model.Dictionaries;
 import model.Game;
 import model.Trade;
 import model.building.*;
-import model.enums.BlockFillerType;
 import model.enums.BlockType;
 import model.enums.Direction;
 import model.enums.make_able.Food;
+import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import model.government.Government;
@@ -66,7 +66,6 @@ public class GameController {
 
         if (xLocation < 1 || yLocation < 1 || xLocation > 399 || yLocation > 399)
             return "Invalid coordinates, selecting building failed";
-
         if (currentGame.getMap().getABlock(xLocation, yLocation).getBuilding() != null)
             return "There is no building in this block, selecting building failed";
 
@@ -116,7 +115,7 @@ public class GameController {
             for (int j = 0; j < 10; j++) {
                 if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "S " + "\u001B[0m");
                 else if (map[i][j].getBuilding().size() != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
-                else if (map[i][j].getBLockFiller() != null && !map[i][j].getBLockFiller().equals(BlockFillerType.STAIR))
+                else if (map[i][j].getBLockFiller() != null)
                     output.append(BackgroundColor.dictionary(map[i][j]) + "T " + "\u001B[0m");
                 else {
                     String abbreviation= map[i][j].getBlockType().toString().substring(0,2);
@@ -219,21 +218,100 @@ public class GameController {
     public static String createUnit (Matcher matcher) {
         String type = matcher.group("type");
         int count = Integer.parseInt(matcher.group("count"));
+        if(selectedBuilding == null) {
+            return "You have to choose a building first!";
+        }
+        Block place = selectedBuilding.getBlock();
         if(count < 1) return "Invalid count!";
         if(type.equals("engineer")) {
-
+            if(!createUnitErrorChecker(count , 50 , GeneralBuildingsType.ENGINEER_GUILD).equals("OK")) {
+                return createUnitErrorChecker(count , 50 , GeneralBuildingsType.ENGINEER_GUILD);
+            }
+            for (int i = 0; i < count; i++) {
+                place.getHumans().add(new Engineer(place , currentGame.getCurrentGovernment()));
+            }
         }
         if(type.equals("tunneler")) {
-
+            if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD).equals("OK")) {
+                return createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD);
+            }
+            for (int i = 0; i < count; i++) {
+                place.getHumans().add(new Tunneler(place , currentGame.getCurrentGovernment()));
+            }
         }
-        //TODO check if space in name is ok
         if(type.equals("ladder man")) {
-
+            if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK).equals("OK")) {
+                return createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK);
+            }
+            for (int i = 0; i < count; i++) {
+                place.getHumans().add(new LadderMan(place , currentGame.getCurrentGovernment()));
+            }
         }
         if(!Dictionaries.troopDictionary.containsKey(type)) {
             return "there is no such type!";
         }
+        ArrayList<TroopType> arabs = new ArrayList<>(Arrays.asList(TroopType.ASSASSIN, TroopType.ARAB_SWORD_MAN,
+                TroopType.FIRE_THROWERS, TroopType.HORSE_ARCHER, TroopType.SLAVE, TroopType.SLINGER, TroopType.ARCHER_BOW));
+        TroopType troopType = Dictionaries.troopDictionary.get(type);
+        if(     (arabs.contains(troopType) && !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.MERCENARY)) ||
+                (!arabs.contains(troopType) && !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.BARRACK))) {
+            return "you have to select a related building!";
+        }
+        for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
+            if (count * entry.getValue() > Resources.GOLD.getAmount(currentGame.getCurrentGovernment())) {
+                return "You do not have enough money!";
+            }
+        }
+        if(findUnemployed().size() < count) {
+            return "You do not have enough people to hire!";
+        }
+        Human human;
+        ArrayList<Human> unemployed = findUnemployed();
+        for (int i = 0; i < count; i++) {
+            human = unemployed.get(i);
+            for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
+                entry.getKey().use(entry.getValue(), currentGame.getCurrentGovernment());
+            }
+            human.die();
+            troopType.Creator(place , currentGame.getCurrentGovernment());
+        }
         return "unit created successfully!";
+    }
+
+    private static String createUnitErrorChecker(int count , int price , BuildingType buildingType) {
+        if(!selectedBuilding.getBuildingType().equals(buildingType)) {
+            return "You have to select a related building first!";
+        }
+        if(count * price > Resources.GOLD.getAmount(currentGame.getCurrentGovernment())) {
+            return "You do not have enough money!";
+        }
+        if(findUnemployed().size() < count) {
+            return "You do not have enough people to hire!";
+        }
+        Human tempHuman;
+        ArrayList<Human> unemployed = findUnemployed();
+        for (int i = 0; i < count; i++) {
+            tempHuman = unemployed.get(i);
+            tempHuman.die();
+            Resources.GOLD.use(30, currentGame.getCurrentGovernment());
+        }
+        return "OK";
+    }
+    private static ArrayList<Human> findUnemployed() {
+        ArrayList<Human> unemployed = new ArrayList<>();
+        for(Human human : currentGame.getCurrentGovernment().getHumans()) {
+            if(     (human instanceof LadderMan) ||
+                    (human instanceof SiegeMachine) ||
+                    (human instanceof Troop) ||
+                    (human instanceof Tunneler)) {
+                continue;
+            }
+            if(!human.isUnemployed()) {
+                continue;
+            }
+            unemployed.add(human);
+        }
+        return unemployed;
     }
 
     public static String moveSelectedUnits (Matcher matcher) {
@@ -750,15 +828,16 @@ public class GameController {
             return "there is no building there!";
         }
         BuildingType buildingType = target.getBuilding().get(0).getBuildingType();
-        if(!(buildingType.equals(DefenciveBuildingType.HIGH_WALL) || buildingType.equals(DefenciveBuildingType.LOW_WALL))) {
-            return "You can only use tunnelers on walls!";
+        ArrayList<BuildingType> goodBuildingType = new ArrayList<>(Arrays.asList(DefenciveBuildingType.HIGH_WALL , DefenciveBuildingType.LOW_WALL , DefenciveBuildingType.DEFENCIVE_TURRET , DefenciveBuildingType.LOOKOUT_TOWER , DefenciveBuildingType.PERIMETER_TOWER));
+        if(!goodBuildingType.contains(buildingType)) {
+            return "You can only use tunnelers on walls and towers!";
         }
         boolean flag = false;
         for(Human human : selectedWarEquipment) {
             if(!(human instanceof Tunneler tunneler)) continue;
             if(!tunneler.isThereAWay(target)) continue;
             flag = true;
-            target.getBuilding().get(0).getHit(3000);
+            target.getBuilding().get(0).getHit(300000);
             tunneler.die();
             break;
         }

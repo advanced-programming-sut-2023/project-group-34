@@ -44,7 +44,7 @@ public class Maker extends Building{
         }
         if(this.buildingType == MakerType.WOOD_CUTTER) {
             return;
-            //TODO add this in controller dont have access to map
+            //TODO add this in controller don't have access to map
         }
         double tempInputRate;
         if(input == null) tempInputRate = inputRate;

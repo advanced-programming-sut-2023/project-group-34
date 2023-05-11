@@ -18,9 +18,20 @@ public class GeneralBuilding extends Building{
             government.getStorageDepartment().setWeaponsMaxCapacity(government.getStorageDepartment().getWeaponsMaxCapacity() + capacity);
         } else if (buildingType.equals(GeneralBuildingsType.RESOURCES_STORAGE)) {
             government.getStorageDepartment().setFoodMaxCapacity(government.getStorageDepartment().getResourcesMaxCapacity()+ capacity);
+            giveAway();
         }
     }
 
+    public void giveAway() {
+        for(Building building : government.getBuildings()) {
+            if(building.getBuildingType().equals(GeneralBuildingsType.RESOURCES_STORAGE)) {
+                return;
+            }
+        }
+        for(Resources resources : Resources.values()) {
+            resources.add(100  , government);
+        }
+    }
     @Override
     public void process() {
     }

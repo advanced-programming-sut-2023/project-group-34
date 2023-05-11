@@ -55,5 +55,8 @@ public enum TroopType {
     public void Creator(Block block, Government government) {
          block.getHumans().add(new Troop(this.HP, block, this.damage, this.defendRate, this.canDig, this.canClimb,  government, this.defensiveRange, this.fireRange, this.aggressiveRange , this,this.speed, this.cost));
     }
+    public HashMap<MakeAble , Integer> getCost() {
+        return cost;
+    }
 }
 
