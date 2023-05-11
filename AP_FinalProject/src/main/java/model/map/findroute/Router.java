@@ -6,6 +6,8 @@ import model.building.DefenciveBuilding;
 import model.building.DefenciveBuildingType;
 import model.building.GateType;
 import model.enums.BlockType;
+import model.government.Government;
+import model.human.Troop;
 import model.human.TroopType;
 import model.map.Block;
 import model.map.GameMap;
@@ -21,15 +23,17 @@ public class Router {
     private Node destination;
     private final GameMap map;
     private final TroopType troopType;
-    public Router(GameMap map, Block startingBlock, Block destinationBlock, TroopType troopType) {
+    private final Government government;
+    public Router(GameMap map, Block startingBlock, Block destinationBlock, Troop troop) {
         openList = new ArrayList<>();
         closedList = new ArrayList<>();
         this.map = map;
         openList.add(new Node(null, startingBlock, destinationBlock));
-        this.troopType = troopType;
+        this.troopType = troop.getTroopType();
+        government = troop.getGovernment();
     }
     public ArrayList<Block> findBestRoute () {
-        if (destination == null) return null;
+        if (finalNode() == null) return null;
         ArrayList<Block> tempResult = new ArrayList<>();
         Node iterator = destination;
         do {
@@ -96,17 +100,14 @@ public class Router {
         if (troopType.isCanClimb() && (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)) ||
                 (node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)))
             return true;
-        if (node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding ||
-                node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE) ||
-                node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.SMALL_GATE_HOUSE)) {
-            return node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding ||
-                    node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE) ||
-                    node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.SMALL_GATE_HOUSE);
+        if (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding) {
+            return node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding;
+        }
+        else if (node.getCurrentBlock().getBuilding().size() != 0 && (node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.SMALL_GATE_HOUSE) || node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE))) {
+            return node.getCurrentBlock().getBuilding().get(0).getGovernment().equals(government);
         }
         else {
-            return !(node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding ||
-                    node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE) ||
-                    node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.SMALL_GATE_HOUSE));
+            return !(node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding);
         }
     }
     private void sortOpenList () {
