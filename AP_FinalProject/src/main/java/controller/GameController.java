@@ -108,6 +108,7 @@ public class GameController {
         //todo: Arshia check it!
     }
     public static void applyAllOngoingMoves() {
+        //todo: next turn
         for (User player : currentGame.getPlayers()) {
             for (Human human : player.getGovernment().getHumans()) {
                 human.applyMoves();

@@ -13,7 +13,6 @@ public class GameMenu {
         while (true){
             String command = Runner.getScn().nextLine();
             command = command.trim();
-            GameController.applyAllOngoingMoves();
             if (Commands.getOutput(command, Commands.SHOW_POPULARITY_FACTORS) != null){
                 System.out.println(GameController.showPopularityFactors());
             } else if (Commands.getOutput(command, Commands.SHOW_POPULARITY) != null){

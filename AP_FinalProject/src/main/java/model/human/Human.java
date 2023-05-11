@@ -1,10 +1,13 @@
 package model.human;
 
+import controller.GameController;
 import model.building.Building;
 import model.enums.Direction;
 import model.enums.TroopStage;
 import model.government.Government;
 import model.map.Block;
+import model.map.findroute.Router;
+import view.gameMenu.GameMenu;
 
 import java.util.ArrayList;
 
@@ -143,8 +146,11 @@ public class Human {
     public void setVisible(boolean visible) {
         isVisible = visible;
     }
-    public boolean isThereAWay(Block block) {
-        return true;
+    public boolean isThereAWay(Block block)
+    {
+        Router router = new Router(GameController.currentGame.getMap(), this.block, block, (Troop) this);
+        ArrayList<Block> way = router.findBestRoute();
+        return way.size() <= this.speed;
     }
 
     public boolean isUnemployed() {
@@ -163,14 +169,14 @@ public class Human {
         this.troopStage = troopStage;
     }
     public void applyMoves() {
-        if (speed > getRoute().size()) {
+        if (speed >= getRoute().size()) {
             this.setBlock(getRoute().get(getRoute().size() - 1));
             setRoute(new ArrayList<>());
         }
         else {
             this.setBlock(getRoute().get(speed - 1));
             for (int i = 0; i < speed; i++) {
-                getRoute().remove(i);
+                getRoute().remove(0);
             }
         }
     }
