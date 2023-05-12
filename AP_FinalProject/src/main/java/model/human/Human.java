@@ -194,4 +194,12 @@ public class Human {
     public void setTroopStage(TroopStage troopStage) {
         this.troopStage = troopStage;
     }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public boolean isCanClimb() {
+        return canClimb;
+    }
 }

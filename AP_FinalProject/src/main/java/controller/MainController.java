@@ -447,7 +447,9 @@ public class MainController {
             }
         }
         else if(Dictionaries.troopDictionary.containsKey(type)) {
-            Dictionaries.troopDictionary.get(type).Creator(block , government);
+            for (int i = 0; i < count; i++) {
+                Dictionaries.troopDictionary.get(type).Creator(block, government);
+            }
         }
         return "Units added successfully!";
     }

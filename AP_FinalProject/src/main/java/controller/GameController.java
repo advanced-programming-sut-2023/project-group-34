@@ -291,7 +291,6 @@ public class GameController {
             return "you have to select a related building!";
         }
         for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
-            System.out.println(count + "   " + entry.getValue() + "  " + entry.getKey().getLeftCapacity(currentGame.getCurrentGovernment()) + "  " + entry.getKey().toString());
             if (count * entry.getValue() > entry.getKey().getAmount(currentGame.getCurrentGovernment())) {
                 return "You do not have enough " + entry.getKey().toString() + " to train troops!";
             }
@@ -446,6 +445,7 @@ public class GameController {
         String type = matcher.group("type");
         if (!currentGame.getMap().checkBounds(yLocation , xLocation))
             return "Invalid coordinates, selecting unit failed";
+        type = type.replaceAll("\"", "");
         Block block = currentGame.getMap().getABlock(yLocation , xLocation);
         if(type == null|| type.isEmpty()) {
             boolean flag = false;
@@ -458,7 +458,6 @@ public class GameController {
             if(!flag) return "there is no troop in that block!";
             return "Troops selected successfully";
         }
-        boolean flag = false;
         if(type.equals("engineer") || type.equals("tunneler") || type.equals("ladder man")) {
             return selectOtherTroops(block , type);
         }
@@ -469,7 +468,7 @@ public class GameController {
             return selectSiegeMachine(block , type);
         }
         return "Invalid type";
-    }
+    } //checker
     private static String selectOtherTroops(Block block , String type) {
         boolean flag = false;
         switch (type) {
@@ -504,7 +503,7 @@ public class GameController {
                 return "ERROR in select human!";
             }
         }
-    }
+    } //checked
     private static String selectSiegeMachine(Block block , String type) {
         boolean flag = false;
         for(Human human : block.getHumans()) {
@@ -516,29 +515,12 @@ public class GameController {
         }
         if(!flag) return "there is no siege machine in that block!";
         return "selected successfully";
-    }
+    } //checked
 
     private static String selectTroop(Block block , String type) {
         boolean flag = false;
         for (Human warEquipment: block.getHumans()){
             if (warEquipment.getGovernment().equals(currentGame.getCurrentGovernment())){
-                switch (type) {
-                    case "engineer" -> {
-                        if ((warEquipment instanceof Engineer)) continue;
-                        flag = true;
-                        selectedWarEquipment.add(warEquipment);
-                    }
-                    case "tunneler" -> {
-                        if ((warEquipment instanceof Tunneler)) continue;
-                        flag = true;
-                        selectedWarEquipment.add(warEquipment);
-                    }
-                    case "ladder man" -> {
-                        if (!(warEquipment instanceof LadderMan)) continue;
-                        flag = true;
-                        selectedWarEquipment.add(warEquipment);
-                    }
-                    default -> {
                         TroopType troopType = Dictionaries.troopDictionary.get(type);
                         if(!(warEquipment instanceof Troop troop)) continue;
                         if(!troop.getTroopType().equals(troopType)) continue;
@@ -546,11 +528,9 @@ public class GameController {
                         selectedWarEquipment.add(warEquipment);
                     }
                 }
-            }
-        }
         if(!flag) return "there is no troop in that block!";
         return "Troops selected successfully";
-    }
+    } //checked
     public static String deselectUnits(){
         if (selectedWarEquipment.isEmpty()) return "You have no troops selected";
         else selectedWarEquipment.clear();
@@ -821,8 +801,6 @@ public class GameController {
     } //checked
 
     private static String employMaker(Maker maker , int number) {
-        System.out.println(maker.getNumberOfCurrentWorkers());
-        System.out.println(maker.getNumberOfMaxWorkers());
         if(maker.getNumberOfCurrentWorkers() >= maker.getNumberOfMaxWorkers()) {
             return "That building has max capacity";
         }
@@ -1016,7 +994,10 @@ public class GameController {
             return "You can only use ladder man on walls!";
         }
         boolean flag = false;
-        for(Human human : selectedWarEquipment) {
+        int size = selectedWarEquipment.size();
+        Human human;
+        for(int i = size - 1; i >= 0;i--) {
+            human = selectedWarEquipment.get(i);
             if(!(human instanceof LadderMan ladderMan)) continue;
             if(!ladderMan.isThereAWay(target)) continue;
             flag = true;
@@ -1076,7 +1057,7 @@ public class GameController {
             }
         }
         return null;
-    }
+    } //checked
     public static String disband(){
         if(selectedWarEquipment.isEmpty()) {
             return "You have not selected any unit";
