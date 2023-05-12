@@ -1,6 +1,8 @@
 package model.map.findroute;
 
 import model.building.DefenciveBuilding;
+import model.building.DrawBridge;
+import model.building.DrawBridgeType;
 import model.building.GateType;
 import model.enums.BlockType;
 import model.human.Human;
@@ -55,7 +57,7 @@ public class Router {
         }
         return true;
     }
-    public static boolean canGoThere(GameMap map, Block destinationBlock, Human human) {
+    public static boolean canFindAWay (GameMap map, Block destinationBlock, Human human) {
         Router router = new Router(map, human.getBlock(), destinationBlock, human);
         return router.findBestRoute() != null;
     }
@@ -107,6 +109,7 @@ public class Router {
     }
     private boolean canGoThere (Node node) {
         //TODO: different troops canClimb & latter
+        if (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE) && !((DrawBridge) node.getCurrentBlock().getBuilding().get(0)).isUP()) return true;
         if (unpassable(node.getCurrentBlock())) return false;
         if (human instanceof Troop && ((Troop) human).getTroopType().equals(TroopType.ASSASSIN)) return true;
         if (human.isCanClimb() && node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding && ((DefenciveBuilding) node.getCurrentBlock().getBuilding().get(0)).isHasLadder()) return true;

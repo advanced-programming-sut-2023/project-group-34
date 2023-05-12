@@ -540,7 +540,7 @@ public class GameController {
         boolean canAnyonePatrol = false;
         boolean someoneCantPatrol = false;
         for (Human human : selectedWarEquipment) {
-            if (Router.canGoThere(GameController.currentGame.getMap(), destination, human)) {
+            if (Router.canFindAWay(GameController.currentGame.getMap(), destination, human)) {
                 human.setPatrolDestination(human.getBlock());
                 Router.moveTowardsDestination(GameController.currentGame.getMap(), destination, human);
                 canAnyonePatrol = true;
