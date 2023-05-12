@@ -31,25 +31,6 @@ public class DefenciveBuilding extends Building{
 
     @Override
     public void process() {
-        for(Human human : warEquipments) {
-            if(!(human instanceof Troop troop) || !(((Troop)human).getFireRange() > 1)) {
-                continue;
-            }
-            //TODO check for correction of x and y
-            int x = block.getLocationI();
-            int y = block.getLocationJ();
-            for (int i = x - troop.getFireRange(); i < x + troop.getFireRange(); i++) {
-                for (int j = y - troop.getFireRange(); j < y + troop.getFireRange(); j++) {
-                    if(i < 0 || j < 0 || i > 399 || j > 399) {
-                        continue;
-                    }
-                    for(Human human1 : GameController.getGame().getMap().getABlock(i , j).getHumans()) {
-                        //TODO add defence strengh
-                        human1.getHit(troop.getCurrentDamage());
-                    }
-                }
-            }
-        }
     }
     @Override
     public void destroy() {

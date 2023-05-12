@@ -415,7 +415,7 @@ public class MainController {
         if (!map.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";
         }
-        Block block = map.getABlock(x, y);
+        Block block = map.getABlock(y , x);
         if(!block.getBuilding().isEmpty()) return "You can not drop unit on buildings!";
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND,
                                                            BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));

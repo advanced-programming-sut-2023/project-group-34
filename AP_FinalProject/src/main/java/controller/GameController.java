@@ -352,7 +352,7 @@ public class GameController {
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        Block block = currentGame.getMap().getABlock(x , y);
+        Block block = currentGame.getMap().getABlock(y , x);
         boolean flag = false;
         for (Human human : selectedWarEquipment) {
             if(human.isThereAWay(block)) {
@@ -403,14 +403,14 @@ public class GameController {
     public static String arialAttack(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(!currentGame.getMap().checkBounds(x , y)) {
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
         boolean flag = false;
-        Block OpponentBlock = currentGame.getMap().getABlock(x , y);
+        Block OpponentBlock = currentGame.getMap().getABlock(y , x);
         if(OpponentBlock.getHumans().isEmpty()) {
             return "there is no enemy in that block";
         }
@@ -444,8 +444,7 @@ public class GameController {
         if (!currentGame.getMap().checkBounds(yLocation , xLocation))
             return "Invalid coordinates, selecting unit failed";
         Block block = currentGame.getMap().getABlock(yLocation , xLocation);
-
-        if(type == null) {
+        if(type == null|| type.isEmpty()) {
             boolean flag = false;
             for (Human warEquipment: block.getHumans()){
                 if (warEquipment.getGovernment().equals(currentGame.getCurrentGovernment())){
@@ -456,7 +455,10 @@ public class GameController {
             if(!flag) return "there is no troop in that block!";
             return "Troops selected successfully";
         }
-
+        boolean flag = false;
+        if(type.equals("engineer") || type.equals("tunneler") || type.equals("ladder man")) {
+            return selectOtherTroops(block , type);
+        }
         if(Dictionaries.troopDictionary.containsKey(type)) {
             return selectTroop(block , type);
         }
@@ -464,6 +466,41 @@ public class GameController {
             return selectSiegeMachine(block , type);
         }
         return "Invalid type";
+    }
+    private static String selectOtherTroops(Block block , String type) {
+        boolean flag = false;
+        switch (type) {
+            case "engineer" -> {
+                for (Human human : block.getHumans()) {
+                    if (!(human instanceof Engineer engineer)) continue;
+                    selectedWarEquipment.add(engineer);
+                    flag = true;
+                }
+                if (!flag) return "there is no engineer in that block!";
+                return "engineer selected successfully";
+            }
+            case "tunneler" -> {
+                for (Human human : block.getHumans()) {
+                    if (!(human instanceof Tunneler tunneler)) continue;
+                    selectedWarEquipment.add(tunneler);
+                    flag = true;
+                }
+                if (!flag) return "there is no tunneler in that block!";
+                return "tunneler selected successfully";
+            }
+            case "ladder man" -> {
+                for (Human human : block.getHumans()) {
+                    if (!(human instanceof LadderMan ladderMan)) continue;
+                    selectedWarEquipment.add(ladderMan);
+                    flag = true;
+                }
+                if (!flag) return "there is no ladder man in that block!";
+                return "ladder man selected successfully";
+            }
+            default -> {
+                return "ERROR in select human!";
+            }
+        }
     }
     private static String selectSiegeMachine(Block block , String type) {
         boolean flag = false;
@@ -581,16 +618,24 @@ public class GameController {
         return "bridge successfully opened!";
     }
 
+    public static String nextTurn() {
+        int index = currentGame.getPlayers().indexOf(currentGame.getCurrentGovernment().getOwner());
+        if(index == -1) return "ERROR in next turn";
+        int numberOfPlayers = currentGame.getPlayers().size();
+        currentGame.setCurrentGovernment(currentGame.getPlayers().get((index + 1) % numberOfPlayers).getGovernment());
+        currentGame.getCurrentGovernment().getAccountingDepartment().nextTurnForThisUser();
+        return "next turn done successfully";
+    }
     public static String attackTheBlock (Matcher matcher){
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        if(currentGame.getMap().checkBounds(x , y)) {
+        if(currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
-        Block OpponentBlock = currentGame.getMap().getABlock(x , y);
+        Block OpponentBlock = currentGame.getMap().getABlock(y , x);
         if(!OpponentBlock.getBuilding().isEmpty()) {
             for(Human human1 : selectedWarEquipment) {
                 if(human1 instanceof SiegeMachine siegeMachine) {
@@ -898,10 +943,10 @@ public class GameController {
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        if(currentGame.getMap().checkBounds(x , y)) {
+        if(currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
-        Block target = currentGame.getMap().getABlock(x , y);
+        Block target = currentGame.getMap().getABlock(y , x);
         if(isUnavailable(target)) {
             return "You can not dig a ditch on that block!";
         }
@@ -1005,10 +1050,10 @@ public class GameController {
         SiegeType type = Dictionaries.siegeMachineDictionary.get(matcher.group("type"));
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
-        if(currentGame.getMap().checkBounds(x , y)) {
+        if(currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
-        Block place = currentGame.getMap().getABlock(x , y);
+        Block place = currentGame.getMap().getABlock(y , x);
         if(isUnavailable(place)) {
             return "You can not build anything on this block!";
         }
@@ -1069,13 +1114,13 @@ public class GameController {
     public static String fillDitch(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
-        if(currentGame.getMap().checkBounds(x , y)) {
+        if(currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        Block target = currentGame.getMap().getABlock(x , y);
+        Block target = currentGame.getMap().getABlock(y , x);
         if(!target.getBlockType().equals(BlockType.DITCH)) {
             return "that block is not a ditch";
         }

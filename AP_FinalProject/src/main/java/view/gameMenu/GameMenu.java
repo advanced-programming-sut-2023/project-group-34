@@ -127,9 +127,8 @@ public class GameMenu {
                 String username = GameController.currentGame.getPlayers().get(0).getName();
                 GameController.currentGame.getPlayers().get(0).setScore(GameController.currentGame.getPlayers().get(0).getScore()+100);
                 //TODO set every player's government in keep destroy method to null after they lose
-                //TODO reset the map
                 GameController.currentGame.getPlayers().get(0).setGovernment(null);
-                GameController.currentGame.getPlayers().clear();
+                GameController.currentGame = null;
                 System.out.println(username + ", You are the winner. Congratulation!");
                 return "back";
             }

@@ -22,7 +22,7 @@ public enum MakerType implements BuildingType {
     FLETCHER(WOOD, 4, new ArrayList<>(Arrays.asList(Weapons.BOW, Weapons.CROSSBOW)), 1, 0,  500, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20) , Map.entry(GOLD , 100))), 1),
     BLACKSMITH(Resources.IRON, 4, new ArrayList<>(Arrays.asList(Weapons.SWORD , Weapons.MACE)), 1, 0,  700, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20) , Map.entry(GOLD , 100))), 1),
     POLETURNER(WOOD, 4, new ArrayList<>(Arrays.asList(Weapons.SPEAR , Weapons.PIKE)), 1, 0,  500, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 10) , Map.entry(GOLD , 100))), 1),
-    STABLE(null, 0, new ArrayList<>(List.of(Weapons.HORSE)), 1, 4, 500, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20) , Map.entry(GOLD , 400))), 0) ,
+    STABLE(null, 0, new ArrayList<>(List.of(Weapons.HORSE)), 2, 4, 500, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 20) , Map.entry(GOLD , 400))), 0) ,
     APPLE_GARDEN(null, 0, new ArrayList<>(List.of(Food.APPLE)), 7, 0, 250, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 5))), 1),
     DAIRY_FACTORY(null, 0, new ArrayList<>(Arrays.asList(Weapons.LEATHER_ARMOUR , Food.CHEESE)), 3, 0,  300, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 10))), 1),
     HOP_FARM(null, 0, new ArrayList<>(List.of(Food.HOP)), 7, 0,  150, new HashMap<>(Map.ofEntries(Map.entry(WOOD , 15))), 1),

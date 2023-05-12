@@ -1,5 +1,6 @@
 package model.building;
 
+import controller.GameController;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.human.Human;
@@ -34,6 +35,11 @@ public class Gate extends Building {
     @Override
     public void destroy() {
         government.changeMaxPopulation(-population);
+        if(buildingType.equals(GateType.KEEP)) {
+            if(GameController.currentGame.getPlayers().contains(government.getOwner()))
+                GameController.currentGame.getPlayers().remove(government.getOwner());
+            government.getOwner().setGovernment(null);
+        }
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
     }

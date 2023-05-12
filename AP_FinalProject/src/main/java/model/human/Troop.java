@@ -2,6 +2,7 @@ package model.human;
 
 import controller.GameController;
 import model.building.Building;
+import model.building.DefenciveBuilding;
 import model.enums.TroopStage;
 import model.enums.make_able.MakeAble;
 import model.government.Government;
@@ -48,8 +49,6 @@ public class Troop extends Human {
     public int getDefensiveRange() {
         return defensiveRange;
     }
-
-    @Override
     public void automaticAttack() {
         int counter = 0;
         int x = getBlock().getLocationI();
@@ -74,6 +73,13 @@ public class Troop extends Human {
                 range = fireRange;
                 tempDamage = (getCurrentDamage() * 7) / 10;
             }
+        }
+        if(this.getFireRange() <= 0 && (this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding)) {
+            return;
+        }
+        if(this.fireRange > 0 && (this.getBlock().getBuilding().get(0) instanceof  DefenciveBuilding defenciveBuilding)) {
+           tempDamage += defenciveBuilding.getDefendRange();
+           range += defenciveBuilding.getFireRange();
         }
         for (int i = x - range ; i <= x + range ; i++) {
             for (int j = y - range ; j <= y + range ; j++) {

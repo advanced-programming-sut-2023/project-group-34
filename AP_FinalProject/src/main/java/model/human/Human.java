@@ -61,13 +61,6 @@ public class Human {
         if(HP <= 0) die();
     }
 
-    public int getSpeed () {
-        return speed;
-    }
-    public int getMaxHP() {
-        return maxHP;
-    }
-
     public int getHP() {
         return HP;
     }
@@ -173,8 +166,5 @@ public class Human {
 
     public void setTroopStage(TroopStage troopStage) {
         this.troopStage = troopStage;
-    }
-
-    public void automaticAttack() {
     }
 }

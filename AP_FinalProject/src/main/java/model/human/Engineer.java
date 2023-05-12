@@ -2,6 +2,7 @@ package model.human;
 
 import controller.GameController;
 import model.building.Building;
+import model.building.DefenciveBuilding;
 import model.building.OilSmelter;
 import model.government.Government;
 import model.map.Block;
@@ -11,9 +12,6 @@ public class Engineer extends Human{
     public Engineer(Block block, Government government) {
         super(0, 0 , block, 0, 0, false, true , government , 4);
         if(government != null) useOil();
-    }
-    public void equipWithOil() {
-
     }
 
     public boolean isEquippedWithOil() {
@@ -43,6 +41,9 @@ public class Engineer extends Human{
                 numberOfOpponent = 5;
                 tempDamage = (getCurrentDamage() * 7) / 10;
             }
+        }
+        if(this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding) {
+            tempDamage += defenciveBuilding.getDefendRange();
         }
         for (int i = x - 3 ; i <= x + 3; i++) {
             for (int j = y - 3 ; j <= y + 3 ; j++) {

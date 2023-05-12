@@ -11,8 +11,6 @@ public class Game {
 
     private Government currentGovernment;
     private final ArrayList<Trade> allTrades = new ArrayList<>();
-    private int numberOfRoundsPassed = 0;
-
     private final GameMap map;//TODO: Set it
     public Game(GameMap map) {
         this.map = map;
@@ -32,21 +30,6 @@ public class Game {
     }
 
 
-    public int getNumberOfRoundsPassed() {
-        return numberOfRoundsPassed;
-    }
-
-    public void setNumberOfRoundsPassed(int numberOfRoundsPassed) {
-        this.numberOfRoundsPassed = numberOfRoundsPassed;
-    }
-
-    public void nextUser() {
-
-    }
-
-    public void nextTurn(){
-
-    }
 
     public ArrayList<Trade> getAllTrades() {
         return allTrades;
