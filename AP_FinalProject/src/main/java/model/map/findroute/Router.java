@@ -1,13 +1,8 @@
 package model.map.findroute;
 
-import model.building.DefenciveBuilding;
-import model.building.DrawBridge;
-import model.building.DrawBridgeType;
-import model.building.GateType;
+import model.building.*;
 import model.enums.BlockType;
-import model.human.Human;
-import model.human.Troop;
-import model.human.TroopType;
+import model.human.*;
 import model.map.Block;
 import model.map.GameMap;
 
@@ -114,9 +109,11 @@ public class Router {
         if (unpassable(node.getCurrentBlock())) return false;
         if (human instanceof Troop && ((Troop) human).getTroopType().equals(TroopType.ASSASSIN)) return true;
         if (human.isCanClimb() && node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding && ((DefenciveBuilding) node.getCurrentBlock().getBuilding().get(0)).isHasLadder()) return true;
-        if (human.isCanClimb() && (node.getCurrentBlock().getBuilding().size() != 0) ||
-                (node.getParent().getCurrentBlock().getBuilding().size() != 0 ))
+        if (human.isCanClimb() && ((node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS)) ||
+                (node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.STAIRS))))
             return true;
+        if (human.isCanClimb() && ((node.getCurrentBlock().getHumans().size() != 0 && node.getCurrentBlock().getHumans().get(0) instanceof SiegeMachine siegeMachine && siegeMachine.getType().equals(SiegeType.SIEGE_TOWER)) ||
+                (node.getParent().getCurrentBlock().getHumans().size() != 0 && node.getParent().getCurrentBlock().getHumans().get(0) instanceof SiegeMachine parentSiegeMachine && parentSiegeMachine.getType().equals(SiegeType.SIEGE_TOWER)))) return true;
         if (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding) {
             return node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding;
         }

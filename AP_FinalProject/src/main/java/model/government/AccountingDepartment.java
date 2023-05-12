@@ -160,7 +160,7 @@ public class AccountingDepartment {
                 break;
             }
         }
-        int populationToBeAdded = (int) ((foodLeft + government.getTotalPopularity())/(2 * ((foodRate * 0.5) + 1)));
+        int populationToBeAdded = (int) ((foodLeft + government.getTotalPopularity())/(2 * ((foodRate * 0.5) + 1.5)));
         for (Building building : government.getBuildings()){
             if (building.getBuildingType().equals(GateType.KEEP)){
                 block = building.getBlock();
