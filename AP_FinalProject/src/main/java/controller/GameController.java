@@ -869,7 +869,7 @@ public class GameController {
         return "the wall was destroyed successfully!";
     }
 
-    public static boolean thereIsNoTroopToDig(Block target) {
+    private static boolean thereIsNoTroopToDig(Block target) {
         for(Human human : selectedWarEquipment) {
             if(!(human instanceof Troop troop)) {
                 continue;
@@ -914,21 +914,22 @@ public class GameController {
             return "You have ot choose a siege tent first!";
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(currentGame.getMap().checkBounds(y , x)) {
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         Block place = currentGame.getMap().getABlock(y , x);
+        String type = matcher.group("type").replaceAll("\"", "");
         if(!Dictionaries.siegeMachineDictionary.containsKey(matcher.group("type"))) {
             return "siege tent can not build that!";
         }
-        SiegeType type = Dictionaries.siegeMachineDictionary.get(matcher.group("type"));
-        if(place.getBuilding().isEmpty() ||
-                !place.getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.SQUARE_TOWER) ||
-                !place.getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.CIRCLE_TOWER)) {
+        SiegeType type1 = Dictionaries.siegeMachineDictionary.get(type);
+        if(place.getBuilding().isEmpty() || (
+                !place.getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.SQUARE_TOWER) &&
+                !place.getBuilding().get(0).getBuildingType().equals(DefenciveBuildingType.CIRCLE_TOWER))) {
             return "there is no useful tower on that block!";
         }
         Government government = currentGame.getCurrentGovernment();
-        if(type.getPrice() > Resources.GOLD.getAmount(government)) {
+        if(type1.getPrice() > Resources.GOLD.getAmount(government)) {
             return "You don't have enough money!";
         }
         int numberOfEngineer = 0;
@@ -937,24 +938,26 @@ public class GameController {
                 numberOfEngineer++;
             }
         }
-        if(type.getNumberOfEngineer() > numberOfEngineer)
+        if(type1.getNumberOfEngineer() > numberOfEngineer)
         {
             return "there is not enough engineer to build!";
         }
-        int amount = type.getNumberOfEngineer();
-        for (Human human : government.getHumans()) {
+        int amount = type1.getNumberOfEngineer();
+        int size = government.getHumans().size();
+        for (int i = size-1; i > -1 ; i--) {
+            Human human = government.getHumans().get(i);
             if (human instanceof Engineer engineer && engineer.isUnemployed()) {
                 amount--;
                 engineer.die();
             }
             if (amount == 0) break;
         }
-        Resources.GOLD.use(type.getPrice() , government);
-        type.creator(place , government);
+        Resources.GOLD.use(type1.getPrice() , government);
+        type1.creator(place , government);
         DefenciveBuilding defenciveBuilding = (DefenciveBuilding) place.getBuilding().get(0);
         defenciveBuilding.addHuman(place.getHumans().get(place.getHumans().size() - 1));
         return "The equipment was built successfully!";
-    }
+    } //checked
     public static String putLadder(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -990,20 +993,13 @@ public class GameController {
     }
     public static String buildEquipment (Matcher matcher) {
         if(selectedBuilding == null || !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.SIEGE_TENT))
-            return "You have ot choose a siege tent first!";
-        if(!Dictionaries.siegeMachineDictionary.containsKey(matcher.group("type"))) {
+            return "You have to choose a siege tent first!";
+        String type = matcher.group("type").replaceAll("\"", "");
+        if(!Dictionaries.siegeMachineDictionary.containsKey(type)) {
             return "siege tent can not build that!";
         }
-        SiegeType type = Dictionaries.siegeMachineDictionary.get(matcher.group("type"));
-        int y = Integer.parseInt(matcher.group("y"));
-        int x = Integer.parseInt(matcher.group("x"));
-        if(currentGame.getMap().checkBounds(x , y)) {
-            return "please enter a point in the map";
-        }
-        Block place = currentGame.getMap().getABlock(x , y);
-        if(isUnavailable(place)) {
-            return "You can not build anything on this block!";
-        }
+        SiegeType type1 = Dictionaries.siegeMachineDictionary.get(type);
+
         Government government = selectedBuilding.getGovernment();
         int numberOfEngineer = 0;
         for(Human human : government.getHumans()) {
@@ -1011,26 +1007,28 @@ public class GameController {
                 numberOfEngineer++;
             }
         }
-        int amount = type.getNumberOfEngineer();
+        int amount = type1.getNumberOfEngineer();
         if(amount > numberOfEngineer)
         {
             return "there is not enough engineer to build!";
         }
-        for (Human human : government.getHumans()) {
+        int size = government.getHumans().size();
+        for (int i = size - 1; i >= 0; i--) {
+            Human human = government.getHumans().get(i);
             if (human instanceof Engineer engineer && engineer.isUnemployed()) {
                 amount--;
                 engineer.die();
             }
             if (amount == 0) break;
         }
-        if(type.getPrice() > Resources.GOLD.getAmount(government)) {
+        if(type1.getPrice() > Resources.GOLD.getAmount(government)) {
             return "You don't have enough money!";
         }
-        Resources.GOLD.use(type.getPrice() , government);
-        type.creator(place , government);
+        Resources.GOLD.use(type1.getPrice() , government);
+        type1.creator(selectedBuilding.getBlock() , government);
 
         return "The equipment was built successfully!";
-    }
+    } //checked
     private static Block keepFinder() {
         for(Building building : currentGame.getCurrentGovernment().getBuildings()) {
             if(building.getBuildingType().equals(GateType.KEEP)) {

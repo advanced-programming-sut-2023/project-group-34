@@ -72,7 +72,7 @@ public enum Commands {
     PATROL_UNIT("(?=.*-x1\\s+(?<x1>\\d*))(?=.*-x2\\s+(?<x2>\\d*))(?=.*-y1\\s+(?<y1>\\d*))(?=.*-y2\\s+(?<y2>\\d*))^Patrol(\\s+-[xy][1-2]\\s+\\d*){4}"),
     DIG_TUNNEL("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Dig\\s+tunnel(\\s+-[xy]\\s+\\d*){2}$"),
     DISBAND_UNIT("Disband\\s+unit"),
-    BUILD_EQUIPMENT("(?=.*-x(\\s+|$)(?<x>\\d*))(?=.*-y(\\s+|$)(?<y>\\d*))(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment(\\s+-[xyt]\\s+(\".+\"|\\S+)){3}$"),
+    BUILD_EQUIPMENT("(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment(\\s+-[t]\\s+(\".+\"|\\S+)){1}$"),
     POUR_OIL("(?=.*-d(\\s+|$)(?<d>\\S+))^Pour\\s+oil(\\s+-[d]\\s+\\S+){1}$"),
     DIG_DITCH("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Dig\\s+ditch(\\s+-[xy]\\s+\\d*){2}$"),
     FILL_DITCH("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Fill\\s+ditch(\\s+-[xy]\\s+\\d*){2}$"),
