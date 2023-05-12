@@ -86,7 +86,8 @@ public enum Commands {
     FOOD_LEFT("Food\\s+left"),
     RESOURCE_LEFT("Resource\\s+left"),
     WEAPONS_LEFT("Weapons\\s+left"),
-    NEXT_TURN("Next\\s+turn");
+    NEXT_TURN("Next\\s+turn"),
+    SHOW_CURRENT_POPULATION("Show\\s+population\\s+factors");
 
 
 

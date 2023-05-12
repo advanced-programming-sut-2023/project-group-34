@@ -122,6 +122,8 @@ public class GameMenu {
                 System.out.println(MainController.dropUnit(GameController.currentGame.getMap(), matcher));
             } else if (Commands.getOutput(command, Commands.NEXT_TURN) != null){
                 System.out.println(GameController.nextTurn());
+            } else if (Commands.getOutput(command, Commands.SHOW_CURRENT_POPULATION) != null){
+                System.out.println(GameController.populationInformation());
             } else {
                 System.out.println("Invalid command!");
             }

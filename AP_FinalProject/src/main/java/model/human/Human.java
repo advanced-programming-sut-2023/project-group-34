@@ -71,6 +71,7 @@ public class Human {
     public void die() {
         block.getHumans().remove(this);
         government.getHumans().remove(this);
+        GameController.selectedWarEquipment.remove(this);
     }
     public void move(int x , int y) {
 
@@ -157,8 +158,9 @@ public class Human {
     }
     public boolean isThereAWay(Block block)
     {
-        Router router = new Router(GameController.currentGame.getMap(), this.block, block, (Troop) this);
+        Router router = new Router(GameController.currentGame.getMap(), this.block, block, this);
         ArrayList<Block> way = router.findBestRoute();
+        if (way == null) return false;
         return way.size() <= this.speed;
     }
 

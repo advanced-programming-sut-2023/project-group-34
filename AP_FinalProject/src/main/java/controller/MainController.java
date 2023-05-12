@@ -430,27 +430,32 @@ public class MainController {
             for (int i = 0; i < count; i++) {
                 block.getHumans().add(new Engineer(block , government));
             }
+            return "engineers dropped successfully!";
         }
         else if(type.equals("ladder man")) {
             for (int i = 0; i < count; i++) {
                 block.getHumans().add(new LadderMan(block , government));
             }
+            return "ladder man dropped successfully!";
         }
         else if(type.equals("tunneler")) {
             for (int i = 0; i < count; i++) {
                 block.getHumans().add(new Tunneler(block , government));
             }
+            return "tunneler dropped successfully!";
         }
         else if(Dictionaries.siegeMachineDictionary.containsKey(type)) {
             for (int i = 0; i < count; i++) {
                 Dictionaries.siegeMachineDictionary.get(type).creator(block , government);
             }
+            return "siege machines dropped successfully!";
         }
         else if(Dictionaries.troopDictionary.containsKey(type)) {
             for (int i = 0; i < count; i++) {
                 Dictionaries.troopDictionary.get(type).Creator(block, government);
             }
+            return "troops dropped successfully!";
         }
-        return "Units added successfully!";
+        return "No such type!";
     }
 }
