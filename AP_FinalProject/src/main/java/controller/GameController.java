@@ -304,7 +304,6 @@ public class GameController {
             return "you have to select a related building!";
         }
         for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
-            System.out.println(count + "   " + entry.getValue() + "  " + entry.getKey().getLeftCapacity(currentGame.getCurrentGovernment()) + "  " + entry.getKey().toString());
             if (count * entry.getValue() > entry.getKey().getAmount(currentGame.getCurrentGovernment())) {
                 return "You do not have enough " + entry.getKey().toString() + " to train troops!";
             }
@@ -459,6 +458,7 @@ public class GameController {
         String type = matcher.group("type");
         if (!currentGame.getMap().checkBounds(yLocation , xLocation))
             return "Invalid coordinates, selecting unit failed";
+        type = type.replaceAll("\"", "");
         Block block = currentGame.getMap().getABlock(yLocation , xLocation);
         if(type == null|| type.isEmpty()) {
             boolean flag = false;
@@ -471,7 +471,6 @@ public class GameController {
             if(!flag) return "there is no troop in that block!";
             return "Troops selected successfully";
         }
-        boolean flag = false;
         if(type.equals("engineer") || type.equals("tunneler") || type.equals("ladder man")) {
             return selectOtherTroops(block , type);
         }
@@ -482,7 +481,7 @@ public class GameController {
             return selectSiegeMachine(block , type);
         }
         return "Invalid type";
-    }
+    } //checker
     private static String selectOtherTroops(Block block , String type) {
         boolean flag = false;
         switch (type) {
@@ -517,7 +516,7 @@ public class GameController {
                 return "ERROR in select human!";
             }
         }
-    }
+    } //checked
     private static String selectSiegeMachine(Block block , String type) {
         boolean flag = false;
         for(Human human : block.getHumans()) {
@@ -529,29 +528,12 @@ public class GameController {
         }
         if(!flag) return "there is no siege machine in that block!";
         return "selected successfully";
-    }
+    } //checked
 
     private static String selectTroop(Block block , String type) {
         boolean flag = false;
         for (Human warEquipment: block.getHumans()){
             if (warEquipment.getGovernment().equals(currentGame.getCurrentGovernment())){
-                switch (type) {
-                    case "engineer" -> {
-                        if ((warEquipment instanceof Engineer)) continue;
-                        flag = true;
-                        selectedWarEquipment.add(warEquipment);
-                    }
-                    case "tunneler" -> {
-                        if ((warEquipment instanceof Tunneler)) continue;
-                        flag = true;
-                        selectedWarEquipment.add(warEquipment);
-                    }
-                    case "ladder man" -> {
-                        if (!(warEquipment instanceof LadderMan)) continue;
-                        flag = true;
-                        selectedWarEquipment.add(warEquipment);
-                    }
-                    default -> {
                         TroopType troopType = Dictionaries.troopDictionary.get(type);
                         if(!(warEquipment instanceof Troop troop)) continue;
                         if(!troop.getTroopType().equals(troopType)) continue;
@@ -559,11 +541,9 @@ public class GameController {
                         selectedWarEquipment.add(warEquipment);
                     }
                 }
-            }
-        }
         if(!flag) return "there is no troop in that block!";
         return "Troops selected successfully";
-    }
+    } //checked
     public static String deselectUnits(){
         if (selectedWarEquipment.isEmpty()) return "You have no troops selected";
         else selectedWarEquipment.clear();
@@ -849,8 +829,6 @@ public class GameController {
     } //checked
 
     private static String employMaker(Maker maker , int number) {
-        System.out.println(maker.getNumberOfCurrentWorkers());
-        System.out.println(maker.getNumberOfMaxWorkers());
         if(maker.getNumberOfCurrentWorkers() >= maker.getNumberOfMaxWorkers()) {
             return "That building has max capacity";
         }
@@ -907,7 +885,7 @@ public class GameController {
     public static String digTunnel (Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
-        if(currentGame.getMap().checkBounds(y , x)) {
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         Block target = currentGame.getMap().getABlock(y , x);
@@ -916,6 +894,9 @@ public class GameController {
         }
         if(target.getBuilding().isEmpty()) {
             return "there is no building there!";
+        }
+        if(target.getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment())) {
+            return "That building is not for enemy!";
         }
         BuildingType buildingType = target.getBuilding().get(0).getBuildingType();
         ArrayList<BuildingType> goodBuildingType = new ArrayList<>(Arrays.asList(DefenciveBuildingType.HIGH_WALL , DefenciveBuildingType.LOW_WALL , DefenciveBuildingType.DEFENCIVE_TURRET , DefenciveBuildingType.LOOKOUT_TOWER , DefenciveBuildingType.PERIMETER_TOWER));
@@ -935,7 +916,7 @@ public class GameController {
             return "The selected wall could not be destroyed by your unit!";
         }
         return "the wall was destroyed successfully!";
-    }
+    } //checked
 
     private static boolean thereIsNoTroopToDig(Block target) {
         for(Human human : selectedWarEquipment) {
@@ -945,7 +926,7 @@ public class GameController {
             if(!troop.getCanDig()) {
                 continue;
             }
-            if(!troop.isThereAWay(target)) {
+            if(GameMap.getDistanceBetweenTwoBlocks(human.getBlock(), target) > human.getSpeed()) {
                 continue;
             }
             return false;
@@ -958,25 +939,26 @@ public class GameController {
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        if(currentGame.getMap().checkBounds(y , x)) {
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         Block target = currentGame.getMap().getABlock(y , x);
         if(isUnavailable(target)) {
             return "You can not dig a ditch on that block!";
         }
+
         if(thereIsNoTroopToDig(target)) {
             return "None of the selected people could dig that place!";
         }
         target.setBlockType(BlockType.DITCH);
         return "Ditch was successfully dug!";
-    }
+    } //checked
     private static boolean isUnavailable(Block block) {
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND, BlockType.GRASS, BlockType.MEADOW,
                 BlockType.DENSE_MEADOW , BlockType.BEACH , BlockType.PLAIN));
 
         return !goodBlockTypes.contains(block.getBlockType());
-    }
+    } //checked
     public static String buildEquipmentOnTower(Matcher matcher) {
         if(!(selectedBuilding.getBuildingType().equals(GeneralBuildingsType.SIEGE_TENT)))
             return "You have ot choose a siege tent first!";
@@ -1027,14 +1009,17 @@ public class GameController {
         return "The equipment was built successfully!";
     } //checked
     public static String putLadder(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if(currentGame.getMap().checkBounds(y , x)) {
+        int x = Integer.parseInt(matcher.group("x"));
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         Block target = currentGame.getMap().getABlock(y , x);
         if(target.getBuilding().isEmpty()) {
             return "there is no building there!";
+        }
+        if(target.getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment())) {
+            return "That wall is not for enemy!";
         }
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
@@ -1044,21 +1029,24 @@ public class GameController {
             return "You can only use ladder man on walls!";
         }
         boolean flag = false;
-        for(Human human : selectedWarEquipment) {
+        int size = selectedWarEquipment.size();
+        Human human;
+        for(int i = size - 1; i >= 0;i--) {
+            human = selectedWarEquipment.get(i);
             if(!(human instanceof LadderMan ladderMan)) continue;
             if(!ladderMan.isThereAWay(target)) continue;
             flag = true;
             if(target.getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding) {
                 defenciveBuilding.setHasLadder(true);
                 ladderMan.die();
+                break;
             }
-            break;
         }
         if(!flag) {
             return "The selected wall could not be laddered on by your unit!";
         }
         return "the wall was laddered on successfully!";
-    }
+    } //checked
     public static String buildEquipment (Matcher matcher) {
         if(selectedBuilding == null || !selectedBuilding.getBuildingType().equals(GeneralBuildingsType.SIEGE_TENT))
             return "You have to choose a siege tent first!";
@@ -1127,7 +1115,7 @@ public class GameController {
     public static String fillDitch(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
-        if(currentGame.getMap().checkBounds(y , x)) {
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         if(selectedWarEquipment.isEmpty()) {
@@ -1141,8 +1129,8 @@ public class GameController {
             return "None of the selected people could dig that place!";
         }
         target.setBlockType(BlockType.GROUND);
-        return "Ditch was successfully dug!";
-    }
+        return "Ditch was successfully filled!";
+    } //checked
 
 
     public static String sellItems(Matcher matcher){
@@ -1165,7 +1153,7 @@ public class GameController {
                         get(Resources.GOLD) + finalPrice);
         changeStorage(item, finalAmount, -1);
         return "Item sold successfully";
-    }
+    } //checked
 
     public static String buyItems(Matcher matcher){
 
@@ -1193,7 +1181,7 @@ public class GameController {
 
         changeStorage(item, finalAmount, 1);
         return "Item purchased successfully";
-    }
+    } //checked
 
     private static boolean capacityCheckerForBuying(String name, int amount){
         for (Resources resources : Resources.values()){
@@ -1220,7 +1208,7 @@ public class GameController {
             }
         }
         return false;
-    }
+    } //checked
 
     private static boolean capacityCheckerForSelling(String name, int amount){
         for (Resources resources : Resources.values()){
@@ -1244,7 +1232,7 @@ public class GameController {
             }
         }
         return false;
-    }
+    } //checked
 
 
     private static void changeStorage(String name, int amount, int coefficient){
@@ -1275,7 +1263,7 @@ public class GameController {
                 return;
             }
         }
-    }
+    } //checked
 
     private static String getResourcesPriceList(){
         String finalString = "";
@@ -1284,7 +1272,7 @@ public class GameController {
                     entry.getKey().getPrice() + " Selling Price: " + (entry.getKey().getPrice()*4)/5 + " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
-    }
+    } //checked
 
     private static String getFoodPriceList(){
         String finalString = "";
@@ -1293,7 +1281,7 @@ public class GameController {
                     entry.getKey().getPrice() + " Selling Price: " + (entry.getKey().getPrice()*4)/5 + " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
-    }
+    } //checked
 
     private static String getWeaponPriceList(){
         String finalString = "";
@@ -1302,7 +1290,7 @@ public class GameController {
                     entry.getKey().getPrice() + " Selling Price: " + (entry.getKey().getPrice()*4)/5 + " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
-    }
+    } //checked
 
     public static String showPriceList(){
         String finalString = "";
@@ -1311,7 +1299,7 @@ public class GameController {
         finalString = finalString.concat(getWeaponPriceList());
 
         return finalString.substring(0 , finalString.length() - 2);
-    }
+    } //checked
 
     public static String foodResource(){
         String finalString = "";
@@ -1319,7 +1307,7 @@ public class GameController {
             finalString = finalString.concat("Item: " + entry.getKey().getName() +  " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
-    }
+    } //checked
 
     public static String Resource(){
         String finalString = "";
@@ -1327,7 +1315,7 @@ public class GameController {
             finalString = finalString.concat("Item: " + entry.getKey().getName() +  " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
-    }
+    } //checked
 
     public static String weaponsResource(){
         String finalString = "";
@@ -1335,7 +1323,7 @@ public class GameController {
             finalString = finalString.concat("Item: " + entry.getKey().getName() +  " Amount: " + entry.getValue() + "\n");
         }
         return finalString;
-    }
+    } //checked
 
     public static String showTradeDetails(Trade trade){
         String finalString = "";
@@ -1581,6 +1569,14 @@ public class GameController {
             }
         }
         return "Troops' stage switched successfully";
+    }
+
+    public static String populationInformation(){
+        String finalString = "";
+        finalString = finalString.concat("Population: " + currentGame.getCurrentGovernment().getPopulation());
+        finalString = finalString.concat("Max Population: " + currentGame.getCurrentGovernment().getMaxPopulation());
+        finalString = finalString.concat("Unemployed: " + findUnemployed().size());
+        return finalString;
     }
 
 
