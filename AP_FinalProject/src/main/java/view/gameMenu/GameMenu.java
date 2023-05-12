@@ -87,6 +87,8 @@ public class GameMenu {
                 System.out.println(GameController.addWorker(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.DIG_TUNNEL)) != null){
                 System.out.println(GameController.digTunnel(matcher));
+            } else if (Commands.getOutput(command, Commands.STOP_UNIT) != null) {
+                GameController.stopSelectedUnits();
             } else if ((matcher = Commands.getOutput(command, Commands.DIG_DITCH)) != null){
                 System.out.println(GameController.digDitch(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.BUILD_EQUIP_ON_TOWER)) != null){

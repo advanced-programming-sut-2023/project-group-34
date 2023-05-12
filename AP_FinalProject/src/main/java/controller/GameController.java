@@ -61,6 +61,14 @@ public class GameController {
     public static void setGame(Game game) {
         currentGame = game;
     }
+    
+    public static String stopSelectedUnits () {
+        if (selectedWarEquipment.size() == 0) return "No soldiers Selected!";
+        for (Human human : selectedWarEquipment) {
+            human.stop();
+        }
+        return "All soldiers stopped!";
+    }
 
     public static String selectBuilding(Matcher matcher){
         int xLocation = Integer.parseInt(matcher.group("x"));
@@ -101,14 +109,21 @@ public class GameController {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
-        Router router = new Router(currentGame.getMap(), selectedWarEquipment.get(0).getBlock(), currentGame.getMap().getABlock(y, x), (Troop) selectedWarEquipment.get(0));
-        ArrayList<Block> route = router.findBestRoute();
-        if (route == null) return "Can't reach there!";
-        if (route.size() == 0) return "You are already in the destination given!";
+        boolean someoneCouldntGoThere = false;
+        boolean someoneCouldGoThere = false;
         for (Human human : selectedWarEquipment) {
-            human.setDestination(currentGame.getMap().getABlock(y, x));
-            human.applyMoves();
+            Router router = new Router(currentGame.getMap(), human.getBlock(), currentGame.getMap().getABlock(y, x), human);
+            ArrayList<Block> route = router.findBestRoute();
+            if (route == null) someoneCouldntGoThere = true;
+            else {
+                if (route.size() == 0) return "You are already in the destination given!";
+                someoneCouldGoThere = true;
+                human.setDestination(currentGame.getMap().getABlock(y, x));
+                human.applyMoves();
+            }
         }
+        if (!someoneCouldGoThere) return "Couldn't move selected units!";
+        if (someoneCouldntGoThere) return "Some of selected troops couldn't go there!";
         return "Units are moving successfully!";
         //todo: Arshia check it!
     }

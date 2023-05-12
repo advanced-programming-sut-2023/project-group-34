@@ -182,6 +182,11 @@ public class Human {
     public boolean isUnemployed() {
         return isUnemployed;
     }
+    
+    public void stop() {
+        destination = null;
+        patrolDestination = null;
+    }
 
     public void setUnemployed(boolean unemployed) {
         isUnemployed = unemployed;

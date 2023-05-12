@@ -79,6 +79,7 @@ public enum Commands {
     DROP_STAIRS("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Drop\\s+stairs(\\s+-[xy]\\s+\\d*){2}$"),
     DEPLOY_CAGED("Deploy\\s+caged\\s+war\\s+dog"),
     ADD_WORKER("Add\\s+worker\\s+(?<n>\\d+)"),
+    STOP_UNIT("Stop"),
     BUILD_EQUIP_ON_TOWER("(?=.*-x(\\s+|$)(?<x>\\d*))(?=.*-y(\\s+|$)(?<y>\\d*))(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment\\s+on\\s+tower(\\s+-[xyt]\\s+(\".+\"|\\S+)){3}$"),
     PUT_LADDER("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Put\\s+ladder(\\s+-[xy]\\s+\\d*){2}$"),
     SET_TROOP_STATE("Set\\s+state(\\s+|$)(?<state>(\\S+))*"),
