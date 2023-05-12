@@ -30,7 +30,9 @@ public class DefenciveBuilding extends Building{
     }
     @Override
     public void destroy() {
-        for (Human human : this.warEquipments) {
+        ArrayList<Human> equipments = this.warEquipments;
+        for (int i = equipments.size() - 1; i >= 0; i--) {
+            Human human = equipments.get(i);
             human.die();
         }
         block.getBuilding().remove(this);

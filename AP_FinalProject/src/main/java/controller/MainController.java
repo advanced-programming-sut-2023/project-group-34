@@ -28,7 +28,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 import static controller.MapEditingController.getCurrentGameMap;
+
 import view.*;
+
 import static controller.MapEditingController.setCurrentGameMap;
 
 public class MainController {
@@ -272,6 +274,9 @@ public class MainController {
         User.currentUser.loadUserMapsFromDataBase();
         String mapName = matcher.group("mapName").trim().replaceAll("\"", "");
         if (mapName.isEmpty()) return "Empty field!";
+        if(User.currentUser.getMapByName(mapName) == null) {
+            return "that map does not exist!";
+        }
         GameController.setCurrentGame(new Game(new GameMap(User.currentUser.getMapByName(mapName))));
         GameController.currentGame.setCurrentGovernment(User.currentUser.getGovernment());
         return null;
@@ -413,6 +418,7 @@ public class MainController {
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
+        if (type == null) type = "";
         type = type.replaceAll("\"", "");
         int count = Integer.parseInt(matcher.group("count"));
         if (!map.checkBounds(y, x)) {

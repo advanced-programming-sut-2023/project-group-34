@@ -65,6 +65,7 @@ public class MapEditingController {
         if (!(getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GRASS) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GROUND)))
             return "Can't put a tree here!";
         getCurrentGameMap().getMap()[i][j].setBLockFiller(blockFillerType);
+        getCurrentGameMap().getMap()[i][j].useBlockFillerAmount(100);
         return "Success!";
     }
     

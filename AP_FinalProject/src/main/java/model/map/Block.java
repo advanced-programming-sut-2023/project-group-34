@@ -37,7 +37,7 @@ public class Block {
         this.blockType = sample.getBlockType();
         this.locationI = sample.locationI;
         this.locationJ = sample.locationJ;
-        this.blockFillerAmount = sample.getBlockFillerAmount();
+        this.blockFillerAmount = 100;
     }
 
     public ArrayList<Human> getHumans() {

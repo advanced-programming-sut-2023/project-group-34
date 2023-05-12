@@ -171,8 +171,10 @@ public class AccountingDepartment {
                     unemployed++;
             }
             for (int i = 0; i < Integer.min(-populationToBeAdded , unemployed); i++) {
-                for(Human human1 : government.getHumans()) {
-                    if(!(human1 instanceof Troop)) {
+                ArrayList<Human> humans = government.getHumans();
+                for (int j = humans.size() - 1; j >= 0; j--) {
+                    Human human1 = humans.get(j);
+                    if (!(human1 instanceof Troop)) {
                         human1.die();
                         break;
                     }

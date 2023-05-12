@@ -340,7 +340,7 @@ public class GameController {
         }
         Human human;
         ArrayList<Human> unemployed = findUnemployed();
-        for (int i = 0; i < count; i++) {
+        for (int i = count - 1; i >= 0; i--) {
             human = unemployed.get(i);
             for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
                 entry.getKey().use(entry.getValue(), currentGame.getCurrentGovernment());
@@ -363,7 +363,7 @@ public class GameController {
         }
         Human tempHuman;
         ArrayList<Human> unemployed = findUnemployed();
-        for (int i = 0; i < count; i++) {
+        for (int i = count - 1; i >= 0; i--) {
             tempHuman = unemployed.get(i);
             tempHuman.die();
             Resources.GOLD.use(30, currentGame.getCurrentGovernment());
@@ -464,8 +464,10 @@ public class GameController {
                 continue;
             }
             flag = true;
-            for(Human enemy : OpponentBlock.getHumans()) {
-                if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+            ArrayList<Human> humans = OpponentBlock.getHumans();
+            for (int i = humans.size() - 1; i >= 0; i--) {
+                Human enemy = humans.get(i);
+                if (!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
                     continue;
                 }
                 enemy.getHit(human.getCurrentDamage());
@@ -483,11 +485,13 @@ public class GameController {
         int xLocation = Integer.parseInt(matcher.group("x"));
         int yLocation = Integer.parseInt(matcher.group("y"));
         String type = matcher.group("type");
+        if (type == null) type = "";
         if (!currentGame.getMap().checkBounds(yLocation , xLocation))
             return "Invalid coordinates, selecting unit failed";
         type = type.replaceAll("\"", "");
         Block block = currentGame.getMap().getABlock(yLocation , xLocation);
-        if(type == null|| type.isEmpty()) {
+        deselectUnits();
+        if(type.isEmpty()) {
             boolean flag = false;
             for (Human warEquipment: block.getHumans()){
                 if (warEquipment.getGovernment().equals(currentGame.getCurrentGovernment())){
@@ -640,7 +644,7 @@ public class GameController {
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        if(currentGame.getMap().checkBounds(y , x)) {
+        if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         Block OpponentBlock = currentGame.getMap().getABlock(y , x);
@@ -708,8 +712,10 @@ public class GameController {
             if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
                 return false;
             }
-            for(Human enemy : OpponentBlock.getHumans()){
-                if(!enemy.isVisible() || enemy.getGovernment().equals(siegeMachine.getGovernment())) {
+            ArrayList<Human> humans = OpponentBlock.getHumans();
+            for (int i = humans.size() - 1; i >= 0; i--) {
+                Human enemy = humans.get(i);
+                if (!enemy.isVisible() || enemy.getGovernment().equals(siegeMachine.getGovernment())) {
                     continue;
                 }
                 enemy.getHit(siegeMachine.getCurrentDamage());
@@ -722,8 +728,10 @@ public class GameController {
         if(GameMap.getDistanceBetweenTwoBlocks(human.getBlock() , OpponentBlock) > human.getFireRange()) {
             return false;
         }
-        for(Human enemy : OpponentBlock.getHumans()){
-            if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+        ArrayList<Human> humans = OpponentBlock.getHumans();
+        for (int i = humans.size() - 1; i >= 0; i--) {
+            Human enemy = humans.get(i);
+            if (!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
                 continue;
             }
             enemy.getHit(human.getCurrentDamage());
@@ -732,8 +740,10 @@ public class GameController {
         return false;
     }
     private static boolean attackByClosers(Troop human , Block OpponentBlock) {
-        for(Human enemy : OpponentBlock.getHumans()) {
-            if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+        ArrayList<Human> humans = OpponentBlock.getHumans();
+        for (int i = humans.size() - 1; i >= 0; i--) {
+            Human enemy = humans.get(i);
+            if (!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
                 continue;
             }
             enemy.getHit(human.getCurrentDamage());
@@ -801,10 +811,12 @@ public class GameController {
                     block.getBuilding().get(0).getHit(engineer.getCurrentDamage());
                     continue;
                 }
-                for(Human enemy : block.getHumans()) {
-                    if(!human.isVisible()) {
-                        if(enemy.getGovernment().equals(engineer.getGovernment())) continue;
-                        if(human instanceof Troop troop && troop.getTroopType() == TroopType.ASSASSIN) {
+                ArrayList<Human> humans = block.getHumans();
+                for (int i = humans.size() - 1; i >= 0; i--) {
+                    Human enemy = humans.get(i);
+                    if (!human.isVisible()) {
+                        if (enemy.getGovernment().equals(engineer.getGovernment())) continue;
+                        if (human instanceof Troop troop && troop.getTroopType() == TroopType.ASSASSIN) {
                             enemy.getHit(engineer.getCurrentDamage());
                         }
                         continue;
@@ -1128,15 +1140,16 @@ public class GameController {
             return "You have not selected any unit";
         }
         Government government = currentGame.getCurrentGovernment();
-        for(Human human : selectedWarEquipment) {
-            if(human instanceof SiegeMachine siegeMachine) {
+        for (int j = selectedWarEquipment.size() - 1; j >= 0; j--) {
+            Human human = selectedWarEquipment.get(j);
+            if (human instanceof SiegeMachine siegeMachine) {
                 for (int i = 0; i < siegeMachine.getNumberOfEngineers(); i++) {
-                    government.getHumans().add(new Human(keepFinder() , government));
+                    government.getHumans().add(new Human(keepFinder(), government));
                 }
                 human.die();
                 continue;
             }
-            government.getHumans().add(new Human(keepFinder() , government));
+            government.getHumans().add(new Human(keepFinder(), government));
             human.die();
         }
         return "Unit disbanded successfully!";
