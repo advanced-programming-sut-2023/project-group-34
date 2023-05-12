@@ -23,7 +23,7 @@ public class Maker extends Building{
 
     private final MakeAble input;
     private final int numberOfMaxWorkers;
-    private int numberOfCurrentWorkers;
+    private int numberOfCurrentWorkers = 0;
     public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity
             , int HP, int numberOfMaxWorkers, HashMap<Resources, Integer> cost, BuildingType buildingType, int inputRate, MakeAble input) {
         super(government, block, HP , cost, buildingType);
@@ -52,13 +52,13 @@ public class Maker extends Building{
                 for (int j = 0; j < 399; j++) {
                     tempBlock = map.getABlock(i , j);
                     if(tempBlock.getBLockFiller() != null) {
-                        if(tempBlock.getBLockFiller().getAmount() <= 20) {
-                            Resources.WOOD.add(tempBlock.getBLockFiller().getAmount() , government);
+                        if(tempBlock.getBlockFillerAmount() <= 20) {
+                            Resources.WOOD.add(tempBlock.getBlockFillerAmount() , government);
                             tempBlock.setBLockFiller(null);
                         }
                         else {
                             Resources.WOOD.add(20 , government);
-                            tempBlock.getBLockFiller().use(20);
+                            tempBlock.useBlockFillerAmount(20);
                         }
                         return;
                     }

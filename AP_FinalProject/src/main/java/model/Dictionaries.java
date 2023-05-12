@@ -26,6 +26,7 @@ public class Dictionaries  {
         buildingDictionary.put("cathedral" , GeneralBuildingsType.CATHEDRAL);
         buildingDictionary.put("church" , GeneralBuildingsType.CHURCH);
         buildingDictionary.put("death pit" , DeathPitType.DEATH_PIT);
+        buildingDictionary.put("stairs" , DefenciveBuildingType.STAIRS);
         buildingDictionary.put("houses" , GateType.HOUSE);
         buildingDictionary.put("food storage" , GeneralBuildingsType.FOOD_STORAGE);
         buildingDictionary.put("armour storage" , GeneralBuildingsType.ARMOUR_STORAGE);

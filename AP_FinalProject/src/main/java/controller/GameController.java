@@ -69,7 +69,8 @@ public class GameController {
         if (xLocation < 0 || yLocation < 0 || xLocation > 399 || yLocation > 399)
             return "Invalid coordinates, selecting building failed";
 
-        if (currentGame.getMap().getABlock(yLocation, xLocation).getBuilding() == null)
+        if (currentGame.getMap().getABlock(yLocation, xLocation).getBuilding() == null ||
+                currentGame.getMap().getABlock(yLocation, xLocation).getBuilding().isEmpty())
             return "There is no building in this block, selecting building failed";
 
         if (!currentGame.getMap().getABlock(yLocation, xLocation).getBuilding().get(0).getGovernment().getOwner()
@@ -78,24 +79,14 @@ public class GameController {
 
         selectedBuilding = currentGame.getMap().getABlock(yLocation, xLocation).getBuilding().get(0);
         return "Building selected successfully";
-    }
+    } //checked
 
     public static String deselectBuilding(){
         if (selectedBuilding == null) return "You have no building selected, deselecting building failed";
         else selectedBuilding = null;
         return "Building deselected successfully";
-    }
+    } //checked
 
-    public Building getCurrentBuilding() {
-        return selectedBuilding;
-    }
-
-    private String deselectCurrentBuilding () { return null;}
-
-    private static String deselectHumans () {
-        selectedWarEquipment.clear();
-        return null;
-    }
     public static String moveUnit (Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
@@ -124,7 +115,8 @@ public class GameController {
         String response = setMapLocation(x, y);
         if (response != null) return response;
         return showMiniMap();
-    }
+    } //checked
+
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
@@ -147,7 +139,7 @@ public class GameController {
             output.append('\n');
         }
         return output.toString();
-    }
+    } //checked
 
     public static String moveMiniMap (Matcher matcher) {
         String up = matcher.group("up");
@@ -160,13 +152,13 @@ public class GameController {
         if (left != null) currentGame.getMap().moveMiniMap(Direction.WEST, Integer.parseInt(left));
         if (right != null) currentGame.getMap().moveMiniMap(Direction.EAST, Integer.parseInt(right));
         return showMiniMap();
-    }
+    } //checked
 
     public static String getBlockDetails (Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         return currentGame.getMap().showDetails(x, y);
-    }
+    } //checked
 
     public static String showPopularity () {
         return "Your current popularity is: " + currentGame.getCurrentGovernment().getTotalPopularity();
@@ -192,7 +184,7 @@ public class GameController {
         finalString = finalString.concat("Cheese: " + currentGame.getCurrentGovernment()
                 .getStorageDepartment().foodStorage.get(Food.CHEESE));
         return finalString;
-    }
+    } //checked
 
     public static String showFoodRate() {
         return "Your current food rate is: " + currentGame.getCurrentGovernment().
@@ -206,9 +198,6 @@ public class GameController {
         return "Your current fear rate is: " + currentGame.getCurrentGovernment().
                 getAccountingDepartment().getFearRate();
     }
-    public static void changeResourceAmount (Resources resource, int amount) {}
-
-
 
     public static String setTaxRate (Matcher matcher) {
         if(selectedBuilding == null || !(selectedBuilding.getBuildingType() == GateType.BIG_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.SMALL_GATE_HOUSE || selectedBuilding.getBuildingType() == GateType.KEEP)) {
@@ -286,7 +275,7 @@ public class GameController {
             return "you have to select a related building!";
         }
         for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
-            System.out.println(count + "   " + entry.getValue() + "  " + entry.getKey().getLeftCapacity(currentGame.getCurrentGovernment()) + "  " + entry.getKey().toString());
+
             if (count * entry.getValue() > entry.getKey().getAmount(currentGame.getCurrentGovernment())) {
                 return "You do not have enough " + entry.getKey().toString() + " to train troops!";
             }
@@ -305,7 +294,7 @@ public class GameController {
             troopType.Creator(place , currentGame.getCurrentGovernment());
         }
         return "unit created successfully!";
-    }
+    } //checked
 
     private static String createUnitErrorChecker(int count , int price , BuildingType buildingType) {
         if(!selectedBuilding.getBuildingType().equals(buildingType)) {
@@ -325,7 +314,8 @@ public class GameController {
             Resources.GOLD.use(30, currentGame.getCurrentGovernment());
         }
         return "OK";
-    }
+    } //checked
+
     private static ArrayList<Human> findUnemployed() {
         ArrayList<Human> unemployed = new ArrayList<>();
         for(Human human : currentGame.getCurrentGovernment().getHumans()) {
@@ -341,7 +331,7 @@ public class GameController {
             unemployed.add(human);
         }
         return unemployed;
-    }
+    } //checked
 
     public static String moveSelectedUnits (Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
@@ -515,7 +505,7 @@ public class GameController {
         if (selectedWarEquipment.isEmpty()) return "You have no troops selected";
         else selectedWarEquipment.clear();
         return "Troops deselected successfully";
-    }
+    } //checked
 
     public static String closeBridge() {
         if(selectedBuilding == null || !selectedBuilding.getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE)) {
@@ -527,7 +517,7 @@ public class GameController {
         }
         bridge.setUP(true);
         return "bridge successfully closed!";
-    }
+    } //checked
 
     public static String patrolUnit(Matcher matcher) {
         int y1 = Integer.parseInt(matcher.group("y1"));
@@ -579,7 +569,7 @@ public class GameController {
         }
         bridge.setUP(false);
         return "bridge successfully opened!";
-    }
+    } //checked
 
     public static String attackTheBlock (Matcher matcher){
         int x = Integer.parseInt(matcher.group("x"));
@@ -587,7 +577,7 @@ public class GameController {
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
-        if(currentGame.getMap().checkBounds(x , y)) {
+        if(currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
         Block OpponentBlock = currentGame.getMap().getABlock(x , y);
@@ -751,9 +741,6 @@ public class GameController {
         return "Deployed fire successfully!";
     }
 
-    //TODO
-    public static String dropStairs(Matcher matcher) { return null;}
-
     public static String deployCagedWarDog() {
         if(!(selectedBuilding instanceof CagedWarDog cagedWarDog)) {
             return "You have to choose a caged war dog first!";
@@ -776,39 +763,42 @@ public class GameController {
         if(selectedBuilding instanceof Maker maker) {
             return employMaker(maker , number);
         }
-        return "You have choose a wrong building for this command!";
-    }
+        return "You have chosen the wrong building for this command!";
+    } //checked
     private static String employOilSmelter(OilSmelter oilSmelter) {
-        if(oilSmelter.getEngineer() != null) return "There is already engineer in that oilSmelter!";
+        if(oilSmelter.getEngineer() != null) return "There is already an engineer in that oilSmelter!";
         for(Human human : currentGame.getCurrentGovernment().getHumans()) {
             if(human instanceof Engineer engineer && engineer.isUnemployed()) {
                 engineer.setUnemployed(false);
                 oilSmelter.setEngineer(engineer);
+                engineer.getBlock().getHumans().remove(engineer);
                 engineer.setBlock(oilSmelter.getBlock());
                 engineer.setVisible(false);
                 return "engineer added to OilSmelter successfully!";
             }
         }
         return "there was no available engineers!";
-    }
+    } //checked
 
     private static String employMaker(Maker maker , int number) {
-        if(maker.getNumberOfCurrentWorkers() == maker.getNumberOfMaxWorkers()) {
+        System.out.println(maker.getNumberOfCurrentWorkers());
+        System.out.println(maker.getNumberOfMaxWorkers());
+        if(maker.getNumberOfCurrentWorkers() >= maker.getNumberOfMaxWorkers()) {
             return "That building has max capacity";
         }
-        int counter = 0;
+        int unemployedCounter = 0;
         for(Human human : currentGame.getCurrentGovernment().getHumans()) {
             if (human instanceof Troop || human instanceof SiegeMachine ||
                     human instanceof LadderMan || human instanceof Tunneler) {
                 continue;
             }
             if (!human.isUnemployed()) continue;
-            counter++;
+            unemployedCounter++;
         }
-        if(counter < number) {
+        if(unemployedCounter < number) {
             return "there is not enough people to hire!";
         }
-        counter = number;
+        int counter = Math.min(maker.getNumberOfMaxWorkers() - maker.getNumberOfCurrentWorkers() , number);
         for(Human human : currentGame.getCurrentGovernment().getHumans()) {
             if (human instanceof Troop || human instanceof SiegeMachine ||
                     human instanceof LadderMan || human instanceof Tunneler){
@@ -817,13 +807,14 @@ public class GameController {
             if(!human.isUnemployed()) continue;
             human.setUnemployed(false);
             human.setVisible(false);
+            human.getBlock().getHumans().remove(human);
             human.setBlock(maker.getBlock());
             maker.addWorker();
             counter--;
             if(counter == 0) break;
         }
-        return "Inn was equipped with workers successfully";
-    }
+        return "The building was equipped with workers successfully";
+    } //checked
 
     private static String employInn(Inn inn) {
         if(inn.getNumberOfWorkers() == 1) {
@@ -836,13 +827,14 @@ public class GameController {
             }
             if(!human.isUnemployed()) continue;
             human.setVisible(false);
+            human.getBlock().getHumans().remove(human);
             human.setBlock(inn.getBlock());
             human.setUnemployed(false);
             inn.addWorkers(1);
             return "Inn was equipped with workers successfully";
         }
         return "there is no people to hire";
-    }
+    } //checked
 
     public static String digTunnel (Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));

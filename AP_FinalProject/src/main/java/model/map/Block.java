@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class Block {
     private BlockFillerType bLockFiller;
 
-    private int blockFillerAmount;
+    private int blockFillerAmount = 100;
 
     private BlockType blockType;
     public BlockFillerType getBLockFiller() {
@@ -23,8 +23,6 @@ public class Block {
     private ArrayList<Building> building = new ArrayList<>();
 
     private final ArrayList <Human> humans = new ArrayList<>();
-
-    private int resourcesCapacity;
     private boolean isPassable;
     private final int locationI;
     private final int locationJ;
@@ -39,6 +37,7 @@ public class Block {
         this.blockType = sample.getBlockType();
         this.locationI = sample.locationI;
         this.locationJ = sample.locationJ;
+        this.blockFillerAmount = sample.getBlockFillerAmount();
     }
 
     public ArrayList<Human> getHumans() {
@@ -64,15 +63,6 @@ public class Block {
     public void setBlockType(BlockType blockType) {
         this.blockType = blockType;
     }
-
-    public int getResourcesCapacity() {
-        return resourcesCapacity;
-    }
-
-    public void setResourcesCapacity(int resourcesCapacity) {
-        this.resourcesCapacity = resourcesCapacity;
-    }
-
     public boolean isPassable() {
         return isPassable;
     }
@@ -95,12 +85,15 @@ public class Block {
     public void removeBuilding(Building building) {
         this.building.remove(building);
     }
-    public Troop[] getTroops() {
-        ArrayList<Troop> troops = new ArrayList<>();
+    public Human[] getTroops() {
+        ArrayList<Human> troops = new ArrayList<>();
         for (Human human : humans) {
             if (human instanceof Troop) troops.add((Troop) human);
+            if (human instanceof Engineer engineer) troops.add(engineer);
+            if (human instanceof LadderMan ladderMan) troops.add(ladderMan);
+            if (human instanceof SiegeMachine siegeMachine) troops.add(siegeMachine);
         }
-        Troop[] result = new Troop[troops.size()];
+        Human[] result = new Human[troops.size()];
         for (int i = 0; i < troops.size(); i++) {
             result[i] = troops.get(i);
         }

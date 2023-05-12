@@ -14,6 +14,7 @@ public enum DefenciveBuildingType implements BuildingType{
     SQUARE_TOWER(8 , 8 , 35 , 16000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 35)))),
     CIRCLE_TOWER(10 , 10, 40 , 20000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 40)))),
     LOW_WALL(2 , 2 , 5 , 1000 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 1)))),
+    STAIRS(0 , 0 , 0, 1000, new HashMap<>()),
     HIGH_WALL(4 , 4 , 5 , 1500 , new HashMap<>(Map.ofEntries(Map.entry(Resources.STONE , 2))));
 
     private final int fireRange;

@@ -43,13 +43,14 @@ public class Human {
         this.canClimb = canClimb;
         this.government = government;
         this.block = block;
-        government.getHumans().add(this);
+        if (government != null) government.getHumans().add(this);
         this.defendRate = defendRate;
         this.speed = speed;
     }
 
     public void die() {
-
+        block.getHumans().remove(this);
+        government.getHumans().remove(this);
     }
     public void move(int x , int y) {
 
@@ -113,7 +114,9 @@ public class Human {
     }
 
     public void setBlock(Block block) {
-        this.block = block;
+        if(this.block.getHumans().contains(this)) this.block.getHumans().remove(this);
+        if(!block.getHumans().contains(this)) block.getHumans().add(this);
+            this.block = block;
     }
     public void makeWorker(Building building) {
     }
