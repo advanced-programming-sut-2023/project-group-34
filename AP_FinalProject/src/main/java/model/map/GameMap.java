@@ -14,6 +14,7 @@ public class GameMap {
     private final Block[][] map;
 
     private final int size = 400;
+    public final int minimapSize = 30;
 
     private Block UpLeftCornerBlock;
 
@@ -56,13 +57,13 @@ public class GameMap {
                 break;
             case EAST:
                 for (int i = 0; i < number; i++) {
-                    if (UpLeftCornerBlock.getLocationJ() != size - 41)
+                    if (UpLeftCornerBlock.getLocationJ() != size - minimapSize - 1)
                         UpLeftCornerBlock = map[UpLeftCornerBlock.getLocationI()][UpLeftCornerBlock.getLocationJ() + 1];
                 }
                 break;
             case SOUTH:
                 for (int i = 0; i < number; i++) {
-                    if (UpLeftCornerBlock.getLocationI() != size - 41)
+                    if (UpLeftCornerBlock.getLocationI() != size - minimapSize - 1)
                         UpLeftCornerBlock = map[UpLeftCornerBlock.getLocationI() + 1][UpLeftCornerBlock.getLocationJ()];
                 }
                 break;
@@ -97,9 +98,9 @@ public class GameMap {
     
     
     public Block[][] getMiniMap() {
-         Block[][] mini = new Block[40][40];
-         for (int i = UpLeftCornerBlock.getLocationI(); i < 40 + UpLeftCornerBlock.getLocationI(); i++) {
-             for (int j = UpLeftCornerBlock.getLocationJ(); j < 40 + UpLeftCornerBlock.getLocationJ(); j++) {
+         Block[][] mini = new Block[minimapSize][minimapSize];
+         for (int i = UpLeftCornerBlock.getLocationI(); i < minimapSize + UpLeftCornerBlock.getLocationI(); i++) {
+             for (int j = UpLeftCornerBlock.getLocationJ(); j < minimapSize + UpLeftCornerBlock.getLocationJ(); j++) {
                  mini[i - UpLeftCornerBlock.getLocationI()][j - UpLeftCornerBlock.getLocationJ()] = map[i][j];
              }
          }

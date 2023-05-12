@@ -120,7 +120,7 @@ public class GameController {
     }
 
     public static String setMapLocation (int x, int y) {
-        if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 40, x + 40))) return "Wrong coordinates";
+        if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + currentGame.getMap().minimapSize, x + currentGame.getMap().minimapSize))) return "Wrong coordinates";
         currentGame.getMap().setUpLeftCorner(x, y);
         return null;
     }
@@ -136,8 +136,8 @@ public class GameController {
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 40; j++) {
+        for (int i = 0; i < currentGame.getMap().minimapSize; i++) {
+            for (int j = 0; j < currentGame.getMap().minimapSize; j++) {
                 if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "\u001B[31m" + " S " + "\u001B[0m");
                 else if (map[i][j].getBuilding().size() != 0)
                     if (map[i][j].getBuilding().get(0).equals(DeathPitType.DEATH_PIT) && !map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
