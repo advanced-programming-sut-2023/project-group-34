@@ -79,8 +79,6 @@ public class GameMenu {
                 System.out.println(GameController.attackTheBlock(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.POUR_OIL))!= null){
                 System.out.println(GameController.pourOil(matcher));
-            } else if ((matcher = Commands.getOutput(command, Commands.DROP_STAIRS)) != null){
-                System.out.println(GameController.dropStairs(matcher));
             } else if (Commands.getOutput(command, Commands.DEPLOY_CAGED) != null) {
                 System.out.println(GameController.deployCagedWarDog());
             } else if ((matcher = Commands.getOutput(command, Commands.ADD_WORKER)) != null){

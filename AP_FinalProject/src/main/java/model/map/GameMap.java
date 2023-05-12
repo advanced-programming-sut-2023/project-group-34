@@ -134,9 +134,11 @@ public class GameMap {
         details.append("\n" +
                 "resource: ");
         details.append(block.resource());
-        details.append("\n" +
-                "amount: ");
-        details.append(block.getResourcesCapacity());
+        details.append("\n" + "amount: ");
+        if (block.getBLockFiller() != null)
+            details.append(block.getBlockFillerAmount());
+        else if (block.resource() != null)
+            details.append("infinity");
         details.append("\n" +
                 "troops:");
         for (String troopType : troopTypes) {
