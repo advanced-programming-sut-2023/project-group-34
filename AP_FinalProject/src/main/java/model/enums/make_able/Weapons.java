@@ -15,10 +15,10 @@ public enum Weapons implements MakeAble {
     PIKE(20, "pike"),
     HORSE(40, "horse");
 
-    private int price;
-    private String name;
+    private final int price;
+    private final String name;
 
-    private Weapons(int price, String name){
+    Weapons(int price, String name){
         this.price = price;
         this.name = name;
     }

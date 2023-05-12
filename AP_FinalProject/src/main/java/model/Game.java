@@ -38,14 +38,7 @@ public class Game {
     public void addAllTrades(Trade trade){
         this.allTrades.add(trade);
     }
-    public void startGame() {
-
-    }
-
-    public int calculateScore(User user) {
-        return 0;
-    }
-
+    
     public Government getCurrentGovernment() {
         return currentGovernment;
     }

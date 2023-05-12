@@ -13,16 +13,18 @@ import java.util.Map;
 public class Inn extends Building{
 
     private  int numberOfWorkers = 0;
-    private final int popularityRate = 2;
-    private final double aleUsage = 2;
+    
     public Inn(Government government, Block block) {
-        super(government, block, 1000, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 100) , Map.entry(Resources.WOOD , 20))), InnType.INN);
+        super(government, block, 1000, new HashMap<>(Map.ofEntries(Map.entry(Resources.GOLD , 100) ,
+                Map.entry(Resources.WOOD , 20))), InnType.INN);
     }
 
     @Override
     public void process() {
-        double inputRate = Double.min(aleUsage , Food.ALE.getLeftCapacity(government));
+        double aleUsage = 2;
+        double inputRate = Double.min(aleUsage, Food.ALE.getLeftCapacity(government));
         Food.ALE.use(inputRate ,government);
+        int popularityRate = 2;
         government.setTotalPopularity((int) (government.getTotalPopularity() + inputRate * popularityRate));
     }
 
@@ -45,16 +47,5 @@ public class Inn extends Building{
         this.numberOfWorkers += number;
     }
 
-    public double getAleUsage() {
-        return aleUsage;
-    }
 
-    public int getPopularityRate() {
-        return popularityRate;
-    }
-
-    public int getNumberOfMaxWorkers() {
-        int numberOfMaxWorkers = 1;
-        return numberOfMaxWorkers;
-    }
 }

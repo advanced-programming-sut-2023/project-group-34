@@ -33,7 +33,6 @@ public class StarterMenu {
                 Password passwordObject;
                 if (response != null) {
                     System.out.println(response);
-                    continue;
                 }
                 else {
                     if ((username = usernameCheck(matcher)).equals("Couldn't create user: username in use!"))
@@ -43,7 +42,6 @@ public class StarterMenu {
                         if (flag)System.out.println("Your slogan is: \"" +
                                 slogan +
                                 "\"");
-                        flag = false;
                         if ((password = passwordCheck(matcher)).equals("weak password(doesn't have needed chars)!") ||
                                 password.equals("weak password(less than 6 chars)!") ||
                                 password.equals("confirmation failed!"))
@@ -51,9 +49,6 @@ public class StarterMenu {
                         else {
                             passwordObject = new Password(password);
                             slogan = sloganHandler(matcher);
-                            if (flag)System.out.println("Your slogan is: \"" +
-                                    slogan +
-                                    "\"");
                             System.out.println("Pick a security question:" + "\n");
                             System.out.println("1. What is my father's name?");
                             System.out.println("2. What is my first pet's name?");
@@ -102,6 +97,7 @@ public class StarterMenu {
     public static String passwordCheck(Matcher matcher) {
         String password = matcher.group("password");
         if (password != null) password = password.replaceAll("\"", "");
+        else password = "";
         if (password.equals("random")) {
             password = Password.randomPassword();
             System.out.println("Your random password is: " +

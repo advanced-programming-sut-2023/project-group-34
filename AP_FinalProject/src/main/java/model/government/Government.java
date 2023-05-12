@@ -14,13 +14,12 @@ public class Government {
     private final ArrayList<Human> humans = new ArrayList<>();
     private int totalPopularity;
     private int maxPopulation;
-    private final Color color;
     private final StorageDepartment storageDepartment = new StorageDepartment();
     private final AccountingDepartment accountingDepartment = new AccountingDepartment(this);
 
     public Government(User owner,String color) {
         this.owner = owner;
-        this.color = new Color(color , this);
+        Color color1 = new Color(color, this);
     }
 
     public void setTotalPopularity(int totalPopularity) {
@@ -71,8 +70,6 @@ public class Government {
         return storageDepartment;
     }
 
-    public Color getColor() {
-        return color;
-    }
+
 
 }

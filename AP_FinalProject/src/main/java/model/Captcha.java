@@ -5,8 +5,7 @@ import java.util.Random;
 import model.enums.CaptchaNumbers;
 
 public class Captcha {
-    private final char[] noiseChars = {'#', '.', '*', '@', '+', 'O'};
-
+    
     private final ArrayList<Integer> numbers = new ArrayList<>();
 
 

@@ -29,9 +29,6 @@ public enum GeneralBuildingsType implements BuildingType{
         this.cost = cost;
     }
 
-    public static GeneralBuilding storageMaker(Government government , Block block , GeneralBuildingsType storageType) {
-        return null;
-    }
 
     @Override
     public void create(Government government, Block block) {

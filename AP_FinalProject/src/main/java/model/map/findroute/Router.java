@@ -43,12 +43,12 @@ public class Router {
         if (human.getSpeed() >= way.size()) {
             human.getBlock().getHumans().remove(human);
             human.setBlock(destinationBlock);
-            human.getBlock().getHumans().add(human);
+            //todo:human.getBlock().getHumans().add(human);
         }
         else {
             human.getBlock().getHumans().remove(human);
             human.setBlock(way.get(human.getSpeed() - 1));
-            human.getBlock().getHumans().add(human);
+            //human.getBlock().getHumans().add(human);
         }
     }
     public static boolean canFindAWay (GameMap map, Block destinationBlock, Human human) {

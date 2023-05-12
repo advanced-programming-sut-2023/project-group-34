@@ -38,7 +38,7 @@ public class MapEditingController {
     public static String clearBlock (Matcher matcher) {
         int i = Integer.parseInt(matcher.group("yIndex"));
         int j = Integer.parseInt(matcher.group("xIndex"));
-        return getCurrentGameMap().clearBlock(i, j);
+        return clearBlock(currentGameMap, i, j);
     }
     
     public static String dropRock (Matcher matcher) {
@@ -62,7 +62,10 @@ public class MapEditingController {
         int i = Integer.parseInt(matcher.group("yIndex"));
         int j = Integer.parseInt(matcher.group("xIndex"));
         if (!getCurrentGameMap().checkBounds(i, j)) return "Out of bounds!";
-        if (!(getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GRASS) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) || getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GROUND)))
+        if (!(getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GRASS) ||
+                getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.MEADOW) ||
+                getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.DENSE_MEADOW) ||
+                getCurrentGameMap().getMap()[i][j].getBlockType().equals(BlockType.GROUND)))
             return "Can't put a tree here!";
         getCurrentGameMap().getMap()[i][j].setBLockFiller(blockFillerType);
         getCurrentGameMap().getMap()[i][j].useBlockFillerAmount(100);
@@ -72,16 +75,16 @@ public class MapEditingController {
     public static void resetCurrentMap () {
         setCurrentGameMap(null);
     }
-
-    public static String clearBlock(GameMap gameMap, int i, int j) {
+    
+    public static String clearBlock (GameMap gameMap, int i, int j) {
         if (!gameMap.checkBounds(i, j)) return "Out of bounds!";
         gameMap.getMap()[i][j] = new Block(i, j);
         return "Success!";
     }
-
-    public static String setRectangleTexture(GameMap gameMap, int x1, int x2, int y1, int y2, BlockType blockType) {
+    
+    public static String setRectangleTexture (GameMap gameMap, int x1, int x2, int y1, int y2, BlockType blockType) {
         if (!(gameMap.checkBounds(y1, x1) && gameMap.checkBounds(y2, x2))) return "Out of bounds!";
-        for (; y1 <= y2; y1++){
+        for (; y1 <= y2; y1++) {
             for (int j = x1; j <= x2; j++) {
                 gameMap.getMap()[y1][j].setBlockType(blockType);
             }

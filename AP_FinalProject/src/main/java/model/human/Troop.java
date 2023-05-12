@@ -9,14 +9,13 @@ import model.map.Block;
 import java.util.*;
 
 public class Troop extends Human {
-    private final static ArrayList<Troop> troops = new ArrayList<>();
     private final int defensiveRange;
     private int fireRange;
     private final int aggressiveRange;
     private final TroopType troopType;
     private final HashMap<MakeAble , Integer> cost;
     protected Troop(int HP, Block block, int damage, int defendRate, boolean canDig, boolean canClimb, Government government, int defensiveRange, int fireRange, int aggressiveRange , TroopType troopType, int speed, HashMap<MakeAble, Integer> cost) {
-        super(HP, HP , block, damage, defendRate, canDig, canClimb, government , speed);
+        super(HP, block, damage, defendRate, canDig, canClimb, government , speed);
         this.defensiveRange = defensiveRange;
         this.fireRange = fireRange;
         this.aggressiveRange = aggressiveRange;
@@ -24,11 +23,7 @@ public class Troop extends Human {
         this.cost = cost;
         if(troopType == TroopType.ASSASSIN) setVisible(false);
     }
-
-    public Troop enemyLocator(){
-        return null;
-    }
-
+    
     public void addRange(int amount) {
         fireRange += amount;
     }
@@ -36,17 +31,7 @@ public class Troop extends Human {
     public int getFireRange() {
         return fireRange;
     }
-    public int getAggressiveRange() {
-        return aggressiveRange;
-    }
-
-    public void setFireRange(int fireRange) {
-        this.fireRange = fireRange;
-    }
-
-    public int getDefensiveRange() {
-        return defensiveRange;
-    }
+    
     public void automaticAttack() {
         int counter = 0;
         int x = getBlock().getLocationI();

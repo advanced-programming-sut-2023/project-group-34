@@ -5,7 +5,6 @@ import model.map.Block;
 public class Node {
     private final Node parent;
     private final Block currentBlock;
-    private final int h;
     private final int g;
     private final int f;
     private final Block destination;
@@ -15,10 +14,11 @@ public class Node {
         this.currentBlock = currentBlock;
         if (parent != null) g = parent.getG() + 1;
         else g = 0;
+        int h;
         if (destination != null) {
             h = manhattanDistance(currentBlock, destination);
             f = h + g;
-        }else f = h = 200000;
+        }else f = 200000;
         this.destination = destination;
     }
     private int manhattanDistance (Block start, Block end) {
@@ -32,10 +32,6 @@ public class Node {
     
     public Block getCurrentBlock () {
         return currentBlock;
-    }
-    
-    public int getH () {
-        return h;
     }
     
     public int getG () {

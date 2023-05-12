@@ -10,48 +10,36 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Gate extends Building {
-
+    
     private final int population;
-    private boolean isVertical;
-    private final ArrayList<Human> warEquipments = new ArrayList<>();
-    public Gate(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int population, boolean isVertical) {
+    
+    public Gate (Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int population) {
         super(government, block, HP, cost, buildingType);
         this.population = population;
-        this.isVertical = isVertical;
-        if (government != null)
-            government.changeMaxPopulation(population);
-        if(buildingType.equals(GateType.KEEP)) primaryHumanMaker();
+        if (government != null) government.changeMaxPopulation(population);
+        if (buildingType.equals(GateType.KEEP)) primaryHumanMaker();
     }
-
-    public void primaryHumanMaker() {
+    
+    public void primaryHumanMaker () {
         for (int i = 0; i < 10; i++) {
-            block.getHumans().add(new Human(block , government));
+            block.getHumans().add(new Human(block, government));
         }
     }
+    
     @Override
-    public void process() {
+    public void process () {
     }
-
+    
     @Override
-    public void destroy() {
+    public void destroy () {
         government.changeMaxPopulation(-population);
-        if(buildingType.equals(GateType.KEEP)) {
-            if(GameController.currentGame.getPlayers().contains(government.getOwner()))
-                GameController.currentGame.getPlayers().remove(government.getOwner());
+        if (buildingType.equals(GateType.KEEP)) {
+            GameController.currentGame.getPlayers().remove(government.getOwner());
             government.getOwner().setGovernment(null);
         }
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
     }
-
-    public boolean isVertical() {
-        return isVertical;
-    }
-
-    public int getPopulation() {
-        return population;
-    }
-    public void setIsAVertical(boolean isVertical) {
-        this.isVertical = isVertical;
-    }
+    
+    
 }

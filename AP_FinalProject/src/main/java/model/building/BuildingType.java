@@ -7,6 +7,7 @@ import model.map.Block;
 import java.util.HashMap;
 
 public interface BuildingType {
-    void create(Government government , Block block);
-    HashMap<Resources, Integer> getCost();
+    void create (Government government, Block block);
+    
+    HashMap<Resources, Integer> getCost ();
 }

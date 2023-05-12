@@ -1,11 +1,7 @@
 package view;
 
-import controller.GameController;
-import controller.MainController;
-import controller.Runner;
-import controller.UserController;
+import controller.*;
 import model.enums.Commands;
-import model.map.GameMap;
 import model.user.User;
 
 import java.util.regex.Matcher;
@@ -18,7 +14,7 @@ public class MainMenu {
         while (true){
             input = controller.Runner.getScn ().nextLine ();
             input = input.trim ();
-            if ((matcher = model.enums.Commands.getOutput(input, Commands.LOGOUT)) != null) {
+            if (model.enums.Commands.getOutput(input, Commands.LOGOUT) != null) {
                 System.out.println("User logged out successfully!");
                 User.logout();
                 return "logout";
@@ -56,7 +52,7 @@ public class MainMenu {
             int x = Integer.parseInt(Runner.getScn().nextLine());
             System.out.println("Please enter your location y axis:");
             int y = Integer.parseInt(Runner.getScn().nextLine());
-            response = MainController.setKeep(User.currentUser.getName(), x, y);
+            response = BuildingController.setKeep(User.currentUser.getName(), x, y);
             if (response != null) System.out.println(response);
             else break;
         }
@@ -68,7 +64,7 @@ public class MainMenu {
                 int x = Integer.parseInt(Runner.getScn().nextLine());
                 System.out.println("Please enter player " + i + " location y axis:");
                 int y = Integer.parseInt(Runner.getScn().nextLine());
-                response = MainController.setKeep(username, x, y);
+                response = BuildingController.setKeep(username, x, y);
                 if (response != null) System.out.println(response);
                 else {
                     System.out.println("Game started successfully. Good luck!");

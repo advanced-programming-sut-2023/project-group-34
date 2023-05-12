@@ -9,10 +9,10 @@ public enum Resources implements MakeAble {
     IRON(5, "iron"),
     STONE(5, "stone");
 
-    private int price;
-    private String name;
+    private final int price;
+    private final String name;
 
-    private Resources(int price, String name){
+    Resources(int price, String name){
         this.price = price;
         this.name = name;
     }

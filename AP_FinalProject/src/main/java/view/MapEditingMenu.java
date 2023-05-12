@@ -1,8 +1,6 @@
 package view;
 
-import controller.MainController;
-import controller.MapEditingController;
-import controller.Runner;
+import controller.*;
 import model.enums.Commands;
 import model.user.User;
 
@@ -51,9 +49,9 @@ public class MapEditingMenu {
             else if ((matcher = Commands.getOutput(input, Commands.DROP_TREE)) != null)
                 System.out.println(MapEditingController.dropTree(matcher));
             else if ((matcher = Commands.getOutput(input, Commands.DROP_BUILDING)) != null)
-                System.out.println(MainController.dropBuilding(MapEditingController.getCurrentGameMap(), matcher));
+                System.out.println(BuildingController.dropBuilding(MapEditingController.getCurrentGameMap(), matcher));
             else if ((matcher = Commands.getOutput(input, Commands.DROP_UNIT)) != null)
-                System.out.println(MainController.dropUnit(MapEditingController.getCurrentGameMap(), matcher));
+                System.out.println(TroopsController.dropUnit(MapEditingController.getCurrentGameMap(), matcher));
             else if (Commands.getOutput(input, Commands.BACK) != null) {
                 System.out.println("Back to main menu");
                 MapEditingController.resetCurrentMap();

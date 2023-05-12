@@ -10,7 +10,8 @@ import java.util.Map;
 
 public class CagedWarDog extends Building{
     protected CagedWarDog(Government government, Block block) {
-        super(government, block, 100, new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 10) , Map.entry(Resources.GOLD , 100))), CagedWarDogType.CAGED_WAR_DOG);
+        super(government, block, 100, new HashMap<>(Map.ofEntries(Map.entry(Resources.WOOD , 10) ,
+                Map.entry(Resources.GOLD , 100))), CagedWarDogType.CAGED_WAR_DOG);
     }
 
     @Override

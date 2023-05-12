@@ -12,17 +12,14 @@ import java.util.ArrayList;
 public class Engineer extends Human{
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government) {
-        super(0, 0 , block, 0, 0, false, true , government , 4);
+        super(0, block, 0, 0, false, true , government , 4);
         if(government != null) useOil();
     }
 
     public boolean isEquippedWithOil() {
         return isEquippedWithOil;
     }
-
-    public void setEquippedWithOil(boolean equippedWithOil) {
-        isEquippedWithOil = equippedWithOil;
-    }
+    
     public void AutomaticAttack() {
         int counter = 0;
         int x = getBlock().getLocationI();

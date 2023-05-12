@@ -23,7 +23,7 @@ public enum GateType implements BuildingType{
         this.cost = cost;
     }
     public void create(Government government , Block block) {
-        block.addBuilding(new Gate(government , block , HP , cost , this , population , false));
+        block.addBuilding(new Gate(government , block , HP , cost , this , population));
     }
 
     @Override

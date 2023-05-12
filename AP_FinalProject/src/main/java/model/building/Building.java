@@ -13,53 +13,54 @@ public abstract class Building {
     protected final BuildingType buildingType;
     protected int HP;
     private final int maxHP;
-    public Building(Government government, Block block, int HP , HashMap<Resources, Integer> cost, BuildingType buildingType) {
+    
+    public Building (Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType) {
         this.government = government;
         this.block = block;
         this.cost = cost;
         this.buildingType = buildingType;
         this.HP = HP;
         maxHP = HP;
-        if (government != null)
-            government.addBuilding(this);
+        if (government != null) government.addBuilding(this);
     }
-
-
-    public Government getGovernment() {
+    
+    
+    public Government getGovernment () {
         return government;
     }
-
-    public Block getBlock() {
+    
+    public Block getBlock () {
         return block;
     }
-
-    public abstract void process();
-    public abstract void destroy();
-    public void getHit(int damage) {
+    
+    public abstract void process ();
+    
+    public abstract void destroy ();
+    
+    public void getHit (int damage) {
         HP -= damage;
-        if(HP < 0) {
+        if (HP < 0) {
             destroy();
-            block.setPassable(true);
         }
     }
-
-    public HashMap<Resources, Integer> getCost() {
+    
+    public HashMap<Resources, Integer> getCost () {
         return cost;
     }
-
-    public BuildingType getBuildingType() {
+    
+    public BuildingType getBuildingType () {
         return buildingType;
     }
-
-    public int getHP() {
+    
+    public int getHP () {
         return HP;
     }
-
-    public void setHP(int HP) {
+    
+    public void setHP (int HP) {
         this.HP = HP;
     }
-
-    public int getMaxHP() {
+    
+    public int getMaxHP () {
         return maxHP;
     }
 }

@@ -23,7 +23,6 @@ public class Block {
     private ArrayList<Building> building = new ArrayList<>();
 
     private final ArrayList <Human> humans = new ArrayList<>();
-    private boolean isPassable;
     private final int locationI;
     private final int locationJ;
     public Block(int locationI, int locationJ) {
@@ -63,13 +62,7 @@ public class Block {
     public void setBlockType(BlockType blockType) {
         this.blockType = blockType;
     }
-    public boolean isPassable() {
-        return isPassable;
-    }
-
-    public void setPassable(boolean passable) {
-        isPassable = passable;
-    }
+    
 
     public void setBLockFiller(BlockFillerType bLockFiller) {
         this.bLockFiller = bLockFiller;
@@ -82,13 +75,11 @@ public class Block {
     public void addBuilding(Building building) {
         this.building.add(building);
     }
-    public void removeBuilding(Building building) {
-        this.building.remove(building);
-    }
+
     public Human[] getTroops() {
         ArrayList<Human> troops = new ArrayList<>();
         for (Human human : humans) {
-            if (human instanceof Troop) troops.add((Troop) human);
+            if (human instanceof Troop) troops.add(human);
             if (human instanceof Engineer engineer) troops.add(engineer);
             if (human instanceof LadderMan ladderMan) troops.add(ladderMan);
             if (human instanceof SiegeMachine siegeMachine) troops.add(siegeMachine);

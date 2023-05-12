@@ -9,6 +9,8 @@ import model.human.Human;
 import model.human.Troop;
 import model.map.Block;
 
+import java.util.ArrayList;
+
 public class AccountingDepartment {
     private final Government government;
     private int foodRate;
@@ -125,8 +127,8 @@ public class AccountingDepartment {
                 case 8 -> -24;
                 default -> 0;
             };
-            taxPopularity += taxPopularity1;
         }
+        taxPopularity += taxPopularity1;
         government.setTotalPopularity(government.getTotalPopularity() + taxPopularity);
     }
 

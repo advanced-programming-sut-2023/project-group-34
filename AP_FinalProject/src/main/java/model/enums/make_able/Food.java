@@ -12,9 +12,9 @@ public enum Food implements MakeAble {
     HOP(2, "hop"),
     FLOUR(5, "flour");
 
-    private int price;
-    private String name;
-    private Food(int price, String name){
+    private final int price;
+    private final String name;
+    Food(int price, String name){
         this.price = price;
         this.name = name;
     }

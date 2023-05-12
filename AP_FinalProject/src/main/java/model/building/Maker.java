@@ -23,7 +23,7 @@ public class Maker extends Building{
 
     private final MakeAble input;
     private final int numberOfMaxWorkers;
-    private int numberOfCurrentWorkers = 0;
+    private int numberOfCurrentWorkers;
     public Maker(Government government, Block block, ArrayList<MakeAble> output, int outputRate, int capacity
             , int HP, int numberOfMaxWorkers, HashMap<Resources, Integer> cost, BuildingType buildingType, int inputRate, MakeAble input) {
         super(government, block, HP , cost, buildingType);
@@ -54,14 +54,6 @@ public class Maker extends Building{
                     if(tempBlock.getBLockFiller() != null) {
                         Resources.WOOD.add(Math.min(tempBlock.getBlockFillerAmount(), 20), government);
                         tempBlock.useBlockFillerAmount(20);
-//                        if(tempBlock.getBlockFillerAmount() <= 20) {
-//                            Resources.WOOD.add(tempBlock.getBlockFillerAmount() , government);
-//                            tempBlock.setBLockFiller(null);
-//                        }
-//                        else {
-//                            Resources.WOOD.add(20 , government);
-//                            tempBlock.useBlockFillerAmount(20);
-//                        }
                         return;
                     }
                 }
@@ -94,9 +86,6 @@ public class Maker extends Building{
     }
 
 
-    public double getOutputRate() {
-        return outputRate;
-    }
 
 
 
@@ -104,9 +93,6 @@ public class Maker extends Building{
         return output;
     }
 
-    public double getCapacity() {
-        return capacity;
-    }
 
     public int getNumberOfMaxWorkers() {
         return numberOfMaxWorkers;
@@ -120,22 +106,12 @@ public class Maker extends Building{
         this.numberOfCurrentWorkers++;
     }
 
-    public double getInputRate() {
-        return inputRate;
-    }
-
-    public MakeAble getInput() {
-        return input;
-    }
 
     public void setCurrentOutputRate(int integrityRate) {
         integrityRate *= 5;
         this.currentOutPutRate = (outputRate * (integrityRate+100))/100;
     }
 
-    public void addWorkers(int numberOfWorkers) {
-        this.numberOfCurrentWorkers += numberOfWorkers;
-    }
 
     public double getCurrentAmount() {
         return currentAmount;

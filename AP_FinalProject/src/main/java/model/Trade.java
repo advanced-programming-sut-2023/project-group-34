@@ -5,16 +5,14 @@ import model.user.User;
 
 
 public class Trade {
-    private User sender;
+    private final User sender;
     private User receiver;
     private boolean isAccepted;
-    private boolean wasShown;
-    private Resources wanted;
-    private int wantedNumber;
-    private int totalResourceAmount;
+    private final Resources wanted;
+    private final int wantedNumber;
     private String message;
-    private Resources offered;
-    private int offeredNumber;
+    private final Resources offered;
+    private final int offeredNumber;
 
     public Trade(Resources wanted, int wantedNumber, Resources offered, int offeredNumber, User sender, String message){
         this.wanted = wanted;
@@ -24,17 +22,12 @@ public class Trade {
         this.sender = sender;
         this.message = message;
         this.isAccepted = false;
-        this.wasShown = false;
     }
 
     public User getSender() {
         return sender;
     }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
+    
     public User getReceiver() {
         return receiver;
     }
@@ -50,28 +43,12 @@ public class Trade {
     public void setAccepted(boolean accepted) {
         isAccepted = accepted;
     }
-
-    public boolean isWasShown() {
-        return wasShown;
-    }
-
-    public void setWasShown(boolean wasShown) {
-        this.wasShown = wasShown;
-    }
-
+    
     public void setMessage(String message) {
         this.message = message;
     }
-
-
-    public int getTotalResourceAmount() {
-        return totalResourceAmount;
-    }
-
-    public void setTotalResourceAmount(int totalResourceAmount) {
-        this.totalResourceAmount = totalResourceAmount;
-    }
-
+    
+    
     public Resources getOffered() {
         return offered;
     }

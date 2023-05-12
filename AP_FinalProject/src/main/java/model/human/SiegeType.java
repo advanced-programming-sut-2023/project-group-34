@@ -29,7 +29,7 @@ public enum SiegeType {
         this.numberOfEngineer = numberOfEngineer;
     }
     public void creator(Block block , Government government) {
-        block.getHumans().add(new SiegeMachine(HP , HP , block , damage , defendRate,false , false , government , this, speed, price, range , numberOfEngineer));
+        block.getHumans().add(new SiegeMachine(HP , block , damage , defendRate,false , false , government , this, speed, range , numberOfEngineer));
     }
 
     public int getPrice() {

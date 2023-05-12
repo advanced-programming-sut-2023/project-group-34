@@ -78,10 +78,5 @@ public class Password {
     public void setAnswer(String answer) {
         this.answer = sha256Encrypt(answer);
     }
-
-    public static String randomPasswordGenerator(){
-        return null;
-    }
-
 }
 

@@ -11,10 +11,8 @@ import model.map.findroute.Router;
 import java.util.ArrayList;
 
 public class Human {
-    private final int maxHP;
     private int HP;
     private Government government;
-    private ArrayList<Block> route = new ArrayList<>();
     private Block destination;
     private Block patrolDestination;
     private final int damage;
@@ -30,7 +28,6 @@ public class Human {
 
     public Human(Block block , Government government){
         this.block = block;
-        maxHP = 1;
         HP = 1;
         this.damage = 0;
         this.defendRate = 0;
@@ -38,8 +35,7 @@ public class Human {
         government.getHumans().add(this);
         this.speed = 0;
     }
-    public Human (int HP , int maxHP , Block block , int damage , int defendRate, boolean canDig , boolean canClimb , Government government, int speed) {
-        this.maxHP = maxHP;
+    public Human (int HP , Block block , int damage , int defendRate, boolean canDig , boolean canClimb , Government government, int speed) {
         this.HP = HP;
         this.damage = damage;
         this.canDig = canDig;
@@ -52,17 +48,11 @@ public class Human {
     }
 
 
-    public Block getDestination () {
-        return destination;
-    }
 
     public void setDestination (Block destination) {
         this.destination = destination;
     }
 
-    public Block getPatrolDestination () {
-        return patrolDestination;
-    }
 
     public void setPatrolDestination (Block patrolDestination) {
         this.patrolDestination = patrolDestination;
@@ -72,9 +62,6 @@ public class Human {
         block.getHumans().remove(this);
         government.getHumans().remove(this);
         GameController.selectedWarEquipment.remove(this);
-    }
-    public void move(int x , int y) {
-
     }
     public void getHit(int damage) {
         damage -= defendRate;
@@ -95,49 +82,21 @@ public class Human {
         this.government = government;
     }
 
-    public ArrayList<Block> getRoute () {
-        return route;
-    }
-
-    public int getDefendRate() {
-        return defendRate;
-    }
-
-    public Boolean getCanClimb() {
-        return canClimb;
-    }
-
-    public void setCanClimb(Boolean canClimb) {
-        this.canClimb = canClimb;
-    }
 
     public Boolean getCanDig() {
         return canDig;
     }
 
-    public void setCanDig(Boolean canDig) {
-        this.canDig = canDig;
-    }
 
     public Block getBlock() {
         return block;
     }
 
-    public void setRoute (ArrayList<Block> route) {
-        this.route = route;
-    }
 
     public void setBlock(Block block) {
-        if(this.block.getHumans().contains(this)) this.block.getHumans().remove(this);
+        this.block.getHumans().remove(this);
         if(!block.getHumans().contains(this)) block.getHumans().add(this);
-            this.block = block;
-    }
-    public void makeWorker(Building building) {
-    }
-
-    public void makeTroop(Building building) {
-    }
-    public void dismissWorker() {
+        this.block = block;
     }
 
     public void setCurrentRate(int moralityRate) {
