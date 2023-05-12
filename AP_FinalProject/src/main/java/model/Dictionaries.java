@@ -62,15 +62,12 @@ public class Dictionaries  {
     public static BiMap<String, TroopType> troopDictionary = HashBiMap.create();
     static {
         troopDictionary.put("archer", TroopType.ARCHER);
-        //troopDictionary.put("engineer", TroopType.ARCHER);
         troopDictionary.put("cross bow man", TroopType.CROSS_BOW_MAN);
         troopDictionary.put("spear man", TroopType.SPEAR_MAN);
         troopDictionary.put("pike man", TroopType.PIKE_MAN);
         troopDictionary.put("mace man", TroopType.MACE_MAN);
         troopDictionary.put("swords man", TroopType.SWORDS_MAN);
         troopDictionary.put("knight", TroopType.KNIGHT);
-        //troopDictionary.put("tunneler", TroopType.ARCHER);
-        //troopDictionary.put("ladder man", TroopType.ARCHER);
         troopDictionary.put("black monk", TroopType.BLACK_MONK);
         troopDictionary.put("archer bow", TroopType.ARCHER_BOW);
         troopDictionary.put("slave", TroopType.SLAVE);

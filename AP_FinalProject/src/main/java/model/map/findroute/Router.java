@@ -43,12 +43,10 @@ public class Router {
         if (human.getSpeed() >= way.size()) {
             human.getBlock().getHumans().remove(human);
             human.setBlock(destinationBlock);
-            //todo:human.getBlock().getHumans().add(human);
         }
         else {
             human.getBlock().getHumans().remove(human);
             human.setBlock(way.get(human.getSpeed() - 1));
-            //human.getBlock().getHumans().add(human);
         }
     }
     public static boolean canFindAWay (GameMap map, Block destinationBlock, Human human) {
@@ -86,20 +84,21 @@ public class Router {
     }
     private void nodesProcessor(Node[] nodes) {
         nodesFor:
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i].getCurrentBlock().equals(nodes[i].getDestination())) {
-                destination = nodes[i];
+        for (Node node : nodes) {
+            if (node.getCurrentBlock().equals(node.getDestination())) {
+                destination = node;
                 return;
             }
             for (Node openListNode : openList) {
-                if (openListNode.getCurrentBlock().equals(nodes[i].getCurrentBlock()) && openListNode.getF() <= nodes[i].getF()) continue nodesFor;
-            }
-            for (Node closedListNode : closedList) {
-                if (closedListNode.getCurrentBlock().equals(nodes[i].getCurrentBlock()) && closedListNode.getF() <= nodes[i].getF())
+                if (openListNode.getCurrentBlock().equals(node.getCurrentBlock()) && openListNode.getF() <= node.getF())
                     continue nodesFor;
             }
-            if (!canGoThere(nodes[i])) continue;
-            openList.add(nodes[i]);
+            for (Node closedListNode : closedList) {
+                if (closedListNode.getCurrentBlock().equals(node.getCurrentBlock()) && closedListNode.getF() <= node.getF())
+                    continue nodesFor;
+            }
+            if (!canGoThere(node)) continue;
+            openList.add(node);
         }
     }
     private boolean canGoThere (Node node) {

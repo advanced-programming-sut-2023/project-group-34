@@ -1,7 +1,6 @@
 package controller;
 
 
-import model.Game;
 import model.user.User;
 
 import java.util.Random;
@@ -13,7 +12,7 @@ public class Runner {
     
     public static void run () {
         while (true) {
-            if (User.getCurrentUser() == null) { //This part checks if the user was logged in before
+            if (User.getCurrentUser() == null) {
                 if (UserController.run().equals("exit")) return;
             }
             if (MainController.run().equals("game menu")) {
