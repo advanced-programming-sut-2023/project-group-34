@@ -61,6 +61,14 @@ public class GameController {
     public static void setGame(Game game) {
         currentGame = game;
     }
+    
+    public static String stopSelectedUnits () {
+        if (selectedWarEquipment.size() == 0) return "No soldiers Selected!";
+        for (Human human : selectedWarEquipment) {
+            human.stop();
+        }
+        return "All soldiers stopped!";
+    }
 
     public static String selectBuilding(Matcher matcher){
         int xLocation = Integer.parseInt(matcher.group("x"));
@@ -97,23 +105,31 @@ public class GameController {
         return null;
     }
     public static String moveUnit (Matcher matcher) {
+        if (selectedWarEquipment.size() == 0) return "Select some units to move!";
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if (currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
-        Router router = new Router(currentGame.getMap(), selectedWarEquipment.get(0).getBlock(), currentGame.getMap().getABlock(y, x), (Troop) selectedWarEquipment.get(0));
-        ArrayList<Block> route = router.findBestRoute();
-        if (route == null) return "Can't reach there!";
-        if (route.size() == 0) return "You are already in the destination given!";
+        if (!currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
+        boolean someoneCouldntGoThere = false;
+        boolean someoneCouldGoThere = false;
         for (Human human : selectedWarEquipment) {
-            human.setRoute(new ArrayList<>(route));
-            human.applyMoves();
+            Router router = new Router(currentGame.getMap(), human.getBlock(), currentGame.getMap().getABlock(y, x), human);
+            ArrayList<Block> route = router.findBestRoute();
+            if (route == null) someoneCouldntGoThere = true;
+            else {
+                if (route.size() == 0) return "You are already in the destination given!";
+                someoneCouldGoThere = true;
+                human.setDestination(currentGame.getMap().getABlock(y, x));
+                human.applyMoves();
+            }
         }
-        return null;
+        if (!someoneCouldGoThere) return "Couldn't move selected units!";
+        if (someoneCouldntGoThere) return "Some of selected troops couldn't go there!";
+        return "Units are moving successfully!";
         //todo: Arshia check it!
     }
 
     public static String setMapLocation (int x, int y) {
-        if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";
+        if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 40, x + 40))) return "Wrong coordinates";
         currentGame.getMap().setUpLeftCorner(x, y);
         return null;
     }
@@ -128,21 +144,21 @@ public class GameController {
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "S " + "\u001B[0m");
+        for (int i = 0; i < 40; i++) {
+            for (int j = 0; j < 40; j++) {
+                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + " S " + "\u001B[0m");
                 else if (map[i][j].getBuilding().size() != 0)
                     if (map[i][j].getBuilding().get(0).equals(DeathPitType.DEATH_PIT) && map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
-                        output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
+                        output.append(BackgroundColor.dictionary(map[i][j]) + " B " + "\u001B[0m");
                     else
-                        output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
+                        output.append(BackgroundColor.dictionary(map[i][j]) + " B " + "\u001B[0m");
                 else if (map[i][j].getBLockFiller() != null)
-                    output.append(BackgroundColor.dictionary(map[i][j]) + "T " + "\u001B[0m");
+                    output.append(BackgroundColor.dictionary(map[i][j]) + " T " + "\u001B[0m");
                 else {
                     String abbreviation= map[i][j].getBlockType().toString().substring(0,2);
-                    output.append(BackgroundColor.dictionary(map[i][j]) + abbreviation + "\u001B[0m");
+                    output.append(BackgroundColor.dictionary(map[i][j]) + ' ' + abbreviation + "\u001B[0m");
                 }
-                output.append(BackgroundColor.dictionary(map[i][j]) + ' ' + "\u001B[0m");
+                output.append(BackgroundColor.dictionary(map[i][j]) + " " + "\u001B[0m");
             }
             output.append('\n');
         }
@@ -567,43 +583,25 @@ public class GameController {
     }
 
     public static String patrolUnit(Matcher matcher) {
-        int y1 = Integer.parseInt(matcher.group("y1"));
-        int y2 = Integer.parseInt(matcher.group("y2"));
-        int x1 = Integer.parseInt(matcher.group("x1"));
-        int x2 = Integer.parseInt(matcher.group("x2"));
-        if(selectedWarEquipment.isEmpty()) {
-            return "You have to choose a unit first";
-        }
-        if(!currentGame.getMap().checkBounds(x1 , y1)) {
+        int y = Integer.parseInt(matcher.group("y"));
+        int x = Integer.parseInt(matcher.group("x"));
+        if(selectedWarEquipment.isEmpty()) return "You have to choose a unit first";
+        if(!currentGame.getMap().checkBounds(y , x))
             return "please enter a point in the map";
-        }
-        if(!currentGame.getMap().checkBounds(x2 , y2)) {
-            return "please enter a point in the map";
-        }
-        Block block2 = currentGame.getMap().getABlock(x2 , y2);
-        Block block1 = currentGame.getMap().getABlock(x1 , y1);
-        if(!block1.isPassable() || !block2.isPassable()) {
-            return "these blocks are not passable";
-        }
-        boolean flag = false;
-        Block tempBlock;
-        for(Human human : selectedWarEquipment) {
-            tempBlock = human.getBlock();
-            if(!human.isThereAWay(block1)) {
-                continue;
+        Block destination = currentGame.getMap().getABlock(y , x);
+        boolean canAnyonePatrol = false;
+        boolean someoneCantPatrol = false;
+        for (Human human : selectedWarEquipment) {
+            if (Router.canFindAWay(GameController.currentGame.getMap(), destination, human)) {
+                human.setPatrolDestination(human.getBlock());
+                Router.moveTowardsDestination(GameController.currentGame.getMap(), destination, human);
+                canAnyonePatrol = true;
             }
-            human.setBlock(block1);
-            if(!human.isThereAWay(block2)) {
-                human.setBlock(tempBlock);
-                continue;
-            }
-            flag = true;
-            //TODO patrol between
+            else someoneCantPatrol = true;
         }
-        if(!flag) {
-            return "Nobody from selected unit can patrol between those two blocks";
-        }
-        return "unit is patrolling successfully!";
+        if  (!canAnyonePatrol) return "Nobody from selected units can patrol between those two blocks";
+        if (someoneCantPatrol) return "Some of selected units couldn't patrol!";
+        return "All units are patrolling!";
     }
 
     public static String openBridge() {

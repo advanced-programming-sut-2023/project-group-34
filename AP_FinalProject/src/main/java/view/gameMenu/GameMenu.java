@@ -55,6 +55,8 @@ public class GameMenu {
                 System.out.println(response);
             } else if ((matcher = Commands.getOutput(command, Commands.SELECT_BUILDING)) != null){
                 System.out.println(GameController.selectBuilding(matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.MOVE_UNIT)) != null) {
+                System.out.println(GameController.moveUnit(matcher));
             } else if ((Commands.getOutput(command, Commands.REPAIR) != null)){
                 System.out.println(GameController.repairCurrentBuilding());
             } else if ((matcher = Commands.getOutput(command, Commands.SELECT_UNIT)) != null){
@@ -65,8 +67,6 @@ public class GameMenu {
                 System.out.println(GameController.deselectUnits());
             } else if ((matcher = Commands.getOutput(command, Commands.CREATE_UNIT)) != null){
                 System.out.println(GameController.createUnit(matcher));
-            } else if((matcher = Commands.getOutput(command, Commands.MOVE_UNIT)) != null){
-                System.out.println(GameController.moveSelectedUnits(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.ARIAL_ATTACK)) != null){
                 System.out.println(GameController.arialAttack(matcher));
             } else if (Commands.getOutput(command, Commands.CLOSE_BRIDGE) != null){
@@ -87,6 +87,8 @@ public class GameMenu {
                 System.out.println(GameController.addWorker(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.DIG_TUNNEL)) != null){
                 System.out.println(GameController.digTunnel(matcher));
+            } else if (Commands.getOutput(command, Commands.STOP_UNIT) != null) {
+                GameController.stopSelectedUnits();
             } else if ((matcher = Commands.getOutput(command, Commands.DIG_DITCH)) != null){
                 System.out.println(GameController.digDitch(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.BUILD_EQUIP_ON_TOWER)) != null){

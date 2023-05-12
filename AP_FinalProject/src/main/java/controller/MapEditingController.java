@@ -19,7 +19,7 @@ public class MapEditingController {
     }
     
     public static String changeBlockFloorType (Matcher matcher) {
-        BlockType blockType = BlockType.stringToBlockType(matcher.group("type"));
+        BlockType blockType = BlockType.stringToBlockType(matcher.group("type").trim().replaceAll("\"", ""));
         if (blockType == null) return "Invalid texture!";
         String x = matcher.group("singleX");
         if (x == null) {
