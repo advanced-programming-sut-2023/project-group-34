@@ -111,14 +111,7 @@ public class GameController {
         return null;
         //todo: Arshia check it!
     }
-    public static void applyAllOngoingMoves() {
-        //todo: next turn
-        for (User player : currentGame.getPlayers()) {
-            for (Human human : player.getGovernment().getHumans()) {
-                human.applyMoves();
-            }
-        }
-    }
+
     public static String setMapLocation (int x, int y) {
         if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";
         currentGame.getMap().setUpLeftCorner(x, y);
@@ -603,14 +596,14 @@ public class GameController {
                             continue;
                         }
                     }
-                    OpponentBlock.getBuilding().get(0).getHit(siegeMachine.getDamage());
+                    OpponentBlock.getBuilding().get(0).getHit(siegeMachine.getCurrentDamage());
                 }
                 if (!(human1 instanceof Troop human)) {
                     continue;
                 }
                 if(human.getFireRange() > 1) continue;
                 if(human.isThereAWay(OpponentBlock)) {
-                    OpponentBlock.getBuilding().get(0).getHit(human.getDamage());
+                    OpponentBlock.getBuilding().get(0).getHit(human.getCurrentDamage());
                 }
             }
         }
@@ -730,17 +723,18 @@ public class GameController {
             flag = true;
             for(Block block : target) {
                 if(!block.getBuilding().isEmpty()) {
-                    block.getBuilding().get(0).getHit(engineer.getDamage());
+                    block.getBuilding().get(0).getHit(engineer.getCurrentDamage());
                     continue;
                 }
                 for(Human enemy : block.getHumans()) {
                     if(!human.isVisible()) {
+                        if(enemy.getGovernment().equals(engineer.getGovernment())) continue;
                         if(human instanceof Troop troop && troop.getTroopType() == TroopType.ASSASSIN) {
-                            enemy.getHit(engineer.getDamage());
+                            enemy.getHit(engineer.getCurrentDamage());
                         }
                         continue;
                     }
-                    enemy.getHit(engineer.getDamage());
+                    enemy.getHit(engineer.getCurrentDamage());
                 }
             }
             engineer.useOil();

@@ -1,5 +1,6 @@
 package model.human;
 
+import controller.GameController;
 import model.building.Building;
 import model.building.OilSmelter;
 import model.government.Government;
@@ -22,9 +23,48 @@ public class Engineer extends Human{
     public void setEquippedWithOil(boolean equippedWithOil) {
         isEquippedWithOil = equippedWithOil;
     }
-    @Override
-    public void setVisible(boolean visible) {
-
+    public void AutomaticAttack() {
+        int counter = 0;
+        int x = getBlock().getLocationI();
+        int y = getBlock().getLocationJ();
+        Block tempBlock;
+        int numberOfOpponent;
+        int tempDamage;
+        switch (getTroopStage()) {
+            case AGGRESSIVE -> {
+                tempDamage = getCurrentDamage();
+                numberOfOpponent = 1;
+            }
+            case DEFENSIVE -> {
+                numberOfOpponent = 3;
+                tempDamage = (getCurrentDamage() * 8) / 10;
+            }
+            default -> {
+                numberOfOpponent = 5;
+                tempDamage = (getCurrentDamage() * 7) / 10;
+            }
+        }
+        for (int i = x - 3 ; i <= x + 3; i++) {
+            for (int j = y - 3 ; j <= y + 3 ; j++) {
+                if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
+                tempBlock = GameController.currentGame.getMap().getABlock(i , j);
+                for(Human human : tempBlock.getHumans()) {
+                    if(human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
+                    counter++;
+                }
+            }
+        }
+        if(counter < numberOfOpponent) return;
+        for (int i = x - 3 ; i <= x + 3; i++) {
+            for (int j = y - 3 ; j <= y + 3 ; j++) {
+                if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
+                tempBlock = GameController.currentGame.getMap().getABlock(i , j);
+                for(Human human : tempBlock.getHumans()) {
+                    if(human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
+                    human.getHit(tempDamage);
+                }
+            }
+        }
     }
 
     public void useOil() {

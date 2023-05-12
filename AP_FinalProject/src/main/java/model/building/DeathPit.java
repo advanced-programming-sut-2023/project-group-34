@@ -17,7 +17,8 @@ public class DeathPit extends Building {
     public void process() {
         for (Human human : block.getTroops()) {
             if(!human.getGovernment().equals(government)) {
-                human.die();
+                //TODO check requires for dying human
+                human.getHit(50000);
             }
         }
         destroy();

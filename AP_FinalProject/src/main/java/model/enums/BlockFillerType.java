@@ -1,11 +1,16 @@
 package model.enums;
 
 public enum BlockFillerType {
-    DESERT_SHRUB,
-    CHERRY,
-    OLIVE,
-    COCONUT,
-    DATE;
+    DESERT_SHRUB(100),
+    CHERRY(100),
+    OLIVE(100),
+    COCONUT(100),
+    DATE(100);
+    private int amount;
+
+    BlockFillerType(int amount) {
+        this.amount = amount;
+    }
 
     @Override
     public String toString() {
@@ -17,5 +22,13 @@ public enum BlockFillerType {
             if (value.toString().equals(string)) return value;
         }
         return null;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void use(int amount) {
+        this.amount -= amount;
     }
 }

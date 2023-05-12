@@ -22,9 +22,6 @@ public class SiegeMachine extends Human{
         return type;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
 
     public int getPrice() {
         return price;

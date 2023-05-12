@@ -2,12 +2,10 @@ package model.human;
 
 import controller.GameController;
 import model.building.Building;
-import model.enums.Direction;
 import model.enums.TroopStage;
 import model.government.Government;
 import model.map.Block;
 import model.map.findroute.Router;
-import view.gameMenu.GameMenu;
 
 import java.util.ArrayList;
 
@@ -56,12 +54,11 @@ public class Human {
     public void move(int x , int y) {
 
     }
-    public void Wappaaah() {
-
-    }
     public void getHit(int damage) {
+        damage -= defendRate;
+        if(damage < 0) damage = 0;
         HP -= damage;
-        if(HP < 0) die();
+        if(HP <= 0) die();
     }
 
     public int getSpeed () {
@@ -85,10 +82,6 @@ public class Human {
 
     public ArrayList<Block> getRoute () {
         return route;
-    }
-
-    public int getDamage() {
-        return damage;
     }
 
     public int getDefendRate() {
@@ -180,5 +173,8 @@ public class Human {
 
     public void setTroopStage(TroopStage troopStage) {
         this.troopStage = troopStage;
+    }
+
+    public void automaticAttack() {
     }
 }

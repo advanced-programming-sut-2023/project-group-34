@@ -1,11 +1,17 @@
 package model.government;
 
+import controller.GameController;
 import model.building.*;
 import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
+import model.human.Engineer;
 import model.human.Human;
 import model.human.Troop;
 import model.map.Block;
+import model.user.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AccountingDepartment {
     private final Government government;
@@ -161,7 +167,7 @@ public class AccountingDepartment {
             }
         }
 
-        Human human = null;
+        Human human ;
         if (government.getPopulation() + populationToBeAdded > government.getMaxPopulation()){
             populationToBeAdded = government.getMaxPopulation() - government.getPopulation();
         }
@@ -189,9 +195,24 @@ public class AccountingDepartment {
     }
 
 
-    private void buildingAccounting(){}
+    private void buildingAccounting(){
+        for(Building building : government.getBuildings()) {
+            if(building instanceof DeathPit || building instanceof CagedWarDog) continue;
+            building.process();
+        }
+    }
+    private void humanAccounting() {
+        for (Human human : GameController.currentGame.getCurrentGovernment().getHumans()) {
+            human.applyMoves();
+        }
+        for (Human human : GameController.currentGame.getCurrentGovernment().getHumans()) {
+            if(human instanceof Troop troop) troop.automaticAttack();
+            if(human instanceof Engineer engineer) engineer.AutomaticAttack();
+        }
+    }
     public void nextTurnForThisUser(){
         buildingAccounting();
+        humanAccounting();
         foodPopularityAccounting();
         giveFoodToPeople();
         taxPopularityAccounting();

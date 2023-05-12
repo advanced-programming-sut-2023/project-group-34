@@ -1,10 +1,12 @@
 package model.building;
 
+import controller.GameController;
 import model.enums.make_able.MakeAble;
 import model.enums.make_able.Resources;
 import model.human.Human;
 import model.government.Government;
 import model.map.Block;
+import model.map.GameMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,8 +45,25 @@ public class Maker extends Building{
             return;
         }
         if(this.buildingType == MakerType.WOOD_CUTTER) {
-            return;
-            //TODO add this in controller don't have access to map
+            if(GameController.currentGame == null) return;
+            GameMap map = GameController.currentGame.getMap();
+            Block tempBlock;
+            for (int i = 0; i < 399; i++) {
+                for (int j = 0; j < 399; j++) {
+                    tempBlock = map.getABlock(i , j);
+                    if(tempBlock.getBLockFiller() != null) {
+                        if(tempBlock.getBLockFiller().getAmount() <= 20) {
+                            Resources.WOOD.add(tempBlock.getBLockFiller().getAmount() , government);
+                            tempBlock.setBLockFiller(null);
+                        }
+                        else {
+                            Resources.WOOD.add(20 , government);
+                            tempBlock.getBLockFiller().use(20);
+                        }
+                        return;
+                    }
+                }
+            }
         }
         double tempInputRate;
         if(input == null) tempInputRate = inputRate;
