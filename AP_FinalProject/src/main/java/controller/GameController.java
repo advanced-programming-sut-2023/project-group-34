@@ -97,6 +97,7 @@ public class GameController {
         return null;
     }
     public static String moveUnit (Matcher matcher) {
+        if (selectedWarEquipment.size() == 0) return "Select some units to move!";
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
@@ -105,10 +106,10 @@ public class GameController {
         if (route == null) return "Can't reach there!";
         if (route.size() == 0) return "You are already in the destination given!";
         for (Human human : selectedWarEquipment) {
-            human.setRoute(new ArrayList<>(route));
+            human.setDestination(currentGame.getMap().getABlock(y, x));
             human.applyMoves();
         }
-        return null;
+        return "Units are moving successfully!";
         //todo: Arshia check it!
     }
 
@@ -530,43 +531,25 @@ public class GameController {
     }
 
     public static String patrolUnit(Matcher matcher) {
-        int y1 = Integer.parseInt(matcher.group("y1"));
-        int y2 = Integer.parseInt(matcher.group("y2"));
-        int x1 = Integer.parseInt(matcher.group("x1"));
-        int x2 = Integer.parseInt(matcher.group("x2"));
-        if(selectedWarEquipment.isEmpty()) {
-            return "You have to choose a unit first";
-        }
-        if(!currentGame.getMap().checkBounds(x1 , y1)) {
+        int y = Integer.parseInt(matcher.group("y"));
+        int x = Integer.parseInt(matcher.group("x"));
+        if(selectedWarEquipment.isEmpty()) return "You have to choose a unit first";
+        if(!currentGame.getMap().checkBounds(y , x))
             return "please enter a point in the map";
-        }
-        if(!currentGame.getMap().checkBounds(x2 , y2)) {
-            return "please enter a point in the map";
-        }
-        Block block2 = currentGame.getMap().getABlock(x2 , y2);
-        Block block1 = currentGame.getMap().getABlock(x1 , y1);
-        if(!block1.isPassable() || !block2.isPassable()) {
-            return "these blocks are not passable";
-        }
-        boolean flag = false;
-        Block tempBlock;
-        for(Human human : selectedWarEquipment) {
-            tempBlock = human.getBlock();
-            if(!human.isThereAWay(block1)) {
-                continue;
+        Block destination = currentGame.getMap().getABlock(y , x);
+        boolean canAnyonePatrol = false;
+        boolean someoneCantPatrol = false;
+        for (Human human : selectedWarEquipment) {
+            if (Router.canGoThere(GameController.currentGame.getMap(), destination, human)) {
+                human.setPatrolDestination(human.getBlock());
+                Router.moveTowardsDestination(GameController.currentGame.getMap(), destination, human);
+                canAnyonePatrol = true;
             }
-            human.setBlock(block1);
-            if(!human.isThereAWay(block2)) {
-                human.setBlock(tempBlock);
-                continue;
-            }
-            flag = true;
-            //TODO patrol between
+            else someoneCantPatrol = true;
         }
-        if(!flag) {
-            return "Nobody from selected unit can patrol between those two blocks";
-        }
-        return "unit is patrolling successfully!";
+        if  (!canAnyonePatrol) return "Nobody from selected units can patrol between those two blocks";
+        if (someoneCantPatrol) return "Some of selected units couldn't patrol!";
+        return "All units are patrolling!";
     }
 
     public static String openBridge() {

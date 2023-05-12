@@ -1,6 +1,7 @@
 package model.human;
 
 import controller.GameController;
+import model.Game;
 import model.building.Building;
 import model.enums.TroopStage;
 import model.government.Government;
@@ -14,8 +15,11 @@ public class Human {
     private int HP;
     private Government government;
     private ArrayList<Block> route = new ArrayList<>();
+    private Block destination;
+    private Block patrolDestination;
     private final int damage;
     private final int defendRate;
+    
     private int currentDamage;
     private boolean isVisible = true;
     private boolean canClimb;
@@ -46,6 +50,23 @@ public class Human {
         government.getHumans().add(this);
         this.defendRate = defendRate;
         this.speed = speed;
+    }
+    
+    
+    public Block getDestination () {
+        return destination;
+    }
+    
+    public void setDestination (Block destination) {
+        this.destination = destination;
+    }
+    
+    public Block getPatrolDestination () {
+        return patrolDestination;
+    }
+    
+    public void setPatrolDestination (Block patrolDestination) {
+        this.patrolDestination = patrolDestination;
     }
 
     public void die() {
@@ -147,15 +168,14 @@ public class Human {
     }
 
     public void applyMoves() {
-        if (speed >= getRoute().size()) {
-            this.setBlock(getRoute().get(getRoute().size() - 1));
-            setRoute(new ArrayList<>());
-        }
-        else {
-            this.setBlock(getRoute().get(speed - 1));
-            for (int i = 0; i < speed; i++) {
-                getRoute().remove(0);
+        Router.moveTowardsDestination(GameController.currentGame.getMap(), destination, this);
+        if (block.equals(destination)) {
+            if (patrolDestination != null) {
+                Block temp = destination;
+                destination = patrolDestination;
+                patrolDestination = temp;
             }
+            else destination = null;
         }
     }
 
@@ -176,5 +196,17 @@ public class Human {
     }
 
     public void automaticAttack() {
+    }
+    
+    public int getDamage () {
+        return damage;
+    }
+    
+    public boolean isCanClimb () {
+        return canClimb;
+    }
+    
+    public boolean isCanDig () {
+        return canDig;
     }
 }

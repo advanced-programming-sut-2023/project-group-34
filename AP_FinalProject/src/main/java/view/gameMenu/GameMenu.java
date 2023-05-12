@@ -55,6 +55,8 @@ public class GameMenu {
                 System.out.println(response);
             } else if ((matcher = Commands.getOutput(command, Commands.SELECT_BUILDING)) != null){
                 System.out.println(GameController.selectBuilding(matcher));
+            } else if ((matcher = Commands.getOutput(command, Commands.MOVE_UNIT)) != null) {
+                System.out.println(GameController.moveUnit(matcher));
             } else if ((Commands.getOutput(command, Commands.REPAIR) != null)){
                 System.out.println(GameController.repairCurrentBuilding());
             } else if ((matcher = Commands.getOutput(command, Commands.SELECT_UNIT)) != null){

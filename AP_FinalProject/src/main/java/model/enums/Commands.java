@@ -69,7 +69,7 @@ public enum Commands {
     CLOSE_BRIDGE("Close\\s+bridge"),
     OPEN_BRIDGE("Open\\s+bridge"),
     DESELECT_UNIT("Deselect\\s+unit"),
-    PATROL_UNIT("(?=.*-x1\\s+(?<x1>\\d*))(?=.*-x2\\s+(?<x2>\\d*))(?=.*-y1\\s+(?<y1>\\d*))(?=.*-y2\\s+(?<y2>\\d*))^Patrol(\\s+-[xy][1-2]\\s+\\d*){4}"),
+    PATROL_UNIT("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Patrol(\\s+-[xy]\\s+\\d*){2}"),
     DIG_TUNNEL("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Dig\\s+tunnel(\\s+-[xy]\\s+\\d*){2}$"),
     DISBAND_UNIT("Disband\\s+unit"),
     BUILD_EQUIPMENT("(?=.*-x(\\s+|$)(?<x>\\d*))(?=.*-y(\\s+|$)(?<y>\\d*))(?=.*-t(\\s+|$)(?<type>(\".+\"|\\S+)))^Build\\s+equipment(\\s+-[xyt]\\s+(\".+\"|\\S+)){3}$"),
