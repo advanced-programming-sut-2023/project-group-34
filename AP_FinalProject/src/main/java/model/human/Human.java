@@ -210,5 +210,5 @@ public class Human {
 
     public boolean isCanClimb() {
         return canClimb;
-
+    }
 }

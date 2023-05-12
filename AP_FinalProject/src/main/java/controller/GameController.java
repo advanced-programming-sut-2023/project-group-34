@@ -935,10 +935,10 @@ public class GameController {
     }
     public static String digDitch(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
-        int x = Integer.parseInt(matcher.group("x"));
         if(selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
         }
+        int x = Integer.parseInt(matcher.group("x"));
         if(!currentGame.getMap().checkBounds(y , x)) {
             return "please enter a point in the map";
         }
