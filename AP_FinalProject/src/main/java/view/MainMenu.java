@@ -72,7 +72,10 @@ public class MainMenu {
                 int y = Integer.parseInt(Runner.getScn().nextLine());
                 response = MainController.setKeep(username, x, y);
                 if (response != null) System.out.println(response);
-                else break;
+                else {
+                    System.out.println("Game started successfully. Good luck!");
+                    break;
+                }
             }
         }
     }

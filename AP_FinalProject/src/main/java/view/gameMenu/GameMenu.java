@@ -67,8 +67,6 @@ public class GameMenu {
                 System.out.println(GameController.deselectUnits());
             } else if ((matcher = Commands.getOutput(command, Commands.CREATE_UNIT)) != null){
                 System.out.println(GameController.createUnit(matcher));
-            } else if((matcher = Commands.getOutput(command, Commands.MOVE_UNIT)) != null){
-                System.out.println(GameController.moveSelectedUnits(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.ARIAL_ATTACK)) != null){
                 System.out.println(GameController.arialAttack(matcher));
             } else if (Commands.getOutput(command, Commands.CLOSE_BRIDGE) != null){

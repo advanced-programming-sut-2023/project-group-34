@@ -48,12 +48,12 @@ public class Router {
         if (human.getSpeed() >= way.size()) {
             human.getBlock().getHumans().remove(human);
             human.setBlock(destinationBlock);
-            human.setBlock(destinationBlock);
+            human.getBlock().getHumans().add(human);
         }
         else {
             human.getBlock().getHumans().remove(human);
             human.setBlock(way.get(human.getSpeed() - 1));
-            human.setBlock(way.get(human.getSpeed() - 1));
+            human.getBlock().getHumans().add(human);
         }
         return true;
     }
@@ -97,10 +97,10 @@ public class Router {
                 return;
             }
             for (Node openListNode : openList) {
-                if (openListNode.getCurrentBlock().equals(nodes[i].getCurrentBlock()) && openListNode.getF() < nodes[i].getF()) continue nodesFor;
+                if (openListNode.getCurrentBlock().equals(nodes[i].getCurrentBlock()) && openListNode.getF() <= nodes[i].getF()) continue nodesFor;
             }
             for (Node closedListNode : closedList) {
-                if (closedListNode.getCurrentBlock().equals(nodes[i].getCurrentBlock()) && closedListNode.getF() < nodes[i].getF())
+                if (closedListNode.getCurrentBlock().equals(nodes[i].getCurrentBlock()) && closedListNode.getF() <= nodes[i].getF())
                     continue nodesFor;
             }
             if (!canGoThere(nodes[i])) continue;

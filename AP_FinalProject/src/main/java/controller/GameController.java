@@ -100,7 +100,7 @@ public class GameController {
         if (selectedWarEquipment.size() == 0) return "Select some units to move!";
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        if (currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
+        if (!currentGame.getMap().checkBounds(y, x)) return "Out of bounds!";
         Router router = new Router(currentGame.getMap(), selectedWarEquipment.get(0).getBlock(), currentGame.getMap().getABlock(y, x), (Troop) selectedWarEquipment.get(0));
         ArrayList<Block> route = router.findBestRoute();
         if (route == null) return "Can't reach there!";
@@ -114,7 +114,7 @@ public class GameController {
     }
 
     public static String setMapLocation (int x, int y) {
-        if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 10, x + 10))) return "Wrong coordinates";
+        if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + 40, x + 40))) return "Wrong coordinates";
         currentGame.getMap().setUpLeftCorner(x, y);
         return null;
     }
@@ -129,21 +129,21 @@ public class GameController {
     public static String showMiniMap () {
         StringBuilder output = new StringBuilder();
         Block[][] map = currentGame.getMap().getMiniMap();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "S " + "\u001B[0m");
+        for (int i = 0; i < 40; i++) {
+            for (int j = 0; j < 40; j++) {
+                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + " S " + "\u001B[0m");
                 else if (map[i][j].getBuilding().size() != 0)
                     if (map[i][j].getBuilding().get(0).equals(DeathPitType.DEATH_PIT) && map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
-                        output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
+                        output.append(BackgroundColor.dictionary(map[i][j]) + " B " + "\u001B[0m");
                     else
-                        output.append(BackgroundColor.dictionary(map[i][j]) + "B " + "\u001B[0m");
+                        output.append(BackgroundColor.dictionary(map[i][j]) + " B " + "\u001B[0m");
                 else if (map[i][j].getBLockFiller() != null)
-                    output.append(BackgroundColor.dictionary(map[i][j]) + "T " + "\u001B[0m");
+                    output.append(BackgroundColor.dictionary(map[i][j]) + " T " + "\u001B[0m");
                 else {
                     String abbreviation= map[i][j].getBlockType().toString().substring(0,2);
-                    output.append(BackgroundColor.dictionary(map[i][j]) + abbreviation + "\u001B[0m");
+                    output.append(BackgroundColor.dictionary(map[i][j]) + ' ' + abbreviation + "\u001B[0m");
                 }
-                output.append(BackgroundColor.dictionary(map[i][j]) + ' ' + "\u001B[0m");
+                output.append(BackgroundColor.dictionary(map[i][j]) + " " + "\u001B[0m");
             }
             output.append('\n');
         }

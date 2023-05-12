@@ -334,7 +334,7 @@ public class MainController {
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
 
-        if (!map.checkBounds(x, y)) {
+        if (!map.checkBounds(y, x)) {
             return "Index out of bound! try between 0 and 399";
         }
         if (!Dictionaries.buildingDictionary.containsKey(type)) {
@@ -412,10 +412,10 @@ public class MainController {
         String type = matcher.group("type");
         type = type.replaceAll("\"", "");
         int count = Integer.parseInt(matcher.group("count"));
-        if (!map.checkBounds(x, y)) {
+        if (!map.checkBounds(y, x)) {
             return "Index out of bound! try between 0 and 399";
         }
-        Block block = map.getABlock(x, y);
+        Block block = map.getABlock(y, x);
         if(!block.getBuilding().isEmpty()) return "You can not drop unit on buildings!";
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND,
                                                            BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW));
