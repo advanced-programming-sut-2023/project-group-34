@@ -35,7 +35,6 @@ public class MainMenu {
                     continue;
                 }
                 setKeeps();
-                //TODO: Complete with Arshia! Drop keeps.
                 GameController.run();
             } else if (Commands.getOutput(input, Commands.SHOW_MAP_LIST) != null) {
                 System.out.println(MainController.showUserMaps());
@@ -44,7 +43,6 @@ public class MainMenu {
             } else {
                 System.out.println("Invalid Command");
             }
-            //TODO The part that starts a game with multiple users needs to be implemented
         }
     }
     

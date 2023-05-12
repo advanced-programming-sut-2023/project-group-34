@@ -11,7 +11,7 @@ public class Game {
 
     private Government currentGovernment;
     private final ArrayList<Trade> allTrades = new ArrayList<>();
-    private final GameMap map;//TODO: Set it
+    private final GameMap map;
     public Game(GameMap map) {
         this.map = map;
         setCurrentGovernment(User.currentUser.getGovernment());

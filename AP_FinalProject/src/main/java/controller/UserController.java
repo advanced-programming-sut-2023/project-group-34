@@ -196,7 +196,6 @@ public class UserController {
     private static int wrongPasswordsCount = 0;
 
     public static void wrongPasswordsEntered(){
-        //TODO: improve mechanism
         wrongPasswordsCount++;
         if (wrongPasswordsCount % 5 == 0) {
             System.out.println("you are locked!");

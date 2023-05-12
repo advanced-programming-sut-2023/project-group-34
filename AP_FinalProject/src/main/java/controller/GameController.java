@@ -251,35 +251,48 @@ public class GameController {
         Block place = selectedBuilding.getBlock();
         if(count < 1) return "Invalid count!";
         if(type.equals("engineer")) {
-            if(!createUnitErrorChecker(count , 50 , GeneralBuildingsType.ENGINEER_GUILD).equals("OK")) {
-                return createUnitErrorChecker(count , 50 , GeneralBuildingsType.ENGINEER_GUILD);
-            }
-            for (int i = 0; i < count; i++) {
-                place.getHumans().add(new Engineer(place , currentGame.getCurrentGovernment()));
-            }
-            return "engineers trained successfully!";
+            return createEngineer(count , place);
         }
         if(type.equals("tunneler")) {
-            if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD).equals("OK")) {
-                return createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD);
-            }
-            for (int i = 0; i < count; i++) {
-                place.getHumans().add(new Tunneler(place , currentGame.getCurrentGovernment()));
-            }
-            return "tunnelers trained successfully!";
+            return createTunneler(count , place);
         }
         if(type.equals("ladder man")) {
-            if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK).equals("OK")) {
-                return createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK);
-            }
-            for (int i = 0; i < count; i++) {
-                place.getHumans().add(new LadderMan(place , currentGame.getCurrentGovernment()));
-            }
-            return "ladder men trained successfully!";
+            return createLadderMan(count , place);
         }
         if(!Dictionaries.troopDictionary.containsKey(type)) {
             return "there is no such type!";
         }
+        return createTroops(type , count , place);
+    } //checked
+
+    private static String createTunneler(int count , Block place) {
+        if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD).equals("OK")) {
+            return createUnitErrorChecker(count , 30 , GeneralBuildingsType.TUNNELERS_GUILD);
+        }
+        for (int i = 0; i < count; i++) {
+            place.getHumans().add(new Tunneler(place , currentGame.getCurrentGovernment()));
+        }
+        return "tunnelers trained successfully!";
+    }
+    private static String createLadderMan(int count , Block place) {
+        if(!createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK).equals("OK")) {
+            return createUnitErrorChecker(count , 30 , GeneralBuildingsType.BARRACK);
+        }
+        for (int i = 0; i < count; i++) {
+            place.getHumans().add(new LadderMan(place , currentGame.getCurrentGovernment()));
+        }
+        return "ladder men trained successfully!";
+    }
+    private static String createEngineer(int count , Block place) {
+        if(!createUnitErrorChecker(count , 50 , GeneralBuildingsType.ENGINEER_GUILD).equals("OK")) {
+            return createUnitErrorChecker(count , 50 , GeneralBuildingsType.ENGINEER_GUILD);
+        }
+        for (int i = 0; i < count; i++) {
+            place.getHumans().add(new Engineer(place , currentGame.getCurrentGovernment()));
+        }
+        return "engineers trained successfully!";
+    }
+    private static String createTroops(String type , int count , Block place) {
         ArrayList<TroopType> arabs = new ArrayList<>(Arrays.asList(TroopType.ASSASSIN, TroopType.ARAB_SWORD_MAN,
                 TroopType.FIRE_THROWERS, TroopType.HORSE_ARCHER, TroopType.SLAVE, TroopType.SLINGER, TroopType.ARCHER_BOW));
         TroopType troopType = Dictionaries.troopDictionary.get(type);
@@ -310,7 +323,7 @@ public class GameController {
             troopType.Creator(place , currentGame.getCurrentGovernment());
         }
         return "unit created successfully!";
-    } //checked
+    }
 
     private static String createUnitErrorChecker(int count , int price , BuildingType buildingType) {
         if(!selectedBuilding.getBuildingType().equals(buildingType)) {
@@ -421,16 +434,16 @@ public class GameController {
             return "there is no enemy in that block";
         }
         for(Human human : selectedWarEquipment) {
-//            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , human.getBlock()) > warEqui.getFireRange() || warEquipment.getFireRange() <= 1) {
-//                continue;
-//            }
-//            flag = true;
-//            for(Human enemy : OpponentBlock.getHumans()) {
-//                if(!enemy.isVisible() || enemy.getGovernment().equals(warEquipment.getGovernment())) {
-//                    continue;
-//                }
-//                enemy.getHit(warEquipment.getCurrentDamage());
-//            }
+            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , human.getBlock()) > human.getRange() || human.getRange() <= 1) {
+                continue;
+            }
+            flag = true;
+            for(Human enemy : OpponentBlock.getHumans()) {
+                if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+                    continue;
+                }
+                enemy.getHit(human.getCurrentDamage());
+            }
         }
         if(!flag) {
             return "that block is out of range!";
@@ -621,90 +634,104 @@ public class GameController {
             return "please enter a point in the map";
         }
         Block OpponentBlock = currentGame.getMap().getABlock(y , x);
-        if(!OpponentBlock.getBuilding().isEmpty()) {
-            for(Human human1 : selectedWarEquipment) {
-                if(human1 instanceof SiegeMachine siegeMachine) {
-                    if(siegeMachine.getType().equals(SiegeType.CATAPULT)) {
-                        if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
-                            continue;
-                        }
-                    }
-                    if (siegeMachine.getType().equals(SiegeType.STABLE_CATAPULT)) {
-                        if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
-                            continue;
-                        }
-                    }
-                    OpponentBlock.getBuilding().get(0).getHit(siegeMachine.getCurrentDamage());
-                }
-                if (!(human1 instanceof Troop human)) {
-                    continue;
-                }
-                if(human.getFireRange() > 1) continue;
-                if(human.isThereAWay(OpponentBlock)) {
-                    OpponentBlock.getBuilding().get(0).getHit(human.getCurrentDamage());
-                }
-            }
+        if(     !OpponentBlock.getBuilding().isEmpty() &&
+                !OpponentBlock.getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment())) {
+            return attackABuilding(OpponentBlock);
         }
         if(OpponentBlock.getHumans().isEmpty()) {
             return "there is no enemy in that block";
         }
-        boolean flag = false;
+        return attackHumans(OpponentBlock);
+    }
+    private static String attackABuilding(Block OpponentBlock) {
         for(Human human1 : selectedWarEquipment) {
             if(human1 instanceof SiegeMachine siegeMachine) {
-                if(siegeMachine.getType().equals(SiegeType.FIRE_XBOW)) {
+                if(siegeMachine.getType().equals(SiegeType.CATAPULT) || siegeMachine.getType().equals(SiegeType.STABLE_CATAPULT)) {
                     if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
                         continue;
                     }
-                    for(Human enemy : OpponentBlock.getHumans()){
-                        if(!enemy.isVisible() || enemy.getGovernment().equals(siegeMachine.getGovernment())) {
-                            continue;
-                        }
-                        enemy.getHit(siegeMachine.getCurrentDamage());
-                        flag = true;
-                    }
-                    continue;
                 }
+                OpponentBlock.getBuilding().get(0).getHit(siegeMachine.getCurrentDamage());
+            }
+            if (!(human1 instanceof Troop troop)) {
+                continue;
+            }
+            if(troop.getFireRange() > 1) {
+                if(GameMap.getDistanceBetweenTwoBlocks(troop.getBlock() , OpponentBlock) > troop.getRange()) {
+                    OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
+                }
+            }
+            else if(troop.isThereAWay(OpponentBlock)) {
+                OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
+            }
+        }
+        return "building was hit successfully!";
+    }
+    private static String attackHumans(Block OpponentBlock) {
+        boolean flag = false;
+        for(Human human1 : selectedWarEquipment) {
+            if(human1 instanceof SiegeMachine siegeMachine) {
+                flag = flag || attackBySiegeMachine(siegeMachine , OpponentBlock);
+                continue;
             }
             if(!(human1 instanceof Troop human)) {
                 continue;
             }
             if(human.getFireRange() > 1) {
-                if(GameMap.getDistanceBetweenTwoBlocks(human.getBlock() , OpponentBlock) > human.getFireRange()) {
-                    continue;
-                }
-                for(Human enemy : OpponentBlock.getHumans()){
-                    if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
-                        continue;
-                    }
-                    enemy.getHit(human.getCurrentDamage());
-                    flag = true;
-                    break;
-                }
+                flag = flag || attackByLonger(human , OpponentBlock);
                 continue;
             }
             if(!human.isThereAWay(OpponentBlock)) {
                 continue;
             }
             if(human.getFireRange() <= 1) {
-                human.setBlock(OpponentBlock);
-                for(Human enemy : OpponentBlock.getHumans()) {
-                    if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
-                        continue;
-                    }
-                    enemy.getHit(human.getCurrentDamage());
-                    flag = true;
-                    break;
-                }
+                flag = flag || attackByClosers(human , OpponentBlock);
             }
         }
-        //TODO make this right
-        selectedWarEquipment.clear();
         if(!flag) {
-            return "no troop in selected building cat commit damage!";
+            return "no troop in selected building can commit damage!";
         }
         return "Attack implemented successfully";
     }
-
+    private static boolean attackBySiegeMachine(SiegeMachine siegeMachine , Block OpponentBlock) {
+        if(siegeMachine.getType().equals(SiegeType.FIRE_XBOW)) {
+            if(GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock() , OpponentBlock) > siegeMachine.getRange()) {
+                return false;
+            }
+            for(Human enemy : OpponentBlock.getHumans()){
+                if(!enemy.isVisible() || enemy.getGovernment().equals(siegeMachine.getGovernment())) {
+                    continue;
+                }
+                enemy.getHit(siegeMachine.getCurrentDamage());
+                return true;
+            }
+        }
+        return false;
+    }
+    private static boolean attackByLonger(Troop human , Block OpponentBlock) {
+        if(GameMap.getDistanceBetweenTwoBlocks(human.getBlock() , OpponentBlock) > human.getFireRange()) {
+            return false;
+        }
+        for(Human enemy : OpponentBlock.getHumans()){
+            if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+                continue;
+            }
+            enemy.getHit(human.getCurrentDamage());
+            return true;
+        }
+        return false;
+    }
+    private static boolean attackByClosers(Troop human , Block OpponentBlock) {
+        for(Human enemy : OpponentBlock.getHumans()) {
+            if(!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
+                continue;
+            }
+            enemy.getHit(human.getCurrentDamage());
+            human.setBlock(OpponentBlock);
+            return true;
+        }
+        return false;
+    }
     private static ArrayList<Block> getEngineerTarget(String d , Block block) {
         int x = block.getLocationI();
         int y = block.getLocationJ();

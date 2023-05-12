@@ -239,7 +239,6 @@ public class MainController {
         if (!response.equals("food storage placed in successfully")) return response;
         GateType.KEEP.create(currentPlayer.getGovernment(), block);
         return null;
-        //TODO: Current map?!
         //TODO: Separate different controllers
     }
 

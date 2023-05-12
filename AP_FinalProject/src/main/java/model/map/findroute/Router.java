@@ -41,10 +41,10 @@ public class Router {
         }
         return result;
     }
-    public static boolean moveTowardsDestination(GameMap map, Block destinationBlock, Human human) {
+    public static void moveTowardsDestination(GameMap map, Block destinationBlock, Human human) {
         Router router = new Router(map, human.getBlock(), destinationBlock, human);
         ArrayList<Block> way = router.findBestRoute();
-        if (way == null) return false;
+        if (way == null) return;
         if (human.getSpeed() >= way.size()) {
             human.getBlock().getHumans().remove(human);
             human.setBlock(destinationBlock);
@@ -55,7 +55,6 @@ public class Router {
             human.setBlock(way.get(human.getSpeed() - 1));
             human.getBlock().getHumans().add(human);
         }
-        return true;
     }
     public static boolean canFindAWay (GameMap map, Block destinationBlock, Human human) {
         Router router = new Router(map, human.getBlock(), destinationBlock, human);
@@ -109,18 +108,23 @@ public class Router {
         }
     }
     private boolean canGoThere (Node node) {
-        //TODO: different troops canClimb & latter
-        if (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE) && !((DrawBridge) node.getCurrentBlock().getBuilding().get(0)).isUP()) return true;
+        if (node.getCurrentBlock().getBuilding().size() != 0 &&
+                node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE) &&
+                !((DrawBridge) node.getCurrentBlock().getBuilding().get(0)).isUP()) return true;
         if (unpassable(node.getCurrentBlock())) return false;
         if (human instanceof Troop && ((Troop) human).getTroopType().equals(TroopType.ASSASSIN)) return true;
-        if (human.isCanClimb() && node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding && ((DefenciveBuilding) node.getCurrentBlock().getBuilding().get(0)).isHasLadder()) return true;
+        if (human.isCanClimb() && node.getCurrentBlock().getBuilding().size() != 0 &&
+                node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding &&
+                ((DefenciveBuilding) node.getCurrentBlock().getBuilding().get(0)).isHasLadder()) return true;
         if (human.isCanClimb() && (node.getCurrentBlock().getBuilding().size() != 0) ||
                 (node.getParent().getCurrentBlock().getBuilding().size() != 0 ))
             return true;
         if (node.getCurrentBlock().getBuilding().size() != 0 && node.getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding) {
             return node.getParent().getCurrentBlock().getBuilding().size() != 0 && node.getParent().getCurrentBlock().getBuilding().get(0) instanceof DefenciveBuilding;
         }
-        else if (node.getCurrentBlock().getBuilding().size() != 0 && (node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.SMALL_GATE_HOUSE) || node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE))) {
+        else if (node.getCurrentBlock().getBuilding().size() != 0 &&
+                (node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.SMALL_GATE_HOUSE) ||
+                        node.getCurrentBlock().getBuilding().get(0).getBuildingType().equals(GateType.BIG_GATE_HOUSE))) {
             return node.getCurrentBlock().getBuilding().get(0).getGovernment().equals(human.getGovernment());
         }
         else {

@@ -41,11 +41,6 @@ public class GameMap {
         return map;
     }
 
-    public ArrayList<Direction> findRoute(Block beginning , Block destination) {
-        //TODO
-         return null;
-     }
-
      public void moveMiniMap(Direction direction , int number) {
         switch (direction) {
             case NORTH:
@@ -120,7 +115,6 @@ public class GameMap {
     public Block getABlock(int i , int j) {
         return map[i][j];
     }
-    //TODO functions with String output go out side of model
     public String showDetails(int x, int y) {
         if (x >= size || y >= size || x < 0 || y < 0) return "Out of bounds!";
         Block block = map[y][x];

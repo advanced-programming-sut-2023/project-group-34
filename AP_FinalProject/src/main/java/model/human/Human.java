@@ -163,6 +163,7 @@ public class Human {
     }
 
     public void applyMoves() {
+        if(this.getSpeed() == 0) return;
         Router.moveTowardsDestination(GameController.currentGame.getMap(), destination, this);
         if (block.equals(destination)) {
             if (patrolDestination != null) {
@@ -193,5 +194,19 @@ public class Human {
 
     public void setTroopStage(TroopStage troopStage) {
         this.troopStage = troopStage;
+    }
+
+    public int getRange() {
+        if(this instanceof Troop troop) return troop.getFireRange();
+        if(this instanceof  SiegeMachine siegeMachine) return siegeMachine.getRange();
+        return 0;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public boolean isCanClimb() {
+        return canClimb;
     }
 }
