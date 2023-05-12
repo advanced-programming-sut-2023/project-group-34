@@ -42,7 +42,7 @@ public class Engineer extends Human{
                 tempDamage = (getCurrentDamage() * 7) / 10;
             }
         }
-        if(this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding) {
+        if(!this.getBlock().getBuilding().isEmpty() && (this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding)) {
             tempDamage += defenciveBuilding.getDamage();
         }
         for (int i = x - 3 ; i <= x + 3; i++) {

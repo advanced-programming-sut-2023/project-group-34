@@ -18,7 +18,7 @@ public enum Commands {
     CHANGE_PASSWORD_RANDOMLY("(?=.*\\s+-o(\\s+|$)(?<oldPass>\".+\"|[^- ]*))(?=.*\\s+-n(\\s+|$)(?<newPass>random))^\\s*Profile\\s+change\\s+password(\\s+-[on]\\s*(\".+\"|\\S*)){2}\\s*$"),
     CHANGE_SLOGAN_RANDOMLY("Profile\\s+change\\s+slogan\\s+random"),
     REMOVE_SLOGAN("Profile\\s+remove\\s+slogan"),
-    SET_TEXTURE("\\s*settexture(?=.*\\s+-t\\s+(?<type>\"[^\"]*\"\\S*))((?=.*\\s+-x(\\s+|$)(?<singleX>\\d*))(?=.*\\s+-y(\\s+|$)(?<singleY>\\d*))(\\s*-[xyt]\\s+(\"[^\"]\"|\\S*)){3}|(?=.*\\s+-x1\\s*(?<x1>\\d*))(?=.*\\s+-y1\\s*(?<y1>\\d*))(?=.*\\s+-x2\\s*(?<x2>\\d*))(?=.*\\s+-y2\\s*(?<y2>\\d*))(\\s*-([xy][12]|t)\\s+(\"[^\"]*\"|\\S*)){5})\\s*"),
+    SET_TEXTURE("\\s*settexture(?=.*\\s+-t\\s+(?<type>\"[^\"]*\"|\\S*))((?=.*\\s+-x(\\s+|$)(?<singleX>\\d*))(?=.*\\s+-y(\\s+|$)(?<singleY>\\d*))(\\s*-[xyt]\\s+(\"[^\"]\"|\\S*)){3}|(?=.*\\s+-x1\\s*(?<x1>\\d*))(?=.*\\s+-y1\\s*(?<y1>\\d*))(?=.*\\s+-x2\\s*(?<x2>\\d*))(?=.*\\s+-y2\\s*(?<y2>\\d*))(\\s*-([xy][12]|t)\\s+(\"[^\"]*\"|\\S*)){5})\\s*"),
     CLEAR("\\s*clear(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(\\s+-[xy]\\s+\\d*){2}\\s*"),
     DROP_ROCK("\\s*droprock(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-d\\s+(?<direction>\\S*))(\\s+-[xyd]\\s+\\S*){3}\\s*"),
     DROP_TREE("\\s*droptree(?=.*\\s+-x\\s+(?<xIndex>\\d*))(?=.*\\s+-y\\s+(?<yIndex>\\d*))(?=.*\\s+-t\\s+(?<type>\\S*))(\\s+-[xyt]\\s+\\S*){3}\\s*"),

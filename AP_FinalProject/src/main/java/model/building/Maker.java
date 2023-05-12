@@ -71,12 +71,13 @@ public class Maker extends Building{
             tempInputRate = Double.min(inputRate , input.getAmount(government));
             input.use(tempInputRate , government);
         }
-        for(MakeAble makeAble : output) {
-            makeAble.add(Math.floor((tempInputRate * currentOutPutRate) / inputRate), government);
-            if(makeAble.getLeftCapacity(government) < 0) {
-                makeAble.use(-makeAble.getLeftCapacity(government) , government);
+        if (output != null)
+            for(MakeAble makeAble : output) {
+                makeAble.add(Math.floor((tempInputRate * currentOutPutRate) / inputRate), government);
+                if(makeAble.getLeftCapacity(government) < 0) {
+                    makeAble.use(-makeAble.getLeftCapacity(government) , government);
+                }
             }
-        }
     }
     @Override
     public void destroy() {
