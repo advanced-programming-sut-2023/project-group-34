@@ -62,6 +62,7 @@ public class Router {
         return router.findBestRoute() != null;
     }
     private Node finalNode () {
+        if (unpassable(openList.get(0).getDestination())) return null;
         while (openList.size() != 0) {
             sortOpenList();
             Node q = openList.get(0);
