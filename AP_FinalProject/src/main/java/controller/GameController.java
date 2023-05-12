@@ -431,19 +431,16 @@ public class GameController {
             return "there is no enemy in that block";
         }
         for(Human human : selectedWarEquipment) {
-            if(!(human instanceof Troop warEquipment)) {
-                continue;
-            }
-            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , warEquipment.getBlock()) > warEquipment.getFireRange() || warEquipment.getFireRange() <= 1) {
-                continue;
-            }
-            flag = true;
-            for(Human enemy : OpponentBlock.getHumans()) {
-                if(!enemy.isVisible() || enemy.getGovernment().equals(warEquipment.getGovernment())) {
-                    continue;
-                }
-                enemy.getHit(warEquipment.getCurrentDamage());
-            }
+//            if(GameMap.getDistanceBetweenTwoBlocks(OpponentBlock , human.getBlock()) > warEqui.getFireRange() || warEquipment.getFireRange() <= 1) {
+//                continue;
+//            }
+//            flag = true;
+//            for(Human enemy : OpponentBlock.getHumans()) {
+//                if(!enemy.isVisible() || enemy.getGovernment().equals(warEquipment.getGovernment())) {
+//                    continue;
+//                }
+//                enemy.getHit(warEquipment.getCurrentDamage());
+//            }
         }
         if(!flag) {
             return "that block is out of range!";
