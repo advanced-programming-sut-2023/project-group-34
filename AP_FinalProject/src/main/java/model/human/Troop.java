@@ -72,10 +72,10 @@ public class Troop extends Human {
                 tempDamage = (getCurrentDamage() * 7) / 10;
             }
         }
-        if(this.getFireRange() <= 0 && (this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding)) {
+        if(this.getFireRange() <= 0 && !this.getBlock().getBuilding().isEmpty() && (this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding)) {
             return;
         }
-        if(this.fireRange > 0 && (this.getBlock().getBuilding().get(0) instanceof  DefenciveBuilding defenciveBuilding)) {
+        if(this.fireRange > 0 && !this.getBlock().getBuilding().isEmpty() && (this.getBlock().getBuilding().get(0) instanceof  DefenciveBuilding defenciveBuilding)) {
            tempDamage += defenciveBuilding.getDamage();
            range += defenciveBuilding.getFireRange();
         }

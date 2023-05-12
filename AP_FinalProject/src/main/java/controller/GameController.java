@@ -138,12 +138,12 @@ public class GameController {
         Block[][] map = currentGame.getMap().getMiniMap();
         for (int i = 0; i < 40; i++) {
             for (int j = 0; j < 40; j++) {
-                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + " S " + "\u001B[0m");
+                if (map[i][j].getTroops().length != 0) output.append(BackgroundColor.dictionary(map[i][j]) + "\u001B[31m" + " S " + "\u001B[0m");
                 else if (map[i][j].getBuilding().size() != 0)
-                    if (map[i][j].getBuilding().get(0).equals(DeathPitType.DEATH_PIT) && map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
-                        output.append(BackgroundColor.dictionary(map[i][j]) + " B " + "\u001B[0m");
+                    if (map[i][j].getBuilding().get(0).equals(DeathPitType.DEATH_PIT) && !map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
+                        output.append(BackgroundColor.dictionary(map[i][j]) + " " + map[i][j].getBlockType().toString().substring(0,2) + "\u001B[0m");
                     else
-                        output.append(BackgroundColor.dictionary(map[i][j]) + " B " + "\u001B[0m");
+                        output.append(BackgroundColor.dictionary(map[i][j]) + "\u001B[35m" + " B " + "\u001B[0m");
                 else if (map[i][j].getBLockFiller() != null)
                     output.append(BackgroundColor.dictionary(map[i][j]) + " T " + "\u001B[0m");
                 else {

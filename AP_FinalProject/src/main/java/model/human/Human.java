@@ -195,11 +195,15 @@ public class Human {
         this.troopStage = troopStage;
     }
 
-    public int getSpeed() {
+    public boolean isCanClimb () {
+        return canClimb;
+    }
+
+    public int getSpeed () {
         return speed;
     }
 
-    public boolean isCanClimb() {
-        return canClimb;
+    public boolean isCanDig () {
+        return canDig;
     }
 }
