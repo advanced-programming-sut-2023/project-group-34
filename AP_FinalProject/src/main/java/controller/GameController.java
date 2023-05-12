@@ -1358,12 +1358,15 @@ public class GameController {
     public static String showTradeDetails(Trade trade){
         String finalString = "";
         finalString = finalString.concat("Sender: " + trade.getSender().getName() + "  ");
-        finalString = finalString.concat("Resource offered: " + trade.getOfferedNumber() + " " + trade.getOffered() + "  ");
         if (trade.getOffered() == null)
-            finalString = finalString.concat("Resource wanted: Nothing  ");
+            finalString = finalString.concat("Resource offered: Nothing");
         else
-            finalString = finalString.concat("Resource wanted: " + trade.getWantedNumber() + trade.getWanted());
-        finalString = finalString.concat("Message: " + trade.getMessage());
+            finalString = finalString.concat("Resource offered: " + trade.getOfferedNumber() + " " + trade.getOffered() + "  ");
+        if (trade.getWanted() == null)
+            finalString = finalString.concat("Resource wanted: Nothing ");
+        else
+            finalString = finalString.concat("Resource wanted: " + trade.getWantedNumber() + " " + trade.getWanted());
+        finalString = finalString.concat(" Message: " + trade.getMessage());
         return finalString;
     }
 
@@ -1393,10 +1396,10 @@ public class GameController {
 
         if (wantedAmount < 0 || offeredAmount < 0) return "Invalid amount, trading failed";
 
-        if (!wantedName.equals("null") || !checkResourceName(wantedName))
+        if (!wantedName.equals("null") && !checkResourceName(wantedName))
             return "The resource you want does not exit, trading failed";
 
-        if (!offeredName.equals("null") || !checkResourceName(offeredName))
+        if (!offeredName.equals("null") && !checkResourceName(offeredName))
             return "The resource you are offering does not exit, trading failed";
 
         if (wantedName.equals("null") && wantedAmount != 0)
@@ -1411,11 +1414,11 @@ public class GameController {
         if (!receiverName.equals("all") && getPlayerByUsername(receiverName) == null)
             return "This player does not exit in the game, trading failed";
 
-        tradeWork(wantedName, wantedAmount, offeredName, offeredAmount, receiverName);
-        return null;
+        tradeWork(wantedName, wantedAmount, offeredName, offeredAmount, receiverName, message);
+        return "Trade request sent successfully";
     }
 
-    private static void tradeWork(String wanted, int wantedAmount, String offered, int offeredAmount, String receiverName){
+    private static void tradeWork(String wanted, int wantedAmount, String offered, int offeredAmount, String receiverName, String message){
         Resources wantedResource = null;
         Resources offeredResource = null;
         for (Resources resources : Resources.values()){
@@ -1428,7 +1431,8 @@ public class GameController {
         }
 
 
-        Trade trade = new Trade(wantedResource, wantedAmount, offeredResource, offeredAmount);
+
+        Trade trade = new Trade(wantedResource, wantedAmount, offeredResource, offeredAmount, currentGame.getCurrentGovernment().getOwner(), message);
         currentGame.addAllTrades(trade);
         if (!receiverName.equals("all")){
             getPlayerByUsername(receiverName).addToMyTrades(trade);
@@ -1461,13 +1465,12 @@ public class GameController {
     private static boolean checkEnoughStorageForTrade(String name, int amount){
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(name)){
-                if ((currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.
-                        get(resources) - amount) < 0){
-                    return false;
+                if ((resources.getAmount(currentGame.getCurrentGovernment()) - amount < 0)){
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public static String showTradeList(){
@@ -1502,11 +1505,11 @@ public class GameController {
             return "Invalid id number, accepting trade failed";
 
         for (Trade trade : currentGame.getCurrentGovernment().getOwner().getMyTrades()){
-            if (!trade.isAccepted() && id1 == 0){
+            if (!trade.isAccepted() && id1 == 1){
                 Resources wanted = trade.getWanted();
                 int wantedAmount = trade.getWantedNumber();
 
-                if (wantedAmount > currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(wanted))
+                if (wanted != null && wantedAmount > wanted.getAmount(currentGame.getCurrentGovernment()))
                     return "You do not have enough resources to accept this trade, accepting trade failed";
                 AcceptingTradeWork(trade, message);
                 break;
@@ -1517,14 +1520,29 @@ public class GameController {
         return "Trade finished successfully";
     }
 
-    public static void AcceptingTradeWork(Trade trade, String message){
+    private static void AcceptingTradeWork(Trade trade, String message){
         trade.setMessage(message);
         trade.setAccepted(true);
         trade.setReceiver(currentGame.getCurrentGovernment().getOwner());
-        int offeredAmount = trade.getOfferedNumber();
-        String offeredName = trade.getOffered().getName();
-        int wantedAmount = trade.getWantedNumber();
-        String wantedName = trade.getWanted().getName();
+        int offeredAmount;
+        String offeredName;
+        int wantedAmount;
+        String wantedName;
+        if (trade.getWanted() != null){
+            wantedAmount = trade.getWantedNumber();
+            wantedName = trade.getWanted().getName();
+        }
+        else {
+            wantedAmount = 0;
+            wantedName = "WOOD";
+        }
+        if (trade.getOffered() != null) {
+            offeredAmount = trade.getOfferedNumber();
+            offeredName = trade.getOffered().getName();
+        }else {
+            offeredAmount = 0;
+            offeredName = "WOOD";
+        }
 
         for (Resources resources : Resources.values()){
             if (resources.getName().equals(offeredName)){
@@ -1560,8 +1578,6 @@ public class GameController {
                                     getStorageDepartment().getResourcesMaxCapacity());
             }
         }
-
-
     }
 
     public static String showTradeHistory(){
@@ -1570,6 +1586,9 @@ public class GameController {
         for (Trade trade : currentGame.getAllTrades()){
             if (trade.getSender().getName().equals(currentGame.getCurrentGovernment().getOwner().getName()))
                 finalString = finalString.concat(showTradeDetails(trade) + "\n");
+            if (trade.isAccepted()){
+                finalString = finalString.concat("This trade was accepted" + "\n");
+            }
         }
 
         finalString = finalString.concat("Trades Accepted: " + "\n");
@@ -1603,8 +1622,8 @@ public class GameController {
 
     public static String populationInformation(){
         String finalString = "";
-        finalString = finalString.concat("Population: " + currentGame.getCurrentGovernment().getPopulation());
-        finalString = finalString.concat("Max Population: " + currentGame.getCurrentGovernment().getMaxPopulation());
+        finalString = finalString.concat("Population: " + currentGame.getCurrentGovernment().getPopulation() + "\n");
+        finalString = finalString.concat("Max Population: " + currentGame.getCurrentGovernment().getMaxPopulation() + "\n");
         finalString = finalString.concat("Unemployed: " + findUnemployed().size());
         return finalString;
     }

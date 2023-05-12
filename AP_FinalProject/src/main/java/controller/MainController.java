@@ -251,6 +251,7 @@ public class MainController {
             for (int j = -1; j < 2; j++) {
                 if (!GameController.getGame().getMap().checkBounds(y+j, x+i))
                     continue;
+                if (i == 0 && j == 0) continue;
                 block = GameController.getGame().getMap().getABlock(y+j, x+i);
                 String response = checkBlockType(block, GeneralBuildingsType.FOOD_STORAGE);
                 if (response.equals("OK")) {
