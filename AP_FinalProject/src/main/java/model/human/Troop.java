@@ -1,5 +1,6 @@
 package model.human;
 
+import controller.GameController;
 import model.building.Building;
 import model.enums.TroopStage;
 import model.enums.make_able.MakeAble;
@@ -91,14 +92,6 @@ public class Troop extends Human {
 
     public TroopType getTroopType() {
         return troopType;
-    }
-
-    public TroopStage getTroopStage() {
-        return troopStage;
-    }
-
-    public void setTroopStage(TroopStage troopStage) {
-        this.troopStage = troopStage;
     }
 
     public HashMap<MakeAble, Integer> getCost() {
