@@ -1,6 +1,7 @@
 package model.human;
 
-import controller.GameController;
+import model.building.Building;
+import model.enums.TroopStage;
 import model.enums.make_able.MakeAble;
 import model.government.Government;
 import model.map.Block;
@@ -92,25 +93,13 @@ public class Troop extends Human {
         return troopType;
     }
 
-    public static HashMap<TroopType, String> troopsNameString = new HashMap<>(
-            Map.ofEntries(
-                    Map.entry(TroopType.ARCHER, "archer"),
-                    Map.entry(TroopType.CROSS_BOW_MAN, "crossbow man"),
-                    Map.entry(TroopType.SPEAR_MAN, "spear man"),
-                    Map.entry(TroopType.PIKE_MAN, "pike man"),
-                    Map.entry(TroopType.MACE_MAN, "mace man"),
-                    Map.entry(TroopType.SWORDS_MAN, "swords man"),
-                    Map.entry(TroopType.KNIGHT, "knight"),
-                    Map.entry(TroopType.BLACK_MONK, "black monk"),
-                    Map.entry(TroopType.ARCHER_BOW, "archer bow"),
-                    Map.entry(TroopType.SLAVE, "slave"),
-                    Map.entry(TroopType.SLINGER, "slinger"),
-                    Map.entry(TroopType.ASSASSIN, "assassin"),
-                    Map.entry(TroopType.HORSE_ARCHER, "horse archer"),
-                    Map.entry(TroopType.ARAB_SWORD_MAN, "arab swords man"),
-                    Map.entry(TroopType.FIRE_THROWERS, "fire thrower")
-            )
-    );
+    public TroopStage getTroopStage() {
+        return troopStage;
+    }
+
+    public void setTroopStage(TroopStage troopStage) {
+        this.troopStage = troopStage;
+    }
 
     public HashMap<MakeAble, Integer> getCost() {
         return cost;

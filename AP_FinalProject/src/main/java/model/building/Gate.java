@@ -19,9 +19,14 @@ public class Gate extends Building {
         this.isVertical = isVertical;
         if (government != null)
             government.changeMaxPopulation(population);
+        if(buildingType.equals(GateType.KEEP)) primaryHumanMaker();
     }
 
-
+    public void primaryHumanMaker() {
+        for (int i = 0; i < 10; i++) {
+            block.getHumans().add(new Human(block , government));
+        }
+    }
     @Override
     public void process() {
     }
