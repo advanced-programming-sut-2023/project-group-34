@@ -15,8 +15,10 @@ public class Node {
         this.currentBlock = currentBlock;
         if (parent != null) g = parent.getG() + 1;
         else g = 0;
-        h = manhattanDistance(currentBlock, destination);
-        f = h + g;
+        if (destination != null) {
+            h = manhattanDistance(currentBlock, destination);
+            f = h + g;
+        }else f = h = 200000;
         this.destination = destination;
     }
     private int manhattanDistance (Block start, Block end) {
