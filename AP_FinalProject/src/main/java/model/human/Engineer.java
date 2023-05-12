@@ -43,7 +43,7 @@ public class Engineer extends Human{
             }
         }
         if(this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding) {
-            tempDamage += defenciveBuilding.getDefendRange();
+            tempDamage += defenciveBuilding.getDamage();
         }
         for (int i = x - 3 ; i <= x + 3; i++) {
             for (int j = y - 3 ; j <= y + 3 ; j++) {

@@ -1,31 +1,27 @@
 package model.building;
 
-import controller.GameController;
-import model.enums.Direction;
 import model.enums.make_able.Resources;
 import model.government.Government;
 import model.human.Human;
-import model.human.SiegeMachine;
 import model.human.Troop;
 import model.map.Block;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DefenciveBuilding extends Building{
 
     private final int fireRange;
-    private final int defendRange;
+    private final int damage;
     private final ArrayList<Human> warEquipments = new ArrayList<>();
     private final int capacity;
     private boolean hasLadder = false;
     private int occupation;
 
-       protected DefenciveBuilding(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int fireRange, int defendRange, int capacity) {
+       protected DefenciveBuilding(Government government, Block block, int HP, HashMap<Resources, Integer> cost, BuildingType buildingType, int fireRange, int damage, int capacity) {
         super(government, block, HP, cost, buildingType);
         this.fireRange = fireRange;
-        this.defendRange = defendRange;
+        this.damage = damage;
         this.capacity = capacity;
     }
 
@@ -51,8 +47,8 @@ public class DefenciveBuilding extends Building{
         return fireRange;
     }
 
-    public int getDefendRange() {
-        return defendRange;
+    public int getDamage() {
+        return damage;
     }
 
     public int getCapacity() {

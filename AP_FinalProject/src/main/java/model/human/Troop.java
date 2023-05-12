@@ -1,9 +1,7 @@
 package model.human;
 
 import controller.GameController;
-import model.building.Building;
 import model.building.DefenciveBuilding;
-import model.enums.TroopStage;
 import model.enums.make_able.MakeAble;
 import model.government.Government;
 import model.map.Block;
@@ -78,7 +76,7 @@ public class Troop extends Human {
             return;
         }
         if(this.fireRange > 0 && (this.getBlock().getBuilding().get(0) instanceof  DefenciveBuilding defenciveBuilding)) {
-           tempDamage += defenciveBuilding.getDefendRange();
+           tempDamage += defenciveBuilding.getDamage();
            range += defenciveBuilding.getFireRange();
         }
         for (int i = x - range ; i <= x + range ; i++) {
