@@ -116,9 +116,36 @@ public class GameController {
         if (!someoneCouldGoThere) return "Couldn't move selected units!";
         if (someoneCouldntGoThere) return "Some of selected troops couldn't go there!";
         return "Units are moving successfully!";
-        //todo: Arshia check it!
     }
 
+    public static String deployBatteringRam(Matcher matcher) {
+        SiegeMachine batteringRam = null;
+        for(Human human : selectedWarEquipment) {
+            if((human instanceof SiegeMachine siegeMachine) && siegeMachine.getType().equals(SiegeType.BATTERING_RAM)) {
+                batteringRam = siegeMachine;
+            }
+        }
+        if(batteringRam == null) {
+            return "You have not selected a battering ram!";
+        }
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if(!currentGame.getMap().checkBounds(y , x)) return "out of bound!";
+        Block block = currentGame.getMap().getABlock(y, x);
+        if(block.getBuilding().isEmpty() || !(block.getBuilding().get(0) instanceof Gate gate)) {
+            return "ypu have not chosen a gate!";
+        }
+        if(!gate.getBuildingType().equals(GateType.BIG_GATE_HOUSE) && gate.getBuildingType().equals(GateType.SMALL_GATE_HOUSE)) {
+            return "ypu have not chosen a gate!";
+        }
+        if(gate.getGovernment().equals(batteringRam.getGovernment())) return "That gate is yours!";
+        if(GameMap.getDistanceBetweenTwoBlocks(batteringRam.getBlock() , gate.getBlock()) > batteringRam.getSpeed()) {
+            return "that gate is out of range!";
+        }
+        batteringRam.getHit(300000);
+        gate.getHit(batteringRam.getCurrentDamage());
+        return "Gate was hit successfully!";
+    }
     public static String setMapLocation (int x, int y) {
         if (!(currentGame.getMap().checkBounds(y, x) && currentGame.getMap().checkBounds(y + currentGame.getMap().minimapSize, x + currentGame.getMap().minimapSize))) return "Wrong coordinates";
         currentGame.getMap().setUpLeftCorner(x, y);
@@ -183,7 +210,7 @@ public class GameController {
     public static String showPopularityFactors () {
         String finalString = "";
         finalString = finalString.concat("Food: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity() + "\n");
-        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearRate() + "\n");
+        finalString = finalString.concat("Fear: " + currentGame.getCurrentGovernment().getAccountingDepartment().getFearPopularity() + "\n");
         finalString = finalString.concat("Tax: " + currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity() + "\n");
         finalString = finalString.concat("Religion: " + currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity());
         return finalString;
@@ -603,6 +630,8 @@ public class GameController {
         int numberOfPlayers = currentGame.getPlayers().size();
         currentGame.setCurrentGovernment(currentGame.getPlayers().get((index + 1) % numberOfPlayers).getGovernment());
         currentGame.getCurrentGovernment().getAccountingDepartment().nextTurnForThisUser();
+        selectedBuilding = null;
+        selectedWarEquipment.clear();
         return "next turn done successfully";
     }
     public static String attackTheBlock (Matcher matcher){
@@ -796,6 +825,7 @@ public class GameController {
         cagedWarDog.process();
         return "Caged war dog deployed successfully!";
     }
+
     public static String addWorker(Matcher matcher) {
         int number = Integer.parseInt(matcher.group("n"));
         if(number <= 0) {

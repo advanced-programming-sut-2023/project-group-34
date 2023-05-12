@@ -74,4 +74,5 @@ public class Government {
     public Color getColor() {
         return color;
     }
+
 }

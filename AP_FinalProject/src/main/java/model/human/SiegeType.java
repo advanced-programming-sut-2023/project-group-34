@@ -4,11 +4,11 @@ import model.government.Government;
 import model.map.Block;
 
 public enum SiegeType {
-    BATTERING_RAM(-1 , 50000 , 2000, 0,1000, 50 , 4),
-    SIEGE_TOWER(-1 , 20 , -1, 0,1000, 50 , 4),
-    CATAPULT(20 , 5 , 100, 0,1000, 50 , 2),
-    STABLE_CATAPULT(20 , 0 , 500,0,1000, 50 , 3),
-    FIRE_XBOW(30 , 8 , 500 , 0,1000, 50 , 2);
+    BATTERING_RAM(0 , 50 , 50000, 10,1000, 50 , 4),
+    SIEGE_TOWER(0 , 20 , 0, 10,1000, 50 , 4),
+    CATAPULT(20 , 5 , 100, 10,1000, 50 , 2),
+    STABLE_CATAPULT(20 , 0 , 500,10,1000, 50 , 3),
+    FIRE_XBOW(30 , 8 , 500 , 10,1000, 50 , 2);
 
 
 

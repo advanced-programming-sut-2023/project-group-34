@@ -87,7 +87,9 @@ public enum Commands {
     RESOURCE_LEFT("Resource\\s+left"),
     WEAPONS_LEFT("Weapons\\s+left"),
     NEXT_TURN("Next\\s+turn"),
+    BATTERING_RAM("(?=.*-x\\s+(?<x>\\d*))(?=.*-y\\s+(?<y>\\d*))^Deploy\\s+battering\\s+ram(\\s+-[xy]\\s+\\d*){2}$"),
     SHOW_CURRENT_POPULATION("Show\\s+population\\s+factors");
+
 
 
 

@@ -64,6 +64,7 @@ public class Maker extends Building{
                     }
                 }
             }
+            return;
         }
         double tempInputRate;
         if(input == null) tempInputRate = inputRate;

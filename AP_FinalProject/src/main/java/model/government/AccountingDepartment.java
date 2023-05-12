@@ -8,10 +8,6 @@ import model.human.Engineer;
 import model.human.Human;
 import model.human.Troop;
 import model.map.Block;
-import model.user.User;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AccountingDepartment {
     private final Government government;
@@ -21,10 +17,10 @@ public class AccountingDepartment {
     private int religionPopularity;
     private int taxPopularity;
     private int foodPopularity;
-    private int fearPopularity;
+    private int fearPopularity = 0;
 
     public void foodPopularityAccounting(){
-        int foodPopularity1 = 0;
+        int foodPopularity1;
         foodPopularity1 = foodTypeCounter() -1;
         double foodNeeded = ((foodRate * 0.5) + 1) * government.getPopulation();
         if (foodNeeded > edibleFood()) foodRate = -2;
@@ -81,9 +77,8 @@ public class AccountingDepartment {
     }
 
     private void fearPopularityAccounting(){
-        int fearPopularity1 = -fearRate;
-        fearPopularity += fearPopularity1;
-        government.setTotalPopularity(government.getTotalPopularity() - fearPopularity1);
+        fearPopularity += fearRate;
+        government.setTotalPopularity(government.getTotalPopularity() - fearRate);
     }
     private void moralityAndIntegrity(){
         for (Building building : government.getBuildings()){
@@ -94,7 +89,7 @@ public class AccountingDepartment {
 
         for (Human human : government.getHumans()){
             if (human instanceof Troop){
-                ((Troop) human).setCurrentRate(fearRate);
+                human.setCurrentRate(fearRate);
             }
         }
     }
@@ -112,10 +107,9 @@ public class AccountingDepartment {
     }
 
     public void taxPopularityAccounting() {
-        int taxPopularity1 = 0;
-        if (government.getStorageDepartment().resourcesStorage.get(Resources.GOLD) == 0){
-            taxPopularity += 1;
-            government.setTotalPopularity(government.getTotalPopularity()+1);
+        int taxPopularity1;
+        if (government.getStorageDepartment().resourcesStorage.get(Resources.GOLD) <= 0){
+            taxRate = 0;
         }
         if (taxRate <= 0){
             taxPopularity1 = (-2)*taxRate + 1;
@@ -129,12 +123,11 @@ public class AccountingDepartment {
                 case 6 -> -16;
                 case 7 -> -20;
                 case 8 -> -24;
-                default -> taxPopularity1;
+                default -> 0;
             };
             taxPopularity += taxPopularity1;
-            government.setTotalPopularity(government.getTotalPopularity()+taxPopularity1);
         }
-
+        government.setTotalPopularity(government.getTotalPopularity() + taxPopularity);
     }
 
     private void getMoneyFromPeople(){
@@ -197,7 +190,7 @@ public class AccountingDepartment {
 
     private void buildingAccounting(){
         for(Building building : government.getBuildings()) {
-            if(building instanceof DeathPit || building instanceof CagedWarDog) continue;
+            if(building instanceof CagedWarDog) continue;
             building.process();
         }
     }
@@ -263,28 +256,12 @@ public class AccountingDepartment {
         return taxPopularity;
     }
 
-    public void setTaxPopularity(int taxPopularity) {
-        this.taxPopularity = taxPopularity;
+    public int getFearPopularity() {
+        return fearPopularity;
     }
-
     public int getFoodPopularity() {
         return foodPopularity;
     }
 
-    public void setFoodPopularity(int foodPopularity) {
-        this.foodPopularity = foodPopularity;
-    }
-
-    public int getFearPopularity() {
-        return fearPopularity;
-    }
-
-    public void setFearPopularity(int fearPopularity) {
-        this.fearPopularity = fearPopularity;
-    }
-
-    public void setReligionPopularity(int religionPopularity) {
-        this.religionPopularity = religionPopularity;
-    }
 
 }

@@ -86,7 +86,7 @@ public class GameMenu {
             } else if ((matcher = Commands.getOutput(command, Commands.DIG_TUNNEL)) != null){
                 System.out.println(GameController.digTunnel(matcher));
             } else if (Commands.getOutput(command, Commands.STOP_UNIT) != null) {
-                GameController.stopSelectedUnits();
+                System.out.println(GameController.stopSelectedUnits());
             } else if ((matcher = Commands.getOutput(command, Commands.DIG_DITCH)) != null){
                 System.out.println(GameController.digDitch(matcher));
             } else if ((matcher = Commands.getOutput(command, Commands.BUILD_EQUIP_ON_TOWER)) != null){
@@ -124,6 +124,8 @@ public class GameMenu {
                 System.out.println(GameController.nextTurn());
             } else if (Commands.getOutput(command, Commands.SHOW_CURRENT_POPULATION) != null){
                 System.out.println(GameController.populationInformation());
+            } else if ((matcher = Commands.getOutput(command, Commands.BATTERING_RAM)) != null){
+                System.out.println(GameController.deployBatteringRam(matcher));
             } else {
                 System.out.println("Invalid command!");
             }

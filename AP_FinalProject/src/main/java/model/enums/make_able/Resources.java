@@ -26,6 +26,7 @@ public enum Resources implements MakeAble {
     @Override
     public void use(double rate , Government government) {
         double temp = getAmount(government);
+        if(temp - rate < 0) government.getStorageDepartment().getResourcesStorage().replace(this , 0.0);
         government.getStorageDepartment().getResourcesStorage().replace(this , temp - rate);
     }
     @Override

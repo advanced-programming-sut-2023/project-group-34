@@ -15,13 +15,17 @@ public class DeathPit extends Building {
 
     @Override
     public void process() {
-        for (Human human : block.getTroops()) {
-            if(!human.getGovernment().equals(government)) {
-                //TODO check requires for dying human
+        boolean humanFoundFlag = false;
+        int size  = block.getHumans().size();
+        for (int i = size - 1; i >= 0; i--) {
+            Human human;
+            human = block.getHumans().get(i);
+            if (!human.getGovernment().equals(government)) {
+                humanFoundFlag = true;
                 human.getHit(50000);
             }
         }
-        destroy();
+        if(humanFoundFlag) destroy();
     }
 
     @Override

@@ -343,6 +343,9 @@ public class MainController {
         if(!block.getBuilding().isEmpty())
             return "You already have building in that block!";
         BuildingType buildingType = Dictionaries.buildingDictionary.get(type);
+        if(buildingType.equals(GateType.KEEP)) {
+            return "You can not build a keep in the middle of the game!";
+        }
         if (!checkBlockType(block, buildingType).equals("OK")) {
             return checkBlockType(block, buildingType);
         }
