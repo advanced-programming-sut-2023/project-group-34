@@ -410,6 +410,7 @@ public class MainController {
         int x = Integer.parseInt(matcher.group("xIndex"));
         int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
+        type = type.replaceAll("\"", "");
         int count = Integer.parseInt(matcher.group("count"));
         if (!map.checkBounds(x, y)) {
             return "Index out of bound! try between 0 and 399";

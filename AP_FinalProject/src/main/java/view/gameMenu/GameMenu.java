@@ -118,6 +118,8 @@ public class GameMenu {
                 System.out.println(GameController.Resource());
             } else if (Commands.getOutput(command, Commands.WEAPONS_LEFT) != null){
                 System.out.println(GameController.weaponsResource());
+            } else if ((matcher = Commands.getOutput(command, Commands.DROP_UNIT)) != null){
+                System.out.println(MainController.dropUnit(GameController.currentGame.getMap(), matcher));
             } else {
                 System.out.println("Invalid command!");
             }

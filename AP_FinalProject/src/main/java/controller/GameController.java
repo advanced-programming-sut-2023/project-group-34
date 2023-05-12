@@ -293,8 +293,9 @@ public class GameController {
             return "you have to select a related building!";
         }
         for(Map.Entry<MakeAble , Integer> entry : troopType.getCost().entrySet()) {
-            if (count * entry.getValue() > Resources.GOLD.getAmount(currentGame.getCurrentGovernment())) {
-                return "You do not have enough money!";
+            System.out.println(count + "   " + entry.getValue() + "  " + entry.getKey().getLeftCapacity(currentGame.getCurrentGovernment()) + "  " + entry.getKey().toString());
+            if (count * entry.getValue() > entry.getKey().getAmount(currentGame.getCurrentGovernment())) {
+                return "You do not have enough " + entry.getKey().toString() + " to train troops!";
             }
         }
         if(findUnemployed().size() < count) {
@@ -1118,6 +1119,7 @@ public class GameController {
 
         int finalAmount = Integer.parseInt(matcher.group("amount"));
         String item = matcher.group("item");
+        item = item.replaceAll("\"", "");
 
         if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
             return "The required field is empty, buying failed";
