@@ -98,9 +98,6 @@ public class MainController {
         String finalOldPass = matcher.group("oldPass");
         String finalNewPass = matcher.group("newPass");
 
-        if (finalOldPass.isEmpty() || finalNewPass.isEmpty())
-            return "The required field is empty, changing password failed";
-
         String response = UserController.passwordChecker(finalNewPass);
         if (response != null && !response.isEmpty()) return response;
 

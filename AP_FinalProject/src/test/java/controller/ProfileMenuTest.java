@@ -152,7 +152,7 @@ class ProfileMenuTest {
         createUser("ahmad", "ali@gmail.com");
         String newPass = "4567As#12";
         String confirmation = "4567As#12";
-        assertEquals("Password changed successfully", MainController.changePasswordPart2(newPass, confirmation));
+        assertEquals("password changed successfully", MainController.setChangePassword(newPass));
         assertTrue(User.currentUser.getPassword().checkPassword(newPass));
     }
 
@@ -162,6 +162,7 @@ class ProfileMenuTest {
         Matcher matcher = Commands.getOutput("Profile  change   password -n random -o", Commands.CHANGE_PASSWORD_RANDOMLY);
         assertEquals("The required field is empty, changing password failed", MainController.changePasswordRandomly1(matcher));
     }
+
 
     @Test
     void wrongOldPassChangePasswordRandomly(){
@@ -181,8 +182,20 @@ class ProfileMenuTest {
     }
 
     @Test
-    void runChangePasswordRandomly2(){
+    void changePasswordRandomly2(){
+        createUser("ahmad", "ali@gmail.com");
+        String newPass = "4567As#12";
+        String confirmation = "4567As#12";
+        assertEquals("good for now", MainController.changePasswordRandomly2(newPass, confirmation));
+    }
 
+    @Test
+    void changePasswordRandomly(){
+        createUser("ahmad", "ali@gmail.com");
+        String newPass = "4567As#12";
+        String confirmation = "4567As#12";
+        assertEquals("Password changed successfully", MainController.changePasswordRandomly3(newPass));
+        assertTrue(User.currentUser.getPassword().checkPassword(newPass));
     }
 
     @Test
@@ -268,6 +281,8 @@ class ProfileMenuTest {
         assertEquals("Slogan changed successfully", MainController.changeSlogan(matcher));
 
     }
+
+
 
 
 
