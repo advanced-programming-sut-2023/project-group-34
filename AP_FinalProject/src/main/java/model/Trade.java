@@ -16,11 +16,13 @@ public class Trade {
     private Resources offered;
     private int offeredNumber;
 
-    public Trade(Resources wanted, int wantedNumber, Resources offered, int offeredNumber){
+    public Trade(Resources wanted, int wantedNumber, Resources offered, int offeredNumber, User sender, String message){
         this.wanted = wanted;
         this.wantedNumber = wantedNumber;
         this.offered = offered;
         this.offeredNumber = offeredNumber;
+        this.sender = sender;
+        this.message = message;
         this.isAccepted = false;
         this.wasShown = false;
     }

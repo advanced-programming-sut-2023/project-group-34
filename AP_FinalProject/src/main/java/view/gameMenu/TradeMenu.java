@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 public class TradeMenu {
     public static String run(){
         Matcher matcher;
-        GameController.showTradeNotification();
+        System.out.println(GameController.showTradeNotification());
         while (true) {
             String command = Runner.getScn().nextLine();
             if (Commands.getOutput(command, Commands.CURRENT_MENU) != null) {

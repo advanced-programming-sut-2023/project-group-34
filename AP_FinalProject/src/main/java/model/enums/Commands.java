@@ -45,9 +45,7 @@ public enum Commands {
     SHOW_TRADE_LIST("Show\\s+trade\\s+list"),
     SHOW_TRADE_HISTORY("Show\\s+trade\\s+history"),
     ACCEPT_TRADE("(?=.*-m\\s+(?<message>\".+\"|\\S*))(?=.*-i\\s+(?<id>\\d*))^Accept\\s+trade\\s*(\\s+-[im]\\s+(\".+\"|\\S*)){2}$"),
-    TRADE("(?=.*-m\\s+(?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]+\")|\\S*)))(?=.*-oa\\s+(?<offeredAmount>\\d*))" +
-            "(?=.*-wa\\s+(?<wantedAmount>\\d*))(?=.*-w\\s+(?<wanted>\\S*))(?=.*-o\\s+(?<offered>\\S*))" +
-            "(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
+    TRADE("(?=.*-m\\s+(?<message>((\"[a-zA-Z0-9 !@#$%^&*()_=+\\/,.]+\")|\\S*)))(?=.*-oa\\s+(?<offeredAmount>[-]?\\d*))(?=.*-wa\\s+(?<wantedAmount>[-]?\\d*))(?=.*-w\\s+(?<wanted>\\S*))(?=.*-o\\s+(?<offered>\\S*))(?=.*-r\\s+(?<receiver>(\".+\"|\\S*)))^Trade(\\s+-[wmoar]{1,2}\\s+(\"[^\"]*\"|\\S*)){6}$"),
     PROFILE_MENU("Enter\\s+profile\\s+menu"),
     NEW_GAME("New game -m (?<mapName>\".+\"|\\S*)"),
     MAP_EDITING_MENU("Enter\\s+map\\s+editing\\s+menu"),
