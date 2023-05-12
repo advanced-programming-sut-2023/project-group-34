@@ -6,6 +6,7 @@ import model.human.Human;
 import model.government.Government;
 import model.map.Block;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +30,10 @@ public class Inn extends Building{
     public void destroy() {
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
-        for(Human human : block.getHumans()) {
-            if(!human.isUnemployed()) human.die();
+        ArrayList<Human> humans = block.getHumans();
+        for (int i = humans.size() - 1; i >= 0; i--) {
+            Human human = humans.get(i);
+            if (!human.isUnemployed()) human.die();
         }
     }
 

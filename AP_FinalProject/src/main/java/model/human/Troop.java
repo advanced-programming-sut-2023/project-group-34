@@ -83,11 +83,13 @@ public class Troop extends Human {
             for (int j = y - range ; j <= y + range ; j++) {
                 if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
                 tempBlock = GameController.currentGame.getMap().getABlock(i , j);
-                for(Human human : tempBlock.getHumans()) {
-                    if(human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
+                ArrayList<Human> humans = tempBlock.getHumans();
+                for (int k = humans.size() - 1; k >= 0 ; k--) {
+                    Human human = humans.get(k);
+                    if (human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
                     human.getHit(tempDamage);
                     counter++;
-                    if(counter >= numberOfOpponent) return;
+                    if (counter >= numberOfOpponent) return;
                 }
             }
         }

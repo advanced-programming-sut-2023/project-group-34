@@ -48,18 +48,20 @@ public class Maker extends Building{
             if(GameController.currentGame == null) return;
             GameMap map = GameController.currentGame.getMap();
             Block tempBlock;
-            for (int i = 0; i < 399; i++) {
-                for (int j = 0; j < 399; j++) {
+            for (int i = 0; i < map.getSize(); i++) {
+                for (int j = 0; j < map.getSize(); j++) {
                     tempBlock = map.getABlock(i , j);
                     if(tempBlock.getBLockFiller() != null) {
-                        if(tempBlock.getBlockFillerAmount() <= 20) {
-                            Resources.WOOD.add(tempBlock.getBlockFillerAmount() , government);
-                            tempBlock.setBLockFiller(null);
-                        }
-                        else {
-                            Resources.WOOD.add(20 , government);
-                            tempBlock.useBlockFillerAmount(20);
-                        }
+                        Resources.WOOD.add(Math.min(tempBlock.getBlockFillerAmount(), 20), government);
+                        tempBlock.useBlockFillerAmount(20);
+//                        if(tempBlock.getBlockFillerAmount() <= 20) {
+//                            Resources.WOOD.add(tempBlock.getBlockFillerAmount() , government);
+//                            tempBlock.setBLockFiller(null);
+//                        }
+//                        else {
+//                            Resources.WOOD.add(20 , government);
+//                            tempBlock.useBlockFillerAmount(20);
+//                        }
                         return;
                     }
                 }
@@ -83,8 +85,10 @@ public class Maker extends Building{
     public void destroy() {
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);
-        for(Human human : block.getHumans()) {
-            if(!human.isUnemployed()) human.die();
+        ArrayList<Human> humans = block.getHumans();
+        for (int i = humans.size() - 1; i >= 0; i--) {
+            Human human = humans.get(i);
+            if (!human.isUnemployed()) human.die();
         }
     }
 

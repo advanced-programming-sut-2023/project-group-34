@@ -7,6 +7,8 @@ import model.building.OilSmelter;
 import model.government.Government;
 import model.map.Block;
 
+import java.util.ArrayList;
+
 public class Engineer extends Human{
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government) {
@@ -49,8 +51,10 @@ public class Engineer extends Human{
             for (int j = y - 3 ; j <= y + 3 ; j++) {
                 if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
                 tempBlock = GameController.currentGame.getMap().getABlock(i , j);
-                for(Human human : tempBlock.getHumans()) {
-                    if(human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
+                ArrayList<Human> humans = tempBlock.getHumans();
+                for (int k = humans.size() - 1; k >= 0; k--) {
+                    Human human = humans.get(k);
+                    if (human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
                     counter++;
                 }
             }
@@ -60,8 +64,10 @@ public class Engineer extends Human{
             for (int j = y - 3 ; j <= y + 3 ; j++) {
                 if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
                 tempBlock = GameController.currentGame.getMap().getABlock(i , j);
-                for(Human human : tempBlock.getHumans()) {
-                    if(human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
+                ArrayList<Human> humans = tempBlock.getHumans();
+                for (int k = humans.size() - 1; k >= 0; k--) {
+                    Human human = humans.get(k);
+                    if (human.getGovernment().equals(getGovernment()) || !human.isVisible()) continue;
                     human.getHit(tempDamage);
                 }
             }
