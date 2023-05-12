@@ -84,7 +84,8 @@ public enum Commands {
     SET_TROOP_STATE("Set\\s+state(\\s+|$)(?<state>(\\S+))*"),
     FOOD_LEFT("Food\\s+left"),
     RESOURCE_LEFT("Resource\\s+left"),
-    WEAPONS_LEFT("Weapons\\s+left");
+    WEAPONS_LEFT("Weapons\\s+left"),
+    NEXT_TURN("Next\\s+turn");
 
 
 
