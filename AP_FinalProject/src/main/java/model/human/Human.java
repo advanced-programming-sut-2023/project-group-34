@@ -40,6 +40,7 @@ public class Human {
         this.damage = damage;
         this.canDig = canDig;
         this.canClimb = canClimb;
+        this.currentDamage = damage;
         this.government = government;
         this.block = block;
         if (government != null) government.getHumans().add(this);
@@ -100,7 +101,7 @@ public class Human {
     }
 
     public void setCurrentRate(int moralityRate) {
-        moralityRate *= 5;
+        moralityRate *= -5;
         this.currentDamage = (damage * (moralityRate+100))/100;
     }
 

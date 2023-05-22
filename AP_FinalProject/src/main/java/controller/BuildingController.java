@@ -17,15 +17,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public class BuildingController {
-    public static String repairCurrentBuilding () {
+    public static String repairCurrentBuilding() {
         if (GameController.selectedBuilding == null) return "No building has been selected!";
         if (GameController.selectedBuilding.getHP() == GameController.selectedBuilding.getMaxHP())
             return "There is nothing to repair in this building, repairing failed";
         int x = GameController.selectedBuilding.getBlock().getLocationJ();
         int y = GameController.selectedBuilding.getBlock().getLocationI();
-        
+
         for (int j = x - 3; j <= x + 3; j++) {
-            for (int i = y - 3; i <= y + 3; y++) {
+            for (int i = y - 3; i <= y + 3; i++) {
                 if (!GameController.currentGame.getMap().checkBounds(i, j)) {
                     continue;
                 }
@@ -36,7 +36,7 @@ public class BuildingController {
                 }
             }
         }
-        
+
         for (Map.Entry<Resources, Integer> entry : GameController.selectedBuilding.getCost().entrySet()) {
             double resourceNeeded = Math.ceil(((double) GameController.selectedBuilding.getHP() / GameController.selectedBuilding.getMaxHP()) * entry.getValue());
             if (GameController.currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(entry.getKey()) < resourceNeeded)
@@ -47,10 +47,11 @@ public class BuildingController {
             GameController.currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.put(entry.getKey(),
                     GameController.currentGame.getCurrentGovernment().getStorageDepartment().resourcesStorage.get(entry.getKey()) - resourceNeeded);
         }
+        GameController.selectedBuilding.setHP(GameController.selectedBuilding.getMaxHP());
         return "Building repaired successfully";
     }
-    
-    public static String closeBridge () {
+
+    public static String closeBridge() {
         if (GameController.selectedBuilding == null || !GameController.selectedBuilding.getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE)) {
             return "You have to select a gate first!";
         }
@@ -61,8 +62,8 @@ public class BuildingController {
         bridge.setUP(true);
         return "bridge successfully closed!";
     }
-    
-    public static String openBridge () {
+
+    public static String openBridge() {
         if (GameController.selectedBuilding == null || !GameController.selectedBuilding.getBuildingType().equals(DrawBridgeType.DRAW_BRIDGE)) {
             return "You have to select a gate first!";
         }
@@ -73,16 +74,16 @@ public class BuildingController {
         bridge.setUP(false);
         return "bridge successfully opened!";
     }
-    
-    public static String deployCagedWarDog () {
+
+    public static String deployCagedWarDog() {
         if (!(GameController.selectedBuilding instanceof CagedWarDog cagedWarDog)) {
             return "You have to choose a caged war dog first!";
         }
         cagedWarDog.process();
         return "Caged war dog deployed successfully!";
     }
-    
-    public static String addWorker (Matcher matcher) {
+
+    public static String addWorker(Matcher matcher) {
         int number = Integer.parseInt(matcher.group("n"));
         if (number <= 0) {
             return "Invalid number of workers!";
@@ -99,8 +100,8 @@ public class BuildingController {
         }
         return "You have chosen the wrong building for this command!";
     }
-    
-    private static String employOilSmelter (OilSmelter oilSmelter) {
+
+    private static String employOilSmelter(OilSmelter oilSmelter) {
         if (oilSmelter.getEngineer() != null) return "There is already an engineer in that oilSmelter!";
         for (Human human : GameController.currentGame.getCurrentGovernment().getHumans()) {
             if (human instanceof Engineer engineer && engineer.isUnemployed()) {
@@ -114,8 +115,8 @@ public class BuildingController {
         }
         return "there was no available engineers!";
     }
-    
-    private static String employMaker (Maker maker, int number) {
+
+    private static String employMaker(Maker maker, int number) {
         if (maker.getNumberOfCurrentWorkers() >= maker.getNumberOfMaxWorkers()) {
             return "That building has max capacity";
         }
@@ -146,8 +147,8 @@ public class BuildingController {
         }
         return "The building was equipped with workers successfully";
     }
-    
-    private static String employInn (Inn inn) {
+
+    private static String employInn(Inn inn) {
         if (inn.getNumberOfWorkers() == 1) {
             return "That building has max capacity";
         }
@@ -165,10 +166,10 @@ public class BuildingController {
         }
         return "there is no people to hire";
     }
-    
-    public static String putLadder (Matcher matcher) {
-        int y = Integer.parseInt(matcher.group("y"));
+
+    public static String putLadder(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
         if (!GameController.currentGame.getMap().checkBounds(y, x)) {
             return "please enter a point in the map";
         }
@@ -192,7 +193,7 @@ public class BuildingController {
         for (int i = size - 1; i >= 0; i--) {
             human = GameController.selectedWarEquipment.get(i);
             if (!(human instanceof LadderMan ladderMan)) continue;
-            if (!ladderMan.isThereAWay(target)) continue;
+            if (GameMap.getDistanceBetweenTwoBlocks(ladderMan.getBlock(), target) > ladderMan.getSpeed()) continue;
             flag = true;
             if (target.getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding) {
                 defenciveBuilding.setHasLadder(true);
@@ -205,20 +206,29 @@ public class BuildingController {
         }
         return "the wall was laddered on successfully!";
     }
-    
-    static String checkBlockType (Block block, BuildingType buildingType) {
-        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM)) &&
-                (!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
-            return "You can't put farm on that ground!";
+
+    static String checkBlockType(Block block, BuildingType buildingType) {
+        if ((buildingType.equals(MakerType.HOP_FARM) || buildingType.equals(MakerType.WHEAT_FARM))) {
+            if ((!block.getBlockType().equals(BlockType.GRASS) && !block.getBlockType().equals(BlockType.DENSE_MEADOW))) {
+                return "You can't put farm on that ground!";
+            } else return "OK";
         }
-        if ((buildingType.equals(MakerType.QUARRY) && !block.getBlockType().equals(BlockType.BOULDER))) {
-            return "You only can put quarry on rocks!";
+        if (buildingType.equals(MakerType.QUARRY)) {
+            if (!block.getBlockType().equals(BlockType.BOULDER)) {
+                return "You only can put quarry on rocks!";
+            } else return "OK";
         }
-        if (buildingType.equals(MakerType.IRON_MINE) && !block.getBlockType().equals(BlockType.IRON)) {
-            return "You can only put iron mine on iron!";
+        if (buildingType.equals(MakerType.IRON_MINE)) {
+            if (!block.getBlockType().equals(BlockType.IRON)) {
+                return "You can only put iron mine on iron!";
+            } else return "OK";
         }
-        if (buildingType.equals(MakerType.PITCH_RIG) && !block.getBlockType().equals(BlockType.PLAIN)) {
-            return "You can only put pitch rig on plains!";
+        if (buildingType.equals(MakerType.PITCH_RIG)) {
+            if (!block.getBlockType().equals(BlockType.PLAIN))
+            {
+                return "You can only put pitch rig on plains!";
+            }
+            else return "OK";
         }
         if (buildingType.equals(DrawBridgeType.DRAW_BRIDGE)) {
             ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.LAKE, BlockType.SEA,
@@ -233,14 +243,14 @@ public class BuildingController {
         }
         return "OK";
     }
-    
-    public static String dropBuilding (GameMap map, Matcher matcher) {
+
+    public static String dropBuilding(GameMap map, Matcher matcher) {
         int x = Integer.parseInt(matcher.group("xIndex"));
-        int y = Integer.parseInt(matcher.group("yIndex"));
         String type = matcher.group("type");
+        int y = Integer.parseInt(matcher.group("yIndex"));
         if (type == null) type = "";
         type = type.replaceAll("\"", "");
-        
+
         if (!map.checkBounds(y, x)) {
             return "Index out of bound! try between 0 and 399";
         }
@@ -298,14 +308,15 @@ public class BuildingController {
         } else buildingType.create(null, block);
         return "Building created successfully!";
     }
-    
-    public static String setKeep (String username, int x, int y) {
+
+    public static String setKeep(String username, int x, int y) {
         if (!GameController.currentGame.getMap().checkBounds(y, x)) return "Keep out of bounds!";
         User currentPlayer = User.getUserByUsername(username);
         if (currentPlayer == null) return "No user with the id given!";
         if (GameController.getCurrentGame().getPlayers().contains(currentPlayer)) return "User already added!";
         Block block = GameController.currentGame.getMap().getABlock(y, x);
-        if (!block.getBuilding().isEmpty()) return "You cannot place the keep here, another building is here already";
+        if (!block.getBuilding().isEmpty())
+            return "You cannot place the keep here, another building is here already";
         String response = checkBlockType(block, GateType.KEEP);
         if (!response.equals("OK")) return response;
         currentPlayer.setGovernment(new Government(currentPlayer, ""));
@@ -317,8 +328,8 @@ public class BuildingController {
         GateType.KEEP.create(currentPlayer.getGovernment(), block);
         return null;
     }
-    
-    private static String placeFoodStorage (int x, int y, Government government) {
+
+    private static String placeFoodStorage(int x, int y, Government government) {
         Block block;
         int flag = 0;
         outer:

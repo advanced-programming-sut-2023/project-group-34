@@ -61,14 +61,15 @@ public class Maker extends Building{
             return;
         }
         double tempInputRate;
-        if(input == null) tempInputRate = inputRate;
+        if(input == null) tempInputRate = 1;
         else {
             tempInputRate = Double.min(inputRate , input.getAmount(government));
             input.use(tempInputRate , government);
         }
         if (output != null)
             for(MakeAble makeAble : output) {
-                makeAble.add(Math.floor((tempInputRate * currentOutPutRate) / inputRate), government);
+                if(input == null) makeAble.add(currentOutPutRate ,government);
+                else makeAble.add(Math.floor((tempInputRate * currentOutPutRate) / inputRate), government);
                 if(makeAble.getLeftCapacity(government) < 0) {
                     makeAble.use(-makeAble.getLeftCapacity(government) , government);
                 }
@@ -76,8 +77,8 @@ public class Maker extends Building{
     }
     @Override
     public void destroy() {
-        block.getBuilding().remove(this);
         government.getBuildings().remove(this);
+        block.getBuilding().remove(this);
         ArrayList<Human> humans = block.getHumans();
         for (int i = humans.size() - 1; i >= 0; i--) {
             Human human = humans.get(i);
@@ -108,7 +109,7 @@ public class Maker extends Building{
 
 
     public void setCurrentOutputRate(int integrityRate) {
-        integrityRate *= 5;
+        integrityRate *= -5;
         this.currentOutPutRate = (outputRate * (integrityRate+100))/100;
     }
 

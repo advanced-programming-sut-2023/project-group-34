@@ -208,6 +208,7 @@ public class AccountingDepartment {
         }
     }
     public void nextTurnForThisUser(){
+        moralityAndIntegrity();
         buildingAccounting();
         humanAccounting();
         foodPopularityAccounting();
@@ -215,7 +216,6 @@ public class AccountingDepartment {
         taxPopularityAccounting();
         getMoneyFromPeople();
         fearPopularityAccounting();
-        moralityAndIntegrity();
         religionPopularityAccounting();
         changeCurrentPopulation();
     }

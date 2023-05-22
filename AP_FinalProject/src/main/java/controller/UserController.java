@@ -164,10 +164,11 @@ public class UserController {
         return "enter password";
     }
     
-    
+    public static String randomPassword = "a";
     public static String forgotPassword3 (String newPassword) {
         if (newPassword.equals("random")) {
             newPassword = Password.randomPassword();
+            randomPassword = newPassword;
             System.out.println("Your random password is: " + newPassword);
         }
         if (!Validations.check(newPassword, Validations.STRONG_PASSWORD)) return "Weak password!";

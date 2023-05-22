@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 
 public class WarController {
-    public static String arialAttack (Matcher matcher) {
+    public static String arialAttack(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (!GameController.currentGame.getMap().checkBounds(y, x)) {
@@ -49,8 +49,8 @@ public class WarController {
         GameController.selectedWarEquipment.clear();
         return "arial attack was successful";
     }
-    
-    private static ArrayList<Block> getEngineerTarget (String d, Block block) {
+
+    private static ArrayList<Block> getEngineerTarget(String d, Block block) {
         int x = block.getLocationI();
         int y = block.getLocationJ();
         ArrayList<Block> result = new ArrayList<>();
@@ -79,7 +79,7 @@ public class WarController {
                     }
                 }
             }
-            
+
             default -> {
                 for (int i = x - 3; i < x; i++) {
                     for (int j = y + 1; j <= y + 3; j++) {
@@ -91,8 +91,8 @@ public class WarController {
         }
         return result;
     }
-    
-    public static String pourOil (Matcher matcher) {
+
+    public static String pourOil(Matcher matcher) {
         String direction = matcher.group("d");
         ArrayList<Block> target = getEngineerTarget(direction, GameController.selectedWarEquipment.get(0).getBlock());
         if (target.isEmpty()) {
@@ -128,8 +128,8 @@ public class WarController {
         if (!flag) return "There is no engineer in the selected humans";
         return "Deployed fire successfully!";
     }
-    
-    public static String digTunnel (Matcher matcher) {
+
+    public static String digTunnel(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         if (!GameController.currentGame.getMap().checkBounds(y, x)) {
@@ -155,7 +155,7 @@ public class WarController {
         boolean flag = false;
         for (Human human : GameController.selectedWarEquipment) {
             if (!(human instanceof Tunneler tunneler)) continue;
-            if (!tunneler.isThereAWay(target)) continue;
+            if (GameMap.getDistanceBetweenTwoBlocks(tunneler.getBlock(), target) > tunneler.getSpeed()) continue;
             flag = true;
             target.getBuilding().get(0).getHit(300000);
             tunneler.die();
@@ -166,8 +166,8 @@ public class WarController {
         }
         return "the wall was destroyed successfully!";
     }
-    
-    private static boolean thereIsNoTroopToDig (Block target) {
+
+    private static boolean thereIsNoTroopToDig(Block target) {
         for (Human human : GameController.selectedWarEquipment) {
             if (!(human instanceof Troop troop)) {
                 continue;
@@ -182,8 +182,8 @@ public class WarController {
         }
         return true;
     }
-    
-    public static String digDitch (Matcher matcher) {
+
+    public static String digDitch(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         if (GameController.selectedWarEquipment.isEmpty()) {
             return "You have to choose a unit first";
@@ -196,22 +196,22 @@ public class WarController {
         if (isUnavailable(target)) {
             return "You can not dig a ditch on that block!";
         }
-        
+
         if (thereIsNoTroopToDig(target)) {
             return "None of the selected people could dig that place!";
         }
         target.setBlockType(BlockType.DITCH);
         return "Ditch was successfully dug!";
     }
-    
-    private static boolean isUnavailable (Block block) {
+
+    private static boolean isUnavailable(Block block) {
         ArrayList<BlockType> goodBlockTypes = new ArrayList<>(Arrays.asList(BlockType.GROUND, BlockType.STONY_GROUND,
                 BlockType.GRASS, BlockType.MEADOW, BlockType.DENSE_MEADOW, BlockType.BEACH, BlockType.PLAIN));
-        
+
         return !goodBlockTypes.contains(block.getBlockType());
     }
-    
-    public static String fillDitch (Matcher matcher) {
+
+    public static String fillDitch(Matcher matcher) {
         int y = Integer.parseInt(matcher.group("y"));
         int x = Integer.parseInt(matcher.group("x"));
         if (!GameController.currentGame.getMap().checkBounds(y, x)) {
@@ -230,8 +230,8 @@ public class WarController {
         target.setBlockType(BlockType.GROUND);
         return "Ditch was successfully filled!";
     }
-    
-    public static String showDetails (GameMap gameMap, int x, int y) {
+
+    public static String showDetails(GameMap gameMap, int x, int y) {
         if (x >= gameMap.getSize() || y >= gameMap.getSize() || x < 0 || y < 0) return "Out of bounds!";
         Block block = gameMap.getMap()[y][x];
         StringBuilder details = new StringBuilder();
@@ -255,8 +255,8 @@ public class WarController {
         }
         return details.toString();
     }
-    
-    public static String attackTheBlock (Matcher matcher) {
+
+    public static String attackTheBlock(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         if (GameController.selectedWarEquipment.isEmpty()) {
@@ -275,8 +275,8 @@ public class WarController {
         }
         return attackHumans(OpponentBlock);
     }
-    
-    private static String attackABuilding (Block OpponentBlock) {
+
+    private static String attackABuilding(Block OpponentBlock) {
         for (Human human1 : GameController.selectedWarEquipment) {
             if (human1 instanceof SiegeMachine siegeMachine) {
                 if (siegeMachine.getType().equals(SiegeType.CATAPULT) || siegeMachine.getType().equals(SiegeType.STABLE_CATAPULT)) {
@@ -293,14 +293,23 @@ public class WarController {
                 if (GameMap.getDistanceBetweenTwoBlocks(troop.getBlock(), OpponentBlock) > troop.getRange()) {
                     OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
                 }
-            } else if (troop.isThereAWay(OpponentBlock)) {
-                OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
+            } else {
+                int x = OpponentBlock.getLocationI();
+                int y = OpponentBlock.getLocationJ();
+                Block block1 = GameController.currentGame.getMap().getABlock(x - 1, y);
+                Block block2 = GameController.currentGame.getMap().getABlock(x + 1, y);
+                Block block3 = GameController.currentGame.getMap().getABlock(x, y + 1);
+                Block block4 = GameController.currentGame.getMap().getABlock(x, y - 1);
+                if (troop.isThereAWay(block1) || troop.isThereAWay(block2) || troop.isThereAWay(block3) || troop.isThereAWay(block4)) {
+                    OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
+                    troop.setBlock(OpponentBlock);
+                }
             }
         }
         return "building was hit successfully!";
     }
-    
-    private static String attackHumans (Block OpponentBlock) {
+
+    private static String attackHumans(Block OpponentBlock) {
         boolean flag = false;
         for (Human human1 : GameController.selectedWarEquipment) {
             if (human1 instanceof SiegeMachine siegeMachine) {
@@ -326,8 +335,8 @@ public class WarController {
         }
         return "Attack implemented successfully";
     }
-    
-    private static boolean attackBySiegeMachine (SiegeMachine siegeMachine, Block OpponentBlock) {
+
+    private static boolean attackBySiegeMachine(SiegeMachine siegeMachine, Block OpponentBlock) {
         if (siegeMachine.getType().equals(SiegeType.FIRE_XBOW)) {
             if (GameMap.getDistanceBetweenTwoBlocks(siegeMachine.getBlock(), OpponentBlock) > siegeMachine.getRange()) {
                 return false;
@@ -344,8 +353,8 @@ public class WarController {
         }
         return false;
     }
-    
-    private static boolean attackByLonger (Troop human, Block OpponentBlock) {
+
+    private static boolean attackByLonger(Troop human, Block OpponentBlock) {
         if (GameMap.getDistanceBetweenTwoBlocks(human.getBlock(), OpponentBlock) > human.getFireRange()) {
             return false;
         }
@@ -360,8 +369,8 @@ public class WarController {
         }
         return false;
     }
-    
-    private static boolean attackByClosers (Troop human, Block OpponentBlock) {
+
+    private static boolean attackByClosers(Troop human, Block OpponentBlock) {
         ArrayList<Human> humans = OpponentBlock.getHumans();
         for (int i = humans.size() - 1; i >= 0; i--) {
             Human enemy = humans.get(i);

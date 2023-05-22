@@ -203,7 +203,11 @@ public class GameController {
     }
     
     public static String showPopularity () {
-        return "Your current popularity is: " + currentGame.getCurrentGovernment().getTotalPopularity();
+        int totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getFearPopularity();
+        totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity();
+        totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity();
+        totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity();
+        return "Your current popularity is: " + totalPopularity;
     }
     
     public static String showPopularityFactors () {

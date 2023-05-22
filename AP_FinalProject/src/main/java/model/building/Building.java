@@ -39,7 +39,7 @@ public abstract class Building {
     
     public void getHit (int damage) {
         HP -= damage;
-        if (HP < 0) {
+        if (HP <= 0) {
             destroy();
         }
     }

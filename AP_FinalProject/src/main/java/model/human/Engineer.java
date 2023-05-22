@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Engineer extends Human{
     private boolean isEquippedWithOil = false;
     public Engineer(Block block, Government government) {
-        super(0, block, 0, 0, false, true , government , 4);
+        super(80, block, 50, 4, false, true , government , 4);
         if(government != null) useOil();
     }
 
@@ -41,13 +41,13 @@ public class Engineer extends Human{
                 tempDamage = (getCurrentDamage() * 7) / 10;
             }
         }
-        if(!this.getBlock().getBuilding().isEmpty() && (this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding)) {
+        if (!this.getBlock().getBuilding().isEmpty() && (this.getBlock().getBuilding().get(0) instanceof DefenciveBuilding defenciveBuilding)) {
             tempDamage += defenciveBuilding.getDamage();
         }
-        for (int i = x - 3 ; i <= x + 3; i++) {
-            for (int j = y - 3 ; j <= y + 3 ; j++) {
-                if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
-                tempBlock = GameController.currentGame.getMap().getABlock(i , j);
+        for (int i = x - 3; i <= x + 3; i++) {
+            for (int j = y - 3; j <= y + 3; j++) {
+                if (!GameController.getGame().getMap().checkBounds(i, j)) continue;
+                tempBlock = GameController.currentGame.getMap().getABlock(i, j);
                 ArrayList<Human> humans = tempBlock.getHumans();
                 for (int k = humans.size() - 1; k >= 0; k--) {
                     Human human = humans.get(k);
@@ -56,11 +56,11 @@ public class Engineer extends Human{
                 }
             }
         }
-        if(counter < numberOfOpponent) return;
-        for (int i = x - 3 ; i <= x + 3; i++) {
-            for (int j = y - 3 ; j <= y + 3 ; j++) {
-                if(!GameController.getGame().getMap().checkBounds(i , j)) continue;
-                tempBlock = GameController.currentGame.getMap().getABlock(i , j);
+        if (counter < numberOfOpponent) return;
+        for (int i = x - 3; i <= x + 3; i++) {
+            for (int j = y - 3; j <= y + 3; j++) {
+                if (!GameController.getGame().getMap().checkBounds(i, j)) continue;
+                tempBlock = GameController.currentGame.getMap().getABlock(i, j);
                 ArrayList<Human> humans = tempBlock.getHumans();
                 for (int k = humans.size() - 1; k >= 0; k--) {
                     Human human = humans.get(k);
