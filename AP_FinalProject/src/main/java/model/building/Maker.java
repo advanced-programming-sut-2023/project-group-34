@@ -35,17 +35,23 @@ public class Maker extends Building{
         this.input = input;
         numberOfCurrentWorkers = 0;
         currentOutPutRate = outputRate;
+        if(buildingType.equals(MakerType.SHOP)) {
+            numberOfCurrentWorkers = 1;
+        }
     }
 
     @Override
     public void process() {
+        if(numberOfCurrentWorkers < numberOfMaxWorkers) {
+            return;
+        }
+        if(GameController.currentGame == null) return;
         if(this.buildingType == MakerType.QUARRY) {
             currentAmount += currentOutPutRate;
             currentAmount = Math.min(currentAmount, capacity);
             return;
         }
         if(this.buildingType == MakerType.WOOD_CUTTER) {
-            if(GameController.currentGame == null) return;
             GameMap map = GameController.currentGame.getMap();
             Block tempBlock;
             for (int i = 0; i < map.getSize(); i++) {

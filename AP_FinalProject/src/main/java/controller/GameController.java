@@ -204,9 +204,9 @@ public class GameController {
     
     public static String showPopularity () {
         int totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getFearPopularity();
-        totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity();
-        totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity();
-        totalPopularity = currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity();
+        totalPopularity += currentGame.getCurrentGovernment().getAccountingDepartment().getFoodPopularity();
+        totalPopularity += currentGame.getCurrentGovernment().getAccountingDepartment().getTaxPopularity();
+        totalPopularity += currentGame.getCurrentGovernment().getAccountingDepartment().getReligionPopularity();
         return "Your current popularity is: " + totalPopularity;
     }
     

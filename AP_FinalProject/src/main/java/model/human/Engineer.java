@@ -72,7 +72,7 @@ public class Engineer extends Human{
     }
 
     public void useOil() {
-        boolean flag = false;
+        if(isEquippedWithOil()) return;
         for(Building building : getGovernment().getBuildings()) {
             if(!(building instanceof OilSmelter oilSmelter)) {
                 continue;
@@ -80,11 +80,10 @@ public class Engineer extends Human{
             if(oilSmelter.getNumberOfOils() < 1 || oilSmelter.getEngineer() == null) {
                 continue;
             }
-            flag = true;
             oilSmelter.giveOil();
             isEquippedWithOil = true;
+            return;
         }
-        if(!flag) isEquippedWithOil = false;
     }
 
 }

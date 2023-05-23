@@ -129,7 +129,8 @@ public class TroopsController {
         ArrayList<Human> unemployed = new ArrayList<>();
         for (Human human : GameController.currentGame.getCurrentGovernment().getHumans()) {
             if ((human instanceof LadderMan) || (human instanceof SiegeMachine) ||
-                    (human instanceof Troop) || (human instanceof Tunneler)) {
+                    (human instanceof Troop) || (human instanceof Tunneler)
+                || (human instanceof Engineer)) {
                 continue;
             }
             if (!human.isUnemployed()) {
@@ -325,8 +326,9 @@ public class TroopsController {
                 human.die();
                 continue;
             }
-            government.getHumans().add(new Human(keepFinder(), government));
+            new Human(keepFinder(), government);
             human.die();
+            government.getHumans().remove(human);
         }
         return "Unit disbanded successfully!";
     }

@@ -193,8 +193,10 @@ public class AccountingDepartment {
 
 
     private void buildingAccounting(){
-        for(Building building : government.getBuildings()) {
-            if(building instanceof CagedWarDog) continue;
+        ArrayList<Building> buildings = government.getBuildings();
+        for (int i = buildings.size()-1; i >= 0; i--) {
+            Building building = buildings.get(i);
+            if (building instanceof CagedWarDog) continue;
             building.process();
         }
     }

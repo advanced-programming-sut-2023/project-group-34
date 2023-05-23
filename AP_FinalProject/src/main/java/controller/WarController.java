@@ -81,7 +81,7 @@ public class WarController {
             }
 
             default -> {
-                for (int i = x - 3; i < x; i++) {
+                for (int i = x - 1; i < x + 2; i++) {
                     for (int j = y + 1; j <= y + 3; j++) {
                         if (!GameController.currentGame.getMap().checkBounds(i, j)) continue;
                         result.add(GameController.currentGame.getMap().getABlock(i, j));
@@ -103,7 +103,10 @@ public class WarController {
             if (!(human instanceof Engineer engineer)) {
                 continue;
             }
-            if (!engineer.isEquippedWithOil()) continue;
+            if (!engineer.isEquippedWithOil()) {
+                engineer.useOil();
+                continue;
+            }
             flag = true;
             for (Block block : target) {
                 if (!block.getBuilding().isEmpty()) {
@@ -125,7 +128,7 @@ public class WarController {
             }
             engineer.useOil();
         }
-        if (!flag) return "There is no engineer in the selected humans";
+        if (!flag) return "There is no engineer with oil in the selected humans";
         return "Deployed fire successfully!";
     }
 
@@ -285,6 +288,7 @@ public class WarController {
                     }
                 }
                 OpponentBlock.getBuilding().get(0).getHit(siegeMachine.getCurrentDamage());
+                if(!OpponentBlock.getBuilding().isEmpty()) break;
             }
             if (!(human1 instanceof Troop troop)) {
                 continue;
@@ -292,6 +296,7 @@ public class WarController {
             if (troop.getFireRange() > 1) {
                 if (GameMap.getDistanceBetweenTwoBlocks(troop.getBlock(), OpponentBlock) > troop.getRange()) {
                     OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
+                    if(!OpponentBlock.getBuilding().isEmpty()) break;
                 }
             } else {
                 int x = OpponentBlock.getLocationI();
@@ -303,6 +308,7 @@ public class WarController {
                 if (troop.isThereAWay(block1) || troop.isThereAWay(block2) || troop.isThereAWay(block3) || troop.isThereAWay(block4)) {
                     OpponentBlock.getBuilding().get(0).getHit(troop.getCurrentDamage());
                     troop.setBlock(OpponentBlock);
+                    if(!OpponentBlock.getBuilding().isEmpty()) break;
                 }
             }
         }
@@ -342,7 +348,7 @@ public class WarController {
                 return false;
             }
             ArrayList<Human> humans = OpponentBlock.getHumans();
-            for (int i = humans.size() - 1; i >= 0; i--) {
+            for (int i = humans.size() - 1; i > -1; i--) {
                 Human enemy = humans.get(i);
                 if (!enemy.isVisible() || enemy.getGovernment().equals(siegeMachine.getGovernment())) {
                     continue;
@@ -377,8 +383,8 @@ public class WarController {
             if (!enemy.isVisible() || enemy.getGovernment().equals(human.getGovernment())) {
                 continue;
             }
-            enemy.getHit(human.getCurrentDamage());
             human.setBlock(OpponentBlock);
+            enemy.getHit(human.getCurrentDamage());
             return true;
         }
         return false;

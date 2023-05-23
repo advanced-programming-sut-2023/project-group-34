@@ -36,6 +36,7 @@ public class Gate extends Building {
         if (buildingType.equals(GateType.KEEP)) {
             GameController.currentGame.getPlayers().remove(government.getOwner());
             government.getOwner().setGovernment(null);
+            return;
         }
         block.getBuilding().remove(this);
         government.getBuildings().remove(this);

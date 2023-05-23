@@ -21,6 +21,7 @@ public class Inn extends Building{
 
     @Override
     public void process() {
+        if(numberOfWorkers < 1) return;
         double aleUsage = 2;
         double inputRate = Double.min(aleUsage, Food.ALE.getLeftCapacity(government));
         Food.ALE.use(inputRate ,government);
