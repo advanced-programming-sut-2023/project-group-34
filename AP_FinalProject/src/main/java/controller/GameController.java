@@ -13,11 +13,11 @@ import model.map.GameMap;
 import model.map.findroute.Router;
 import model.user.User;
 import model.map.Block;
-import view.BackgroundColor;
-import view.gameMenu.GameMenu;
-import view.gameMenu.MapMenu;
-import view.gameMenu.ShopMenu;
-import view.gameMenu.TradeMenu;
+//import view.BackgroundColor;
+//import view.gameMenu.GameMenu;
+//import view.gameMenu.MapMenu;
+//import view.gameMenu.ShopMenu;
+//import view.gameMenu.TradeMenu;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -27,19 +27,19 @@ public class GameController {
     public static Building selectedBuilding;
     public static ArrayList<Human> selectedWarEquipment = new ArrayList<>();
     
-    public static String run () {
-        while (true) {
-            String response = GameMenu.run();
-            switch (response) {
-                case "shop menu" -> ShopMenu.run();
-                case "trade menu" -> TradeMenu.run();
-                case "map menu" -> MapMenu.run();
-                case "back" -> {
-                    return "back";
-                }
-            }
-        }
-    }
+//    public static String run () {
+//        while (true) {
+//            String response = GameMenu.run();
+//            switch (response) {
+//                case "shop menu" -> ShopMenu.run();
+//                case "trade menu" -> TradeMenu.run();
+//                case "map menu" -> MapMenu.run();
+//                case "back" -> {
+//                    return "back";
+//                }
+//            }
+//        }
+//     }
     
     public static void setCurrentGame (Game currentGame) {
         GameController.currentGame = currentGame;
@@ -152,35 +152,36 @@ public class GameController {
         int y = Integer.parseInt(matcher.group("y"));
         String response = setMapLocation(x, y);
         if (response != null) return response;
-        return showMiniMap();
+        //return showMiniMap();
+        return ""; //changed this part
     }
     
-    public static String showMiniMap () {
-        StringBuilder output = new StringBuilder();
-        Block[][] map = currentGame.getMap().getMiniMap();
-        for (int i = 0; i < currentGame.getMap().minimapSize; i++) {
-            for (int j = 0; j < currentGame.getMap().minimapSize; j++) {
-                if (map[i][j].getTroops().length != 0)
-                    output.append(BackgroundColor.dictionary(map[i][j])).append("\u001B[31m").append(" S ").append("\u001B[0m");
-                else if (map[i][j].getBuilding().size() != 0)
-                    if (map[i][j].getBuilding().get(0).getBuildingType().equals(DeathPitType.DEATH_PIT) &&
-                            !map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
-                        output.append(BackgroundColor.dictionary(map[i][j])).append(" ").
-                                append(map[i][j].getBlockType().toString(), 0, 2).append("\u001B[0m");
-                    else
-                        output.append(BackgroundColor.dictionary(map[i][j])).append("\u001B[35m").append(" B ").append("\u001B[0m");
-                else if (map[i][j].getBLockFiller() != null)
-                    output.append(BackgroundColor.dictionary(map[i][j])).append(" T ").append("\u001B[0m");
-                else {
-                    String abbreviation = map[i][j].getBlockType().toString().substring(0, 2);
-                    output.append(BackgroundColor.dictionary(map[i][j])).append(' ').append(abbreviation).append("\u001B[0m");
-                }
-                output.append(BackgroundColor.dictionary(map[i][j])).append(" ").append("\u001B[0m");
-            }
-            output.append('\n');
-        }
-        return output.toString();
-    }
+//    public static String showMiniMap () {
+//        StringBuilder output = new StringBuilder();
+//        Block[][] map = currentGame.getMap().getMiniMap();
+//        for (int i = 0; i < currentGame.getMap().minimapSize; i++) {
+//            for (int j = 0; j < currentGame.getMap().minimapSize; j++) {
+//                if (map[i][j].getTroops().length != 0)
+//                    output.append(BackgroundColor.dictionary(map[i][j])).append("\u001B[31m").append(" S ").append("\u001B[0m");
+//                else if (map[i][j].getBuilding().size() != 0)
+//                    if (map[i][j].getBuilding().get(0).getBuildingType().equals(DeathPitType.DEATH_PIT) &&
+//                            !map[i][j].getBuilding().get(0).getGovernment().equals(currentGame.getCurrentGovernment()))
+//                        output.append(BackgroundColor.dictionary(map[i][j])).append(" ").
+//                                append(map[i][j].getBlockType().toString(), 0, 2).append("\u001B[0m");
+//                    else
+//                        output.append(BackgroundColor.dictionary(map[i][j])).append("\u001B[35m").append(" B ").append("\u001B[0m");
+//                else if (map[i][j].getBLockFiller() != null)
+//                    output.append(BackgroundColor.dictionary(map[i][j])).append(" T ").append("\u001B[0m");
+//                else {
+//                    String abbreviation = map[i][j].getBlockType().toString().substring(0, 2);
+//                    output.append(BackgroundColor.dictionary(map[i][j])).append(' ').append(abbreviation).append("\u001B[0m");
+//                }
+//                output.append(BackgroundColor.dictionary(map[i][j])).append(" ").append("\u001B[0m");
+//            }
+//            output.append('\n');
+//        }
+//        return output.toString();
+//    }
     
     public static String moveMiniMap (Matcher matcher) {
         String up = matcher.group("up");
@@ -193,7 +194,9 @@ public class GameController {
         if (down != null) currentGame.getMap().moveMiniMap(Direction.SOUTH, Integer.parseInt(down));
         if (left != null) currentGame.getMap().moveMiniMap(Direction.WEST, Integer.parseInt(left));
         if (right != null) currentGame.getMap().moveMiniMap(Direction.EAST, Integer.parseInt(right));
-        return showMiniMap();
+        //return showMiniMap();
+        return "";
+        //changed this part
     }
     
     public static String getBlockDetails (Matcher matcher) {

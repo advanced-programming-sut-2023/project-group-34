@@ -1,38 +1,36 @@
 package controller;
 
-import model.Captcha;
+import model.enums.*;
 import model.user.User;
-import model.enums.Commands;
-import model.enums.Validations;
 import model.user.Password;
-import view.ForgetPasswordMenu;
-import view.StarterMenu;
-import model.enums.SecurityQuestion;
-import model.enums.Slogan;
+import view.starter.CaptchaImages;
+//import view.ForgetPasswordMenu;
+//import view.StarterMenu;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Matcher;
 
 public class UserController {
     static private SecurityQuestion securityQuestion;
     static private Slogan slogan;
     
-    public static String run () {
-        
-        while (true) {
-            String response = StarterMenu.run();
-            switch (response) {
-                case "exit" -> {
-                    return "exit";
-                }
-                case "forgetPassword" -> ForgetPasswordMenu.run();
-                case "main menu" -> {
-                    return "main menu";
-                }
-            }
-        }
-    }
+//    public static String run () {
+//
+//        while (true) {
+//            String response = StarterMenu.run();
+//            switch (response) {
+//                case "exit" -> {
+//                    return "exit";
+//                }
+//                case "forgetPassword" -> ForgetPasswordMenu.run();
+//                case "main menu" -> {
+//                    return "main menu";
+//                }
+//            }
+//        }
+//    }
     
     public static String registerUserPart1 (Matcher matcher) {
         String username = matcher.group("username");
@@ -200,5 +198,17 @@ public class UserController {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+
+    public static int randomCaptcha(){
+        Random random = new Random();
+        int counter = 0;
+        int randNumber = random.nextInt(0,49);
+        for (CaptchaImages captchaImages : CaptchaImages.values()) {
+            if (counter == randNumber)
+                return captchaImages.getNumber();
+            counter++;
+        }
+        return 0;
     }
 }

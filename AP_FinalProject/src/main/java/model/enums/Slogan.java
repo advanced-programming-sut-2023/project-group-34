@@ -1,10 +1,10 @@
 package model.enums;
 
 public enum Slogan {
-    TRY_HARD("Won't rest till I get what I deserve"),
-    CONQUER("I will conquer the whole world"),
+    TRY_HARD("Can't stop, Won't stop"),
+    CONQUER("El mundo es mio!"),
     HONOR("Duty, Honor, Empire"),
-    UNDEFEATED("There is no losing in my culture"),
+    UNDEFEATED("Dale que se puede"),
 
     ;
     public final String slogan;

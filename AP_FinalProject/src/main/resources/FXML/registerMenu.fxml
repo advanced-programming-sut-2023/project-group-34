@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<Pane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.starter.RegisterMenuController"
+      styleClass="BackGroundRegister"
+      stylesheets="@../CSS/menuStyle.css"
+      prefHeight="-Infinity" prefWidth="-Infinity">
+
+
+    <TextField fx:id="invisiblePassword" layoutY="203.7" layoutX="650" style="-fx-text-fill: gold"/>
+    <Label text="Register Menu" layoutX="680" layoutY="75"/>
+    <VBox alignment="CENTER" spacing="15" layoutY="150" layoutX="650">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <TextField promptText="username" style="-fx-prompt-text-fill: gold; -fx-text-fill: gold"
+                       fx:id="userField"/>
+            <Text fx:id="usernameError" styleClass="errorHandling"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <PasswordField promptText="password" style="-fx-prompt-text-fill: gold; -fx-text-fill: gold" fx:id="passwordField"/>
+            <Rectangle fx:id="maskField" width="15" height="15" onMousePressed="#displayPassword" onMouseReleased="#hidePassword"/>
+            <Button text="random" onMouseClicked="#randomPasswordGenerate"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT">
+            <Text fx:id="passwordError" styleClass="errorHandling"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <TextField promptText="nickname" style="-fx-prompt-text-fill: gold; -fx-text-fill: gold" fx:id="nickNameField"/>
+            <Text fx:id="nickNameError" styleClass="errorHandling"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <TextField promptText="email" style="-fx-prompt-text-fill: gold; -fx-text-fill: gold" fx:id="emailField"/>
+            <Text fx:id="emailError" styleClass="errorHandling"/>
+        </HBox>
+    </VBox>
+    <TextField promptText="slogan" layoutX="650" layoutY="400" style="-fx-prompt-text-fill: gold; -fx-text-fill: gold"
+        fx:id="sloganField"/>
+    <Text text="OR" layoutX="740" layoutY="470" style="-fx-font-weight: bold; -fx-font-size: 20;
+        -fx-font-family: Bahnschrift; -fx-font-style: oblique; -fx-fill: gold" fx:id="or"/>
+    <ComboBox layoutX="660" layoutY="480" fx:id="sloganChoice" styleClass="combo-box"/>
+    <CheckBox text="slogan" layoutX="890" layoutY="450" fx:id="sloganCheck" onMouseClicked="#displaySlogan"/>
+    <Text styleClass="errorHandling" fx:id="sloganError" layoutX="740" layoutY="550"/>
+    <Button text="random" layoutX="970" layoutY="440" fx:id="randomSlogan" onMouseClicked="#randomSloganGenerate"/>
+    <Button text="Confirm" layoutX="690" layoutY="580" onMouseClicked="#confirmTheInfo"/>
+    <Button text="Back" layoutY="580" layoutX="800" onMouseClicked="#backToRegisterAndLoginMenu"/>
+
+
+
+</Pane>

@@ -36,7 +36,6 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         users.add(this);
-        updateDataBase();
         customMaps = new ArrayList<>();
     }
 

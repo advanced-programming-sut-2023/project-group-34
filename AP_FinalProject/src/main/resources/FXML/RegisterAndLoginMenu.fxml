@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<Pane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.starter.RegisterAndLoginMenuController"
+      stylesheets="@../CSS/menuStyle.css"
+      styleClass="BackGroundLogin"
+      prefHeight="-Infinity" prefWidth="-Infinity">
+
+
+    <TextField layoutX="450" layoutY="156.5" fx:id="invisibleText"/>
+    <VBox alignment="CENTER" spacing="20" layoutX="450" layoutY="100">
+        <TextField promptText="username"/>
+        <HBox>
+            <PasswordField promptText="password" fx:id="password"/>
+            <Rectangle fx:id="showPass" width="20" height="20" onMousePressed="#displayPassword" onMouseReleased="#hidePassword"/>
+        </HBox>
+        <Text/>
+        <HBox alignment="CENTER" spacing="15">
+            <Button text="Login"/>
+            <Button text="Register" onMouseClicked="#enterRegisterMenu"/>
+        </HBox>
+        <Button text="Forgot Password"/>
+    </VBox>
+</Pane>

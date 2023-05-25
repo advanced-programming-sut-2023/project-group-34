@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<Pane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.starter.SecurityAndCaptchaRegisterController"
+      styleClass="BackGroundRegister"
+      stylesheets="@../CSS/menuStyle.css"
+      prefHeight="-Infinity" prefWidth="-Infinity"
+      fx:id="pane">
+
+    <Label text="Register Menu" layoutX="680" layoutY="75"/>
+
+    <Text text="Select one, then answer" x="620" y="200" styleClass="instruction-text"/>
+    <CheckBox text="What is my father's name?" layoutX="620" layoutY="220"
+              fx:id="firstChoice" onMouseClicked="#displayAnswerField"/>
+    <CheckBox text="What was my first pet's name?" layoutX="620" layoutY="260"
+              fx:id="secondChoice" onMouseClicked="#displayAnswerField"/>
+    <CheckBox text="What is my mother's last name?" layoutX="620" layoutY="300"
+              fx:id="thirdChoice" onMouseClicked="#displayAnswerField"/>
+    <Text fx:id="answerError" x="660" y="350" styleClass="errorHandling"/>
+    <TextField promptText="answer" fx:id="answerField" layoutX="680" layoutY="360"
+               style="-fx-prompt-text-fill: gold; -fx-text-fill: gold"/>
+    <Text text="Enter the Captcha" x="620" y="380" styleClass="instruction-text"/>
+    <Rectangle width="250" height="50" x="640" y="420" fx:id="captchaRect"/>
+
+</Pane>

@@ -3,8 +3,8 @@ package controller;
 import model.Game;
 import model.map.GameMap;
 import model.user.User;
-import view.MainMenu;
-import view.MapEditingMenu;
+//import view.MainMenu;
+//import view.MapEditingMenu;
 
 import java.util.regex.Matcher;
 
@@ -14,21 +14,21 @@ import static controller.MapEditingController.setCurrentGameMap;
 
 public class MainController {
     
-    public static String run () {
-        while (true) {
-            String response = MainMenu.run();
-            switch (response) {
-                case "profile menu" -> ProfileMenu.run();
-                case "mapEditing menu" -> MapEditingMenu.run();
-                case "game menu" -> {
-                    return "game menu";
-                }
-                case "logout" -> {
-                    return "logout";
-                }
-            }
-        }
-    }
+//    public static String run () {
+//        while (true) {
+//            String response = MainMenu.run();
+//            switch (response) {
+//                case "profile menu" -> ProfileMenu.run();
+//                case "mapEditing menu" -> MapEditingMenu.run();
+//                case "game menu" -> {
+//                    return "game menu";
+//                }
+//                case "logout" -> {
+//                    return "logout";
+//                }
+//            }
+//        }
+//    }
     
     public static String changeUsername (Matcher matcher) {
         
