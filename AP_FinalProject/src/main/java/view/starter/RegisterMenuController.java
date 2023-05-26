@@ -230,11 +230,10 @@ public class RegisterMenuController implements Initializable {
                 slogan = sloganField.getText();
         }
 
-//        Password password = new Password(passwordField.getText());
-//        User user = new User(userField.getText(), password, nickNameField.getText(), emailField.getText());
-//        if (!slogan.equals("")) user.setSlogan(slogan);
-//        User.getUsers().add(user);
-//        User.updateDataBase();
+        Password password = new Password(passwordField.getText());
+        User user = new User(userField.getText(), password, nickNameField.getText(), emailField.getText());
+        if (!slogan.equals("")) user.setSlogan(slogan);
+        User.updateDataBase();
 
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

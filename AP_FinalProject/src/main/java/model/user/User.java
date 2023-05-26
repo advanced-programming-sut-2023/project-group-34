@@ -36,6 +36,7 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         users.add(this);
+        this.score = 0;
         customMaps = new ArrayList<>();
     }
 

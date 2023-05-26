@@ -5,7 +5,7 @@ public enum CaptchaImages {
     A1181(CaptchaImages.class.getResource("/images/captcha/1181.png").toString(), 1181),
     A1381(SecurityAndCaptchaRegister.class.getResource("/images/captcha/1381.png").toString(), 1381),
     A1491(SecurityAndCaptchaRegister.class.getResource("/images/captcha/1491.png").toString(), 1491),
-    A1722(SecurityAndCaptchaRegister.class.getResource("/images/captcha/1722.png").toString(), 17221),
+    A1722(SecurityAndCaptchaRegister.class.getResource("/images/captcha/1722.png").toString(), 1722),
     A1959(SecurityAndCaptchaRegister.class.getResource("/images/captcha/1959.png").toString(), 1959),
     A2163(SecurityAndCaptchaRegister.class.getResource("/images/captcha/2163.png").toString(), 2163),
     A2177(SecurityAndCaptchaRegister.class.getResource("/images/captcha/2177.png").toString(), 2177),
