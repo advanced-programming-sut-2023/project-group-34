@@ -55,4 +55,8 @@ public class RegisterAndLoginMenuController implements Initializable {
         invisibleText.setVisible(false);
         password.setVisible(true);
     }
+
+    public void toForgotPasswordMenu(MouseEvent mouseEvent) throws Exception{
+        new ForgotPasswordMenu().start(LaunchMenu.getStage());
+    }
 }

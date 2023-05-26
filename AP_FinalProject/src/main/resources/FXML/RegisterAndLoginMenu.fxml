@@ -28,6 +28,6 @@
             <Button text="Login"/>
             <Button text="Register" onMouseClicked="#enterRegisterMenu"/>
         </HBox>
-        <Button text="Forgot Password"/>
+        <Button text="Forgot Password" onMouseClicked="#toForgotPasswordMenu"/>
     </VBox>
 </Pane>
