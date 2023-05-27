@@ -109,28 +109,23 @@ public class SecurityAndCaptchaRegisterController implements Initializable {
 
         if (counter == 0){
             answerError.setText("You have to choose a question first");
+            setRandomFill();
             return;
         } else if (answerField.getText().isEmpty()){
             answerError.setText("Empty Field!");
+            setRandomFill();
             return;
         }
 
         if (captchaField.getText().isEmpty()){
             captchaError.setText("You have to fill in the captcha");
+            setRandomFill();
             return;
         }
 
-        for (CaptchaImages captchaImages : CaptchaImages.values()){
-            if (captchaImages.getNumber() == randNum){
-                if (!Integer.toString(captchaImages.getNumber()).equals(captchaField.getText())) {
-                    captchaError.setText("Wrong captcha");
-                    setRandomFill();
-                    return;
-                }
-            }
-        }
-        captchaError.setText("");
-        answerError.setText("");
+
+        if (checkCaptcha())
+            return;
 
         if (firstChoice.isSelected()){
             User.getUsers().get(User.getUsers().size()-1).getPassword().
@@ -161,5 +156,20 @@ public class SecurityAndCaptchaRegisterController implements Initializable {
         randNum = UserController.randomCaptcha();
         captchaRect.setFill(new ImagePattern(new Image(SecurityAndCaptchaRegister.
                 class.getResource("/images/captcha/" + randNum + ".png").toString())));
+    }
+
+    public boolean checkCaptcha(){
+        for (CaptchaImages captchaImages : CaptchaImages.values()){
+            if (captchaImages.getNumber() == randNum){
+                if (!Integer.toString(captchaImages.getNumber()).equals(captchaField.getText())) {
+                    captchaError.setText("Wrong captcha");
+                    setRandomFill();
+                    captchaField.setText("");
+                    return false;
+                }
+            }
+        }
+        captchaError.setText("");
+        return true;
     }
 }

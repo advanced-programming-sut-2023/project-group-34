@@ -25,6 +25,7 @@ public class LaunchMenu extends Application {
 
     public static void main(String[] args) {
         User.loadAllUsersFromDataBase();
+        User.loadCurrentUser();
         launch(args);
     }
 

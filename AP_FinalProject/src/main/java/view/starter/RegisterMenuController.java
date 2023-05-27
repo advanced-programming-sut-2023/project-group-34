@@ -200,6 +200,7 @@ public class RegisterMenuController implements Initializable {
     public void confirmTheInfo(MouseEvent mouseEvent) throws Exception {
         if (userField.getText().isEmpty()) {
             usernameError.setText("Empty Field!");
+
             return;
         }
         if (passwordField.getText().isEmpty()) {

@@ -9,4 +9,14 @@ public enum SecurityQuestion {
     SecurityQuestion(String securityQuestion){
         this.securityQuestion = securityQuestion;
     }
+
+    @Override
+    public String toString() {
+        if (this.equals(FIRST_QUESTION))
+            return "What is my father's name?";
+        else if (this.equals(SECOND_QUESTION))
+            return "What was my first pet's name?";
+        else
+            return "What is my mother's last name?";
+    }
 }
