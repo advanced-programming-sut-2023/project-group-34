@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
+<Pane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.main.ProfileMenuController"
+      styleClass="BackGroundRegister"
+      stylesheets="@../CSS/menuStyle.css"
+      prefHeight="-Infinity" prefWidth="-Infinity">
+
+    <Label text="Profile Menu" layoutX="680" layoutY="75"/>
+    <Rectangle width="156" height="156" x="917" y="177" fill="gold"/>
+    <Rectangle width="150" height="150" x="920" y="180" fx:id="avatarRect"/>
+    <Text x="560" y="177" text="Username: " styleClass="instruction-text"/>
+    <Text x="700" y="177" fx:id="userText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="150" fx:id="userTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="165" fx:id="editRectUser" onMouseClicked="#changeUser"/>
+    <Text fx:id="userError" x="570" y="220" styleClass="errorHandling"/>
+    <Button text="confirm" layoutX="720" layoutY="200" style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15"
+            fx:id="userConfirm" onMouseClicked="#confirmChangingUser"/>
+
+    <Text x="560" y="260" text="Password: " styleClass="instruction-text"/>
+    <Text x="700" y="260" fx:id="passText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="250" fx:id="passTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="235" fx:id="editRectPass" onMouseClicked="#changePass"/>
+
+    <Text x="560" y="320" text="Nickname: " styleClass="instruction-text"/>
+    <Text x="700" y="320" fx:id="nickText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="300" fx:id="nickTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="305" fx:id="editRectNick" onMouseClicked="#changePass"/>
+
+
+
+</Pane>
