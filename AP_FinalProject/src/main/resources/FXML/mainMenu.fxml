@@ -10,6 +10,14 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="view.main.MainMenuController"
             stylesheets="@../CSS/menuStyle.css"
+            styleClass="BackgroundMain"
             prefHeight="-Infinity" prefWidth="-Infinity">
+    <Label text="Main Menu" layoutX="175" layoutY="80"/>
+    <Button text="New Game" layoutX="170" layoutY="170" minWidth="250" minHeight="40" />
+    <Button text="Profile" layoutX="170" layoutY="260" minWidth="250" minHeight="40" onMouseClicked="#onToProfileMenu"/>
+    <Button text="Map Menu" layoutX="170" layoutY="350" minWidth="250" minHeight="40"/>
+    <Button text="Logout" layoutX="170" layoutY="440" minWidth="250" minHeight="40" onMouseClicked="#logout"/>
+    <Button text="Quit Game" layoutX="170" layoutY="530" minWidth="250" minHeight="40" onMouseClicked="#quitGame"/>
+
 
 </Pane>

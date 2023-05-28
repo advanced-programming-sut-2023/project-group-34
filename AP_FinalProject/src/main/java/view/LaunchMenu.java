@@ -33,6 +33,7 @@ public class LaunchMenu extends Application {
     public void start(Stage stage) throws Exception {
         LaunchMenu.stage = stage;
         URL url = LaunchMenu.class.getResource("/FXML/launchMenu.fxml");
+        assert url != null;
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
