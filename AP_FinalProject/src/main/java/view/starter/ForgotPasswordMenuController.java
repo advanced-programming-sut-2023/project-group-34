@@ -65,7 +65,6 @@ public class ForgotPasswordMenuController implements Initializable {
 
         setRandomFill();
 
-        User.loadAllUsersFromDataBase(); //Just for debug
         answerField.setVisible(false);
         answerError.setVisible(false);
         answerTitle.setVisible(false);

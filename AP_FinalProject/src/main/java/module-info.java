@@ -24,5 +24,6 @@ module AP.FinalProject {
     opens controller to javafx.fxml;
     opens view to javafx.fxml,javafx.controls;
     opens view.starter to javafx.controls, javafx.fxml;
+    opens view.main to javafx.fxml;
 
 }

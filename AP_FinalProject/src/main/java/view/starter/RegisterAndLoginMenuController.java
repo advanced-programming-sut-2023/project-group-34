@@ -48,7 +48,6 @@ public class RegisterAndLoginMenuController implements Initializable {
     private CheckBox stayLoggedIn;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        User.loadAllUsersFromDataBase();
         showPass.setFill(new ImagePattern(new Image(RegisterAndLoginMenuController
                 .class.getResource("/images/showField.jpg").toString())));
         isPasswordShown = false;

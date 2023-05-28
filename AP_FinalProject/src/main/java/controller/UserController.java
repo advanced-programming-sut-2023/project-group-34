@@ -4,6 +4,7 @@ import model.enums.*;
 import model.user.User;
 import model.user.Password;
 import view.starter.CaptchaImages;
+import view.starter.DefaultAvatars;
 //import view.ForgetPasswordMenu;
 //import view.StarterMenu;
 
@@ -58,13 +59,7 @@ public class UserController {
             return "Password and its confirmation do not match";
         return null;
     }
-    
-    public static String registerUser (String username, Password password, String email, String nickname, String slogan) {
-        User user = new model.user.User(username, password, nickname, email);
-        if (slogan != null) user.setSlogan(slogan);
-        User.updateDataBase();
-        return "User created successfully!";
-    }
+
     
     public static String sloganHandler (Matcher matcher) {
         String slogan = matcher.group("slogan");
@@ -211,4 +206,17 @@ public class UserController {
         }
         return 0;
     }
+
+    public static DefaultAvatars randomAvatar(){
+        Random rand = new Random();
+        int random = rand.nextInt(1, 4);
+        int counter = 0;
+        for (DefaultAvatars defaultAvatars : DefaultAvatars.values()) {
+            if (counter == random)
+                return defaultAvatars;
+            counter++;
+        }
+        return null;
+    }
+
 }

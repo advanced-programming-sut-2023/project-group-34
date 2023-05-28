@@ -3,6 +3,7 @@ package model.user;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
+import controller.UserController;
 import model.Trade;
 import model.enums.Slogan;
 import model.government.Government;
@@ -30,14 +31,39 @@ public class User {
     private final ArrayList<Trade> myTrades = new ArrayList<>();
     private final Queue<Trade> notificationsList = new LinkedList<>();
 
-    public User(String name, Password password, String nickname, String email){
+    private String avatarLink;
+
+    private String currentPassword;
+
+
+
+    public User(String name, String currentPassword, Password password, String nickname, String email){
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.password = password;
         users.add(this);
         this.score = 0;
+        this.currentPassword = currentPassword;
+        this.avatarLink = UserController.randomAvatar().getLink();
         customMaps = new ArrayList<>();
+    }
+
+
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
     }
 
     public ArrayList<Trade> getMyTrades() {
@@ -239,6 +265,14 @@ public class User {
 
     public ArrayList<GameMap> getCustomMaps() {
         return customMaps;
+    }
+
+    public static User getUserByEmail(String email){
+        for (User user : getUsers()){
+            if (user.getEmail().equals(email))
+                return user;
+        }
+        return null;
     }
 
 }

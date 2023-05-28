@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<Pane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.main.AvatarMenuController"
+      stylesheets="@../CSS/menuStyle.css"
+      styleClass="avatar-background"
+      prefHeight="600.0" prefWidth="900.0">
+    <Label text="Avatar Menu" layoutX="450" layoutY="50" style="-fx-font-size: 30"/>
+    <Text text="Choose one of these Avatars" x="350" y="150" styleClass="instruction-text" style="-fx-font-size: 15"/>
+    <Text text="Choose a file" x="350" y="300" styleClass="instruction-text" style="-fx-font-size: 15"/>
+    <Button text="choose" layoutX="600" layoutY="280" style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15"/>
+    <Text text="Drag and Drop" x="400" y="400" styleClass="instruction-text" style="-fx-font-size: 15"/>
+    <Button layoutX="550" layoutY="550" text="back" onMouseClicked="#backToProfile"/>
+
+</Pane>

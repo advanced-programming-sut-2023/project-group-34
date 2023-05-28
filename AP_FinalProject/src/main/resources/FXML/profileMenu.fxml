@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
+<Pane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.main.ProfileMenuController"
+      styleClass="BackGroundRegister"
+      stylesheets="@../CSS/menuStyle.css"
+      prefHeight="-Infinity" prefWidth="-Infinity">
+
+    <Label text="Profile Menu" layoutX="680" layoutY="75"/>
+    <Rectangle width="156" height="156" x="937" y="197" fill="gold"/>
+    <Rectangle width="150" height="150" x="940" y="200" fx:id="avatarRect"/>
+
+
+    <Text x="560" y="177" text="Username: " styleClass="instruction-text"/>
+    <Text x="700" y="177" fx:id="userText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="150" fx:id="userTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="165" fx:id="editRectUser" onMouseClicked="#changeUser"/>
+    <Text fx:id="userError" x="570" y="220" styleClass="errorHandling"/>
+    <Button text="confirm" layoutX="720" layoutY="200" style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15"
+            fx:id="userConfirm" onMouseClicked="#confirmChangingUser"/>
+
+    <Text x="560" y="260" text="Password: " styleClass="instruction-text"/>
+    <Text x="700" y="260" fx:id="passText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="250" fx:id="passTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="235" fx:id="editRectPass" onMouseClicked="#changePass"/>
+
+    <Text x="560" y="320" text="Nickname: " styleClass="instruction-text"/>
+    <Text x="700" y="320" fx:id="nickText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="290" fx:id="nickTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="305" fx:id="editRectNick" onMouseClicked="#changeNick"/>
+    <Button text="confirm" layoutX="720" layoutY="340" style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15"
+            fx:id="nickConfirm" onMouseClicked="#confirmChangingNick"/>
+
+    <Text x="560" y="410" text="Email: " styleClass="instruction-text"/>
+    <Text x="700" y="410" fx:id="emailText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="380" fx:id="emailTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="395" fx:id="editRectEmail" onMouseClicked="#changeEmail"/>
+    <Text fx:id="emailError" x="570" y="450" styleClass="errorHandling"/>
+    <Button text="confirm" layoutX="720" layoutY="430" style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15"
+            fx:id="emailConfirm" onMouseClicked="#confirmChangingEmail"/>
+
+    <Text x="560" y="490" text="Slogan: " styleClass="instruction-text"/>
+    <Text x="700" y="490" fx:id="sloganText" styleClass="profile-field-shower"/>
+    <TextField layoutX="690" layoutY="460" fx:id="sloganTextField" styleClass="profile-change-fields"/>
+    <Rectangle width="15" height="15" x="870" y="475" fx:id="editRectSlogan" onMouseClicked="#changeSlogan"/>
+    <Button text="remove slogan" layoutX="940" layoutY="465"
+            style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15" onMouseClicked="#deleteSlogan"/>
+    <Text fx:id="sloganError" x="570" y="530" styleClass="errorHandling"/>
+    <Button text="confirm" layoutX="720" layoutY="510" style="-fx-min-width: 15; -fx-min-height: 30; -fx-font-size: 15"
+            fx:id="sloganConfirm" onMouseClicked="#confirmChangingSlogan"/>
+
+    <Button layoutX="650" layoutY="570" text="Avatar Setting" onMouseClicked="#toAvatarChangingMenu"/>
+    <Button layoutX="800" layoutY="570" text="Scoreboard"/>
+    <Button layoutX="770" layoutY="620" text="Back" onMouseClicked="#backToMain"/>
+
+
+
+</Pane>
