@@ -124,7 +124,7 @@ public class SecurityAndCaptchaRegisterController implements Initializable {
         }
 
 
-        if (checkCaptcha())
+        if (!checkCaptcha())
             return;
 
         if (firstChoice.isSelected()){

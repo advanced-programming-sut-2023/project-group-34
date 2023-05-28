@@ -118,13 +118,17 @@ public class RegisterMenuController implements Initializable {
 
         });
 
-        emailField.textProperty().addListener((observable, oldText, newText)->{
+        emailField.textProperty().addListener((observable, oldText, newText)-> {
             if (!Validations.check(newText, Validations.VALID_EMAIL))
                 emailError.setText("Invalid email format");
-            else {
+            else if (User.getUserByEmail(emailField.getText()) != null){
+                emailError.setText("Email already taken");
+            }else {
                 emailError.setText("");
             }
         });
+
+
 
         passwordField.textProperty().addListener((observable, oldText, newText)->{
             if (newText.length() < 6) {
@@ -232,7 +236,7 @@ public class RegisterMenuController implements Initializable {
         }
 
         Password password = new Password(passwordField.getText());
-        User user = new User(userField.getText(), password, nickNameField.getText(), emailField.getText());
+        User user = new User(userField.getText(), passwordField.getText(), password, nickNameField.getText(), emailField.getText());
         if (!slogan.equals("")) user.setSlogan(slogan);
         User.updateDataBase();
 
