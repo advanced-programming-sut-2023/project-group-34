@@ -60,6 +60,18 @@ public class ProfileMenuController implements Initializable {
     @FXML
     private Button emailConfirm;
     private boolean isEmailSelected;
+    @FXML
+    private Text sloganText;
+    @FXML
+    private TextField sloganTextField;
+    @FXML
+    private Rectangle editRectSlogan;
+    @FXML
+    private Text sloganError;
+    @FXML
+    private Button sloganConfirm;
+    private boolean isSloganSelected;
+
 
 
 
@@ -78,6 +90,9 @@ public class ProfileMenuController implements Initializable {
 
         editRectEmail.setFill(new ImagePattern(new Image(
                 ProfileMenu.class.getResource("/images/editPen.png").toString())));
+        editRectSlogan.setFill(new ImagePattern(new Image(
+                ProfileMenu.class.getResource("/images/editPen.png").toString())));
+
 
 
         userTextField.setVisible(false);
@@ -95,6 +110,12 @@ public class ProfileMenuController implements Initializable {
         emailConfirm.setVisible(false);
         isEmailSelected = false;
 
+        sloganTextField.setVisible(false);
+        sloganConfirm.setVisible(false);
+        isSloganSelected = false;
+
+
+
 
 
 
@@ -102,6 +123,12 @@ public class ProfileMenuController implements Initializable {
         passText.setText(User.currentUser.getCurrentPassword());
         nickText.setText(User.currentUser.getNickname());
         emailText.setText(User.currentUser.getEmail());
+        if (User.currentUser.getSlogan() != null){
+            sloganText.setText(User.currentUser.getSlogan());
+        } else {
+            sloganText.setText("Empty!");
+        }
+
 
         userTextField.textProperty().addListener((observable, oldText, newText)->{
             if (!Validations.check(newText, Validations.VALID_USERNAME)) {
@@ -233,9 +260,34 @@ public class ProfileMenuController implements Initializable {
     }
 
     public void changeSlogan(MouseEvent mouseEvent) {
+        if (!isSloganSelected){
+            isSloganSelected = true;
+            sloganTextField.setText(User.currentUser.getSlogan());
+            sloganTextField.setVisible(true);
+            sloganConfirm.setVisible(true);
+            sloganText.setVisible(false);
+        } else {
+            isSloganSelected = false;
+            sloganTextField.setVisible(false);
+            sloganText.setVisible(true);
+            sloganConfirm.setVisible(false);
+        }
     }
 
     public void confirmChangingSlogan(MouseEvent mouseEvent) {
+        User.currentUser.setSlogan(sloganTextField.getText());
+        isSloganSelected = false;
+        sloganText.setText(sloganTextField.getText());
+        sloganConfirm.setVisible(false);
+        sloganTextField.setVisible(false);
+        sloganText.setVisible(true);
+        User.updateDataBase();
+        User.currentUserJsonSaver();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initOwner(LaunchMenu.getStage());
+        alert.setHeaderText("Change Slogan");
+        alert.setContentText("Slogan changed successfully!");
+        alert.showAndWait();
     }
 
     public void backToMain(MouseEvent mouseEvent) throws Exception{
@@ -247,5 +299,14 @@ public class ProfileMenuController implements Initializable {
     }
 
     public void deleteSlogan(MouseEvent mouseEvent) {
+        sloganText.setText("Empty!");
+        User.currentUser.setSlogan(null);
+        User.updateDataBase();
+        User.currentUserJsonSaver();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initOwner(LaunchMenu.getStage());
+        alert.setHeaderText("Change Slogan");
+        alert.setContentText("Slogan removed successfully!");
+        alert.showAndWait();
     }
 }
