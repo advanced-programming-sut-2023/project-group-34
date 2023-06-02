@@ -2,9 +2,7 @@ package view.main;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
@@ -15,6 +13,7 @@ import model.user.User;
 import view.LaunchMenu;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ProfileMenuController implements Initializable {
@@ -194,6 +193,18 @@ public class ProfileMenuController implements Initializable {
     }
 
     public void changePass(MouseEvent mouseEvent) {
+        Dialog<ButtonType> changePassDialog = new changePasswordDialog();
+        changePassDialog.initOwner(LaunchMenu.getStage());
+        Optional<ButtonType> result = changePassDialog.showAndWait();
+        if (result.get() == ButtonType.CLOSE)
+            changePassDialog.close();
+        passText.setText(User.currentUser.getCurrentPassword());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Change Password");
+        alert.setContentText("Password changed successfully!");
+        alert.initOwner(LaunchMenu.getStage());
+        alert.showAndWait();
+
 
     }
 
