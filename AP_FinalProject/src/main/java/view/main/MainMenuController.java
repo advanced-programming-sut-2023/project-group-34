@@ -6,6 +6,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import model.user.User;
 import view.LaunchMenu;
+import view.profile.ProfileMenu;
 import view.starter.RegisterAndLoginMenu;
 
 import java.util.Optional;

@@ -191,6 +191,7 @@ public class ForgotPasswordMenuController implements Initializable {
         if (!checkCaptcha())
             return;
 
+        User.currentUser.setCurrentPassword(newPass.getText());
         User.getUserByUsername(userField.getText()).getPassword().setPasswordName(newPass.getText());
         User.updateDataBase();
 

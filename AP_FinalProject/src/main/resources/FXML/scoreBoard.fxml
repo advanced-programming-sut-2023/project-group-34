@@ -8,11 +8,23 @@
 
 <Pane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.main.ScoreBoardMenuController"
+            fx:controller="view.profile.ScoreBoardMenuController"
             styleClass="BackGroundRegister"
-            stylesheets="@../CSS/menuStyle.css"
+            stylesheets="@../CSS/scoreBoardStyle.css"
             prefHeight="-Infinity" prefWidth="-Infinity">
-    <Label text="Score Board Menu" layoutX="680" layoutY="75"/>
+
+
+    <Label text="Score Board Menu" layoutX="680" layoutY="75" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
+        -fx-font-style: oblique; -fx-font-size: 45px; -fx-font-weight: bold;"/>
+    <ScrollPane layoutX="550" layoutY="200" minWidth="600" minHeight="360" fx:id="tableScroll"/>
     <Button text="back" layoutX="850" layoutY="600" onMouseClicked="#backToProfile"/>
+
+    <TableView fx:id="tableView" prefWidth="600" prefHeight="360" onScroll="#newUsersToShow">
+        <columns>
+            <TableColumn prefWidth="100.0" text="ranking" fx:id= "ranking" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="username" fx:id="username" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="score" fx:id="score" styleClass="label1"/>
+        </columns>
+    </TableView>
 
 </Pane>
