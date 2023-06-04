@@ -35,6 +35,8 @@ public class User {
 
     private String currentPassword;
 
+    private int ranking;
+
 
 
     public User(String name, String currentPassword, Password password, String nickname, String email){
@@ -52,6 +54,14 @@ public class User {
 
     public String getAvatarLink() {
         return avatarLink;
+    }
+
+    public int getRanking() {
+        return getPlayerRank();
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
     }
 
     public void setAvatarLink(String avatarLink) {

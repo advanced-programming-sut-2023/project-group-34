@@ -1,4 +1,4 @@
-package view.main;
+package view.profile;
 
 import controller.UserController;
 import javafx.event.ActionEvent;
@@ -14,10 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import model.Captcha;
 import model.enums.Validations;
 import model.user.User;
-import view.LaunchMenu;
 import view.starter.CaptchaImages;
 import view.starter.SecurityAndCaptchaRegister;
 

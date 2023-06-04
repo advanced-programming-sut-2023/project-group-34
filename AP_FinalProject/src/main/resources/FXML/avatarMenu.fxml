@@ -12,7 +12,7 @@
 <?import javafx.scene.chart.BubbleChart?>
 <Pane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="view.main.AvatarMenuController"
+      fx:controller="view.profile.AvatarMenuController"
       stylesheets="@../CSS/menuStyle.css"
       styleClass="avatar-background"
       prefHeight="600.0" prefWidth="900.0">

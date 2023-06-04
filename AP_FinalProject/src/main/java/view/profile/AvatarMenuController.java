@@ -1,4 +1,4 @@
-package view.main;
+package view.profile;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

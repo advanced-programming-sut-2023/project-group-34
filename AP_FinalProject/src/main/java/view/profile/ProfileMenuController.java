@@ -1,4 +1,4 @@
-package view.main;
+package view.profile;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import model.enums.Validations;
 import model.user.User;
 import view.LaunchMenu;
+import view.main.MainMenu;
 
 import java.net.URL;
 import java.util.Optional;
@@ -319,5 +320,9 @@ public class ProfileMenuController implements Initializable {
         alert.setHeaderText("Change Slogan");
         alert.setContentText("Slogan removed successfully!");
         alert.showAndWait();
+    }
+
+    public void onToScoreBoard(MouseEvent mouseEvent) throws Exception{
+        new ScoreBoardMenu().start(LaunchMenu.getStage());
     }
 }

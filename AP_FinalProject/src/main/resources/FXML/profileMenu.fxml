@@ -11,7 +11,7 @@
 <?import javafx.scene.control.cell.TextFieldListCell?>
 <Pane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="view.main.ProfileMenuController"
+      fx:controller="view.profile.ProfileMenuController"
       styleClass="BackGroundRegister"
       stylesheets="@../CSS/menuStyle.css"
       prefHeight="-Infinity" prefWidth="-Infinity">
@@ -60,7 +60,7 @@
             fx:id="sloganConfirm" onMouseClicked="#confirmChangingSlogan"/>
 
     <Button layoutX="650" layoutY="570" text="Avatar Setting" onMouseClicked="#toAvatarChangingMenu"/>
-    <Button layoutX="800" layoutY="570" text="Scoreboard"/>
+    <Button layoutX="800" layoutY="570" text="Scoreboard" onMouseClicked="#onToScoreBoard"/>
     <Button layoutX="770" layoutY="620" text="Back" onMouseClicked="#backToMain"/>
 
 
