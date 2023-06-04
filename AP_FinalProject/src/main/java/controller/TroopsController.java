@@ -238,10 +238,8 @@ public class TroopsController {
         return "Troops selected successfully";
     }
     
-    public static String deselectUnits () {
-        if (GameController.selectedWarEquipment.isEmpty()) return "You have no troops selected";
-        else GameController.selectedWarEquipment.clear();
-        return "Troops deselected successfully";
+    public static void deselectUnits () {
+        GameController.selectedWarEquipment.clear();
     }
     
     public static String patrolUnit (Matcher matcher) {

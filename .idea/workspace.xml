@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0d3423a-0b07-47a1-82e8-dfbb1ecde532" name="Changes" comment="fixing the mess" />
+    <list default="true" id="e0d3423a-0b07-47a1-82e8-dfbb1ecde532" name="Changes" comment="fixing the mess">
+      <change afterPath="$PROJECT_DIR$/AP_FinalProject/src/main/java/view/Game.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AP_FinalProject/src/main/resources/FXML/game.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -75,6 +78,7 @@
       <workItem from="1682333963688" duration="83000" />
       <workItem from="1682351912516" duration="7000" />
       <workItem from="1685287490969" duration="8000" />
+      <workItem from="1685881561485" duration="241000" />
     </task>
     <task id="LOCAL-00001" summary="testing">
       <created>1681908363611</created>
