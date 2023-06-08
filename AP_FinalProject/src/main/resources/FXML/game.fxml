@@ -11,10 +11,8 @@
             fx:controller="view.Game"
             prefHeight="400.0" prefWidth="600.0">
 
-    <SplitPane orientation="VERTICAL" dividerPositions="0.8">
-        <items>
-            <StackPane fx:id="mapPane"/>
-            <Pane fx:id="bar" background="black"/>
-        </items>
+    <SplitPane orientation="VERTICAL" dividerPositions="0.8" minWidth="600" maxWidth="600" minHeight="400" maxHeight="400">
+        <StackPane fx:id="mapPane"/>
+        <Pane fx:id="bar" style="-fx-background-color: blue;"/>
     </SplitPane>
 </GridPane>

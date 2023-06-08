@@ -12,7 +12,8 @@ module AP.FinalProject {
     exports controller;
     exports model;
     exports view.starter;
-
+    exports view.game to javafx.graphics;
+    
     opens model to javafx.fxml, com.google.gson;
     opens model.user to com.google.gson;
     opens model.enums to com.google.gson;
