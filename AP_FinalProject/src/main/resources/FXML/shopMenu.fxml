@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.game.ShopMenuController"
+            styleClass="BackGroundShop"
+            stylesheets="@../CSS/menuStyle.css"
+            prefHeight="600" prefWidth="900">
+
+    <Label text="Shop Center" layoutX="330" layoutY="30" style="-fx-text-fill: #000000"/>
+    <Label text="Test" layoutX="430" layoutY="150" style="-fx-text-fill: #FFFF00; -fx-font-size: 30" fx:id="itemName"/>
+    <Rectangle x="400" y="190" width="130" height="130" fx:id="itemImage"/>
+    <Rectangle x="340" y="240" width="20" height="40" fx:id="leftArrow" onMouseClicked="#moveItemToLeft"/>
+    <Rectangle x="560" y="240" width="20" height="40" fx:id="rightArrow" onMouseClicked="#moveItemToRight"/>
+    <Text fx:id="goldAmount" x="350" y="390" text="test" styleClass="shop-amounts"/>
+    <Text fx:id="resourceAmount" x="350" y="430" text="test" styleClass="shop-amounts"/>
+
+
+</AnchorPane>
