@@ -8,15 +8,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public class ShopController {
-    public static String buyItems (Matcher matcher) {
-        
-        int finalAmount = Integer.parseInt(matcher.group("amount"));
-        String item = matcher.group("item");
-        item = item.replaceAll("\"", "");
-        
-        if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
-            return "The required field is empty, buying failed";
-        
+    public static String buyItems (String item, int finalAmount) {
+
         if (finalAmount <= 0) return "Invalid amount, buying failed";
         
         double finalPrice = GameController.currentGame.getCurrentGovernment().getStorageDepartment().priceOfASource(item, finalAmount);
@@ -88,13 +81,7 @@ public class ShopController {
         return false;
     }
     
-    public static String sellItems (Matcher matcher) {
-        int finalAmount = Integer.parseInt(matcher.group("amount"));
-        String item = matcher.group("item");
-        
-        if (matcher.group("amount").isEmpty() && (matcher.group("item").isEmpty()))
-            return "The required field is empty, selling failed";
-        
+    public static String sellItems (String item, int finalAmount) {
         
         if (finalAmount <= 0) return "Invalid amount, selling failed";
         

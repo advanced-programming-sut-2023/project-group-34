@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.game.trade.ChoosingTradePartnerMenuController"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            styleClass="BackGroundNewTrade"
+            prefHeight="Infinity" prefWidth="Infinity">
+    <Label text="Choose A kingdom to trade with" layoutY="80" layoutX="400" style="-fx-background-color: gray;
+    -fx-background-radius: 8 8 8 8; -fx-font-size: 45;
+    -fx-font-family: Bahnschrift; -fx-font-style: oblique; -fx-font-weight: bold; -fx-text-fill: gold"/>
+    <TableView fx:id="tableView" prefWidth="600" prefHeight="360" layoutX="450" layoutY="200">
+        <columns>
+            <TableColumn prefWidth="100.0" text="Name" fx:id="name" styleClass="label1"/>
+        </columns>
+    </TableView>
+    <Button minHeight="40" minWidth="250" text="Back" layoutX="630" layoutY="600" onMouseClicked="#backToMainTrade"/>
+
+</AnchorPane>

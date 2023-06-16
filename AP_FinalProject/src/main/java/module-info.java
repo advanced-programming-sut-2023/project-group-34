@@ -13,6 +13,7 @@ module AP.FinalProject {
     exports model;
     exports view.starter;
     exports view.game;
+    exports view.game.trade;
 
 
     opens model to javafx.fxml, com.google.gson;
@@ -30,5 +31,6 @@ module AP.FinalProject {
     exports view.profile;
     opens view.profile to javafx.fxml;
     opens view.game to javafx.fxml;
+    opens view.game.trade to javafx.fxml;
 
 }

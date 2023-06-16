@@ -20,8 +20,14 @@
     <Rectangle x="400" y="190" width="130" height="130" fx:id="itemImage"/>
     <Rectangle x="340" y="240" width="20" height="40" fx:id="leftArrow" onMouseClicked="#moveItemToLeft"/>
     <Rectangle x="560" y="240" width="20" height="40" fx:id="rightArrow" onMouseClicked="#moveItemToRight"/>
-    <Text fx:id="goldAmount" x="350" y="390" text="test" styleClass="shop-amounts"/>
-    <Text fx:id="resourceAmount" x="350" y="430" text="test" styleClass="shop-amounts"/>
+    <Text fx:id="goldAmount" x="400" y="390" text="test" styleClass="shop-amounts"/>
+    <Text fx:id="resourceAmount" x="400" y="430" text="test" styleClass="shop-amounts"/>
+    <TextField promptText="Amount" layoutX="370" layoutY="440"
+               style="-fx-prompt-text-fill: gold; -fx-text-fill: gold" fx:id="amount"/>
+    <Button fx:id="buyButton" layoutX="400" layoutY="490" text="Buy" onMouseClicked="#buyItem"/>
+    <Button fx:id="sellButton" layoutX="480" layoutY="490" text="Sell" onMouseClicked="#sellItem"/>
+    <Button text="Back" layoutX="360" layoutY="545" minWidth="100" onMouseClicked="#BackToGame"/>
+    <Button text="Trade Center" minWidth="100" layoutX="480" layoutY="545" onMouseClicked="#OntoTradeCenter"/>
 
 
 </AnchorPane>

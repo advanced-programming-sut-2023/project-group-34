@@ -13,7 +13,7 @@
             styleClass="BackgroundMain"
             prefHeight="-Infinity" prefWidth="-Infinity">
     <Label text="Main Menu" layoutX="175" layoutY="80"/>
-    <Button text="New Game" layoutX="170" layoutY="170" minWidth="250" minHeight="40" />
+    <Button text="New Game" layoutX="170" layoutY="170" minWidth="250" minHeight="40" onMouseClicked="#tryingShop"/>
     <Button text="Profile" layoutX="170" layoutY="260" minWidth="250" minHeight="40" onMouseClicked="#onToProfileMenu"/>
     <Button text="Map Menu" layoutX="170" layoutY="350" minWidth="250" minHeight="40"/>
     <Button text="Logout" layoutX="170" layoutY="440" minWidth="250" minHeight="40" onMouseClicked="#logout"/>

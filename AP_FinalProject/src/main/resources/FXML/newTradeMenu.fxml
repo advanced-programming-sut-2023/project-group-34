@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.game.trade.NewTradeMenuController"
+            styleClass="BackGroundRegister"
+            stylesheets="@../CSS/menuStyle.css"
+            prefHeight="Infinity" prefWidth="Infinity">
+
+    <Label text="New Trade" layoutX="700" layoutY="60"/>
+    <Text text="Wanted Resource" styleClass="instruction-text" x="620" y="180"/>
+    <Rectangle width="80" height="80" x="635" y="205" fx:id="wantedIronSelection" style="-fx-fill: gold"/>
+    <Rectangle width="80" height="80" x="725" y="205" fx:id="wantedStoneSelection" style="-fx-fill: gold"/>
+    <Rectangle width="80" height="80" x="815" y="205" fx:id="wantedWoodSelection" style="-fx-fill: gold"/>
+    <Rectangle width="80" height="80" x="905" y="205" fx:id="wantedGhirSelection" style="-fx-fill: gold"/>
+    <Rectangle x="640" y="210" width="70" height="70" fx:id="wantedIron" onMouseClicked="#selectWantedIron"/>
+    <Rectangle x="730" y="210" width="70" height="70" fx:id="wantedStone" onMouseClicked="#selectWantedStone"/>
+    <Rectangle x="820" y="210" width="70" height="70" fx:id="wantedWood" onMouseClicked="#selectWantedWood"/>
+    <Rectangle x="910" y="210" width="70" height="70" fx:id="wantedGhir" onMouseClicked="#selectWantedGhir"/>
+    <Rectangle x="750" layoutY="310" width="15" height="15" fx:id="minusSign" onMouseClicked="#decreaseWantedAmount"/>
+    <Rectangle x="1020" layoutY="310" width="15" height="15" fx:id="plusSign" onMouseClicked="#IncreaseWantedAmount"/>
+    <TextField layoutX="780" layoutY="290" style="-fx-text-fill: gold; -fx-display-caret: false;
+        -fx-prompt-text-fill: gold" fx:id="wantedAmount"/>
+
+
+</AnchorPane>
