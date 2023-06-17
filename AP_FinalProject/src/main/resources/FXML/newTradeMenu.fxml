@@ -26,9 +26,27 @@
     <Rectangle x="820" y="210" width="70" height="70" fx:id="wantedWood" onMouseClicked="#selectWantedWood"/>
     <Rectangle x="910" y="210" width="70" height="70" fx:id="wantedGhir" onMouseClicked="#selectWantedGhir"/>
     <Rectangle x="750" layoutY="310" width="15" height="15" fx:id="minusSign" onMouseClicked="#decreaseWantedAmount"/>
-    <Rectangle x="1020" layoutY="310" width="15" height="15" fx:id="plusSign" onMouseClicked="#IncreaseWantedAmount"/>
+    <Rectangle x="1020" layoutY="310" width="15" height="15" fx:id="plusSign" onMouseClicked="#increaseWantedAmount"/>
     <TextField layoutX="780" layoutY="290" style="-fx-text-fill: gold; -fx-display-caret: false;
         -fx-prompt-text-fill: gold" fx:id="wantedAmount"/>
+    <Text text="Offered Resource" styleClass="instruction-text" x="620" y="370"/>
+    <Rectangle width="80" height="80" x="635" y="400" fx:id="offeredIronSelection" style="-fx-fill: gold"/>
+    <Rectangle width="80" height="80" x="725" y="400" fx:id="offeredStoneSelection" style="-fx-fill: gold"/>
+    <Rectangle width="80" height="80" x="815" y="400" fx:id="offeredWoodSelection" style="-fx-fill: gold"/>
+    <Rectangle width="80" height="80" x="905" y="400" fx:id="offeredGhirSelection" style="-fx-fill: gold"/>
+    <Rectangle x="640" y="405" width="70" height="70" fx:id="offeredIron" onMouseClicked="#selectOfferedIron"/>
+    <Rectangle x="730" y="405" width="70" height="70" fx:id="offeredStone" onMouseClicked="#selectOfferedStone"/>
+    <Rectangle x="820" y="405" width="70" height="70" fx:id="offeredWood" onMouseClicked="#selectOfferedWood"/>
+    <Rectangle x="910" y="405" width="70" height="70" fx:id="offeredGhir" onMouseClicked="#selectOfferedGhir"/>
+    <Rectangle x="750" layoutY="505" width="15" height="15" fx:id="minusSign1" onMouseClicked="#decreaseOfferedAmount"/>
+    <Rectangle x="1020" layoutY="505" width="15" height="15" fx:id="plusSign1" onMouseClicked="#increaseOfferedAmount"/>
+    <TextField layoutX="780" layoutY="485" style="-fx-text-fill: gold; -fx-display-caret: false;
+        -fx-prompt-text-fill: gold" fx:id="offeredAmount"/>
+    <Text text="Message" styleClass="instruction-text" x="650" y="550"/>
+    <TextArea layoutY="580" layoutX="750" prefHeight="40" prefWidth="300" promptText="your message" fx:id="message"/>
+    <Text fx:id="tradeError" x="750" y="660" styleClass="errorHandling"/>
+    <Button text="Create" layoutX="840" layoutY="690" onMouseClicked="#makeNewTradeOffer" minWidth="50"/>
+    <Button text="back" layoutX="770" layoutY="690" onMouseClicked="#backToMainTrade" minWidth="50"/>
 
 
 </AnchorPane>
