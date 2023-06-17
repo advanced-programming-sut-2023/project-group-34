@@ -255,26 +255,37 @@ public class NewTradeMenuController implements Initializable {
 
     public void makeNewTradeOffer(MouseEvent mouseEvent) {
         if (!isWantedSelected && Integer.parseInt(wantedAmount.getText()) != 0){
-            tradeError.setText("You are making a donation so you cannot have a wanted amount");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("New Trade Error");
+            alert.setContentText("You are donating something so you cannot have and wanted amount");
+            alert.initOwner(LaunchMenu.getStage());
+            alert.showAndWait();
             return;
         }
-        tradeError.setText("");
 
         if (!isOfferedSelected && Integer.parseInt(offeredAmount.getText()) != 0){
-            tradeError.setText("You are begging people to help you so you cannot have an offered amount");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("New Trade Error");
+            alert.setContentText("You are begging people to help you so you cannot have an offered amount");
+            alert.initOwner(LaunchMenu.getStage());
+            alert.showAndWait();
             return;
+
         }
-        tradeError.setText("");
 
         if (message.getText().isEmpty()){
-            tradeError.setText("You have to send a message!");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("New Trade Error");
+            alert.setContentText("You have to send a message along with it!");
+            alert.initOwner(LaunchMenu.getStage());
+            alert.showAndWait();
             return;
         }
-        tradeError.setText("");
 
         Trade trade = new Trade(selectedWantedResource, Integer.parseInt(wantedAmount.getText()), selectedOfferedResource,
                 Integer.parseInt(offeredAmount.getText()),
                 GameController.currentGame.getCurrentGovernment().getOwner(), message.getText());
+        trade.setReceiver(User.getUserByUsername(NewTradeMenuController.receiver.getName()));
         GameController.getPlayerByUsername(receiver.getName()).addToMyTrades(trade);
         GameController.getPlayerByUsername(receiver.getName()).putNotificationList(trade);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

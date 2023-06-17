@@ -290,3 +290,10 @@ ImageView {
     -fx-background-size: 1280 1024;
 }
 
+.BackGroundMainTrade{
+    -fx-background-image: url("../images/mainTradeMenu.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: 1280 1024;
+}
+

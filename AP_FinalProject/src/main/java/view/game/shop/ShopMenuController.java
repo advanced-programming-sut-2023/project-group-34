@@ -1,6 +1,5 @@
-package view.game;
+package view.game.shop;
 
-import controller.GameController;
 import controller.ShopController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +16,8 @@ import model.enums.make_able.Food;
 import model.enums.make_able.Resources;
 import model.enums.make_able.Weapons;
 import view.LaunchMenu;
-import view.game.trade.MainTradeController;
+import view.game.shop.ShopMaterial;
+import view.game.shop.ShopMenu;
 import view.game.trade.MainTradeMenu;
 
 import java.net.URL;
@@ -159,7 +159,8 @@ public class ShopMenuController implements Initializable {
         }
     }
 
-    public void BackToGame(MouseEvent mouseEvent) {
+    public void BackToGame(MouseEvent mouseEvent) throws Exception{
+        //TODO this part has to go back to the main game
     }
 
     public void OntoTradeCenter(MouseEvent mouseEvent) throws Exception{

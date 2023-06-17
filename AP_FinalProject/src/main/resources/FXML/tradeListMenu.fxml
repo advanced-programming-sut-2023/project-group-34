@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.game.trade.TradeListController"
+            styleClass="BackGroundMainTrade"
+            stylesheets="@../CSS/menuStyle.css"
+            prefHeight="Infinity" prefWidth="Infinity">
+    <Label text="Trade History" layoutX="160" layoutY="120" style="-fx-text-fill: #399045"/>
+    <Button text="Sent Trades" layoutX="150" layoutY="240" minWidth="300" minHeight="50" onMouseClicked="#displayTradeSent"/>
+    <Button text="Received Trades" layoutX="150" layoutY="340" minWidth="300" minHeight="50"/>
+    <Button text="Back" layoutX="150" layoutY="440" minWidth="300" minHeight="50" onMouseClicked="#backToMainTradeMenu"/>
+
+</AnchorPane>

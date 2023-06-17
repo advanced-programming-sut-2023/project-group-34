@@ -1,4 +1,4 @@
-package view.game;
+package view.game.shop;
 
 public enum ShopMaterial {
     ALE(ShopMenu.class.getResource("/images/shop/ale.png").toString(), 1, "ale"),

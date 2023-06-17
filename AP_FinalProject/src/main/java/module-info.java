@@ -12,7 +12,7 @@ module AP.FinalProject {
     exports controller;
     exports model;
     exports view.starter;
-    exports view.game;
+    exports view.game.shop;
     exports view.game.trade;
 
 
@@ -30,7 +30,8 @@ module AP.FinalProject {
     opens view.main to javafx.fxml;
     exports view.profile;
     opens view.profile to javafx.fxml;
-    opens view.game to javafx.fxml;
     opens view.game.trade to javafx.fxml;
+    opens view.game.shop to javafx.fxml;
+
 
 }

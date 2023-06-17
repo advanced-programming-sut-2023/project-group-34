@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.game.trade.TradeSentMenuController"
+            styleClass="BackGroundMainTrade"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            prefHeight="Infinity" prefWidth="Infinity">
+    <Label text="Trades Sent" layoutX="600" layoutY="80"
+           style="-fx-background-radius: 15 15 15 15; -fx-background-color: gray; -fx-font-size: 45; -fx-text-fill:
+           gold; -fx-font-family: Bahnschrift; -fx-font-style: oblique; -fx-font-weight: bold"/>
+
+    <TableView fx:id="tableView" prefWidth="750" prefHeight="360" layoutX="350" layoutY="200">
+        <columns>
+            <TableColumn prefWidth="100.0" text="Receiver" fx:id= "receiver" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="Offered" fx:id="offered" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="Offered Amount" fx:id="offeredAmount" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="Wanted" fx:id="wanted" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="Wanted Amount" fx:id="wantedAmount" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="Message" fx:id="message" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="Status" fx:id="status" styleClass="label1"/>
+        </columns>
+    </TableView>
+    <Button text="Back" minWidth="250" minHeight="40" layoutX="600" layoutY="600" onMouseClicked="#backToTradeList"/>
+
+</AnchorPane>

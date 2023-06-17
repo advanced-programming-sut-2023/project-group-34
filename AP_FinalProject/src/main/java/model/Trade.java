@@ -2,6 +2,10 @@ package model;
 
 import model.enums.make_able.Resources;
 import model.user.User;
+import view.game.trade.ChoosingTradePartnerMenu;
+import view.game.trade.ChoosingTradePartnerMenuController;
+import view.game.trade.NewTradeMenu;
+import view.game.trade.NewTradeMenuController;
 
 
 public class Trade {
@@ -53,6 +57,12 @@ public class Trade {
         return offered;
     }
 
+    public String getOfferedName(){
+        if (offered == null)
+            return "null";
+        else return offered.getName();
+    }
+
     public int getOfferedNumber() {
         return offeredNumber;
     }
@@ -65,8 +75,24 @@ public class Trade {
         return wanted;
     }
 
+    public String getWantedName(){
+        if (wanted == null)
+            return "null";
+        else return wanted.getName();
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public String getReceiverName(){
+        return NewTradeMenuController.receiver.getName();
+    }
+
+    public String getCheckStatus(){
+        if (isAccepted)
+            return "accepted";
+        else return "not accepted";
     }
 
 }
