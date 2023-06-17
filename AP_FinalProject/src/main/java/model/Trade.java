@@ -89,6 +89,10 @@ public class Trade {
         return NewTradeMenuController.receiver.getName();
     }
 
+    public String getSenderName(){
+        return this.sender.getName();
+    }
+
     public String getCheckStatus(){
         if (isAccepted)
             return "accepted";

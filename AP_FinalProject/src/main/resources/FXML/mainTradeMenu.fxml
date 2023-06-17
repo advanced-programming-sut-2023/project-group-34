@@ -11,9 +11,10 @@
             fx:controller="view.game.trade.MainTradeController"
             styleClass="BackGroundMainTrade"
             stylesheets="@../CSS/menuStyle.css"
-            prefHeight="Infinity" prefWidth="Infinity">
+            prefHeight="Infinity" prefWidth="Infinity" onMouseMoved="#showTradeNotification">
     <Label text="Trade Center" layoutX="160" layoutY="120" style="-fx-text-fill: #399045"/>
     <Button text="New Trade Request" layoutX="150" layoutY="240" minWidth="300" minHeight="50" onMouseClicked="#onToNewRequest"/>
-    <Button text="Trade List" layoutX="150" layoutY="340" minWidth="300" minHeight="50"/>
+    <Button text="Trade List" layoutX="150" layoutY="340" minWidth="300" minHeight="50" onMouseClicked="#onToTradeList"/>
+    <Button text="Back" layoutX="150" layoutY="440" minWidth="300" minHeight="50" onMouseClicked="#backToShop"/>
 
 </AnchorPane>

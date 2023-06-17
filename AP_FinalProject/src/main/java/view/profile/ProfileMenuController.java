@@ -200,11 +200,13 @@ public class ProfileMenuController implements Initializable {
         if (result.get() == ButtonType.CLOSE)
             changePassDialog.close();
         passText.setText(User.currentUser.getCurrentPassword());
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Change Password");
-        alert.setContentText("Password changed successfully!");
-        alert.initOwner(LaunchMenu.getStage());
-        alert.showAndWait();
+        if (result.get() != ButtonType.CANCEL) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Change Password");
+            alert.setContentText("Password changed successfully!");
+            alert.initOwner(LaunchMenu.getStage());
+            alert.showAndWait();
+        }
 
 
     }

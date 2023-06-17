@@ -35,21 +35,9 @@ public class TradeController {
         return finalString;
     }
     
-    public static String trade (Matcher matcher) {
-        String message = matcher.group("message");
-        String receiverName = matcher.group("receiver");
-        String wantedName = matcher.group("wanted");
-        String offeredName = matcher.group("offered");
-        int wantedAmount = Integer.parseInt(matcher.group("wantedAmount"));
-        int offeredAmount = Integer.parseInt(matcher.group("offeredAmount"));
+    public static String trade (String wantedName, String offeredName, int wantedAmount, int offeredAmount) {
         
         if (wantedAmount < 0 || offeredAmount < 0) return "Invalid amount, trading failed";
-        
-        if (!wantedName.equals("null") && !GameController.checkResourceName(wantedName))
-            return "The resource you want does not exit, trading failed";
-        
-        if (!offeredName.equals("null") && !GameController.checkResourceName(offeredName))
-            return "The resource you are offering does not exit, trading failed";
         
         if (wantedName.equals("null") && wantedAmount != 0)
             return "This is a donation and you cannot set an amount, trade failed";
@@ -59,11 +47,7 @@ public class TradeController {
         
         if (checkEnoughStorageForTrade(offeredName, offeredAmount))
             return "You do not have enough resources to make this trade, trading failed";
-        
-        if (!receiverName.equals("all") && GameController.getPlayerByUsername(receiverName) == null)
-            return "This player does not exit in the game, trading failed";
-        
-        tradeWork(wantedName, wantedAmount, offeredName, offeredAmount, receiverName, message);
+
         return "Trade request sent successfully";
     }
     
@@ -121,10 +105,8 @@ public class TradeController {
         return finalString;
     }
     
-    static void AcceptingTradeWork (Trade trade, String message) {
-        trade.setMessage(message);
+    static void AcceptingTradeWork (Trade trade) {
         trade.setAccepted(true);
-        trade.setReceiver(GameController.currentGame.getCurrentGovernment().getOwner());
         int offeredAmount;
         String offeredName;
         int wantedAmount;
@@ -191,32 +173,13 @@ public class TradeController {
         return finalString;
     }
     
-    public static String acceptTradeItem (Matcher matcher) {
-        String id = matcher.group("id");
-        String message = matcher.group("message");
-        if (id.isEmpty() || message.isEmpty()) return "Required field is empty, accepting trade failed";
-        int id1 = Integer.parseInt(matcher.group("id"));
-        
-        int tradesToBeAccepted = 0;
-        for (Trade trade : GameController.currentGame.getCurrentGovernment().getOwner().getMyTrades()) {
-            if (!trade.isAccepted()) tradesToBeAccepted++;
-        }
-        
-        if (id1 > tradesToBeAccepted) return "Invalid id number, accepting trade failed";
-        
-        for (Trade trade : GameController.currentGame.getCurrentGovernment().getOwner().getMyTrades()) {
-            if (!trade.isAccepted() && id1 == 1) {
-                Resources wanted = trade.getWanted();
-                int wantedAmount = trade.getWantedNumber();
-                
-                if (wanted != null && wantedAmount > wanted.getAmount(GameController.currentGame.getCurrentGovernment()))
-                    return "You do not have enough resources to accept this trade, accepting trade failed";
-                AcceptingTradeWork(trade, message);
-                break;
-            } else if (!trade.isAccepted()) {
-                id1--;
-            }
-        }
+    public static String acceptTradeItem (Trade trade) {
+        Resources wanted = trade.getWanted();
+        int wantedAmount = trade.getWantedNumber();
+
+        if (wanted != null && wantedAmount > wanted.getAmount(GameController.currentGame.getCurrentGovernment()))
+            return "You do not have enough resources to accept this trade, accepting trade failed";
+        AcceptingTradeWork(trade);
         return "Trade finished successfully";
     }
 }

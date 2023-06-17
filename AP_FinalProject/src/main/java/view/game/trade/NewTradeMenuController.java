@@ -1,6 +1,7 @@
 package view.game.trade;
 
 import controller.GameController;
+import controller.TradeController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -254,43 +255,21 @@ public class NewTradeMenuController implements Initializable {
     }
 
     public void makeNewTradeOffer(MouseEvent mouseEvent) {
-        if (!isWantedSelected && Integer.parseInt(wantedAmount.getText()) != 0){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("New Trade Error");
-            alert.setContentText("You are donating something so you cannot have and wanted amount");
-            alert.initOwner(LaunchMenu.getStage());
-            alert.showAndWait();
-            return;
+        String response = TradeController.trade(selectedWantedResource.getName(), selectedOfferedResource.getName(),
+                Integer.parseInt(wantedAmount.getText()), Integer.parseInt(offeredAmount.getText()));
+
+        if (response.equals("Trade request sent successfully")) {
+            Trade trade = new Trade(selectedWantedResource, Integer.parseInt(wantedAmount.getText()), selectedOfferedResource,
+                    Integer.parseInt(offeredAmount.getText()),
+                    GameController.currentGame.getCurrentGovernment().getOwner(), message.getText());
+            trade.setReceiver(User.getUserByUsername(NewTradeMenuController.receiver.getName()));
+            GameController.getPlayerByUsername(receiver.getName()).addToMyTrades(trade);
+            GameController.getPlayerByUsername(receiver.getName()).putNotificationList(trade);
         }
 
-        if (!isOfferedSelected && Integer.parseInt(offeredAmount.getText()) != 0){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("New Trade Error");
-            alert.setContentText("You are begging people to help you so you cannot have an offered amount");
-            alert.initOwner(LaunchMenu.getStage());
-            alert.showAndWait();
-            return;
-
-        }
-
-        if (message.getText().isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("New Trade Error");
-            alert.setContentText("You have to send a message along with it!");
-            alert.initOwner(LaunchMenu.getStage());
-            alert.showAndWait();
-            return;
-        }
-
-        Trade trade = new Trade(selectedWantedResource, Integer.parseInt(wantedAmount.getText()), selectedOfferedResource,
-                Integer.parseInt(offeredAmount.getText()),
-                GameController.currentGame.getCurrentGovernment().getOwner(), message.getText());
-        trade.setReceiver(User.getUserByUsername(NewTradeMenuController.receiver.getName()));
-        GameController.getPlayerByUsername(receiver.getName()).addToMyTrades(trade);
-        GameController.getPlayerByUsername(receiver.getName()).putNotificationList(trade);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("New Trade");
-        alert.setContentText("Trade recorded successfully!");
+        alert.setContentText(response);
         alert.initOwner(LaunchMenu.getStage());
         alert.showAndWait();
 
