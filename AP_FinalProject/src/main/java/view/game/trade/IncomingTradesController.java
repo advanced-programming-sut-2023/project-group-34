@@ -2,6 +2,7 @@ package view.game.trade;
 
 import controller.GameController;
 import controller.TradeController;
+import controller.UserController;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import model.Game;
 import model.Trade;
+import model.enums.make_able.Resources;
 import model.user.User;
 import org.checkerframework.checker.units.qual.A;
 import view.LaunchMenu;

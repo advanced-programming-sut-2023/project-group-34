@@ -14,7 +14,7 @@
             prefHeight="Infinity" prefWidth="Infinity">
     <Label text="Trade History" layoutX="160" layoutY="120" style="-fx-text-fill: #399045"/>
     <Button text="Sent Trades" layoutX="150" layoutY="240" minWidth="300" minHeight="50" onMouseClicked="#displayTradeSent"/>
-    <Button text="Received Trades" layoutX="150" layoutY="340" minWidth="300" minHeight="50"/>
+    <Button text="Received Trades" layoutX="150" layoutY="340" minWidth="300" minHeight="50" onMouseClicked="#onToReceivedTrades"/>
     <Button text="Back" layoutX="150" layoutY="440" minWidth="300" minHeight="50" onMouseClicked="#backToMainTradeMenu"/>
 
 </AnchorPane>

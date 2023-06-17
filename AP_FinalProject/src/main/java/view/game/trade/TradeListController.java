@@ -11,4 +11,8 @@ public class TradeListController {
     public void displayTradeSent(MouseEvent mouseEvent) throws Exception{
         new TradeSentMenu().start(LaunchMenu.getStage());
     }
+
+    public void onToReceivedTrades(MouseEvent mouseEvent) throws Exception{
+        new IncomingTrades().start(LaunchMenu.getStage());
+    }
 }

@@ -90,7 +90,7 @@ public class Trade {
     }
 
     public String getSenderName(){
-        return this.sender.getName();
+        return sender.getName();
     }
 
     public String getCheckStatus(){

@@ -88,6 +88,7 @@ public class ForgotPasswordMenuController implements Initializable {
                 confirmDisplay.setVisible(false);
                 passError.setVisible(false);
                 passShower.setVisible(false);
+                answerTitle.setText("Answer the Question");
             } else if (userField.getText().isEmpty()){
                     userError.setText("");
             } else {
