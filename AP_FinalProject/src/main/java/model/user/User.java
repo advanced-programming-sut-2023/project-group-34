@@ -9,9 +9,8 @@ import model.enums.Slogan;
 import model.government.Government;
 import model.map.GameMap;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 import java.util.*;
 
 public class User {
@@ -26,7 +25,7 @@ public class User {
     private int score;
     private Government government;
     private Slogan sloganTypes;
-    
+
     private ArrayList<GameMap> customMaps;
     private final ArrayList<Trade> myTrades = new ArrayList<>();
     private final Queue<Trade> notificationsList = new LinkedList<>();
@@ -39,7 +38,7 @@ public class User {
 
 
 
-    public User(String name, String currentPassword, Password password, String nickname, String email){
+    public User(String name, String currentPassword, Password password, String nickname, String email) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -114,7 +113,7 @@ public class User {
     public Password getPassword() {
         return password;
     }
-    
+
     public String getNickname() {
         return nickname;
     }
@@ -142,7 +141,7 @@ public class User {
     public static ArrayList<User> getUsers() {
         return users;
     }
-    
+
     public static User getCurrentUser() {
         return currentUser;
     }
@@ -150,7 +149,7 @@ public class User {
     public static void setCurrentUser(User currentUser) {
         User.currentUser = currentUser;
     }
-    
+
     public int getScore() {
         return score;
     }
@@ -174,7 +173,7 @@ public class User {
         }
         return null;
     }
-    
+
     public static void currentUserJsonSaver() {
         try (FileWriter writer = new FileWriter("currentUser.json")) {
             Gson gson = new Gson();
@@ -185,7 +184,7 @@ public class User {
         } catch (IOException ignored) {
         }
     }
-    
+
     @Override
     public boolean equals (Object o) {
         if (this == o) return true;
@@ -193,13 +192,13 @@ public class User {
         User user = (User) o;
         return score == user.score && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(nickname, user.nickname) && Objects.equals(email, user.email) && Objects.equals(slogan, user.slogan) && Objects.equals(government, user.government) && sloganTypes == user.sloganTypes && Objects.equals(customMaps, user.customMaps) && Objects.equals(myTrades, user.myTrades) && Objects.equals(notificationsList, user.notificationsList);
     }
-    
+
     @Override
     public int hashCode () {
         int currentScore = 0;
         return Objects.hash(name, password, nickname, email, slogan, score, government, sloganTypes, currentScore, customMaps, myTrades, notificationsList);
     }
-    
+
     public static void loadCurrentUser() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("currentUser.json")) {

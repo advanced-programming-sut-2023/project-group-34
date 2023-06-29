@@ -1,24 +1,23 @@
-package view.main;
+package view.game;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import view.LaunchMenu;
+import view.profile.AvatarMenu;
 
-import java.net.Socket;
 import java.net.URL;
 
-public class MainMenu extends Application {
+public class SelectPlayersMenu extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
-        URL url = MainMenu.class.getResource("/FXML/mainMenu.fxml");
+        URL url = SelectPlayersMenu.class.getResource("/FXML/selectPlayers.fxml");
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.setFullScreen(true);
         stage.show();
-
     }
 }
