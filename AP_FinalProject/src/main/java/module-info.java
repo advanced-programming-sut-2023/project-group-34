@@ -14,6 +14,7 @@ module AP.FinalProject {
     exports view.starter;
     exports view.game.shop;
     exports view.game.trade;
+    exports view.game;
 
 
     opens model to javafx.fxml, com.google.gson;
@@ -25,13 +26,14 @@ module AP.FinalProject {
     opens model.human to com.google.gson;
     opens model.enums.make_able to com.google.gson;
     opens controller to javafx.fxml;
-    opens view to javafx.fxml,javafx.controls;
+    opens view to javafx.fxml,javafx.controls, gdx;
     opens view.starter to javafx.controls, javafx.fxml;
     opens view.main to javafx.fxml;
     exports view.profile;
     opens view.profile to javafx.fxml;
     opens view.game.trade to javafx.fxml;
     opens view.game.shop to javafx.fxml;
+    opens view.game to javafx.fxml;
 
 
 }

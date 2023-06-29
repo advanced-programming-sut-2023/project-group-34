@@ -3,14 +3,9 @@ package view;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.user.User;
 
@@ -22,8 +17,9 @@ public class LaunchMenu extends Application {
     public static MediaPlayer mediaPlayer;
 
     private static Stage stage;
+    public static boolean gameStarted;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         User.loadAllUsersFromDataBase();
         User.loadCurrentUser();
         launch(args);
@@ -31,6 +27,7 @@ public class LaunchMenu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        gameStarted = false;
         LaunchMenu.stage = stage;
         URL url = LaunchMenu.class.getResource("/FXML/launchMenu.fxml");
         Pane pane = FXMLLoader.load(url);

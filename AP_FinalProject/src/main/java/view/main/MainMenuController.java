@@ -6,6 +6,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import model.user.User;
 import view.LaunchMenu;
+import view.game.SelectPlayersMenu;
 import view.game.shop.ShopMenu;
 import view.profile.ProfileMenu;
 import view.starter.RegisterAndLoginMenu;
@@ -42,8 +43,8 @@ public class MainMenuController {
         new ProfileMenu().start(LaunchMenu.getStage());
     }
 
-    public void tryingShop(MouseEvent mouseEvent) throws Exception{
-        new ShopMenu().start(LaunchMenu.getStage());
+    public void selectingPlayers(MouseEvent mouseEvent) throws Exception{
+        new SelectPlayersMenu().start(LaunchMenu.getStage());
     }
     //Todo: method tryingShop is just for testing
 }
