@@ -130,6 +130,70 @@ public class ChatRoomMenuController implements Initializable {
     private Text message10;
 
     @FXML
+    private Rectangle like1;
+    @FXML
+    private Rectangle like2;
+    @FXML
+    private Rectangle like3;
+    @FXML
+    private Rectangle like4;
+    @FXML
+    private Rectangle like5;
+    @FXML
+    private Rectangle like6;
+    @FXML
+    private Rectangle like7;
+    @FXML
+    private Rectangle like8;
+    @FXML
+    private Rectangle like9;
+    @FXML
+    private Rectangle like10;
+
+    @FXML
+    private Rectangle dislike1;
+    @FXML
+    private Rectangle dislike2;
+    @FXML
+    private Rectangle dislike3;
+    @FXML
+    private Rectangle dislike4;
+    @FXML
+    private Rectangle dislike5;
+    @FXML
+    private Rectangle dislike6;
+    @FXML
+    private Rectangle dislike7;
+    @FXML
+    private Rectangle dislike8;
+    @FXML
+    private Rectangle dislike9;
+    @FXML
+    private Rectangle dislike10;
+
+    @FXML
+    private Rectangle laughing1;
+    @FXML
+    private Rectangle laughing2;
+    @FXML
+    private Rectangle laughing3;
+    @FXML
+    private Rectangle laughing4;
+    @FXML
+    private Rectangle laughing5;
+    @FXML
+    private Rectangle laughing6;
+    @FXML
+    private Rectangle laughing7;
+    @FXML
+    private Rectangle laughing8;
+    @FXML
+    private Rectangle laughing9;
+    @FXML
+    private Rectangle laughing10;
+
+
+    @FXML
     private TextField textMessage;
 
     @FXML
@@ -140,6 +204,9 @@ public class ChatRoomMenuController implements Initializable {
     public ArrayList<Rectangle> avatars = new ArrayList<>();
     public ArrayList<Text> messages = new ArrayList<>();
     public ArrayList<Line> lines = new ArrayList<>();
+    public ArrayList<Rectangle> likes = new ArrayList<>();
+    public ArrayList<Rectangle> dislikes = new ArrayList<>();
+    public ArrayList<Rectangle> laughing = new ArrayList<>();
 
     public Chat currentChat;
 
@@ -174,10 +241,16 @@ public class ChatRoomMenuController implements Initializable {
         getMessagesRead();
         getAvatarRectRead();
         getSeenRectRead();
+        getLikesRead();
+        getLaughingRead();
+        getDislikesRead();
         hideEveryAvatar();
         hideEveryLine();
         hideEveryMessage();
         hideEverySeen();
+        hideEveryLaughing();
+        hideEveryDisLike();
+        hideEveryLike();
         textMessage.setVisible(false);
         sendButton.setVisible(false);
 
@@ -272,6 +345,83 @@ public class ChatRoomMenuController implements Initializable {
         messages.add(message9);
         messages.add(message10);
     }
+    public void getLikesRead(){
+        likes.add(like1);
+        likes.add(like2);
+        likes.add(like3);
+        likes.add(like4);
+        likes.add(like5);
+        likes.add(like6);
+        likes.add(like7);
+        likes.add(like8);
+        likes.add(like9);
+        likes.add(like10);
+    }
+    public void getDislikesRead(){
+        dislikes.add(dislike1);
+        dislikes.add(dislike2);
+        dislikes.add(dislike3);
+        dislikes.add(dislike4);
+        dislikes.add(dislike5);
+        dislikes.add(dislike6);
+        dislikes.add(dislike7);
+        dislikes.add(dislike8);
+        dislikes.add(dislike9);
+        dislikes.add(dislike10);
+    }
+
+    public void getLaughingRead(){
+        laughing.add(laughing1);
+        laughing.add(laughing2);
+        laughing.add(laughing3);
+        laughing.add(laughing4);
+        laughing.add(laughing5);
+        laughing.add(laughing6);
+        laughing.add(laughing7);
+        laughing.add(laughing8);
+        laughing.add(laughing9);
+        laughing.add(laughing10);
+
+    }
+
+    public void hideEveryLike(){
+        like1.setVisible(false);
+        like2.setVisible(false);
+        like3.setVisible(false);
+        like4.setVisible(false);
+        like5.setVisible(false);
+        like6.setVisible(false);
+        like7.setVisible(false);
+        like8.setVisible(false);
+        like9.setVisible(false);
+        like10.setVisible(false);
+    }
+
+    public void hideEveryDisLike(){
+        dislike1.setVisible(false);
+        dislike2.setVisible(false);
+        dislike3.setVisible(false);
+        dislike4.setVisible(false);
+        dislike5.setVisible(false);
+        dislike6.setVisible(false);
+        dislike7.setVisible(false);
+        dislike8.setVisible(false);
+        dislike9.setVisible(false);
+        dislike10.setVisible(false);
+    }
+
+    public void hideEveryLaughing(){
+        laughing1.setVisible(false);
+        laughing2.setVisible(false);
+        laughing3.setVisible(false);
+        laughing4.setVisible(false);
+        laughing5.setVisible(false);
+        laughing6.setVisible(false);
+        laughing7.setVisible(false);
+        laughing8.setVisible(false);
+        laughing9.setVisible(false);
+        laughing10.setVisible(false);
+    }
 
     public void hideEverySeen(){
         seen1.setVisible(false);
@@ -333,6 +483,9 @@ public class ChatRoomMenuController implements Initializable {
         hideEverySeen();
         hideEveryLine();
         hideEveryAvatar();
+        hideEveryLaughing();
+        hideEveryDisLike();
+        hideEveryLike();
         int counter = 9;
         int size = chat.getMessages().size();
         if (size >= 10){
@@ -349,8 +502,22 @@ public class ChatRoomMenuController implements Initializable {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/sent.png").toString())));
                     seens.get(counter).setVisible(true);
                 }
-                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
-                    chat.getMessages().get(i).setSeen(true);
+//                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
+//                    chat.getMessages().get(i).setSeen(true);
+
+                if (chat.getMessages().get(i).isLiked()){
+                    likes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/like.jpg").toString())));
+                    likes.get(counter).setVisible(true);
+                }
+                if (chat.getMessages().get(i).isDisliked()){
+                    dislikes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/dislike.jpg").toString())));
+                    dislikes.get(counter).setVisible(true);
+                }
+                if (chat.getMessages().get(i).isLaughed()){
+                    laughing.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/laugh.jpg").toString())));
+                    laughing.get(counter).setVisible(true);
+                }
+
                 counter--;
             }
         } else {
@@ -367,8 +534,21 @@ public class ChatRoomMenuController implements Initializable {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/sent.png").toString())));
                     seens.get(counter).setVisible(true);
                 }
-                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
-                    chat.getMessages().get(i).setSeen(true);
+//                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
+//                    chat.getMessages().get(i).setSeen(true);
+
+                if (chat.getMessages().get(i).isLiked()){
+                    likes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/like.jpg").toString())));
+                    likes.get(counter).setVisible(true);
+                }
+                if (chat.getMessages().get(i).isDisliked()){
+                    dislikes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/dislike.jpg").toString())));
+                    dislikes.get(counter).setVisible(true);
+                }
+                if (chat.getMessages().get(i).isLaughed()){
+                    laughing.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/laugh.jpg").toString())));
+                    laughing.get(counter).setVisible(true);
+                }
                 counter--;
             }
         }
@@ -427,8 +607,11 @@ public class ChatRoomMenuController implements Initializable {
                 }
 
         }
-        if (message == null)
+        if (message == null){
+            openReactionPanel(mouseEvent.getSceneY());
             return;
+        }
+
 
         Stage stage = new Stage();
         URL url = ProfileMenu.class.getResource("/FXML/messageOptions.fxml");
@@ -485,6 +668,53 @@ public class ChatRoomMenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void openReactionPanel(double y) throws IOException {
+        Stage stage = new Stage();
+        URL url = ProfileMenu.class.getResource("/FXML/messageOptions.fxml");
+        Pane pane = FXMLLoader.load(url);
+        Scene scene = new Scene(pane, 300, 200);
+        int index = (int) (((y - 150)/53)) + show - 10;
+
+        Rectangle like = new Rectangle();
+        Rectangle dislike = new Rectangle();
+        Rectangle laugh = new Rectangle();
+        like.setWidth(45);
+        like.setHeight(45);
+        dislike.setWidth(45);
+        dislike.setHeight(45);
+        laugh.setWidth(45);
+        laugh.setHeight(45);
+
+        makeRectangle(pane, like, 60, 60, "like", index);
+        makeRectangle(pane, dislike, 120, 60, "dislike", index);
+        makeRectangle(pane, laugh, 180, 60, "laugh", index);
+
+
+        stage.setScene(scene);
+        stage.initOwner(LaunchMenu.getStage());
+        stage.show();
+    }
+
+    public void makeRectangle(Pane pane, Rectangle rectangle, float x, float y, String name, int index){
+        rectangle.setX(x);
+        rectangle.setY(y);
+        rectangle.setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/"+name+".jpg").toString())));
+        rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (name.equals("like"))
+                    currentChat.getMessages().get(index).setLiked(true);
+                else if (name.equals("dislike"))
+                    currentChat.getMessages().get(index).setDisliked(true);
+                else
+                    currentChat.getMessages().get(index).setLaughed(true);
+                displayMessages(currentChat);
+            }
+        });
+        pane.getChildren().add(rectangle);
+    }
+
 
     public void startPrivateChat(MouseEvent mouseEvent) throws IOException {
         Stage stage = new Stage();

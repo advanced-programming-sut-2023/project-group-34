@@ -10,6 +10,9 @@ public class Message {
     public static int counter = 0;
     private final int ID;
     private boolean Seen = false;
+    private boolean liked;
+    private boolean disliked;
+    private boolean laughed;
     private final User sender;
     private String sendTime;
     public Message(String message, User sender) {
@@ -19,6 +22,9 @@ public class Message {
         ID = counter;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         sendTime = dtf.format(LocalTime.now());
+        liked = false;
+        disliked = false;
+        laughed = false;
     }
 
     public String getMessage() {
@@ -51,5 +57,29 @@ public class Message {
 
     public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public boolean isDisliked() {
+        return disliked;
+    }
+
+    public void setDisliked(boolean disliked) {
+        this.disliked = disliked;
+    }
+
+    public boolean isLaughed() {
+        return laughed;
+    }
+
+    public void setLaughed(boolean laughed) {
+        this.laughed = laughed;
     }
 }
