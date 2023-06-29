@@ -6,10 +6,89 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="view.main.ChatRoomMenuController"
-            styleClass=""
+            styleClass="BackGroundRegister"
+            stylesheets="@../CSS/scoreBoardStyle.css"
             prefHeight="Infinity" prefWidth="Infinity">
+
+    <Label text="Welcome To ChatRoom" layoutY="60" layoutX="560" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
+        -fx-font-style: oblique; -fx-font-size: 45px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="tableView1" prefWidth="200" prefHeight="250" layoutX="150" layoutY="100">
+        <columns>
+            <TableColumn prefWidth="100.0" text="name" fx:id= "chatName1" styleClass="label1"/>
+        </columns>
+    </TableView>
+
+    <Button text="Private" layoutX="170" layoutY="350" onMouseClicked="#privateTable"/>
+    <Button text="Group" layoutX="270" layoutY="350" onMouseClicked="#groupTable"/>
+    <Button text="Public Chat" layoutX="200" layoutY="400" onMouseClicked="#showPublicChat"/>
+
+
+    <Rectangle width="500" height="530" layoutX="580" layoutY="150" fill="aliceblue"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="150" fx:id="avatar1"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="200" fx:id="avatar2"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="250" fx:id="avatar3"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="300" fx:id="avatar4"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="350" fx:id="avatar5"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="400" fx:id="avatar6"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="450" fx:id="avatar7"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="500" fx:id="avatar8"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="550" fx:id="avatar9"/>
+    <Rectangle width="50" height="50" layoutX="580" layoutY="600" fx:id="avatar10"/>
+    <Line startX="580" startY="200" endX="1080" endY="200" fx:id="line1"/>
+    <Line startX="580" startY="250" endX="1080" endY="250" fx:id="line2"/>
+    <Line startX="580" startY="300" endX="1080" endY="300" fx:id="line3"/>
+    <Line startX="580" startY="350" endX="1080" endY="350" fx:id="line4"/>
+    <Line startX="580" startY="400" endX="1080" endY="400" fx:id="line5"/>
+    <Line startX="580" startY="450" endX="1080" endY="450" fx:id="line6"/>
+    <Line startX="580" startY="500" endX="1080" endY="500" fx:id="line7"/>
+    <Line startX="580" startY="550" endX="1080" endY="550" fx:id="line8"/>
+    <Line startX="580" startY="600" endX="1080" endY="600" fx:id="line9"/>
+    <Line startX="580" startY="650" endX="1080" endY="650" fx:id="line10"/>
+
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="170" fx:id="seen1"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="220" fx:id="seen2"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="270" fx:id="seen3"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="320" fx:id="seen4"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="370" fx:id="seen5"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="420" fx:id="seen6"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="470" fx:id="seen7"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="520" fx:id="seen8"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="570" fx:id="seen9"/>
+    <Rectangle width="15" height="15" layoutX="1040" layoutY="620" fx:id="seen10"/>
+
+    <Text layoutX="640"  layoutY="180" text="FDF" fx:id="message1" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="230" text="FDF" fx:id="message2" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="280" text="FDF" fx:id="message3" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="330" text="FDF" fx:id="message4" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="380" text="FDF" fx:id="message5" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="430" text="FDF" fx:id="message6" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="480" text="FDF" fx:id="message7" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="530" text="FDF" fx:id="message8" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="580" text="FDF" fx:id="message9" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+    <Text layoutX="640"  layoutY="630" text="FDF" fx:id="message10" styleClass="errorHandling" onMouseClicked="#textOptions"/>
+
+    <Button text="UP" layoutX="1130" layoutY="400" onMouseClicked="#goHigher"/>
+    <Button text="Down" layoutX="1120" layoutY="450" onMouseClicked="#goLower"/>
+
+    <TextField layoutX="620" layoutY="640" fx:id="textMessage" promptText="Enter your message" maxHeight="20" prefWidth="300" prefHeight="10" />
+    <Button layoutX="1010" layoutY="650" text="send" minHeight="25" style="-fx-font-size: 10" fx:id="sendButton" onMouseClicked="#sendNewMessage"/>
+
+
+
+
+
+
+
+
+    <Button text="New Chat" layoutX="370" layoutY="700" onMouseClicked="#startPrivateChat"/>
+    <Button text="New Group" layoutX="480" layoutY="700" onMouseClicked="#startGroup"/>
+    <Button text="Refresh" layoutX="590" layoutY="700"/>
 
 </AnchorPane>

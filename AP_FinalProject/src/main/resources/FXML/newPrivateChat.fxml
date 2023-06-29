@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            styleClass="BackGroundRegister"
+            fx:controller="view.main.newPrivateChatController"
+            prefHeight="200.0" prefWidth="300.0">
+
+    <TextField promptText="username" fx:id="username" layoutY="40" layoutX="50"/>
+    <Text layoutX="80" layoutY="120" fx:id="usernameError" styleClass="errorHandling"/>
+    <Button text="Create" layoutX="120" layoutY="150" onMouseClicked="#createNewChat"/>
+
+</AnchorPane>

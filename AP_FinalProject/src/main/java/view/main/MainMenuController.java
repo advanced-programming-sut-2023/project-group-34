@@ -47,8 +47,8 @@ public class MainMenuController {
         new SelectPlayersMenu().start(LaunchMenu.getStage());
     }
 
-    public void onToChatRoom(MouseEvent mouseEvent) {
-
+    public void onToChatRoom(MouseEvent mouseEvent) throws Exception {
+        new ChatRoomMenu().start(LaunchMenu.getStage());
     }
 
 }
