@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.main.NewGroupChatController"
+            styleClass="BackGroundRegister"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            prefHeight="400.0" prefWidth="600.0">
+
+
+    <TextField promptText="username" fx:id="username" layoutY="10" layoutX="40"/>
+    <TextField promptText="name" fx:id="groupName" layoutX="40" layoutY="70"/>
+    <Text layoutX="80" layoutY="140" fx:id="error" styleClass="errorHandling"/>
+    <Button text="Add" layoutX="80" layoutY="150" onMouseClicked="#addUserToJoinGroup"/>
+    <Button text="Create" layoutX="160" layoutY="150" onMouseClicked="#createGroup"/>
+
+</AnchorPane>

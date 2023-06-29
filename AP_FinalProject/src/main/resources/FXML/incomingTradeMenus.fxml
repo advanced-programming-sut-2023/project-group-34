@@ -18,7 +18,7 @@
            gold; -fx-font-family: Bahnschrift; -fx-font-style: oblique; -fx-font-weight: bold"/>
     <TableView fx:id="tableView" prefWidth="750" prefHeight="300" layoutX="350" layoutY="80">
         <columns>
-            <TableColumn prefWidth="100.0" text="Receiver" fx:id= "sender" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="Sender" fx:id= "sender" styleClass="label1"/>
             <TableColumn prefWidth="100.0" text="Offered" fx:id="offered" styleClass="label1" />
             <TableColumn prefWidth="100.0" text="Offered Amount" fx:id="offeredAmount" styleClass="label1"/>
             <TableColumn prefWidth="100.0" text="Wanted" fx:id="wanted" styleClass="label1" />
@@ -31,7 +31,7 @@
            gold; -fx-font-family: Bahnschrift; -fx-font-style: oblique; -fx-font-weight: bold"/>
     <TableView fx:id="tableViewAccepted" prefWidth="750" prefHeight="300" layoutX="350" layoutY="450">
         <columns>
-            <TableColumn prefWidth="100.0" text="Receiver" fx:id= "senderAccepted" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="Sender" fx:id= "senderAccepted" styleClass="label1"/>
             <TableColumn prefWidth="100.0" text="Offered" fx:id="offeredAccepted" styleClass="label1" />
             <TableColumn prefWidth="100.0" text="Offered Amount" fx:id="offeredAmountAccepted" styleClass="label1"/>
             <TableColumn prefWidth="100.0" text="Wanted" fx:id="wantedAccepted" styleClass="label1" />

@@ -38,26 +38,6 @@ public class LaunchMenu extends Application {
         Socket socket = new Socket("localhost", 8002);
 //        ChatMenu.dataInputStream = new DataInputStream(ChatMenu.socket.getInputStream());
 //        ChatMenu.dataOutputStream = new DataOutputStream(ChatMenu.socket.getOutputStream());
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-        dataOutputStream.writeUTF("get chats");
-//        System.out.println("FF");
-//        System.out.println(dataInputStream.readUTF());
-        Gson gson = new Gson();
-        System.out.println("------------");
-        String json = dataInputStream.readUTF();
-        Group ss = gson.fromJson(json , Group.class);
-        System.out.println(json);
-        System.out.println(ss.getName());
-//        System.out.println(group.getMessages().get(0).getMessage());
-//        System.out.println(group.getID());
-//        ObjectInputStream objectInputStream = new ObjectInputStream(ChatMenu.socket.getInputStream());
-//        Message message = (Message) ((ArrayList<?>)objectInputStream.readObject()).get(0);
-//        System.out.println(objectInputStream.readObject());
-//        Group chat = (Group) objectInputStream.readObject();
-//        System.out.println(chat.getName());
-//        System.out.println(chat.getID());
-//        System.out.println(chat.getMessages().get(0).getMessage());
     }
 
     @Override

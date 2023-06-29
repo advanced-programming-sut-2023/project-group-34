@@ -46,5 +46,9 @@ public class MainMenuController {
     public void selectingPlayers(MouseEvent mouseEvent) throws Exception{
         new SelectPlayersMenu().start(LaunchMenu.getStage());
     }
-    //Todo: method tryingShop is just for testing
+
+    public void onToChatRoom(MouseEvent mouseEvent) throws Exception {
+        new ChatRoomMenu().start(LaunchMenu.getStage());
+    }
+
 }
