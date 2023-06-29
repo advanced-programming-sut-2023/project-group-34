@@ -9,8 +9,16 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import model.user.User;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class LaunchMenu extends Application {
 
@@ -19,10 +27,15 @@ public class LaunchMenu extends Application {
     private static Stage stage;
     public static boolean gameStarted;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         User.loadAllUsersFromDataBase();
         User.loadCurrentUser();
         launch(args);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        System.out.println(dateTimeFormatter.format(LocalTime.now()));
+//        ChatMenu.socket = new Socket("localhost" , 8080);
+//        ChatMenu.dataInputStream = new DataInputStream(ChatMenu.socket.getInputStream());
+//        ChatMenu.dataOutputStream = new DataOutputStream(ChatMenu.socket.getOutputStream());
     }
 
     @Override
