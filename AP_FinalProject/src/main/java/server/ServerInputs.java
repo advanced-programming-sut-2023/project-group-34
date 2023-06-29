@@ -1,13 +1,22 @@
 package server;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public enum ServerInputs {
-    PV_MESSAGE("send message pv -user \\S+"),
-    READ_PV("read pv -user \\S+"),
-    EDIT_TEXT("");
+    CREATE_GROUP("create group"),
+    CREATE_PV("create pv"),
+    GET_CHAT("get chat -id (?<id>\\d+)"),
+    UPDATE_CHAT("update chat"),
+    ADD_USER("add user to group -id (?<id>\\d+) -u (?<username>\\S+)"),
+    GET_CHATS("get chats");
+
     private final String input;
 
     ServerInputs(String input) {
         this.input = input;
     }
-
+    public Matcher getMatcher(String command) {
+        return Pattern.compile(this.input).matcher(command);
+    }
 }

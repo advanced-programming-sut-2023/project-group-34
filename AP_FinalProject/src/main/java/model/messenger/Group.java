@@ -2,12 +2,16 @@ package model.messenger;
 
 import model.user.User;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Group {
-    private final ArrayList<User> users = new ArrayList<>();
+public class Group extends Chat implements Serializable {
+    private final String name;
+    public Group(String name , User user) {
+        this.name = name;
+        this.getUsers().add(user);
+    }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public String getName() {
+        return name;
     }
 }

@@ -25,7 +25,6 @@ public class User {
     private int score;
     private Government government;
     private Slogan sloganTypes;
-
     private ArrayList<GameMap> customMaps;
     private final ArrayList<Trade> myTrades = new ArrayList<>();
     private final Queue<Trade> notificationsList = new LinkedList<>();

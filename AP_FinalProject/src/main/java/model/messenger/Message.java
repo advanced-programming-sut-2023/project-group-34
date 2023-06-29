@@ -2,10 +2,11 @@ package model.messenger;
 
 import model.user.User;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class Message {
+public class Message implements Serializable {
     private String message;
     public static int counter = 0;
     private final int ID;
