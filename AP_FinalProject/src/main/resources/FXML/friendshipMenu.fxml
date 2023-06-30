@@ -15,18 +15,35 @@
             fx:controller="view.main.FriendshipMenuController"
             prefHeight="Infinity" prefWidth="Infinity">
 
-    <Label text="FriendShip Menu layoutY" layoutY="60" layoutX="560" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
+    <Label text="FriendShip Menu" layoutY="60" layoutX="560" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
         -fx-font-style: oblique; -fx-font-size: 45px; -fx-font-weight: bold;"/>
     <Text text="Enter the username you are looking for: " x="540" y="200" styleClass="instruction-text"/>
     <TextField promptText="username" layoutX="640" layoutY="240" fx:id="username"/>
     <Text  x="680" y="300" fx:id="usernameError" styleClass="errorHandling"/>
-    <Button text="Search" layoutX="870" layoutY="250"/>
+    <Button text="Search" layoutX="870" layoutY="250" onMouseClicked="#showUserInfo"/>
     <Rectangle width="75" height="75" layoutX="950" layoutY="370" fx:id="avatar"/>
     <Label text="username: " styleClass="instruction-text" fx:id="displayUsername" layoutX="650" layoutY="330"/>
-    <Label text="Nikname: " styleClass="instruction-text" fx:id="displayNick" layoutX="650" layoutY="370"/>
+    <Label text="Nickname: " styleClass="instruction-text" fx:id="displayNick" layoutX="650" layoutY="370"/>
     <Label text="Slogan: " styleClass="instruction-text" fx:id="displaySlogan" layoutX="650" layoutY="410"/>
     <Label text="Email: " styleClass="instruction-text" fx:id="displayEmail" layoutX="650" layoutY="450"/>
     <Label text="Score: " styleClass="instruction-text" fx:id="displayScore" layoutX="650" layoutY="490"/>
+    <Button text="Send Request" layoutX="700" layoutY="520" fx:id="acceptButton" onMouseClicked="#sendFriendRequest"/>
+
+    <TableView fx:id="tableViewSent" prefWidth="200" prefHeight="250" layoutX="150" layoutY="100">
+        <columns>
+            <TableColumn prefWidth="100.0" text="receiver" fx:id="receiver" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="status" fx:id="status1" styleClass="label1"/>
+        </columns>
+    </TableView>
+
+    <TableView fx:id="tableViewReceived" prefWidth="200" prefHeight="250" layoutX="150" layoutY="400">
+        <columns>
+            <TableColumn prefWidth="100.0" text="sender" fx:id="sender" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="status" fx:id="status2" styleClass="label1"/>
+        </columns>
+    </TableView>
+
+    <Button text="Back" layoutX="700" layoutY="580" onMouseClicked="#backToMain"/>
 
 
 </AnchorPane>
