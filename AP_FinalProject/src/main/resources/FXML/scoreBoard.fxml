@@ -6,12 +6,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Rectangle?>
 <Pane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.profile.ScoreBoardMenuController"
-            styleClass="BackGroundRegister"
-            stylesheets="@../CSS/scoreBoardStyle.css"
-            prefHeight="-Infinity" prefWidth="-Infinity">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="view.profile.ScoreBoardMenuController"
+      styleClass="BackGroundRegister"
+      stylesheets="@../CSS/scoreBoardStyle.css"
+      prefHeight="-Infinity" prefWidth="-Infinity">
 
 
     <Label text="Score Board Menu" layoutX="680" layoutY="75" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
@@ -24,7 +25,21 @@
             <TableColumn prefWidth="100.0" text="ranking" fx:id= "ranking" styleClass="label1"/>
             <TableColumn prefWidth="100.0" text="username" fx:id="username" styleClass="label1" />
             <TableColumn prefWidth="100.0" text="score" fx:id="score" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="status" fx:id="status" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="lastSeen" fx:id="lastSeen" styleClass="label1"/>
         </columns>
     </TableView>
+
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="230" fx:id="profile1"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="265" fx:id="profile2"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="300" fx:id="profile3"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="335" fx:id="profile4"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="370" fx:id="profile5"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="405" fx:id="profile6"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="440" fx:id="profile7"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="575" fx:id="profile8"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="510" fx:id="profile9"/>
+    <Rectangle width="30" height="30" layoutX="1160" layoutY="545" fx:id="profile10"/>
+
 
 </Pane>

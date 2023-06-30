@@ -717,4 +717,8 @@ public class ChatRoomMenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void backToMain(MouseEvent mouseEvent) throws Exception{
+        new MainMenu().start(LaunchMenu.getStage());
+    }
 }

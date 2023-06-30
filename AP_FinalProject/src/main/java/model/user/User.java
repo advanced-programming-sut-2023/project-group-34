@@ -33,6 +33,10 @@ public class User {
 
     private String currentPassword;
 
+    private boolean status;
+
+    private String lastSeen;
+
     private int ranking;
 
 
@@ -283,4 +287,24 @@ public class User {
         return null;
     }
 
+    public String getStatus() {
+        if (status)
+            return "online";
+        else
+            return "offline";
+        //TODO check with the server if the user is online
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getLastSeen() {
+        return lastSeen;
+        //TODO check with the server to get the last seen
+    }
+
+    public void setLastSeen(String lastSeen) {
+        this.lastSeen = lastSeen;
+    }
 }

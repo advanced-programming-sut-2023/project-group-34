@@ -29,6 +29,10 @@ public class ScoreBoardMenuController implements Initializable {
     private TableColumn<User, String> ranking;
     @FXML
     private TableColumn<User, String> score;
+    @FXML
+    private TableColumn<User, String> status;
+    @FXML
+    private TableColumn<User, String> lastSeen;
     private int tableIndex;
 
     @Override
@@ -37,6 +41,8 @@ public class ScoreBoardMenuController implements Initializable {
         ranking.setCellValueFactory(new PropertyValueFactory<>("ranking"));
         username.setCellValueFactory(new PropertyValueFactory<>("name"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        lastSeen.setCellValueFactory(new PropertyValueFactory<>("lastSeen"));
 
         tableView.getItems().setAll(parseUserList());
         customiseFactory(username);
@@ -55,13 +61,15 @@ public class ScoreBoardMenuController implements Initializable {
                         (change.getList().get(0).getAvatarLink());
                 changePassDialog.initOwner(LaunchMenu.getStage());
                 Optional<ButtonType> result = changePassDialog.showAndWait();
-                if (result.get() == ButtonType.CLOSE)
+                if (result.get() == ButtonType.CANCEL)
                     changePassDialog.close();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Change Avatar");
-                alert.setContentText("Avatar changed successfully!");
-                alert.initOwner(LaunchMenu.getStage());
-                alert.showAndWait();
+                else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Change Avatar");
+                    alert.setContentText("Avatar changed successfully!");
+                    alert.initOwner(LaunchMenu.getStage());
+                    alert.showAndWait();
+                }
             }
         });
     }
