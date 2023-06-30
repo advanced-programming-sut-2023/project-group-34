@@ -21,12 +21,12 @@
     <TextField promptText="username" layoutX="640" layoutY="240" fx:id="username"/>
     <Text  x="680" y="300" fx:id="usernameError" styleClass="errorHandling"/>
     <Button text="Search" layoutX="870" layoutY="250"/>
-    <Rectangle width="75" height="75" layoutX="950" layoutY="330" fx:id="avatar"/>
-    <Label text="username: " styleClass="instruction-text" fx:id="displayUsername" layoutX="660" layoutY="330"/>
-    <Label text="nikname: " styleClass="instruction-text" fx:id="displayNick" layoutX="660" layoutY="360"/>
-    <Label text="username: " styleClass="instruction-text" fx:id="displaySlogan" layoutX="660" layoutY="390"/>
-    <Label text="username: " styleClass="instruction-text" fx:id="displayEmail" layoutX="660" layoutY="420"/>
-    <Label text="username: " styleClass="instruction-text" fx:id="displayScore" layoutX="660" layoutY="450"/>
+    <Rectangle width="75" height="75" layoutX="950" layoutY="370" fx:id="avatar"/>
+    <Label text="username: " styleClass="instruction-text" fx:id="displayUsername" layoutX="650" layoutY="330"/>
+    <Label text="Nikname: " styleClass="instruction-text" fx:id="displayNick" layoutX="650" layoutY="370"/>
+    <Label text="Slogan: " styleClass="instruction-text" fx:id="displaySlogan" layoutX="650" layoutY="410"/>
+    <Label text="Email: " styleClass="instruction-text" fx:id="displayEmail" layoutX="650" layoutY="450"/>
+    <Label text="Score: " styleClass="instruction-text" fx:id="displayScore" layoutX="650" layoutY="490"/>
 
 
 </AnchorPane>
