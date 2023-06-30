@@ -608,8 +608,11 @@ public class ChatRoomMenuController implements Initializable {
 
     public void showPublicChat(MouseEvent mouseEvent) {
         try {
-            LaunchMenu.dataOutputStream.writeUTF("get public chat");
+            LaunchMenu.dataOutputStream.writeUTF("get chat -id 1");
             currentChat = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , Group.class);
+            if(currentChat == null) System.out.println("FFFFFFFFFF");
+            System.out.println(currentChat.getMessages().size());
+            displayMessages(currentChat);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

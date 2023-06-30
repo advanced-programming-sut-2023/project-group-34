@@ -117,6 +117,7 @@ public class ServerController {
     public static void getChat(Connection connection, Matcher matcher) throws IOException {
         int id = Integer.parseInt(matcher.group("id"));
         Chat chat = null;
+        System.out.println(id + "   " + Server.dataBase.getChats());
         for(Chat tempChat : Server.dataBase.getChats()) {
             if(tempChat.getID() == id) {
                 chat = tempChat;

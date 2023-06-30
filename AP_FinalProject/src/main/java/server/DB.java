@@ -13,6 +13,9 @@ public class DB {
     private final HashMap<Socket , User> socketUserHashMap = new HashMap<>();
     private final HashMap<User , String> usersLastSeen = new HashMap<>();
     private final Group publicChat = new Group("public chat");
+    {
+        chats.add(publicChat);
+    }
     public void addChat(Chat chat) {
         chats.add(chat);
     }
