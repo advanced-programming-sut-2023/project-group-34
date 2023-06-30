@@ -16,7 +16,7 @@ public class ProfileMenu extends Application {
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
-//        stage.setFullScreen(true);
+        stage.setFullScreen(true);
         stage.show();
     }
 }
