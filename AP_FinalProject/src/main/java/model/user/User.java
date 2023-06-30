@@ -26,6 +26,7 @@ public class User {
     private Government government;
     private Slogan sloganTypes;
     private ArrayList<GameMap> customMaps;
+    private ArrayList<String> receivedMapsNames = new ArrayList<>();
     private final ArrayList<Trade> myTrades = new ArrayList<>();
     private final Queue<Trade> notificationsList = new LinkedList<>();
 
@@ -306,5 +307,23 @@ public class User {
 
     public void setLastSeen(String lastSeen) {
         this.lastSeen = lastSeen;
+    }
+    
+    public static User jsonToUser (String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, User.class);
+    }
+    
+    public String toJson () {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+    
+    private void setCustomMaps (ArrayList<GameMap> customMaps) {
+        this.customMaps = customMaps;
+    }
+    
+    public ArrayList<String> getReceivedMapsNames () {
+        return receivedMapsNames;
     }
 }
