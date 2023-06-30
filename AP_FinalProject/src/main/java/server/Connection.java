@@ -61,11 +61,14 @@ public class Connection extends Thread {
         else if((ServerInputs.UPDATE_CHAT.getMatcher(input)).find()) {
             ServerController.updateChat(this);
         }
-        else if(ServerInputs.CREATE_GROUP.getMatcher(input).find()) {
-           ServerController.createGroup(this);
+        else if((matcher = ServerInputs.CREATE_GROUP.getMatcher(input)).find()) {
+           ServerController.createGroup(this , matcher);
         }
         else if(ServerInputs.CREATE_PV.getMatcher(input).find()) {
             ServerController.createPV(this);
+        }
+        else if((matcher = ServerInputs.GET_USER.getMatcher(input)).find()) {
+            dataOutputStream.writeUTF(new Gson().toJson(ServerController.getUser(matcher.group("username"))));
         }
         else if((matcher = ServerInputs.ADD_USER.getMatcher(input)).find()) {
             ServerController.addUserToGroup(matcher);

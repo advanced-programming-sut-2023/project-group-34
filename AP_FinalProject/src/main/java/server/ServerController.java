@@ -35,19 +35,29 @@ public class ServerController {
     public static void createPV(Connection connection) throws IOException {
         Gson gson = new Gson();
         String json = connection.getDataInputStream().readUTF();
-        PrivateChat privateChat = gson.fromJson(json , PrivateChat.class);
-        PrivateChat newPrivateChat = new PrivateChat();
-        for(User user : privateChat.getUsers()) newPrivateChat.getUsers().add(user);
+        ArrayList<String> users = gson.fromJson(json , ArrayList.class);
+        PrivateChat privateChat = new PrivateChat();
+        for (String username : users) {
+            User user = getUser(username);
+            if(user != null) privateChat.getUsers().add(user);
+        }
     }
-    public static void createGroup(Connection connection) throws IOException {
+
+    public static User getUser(String username) {
+        for(User user : Server.server.dataBase.getIsUserOnline().keySet()) {
+            if(user.getName().equals(username)) return user;
+        }
+        return null;
+    }
+    public static void createGroup(Connection connection , Matcher matcher) throws IOException {
+        String groupName = matcher.group("name");
         Gson gson = new Gson();
         String json = connection.getDataInputStream().readUTF();
-        Group group = gson.fromJson(json , Group.class);
-        Group newGroup = new Group(group.getName() , group.getUsers().get(0));
-        ArrayList<User> users = group.getUsers();
-        for (int i = 1; i < users.size(); i++) {
-            User user = users.get(i);
-            newGroup.getUsers().add(user);
+        ArrayList<String> users = gson.fromJson(json , ArrayList.class);
+        Group newGroup = new Group(groupName);
+        for (String username : users) {
+            User user = getUser(username);
+            if(user != null) newGroup.getUsers().add(user);
         }
     }
     public static void updateChat(Connection connection) {

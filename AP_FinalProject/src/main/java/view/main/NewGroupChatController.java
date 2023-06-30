@@ -1,5 +1,6 @@
 package view.main;
 
+import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -11,13 +12,14 @@ import model.messenger.PrivateChat;
 import model.user.User;
 import view.LaunchMenu;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class NewGroupChatController implements Initializable {
 
-    public static ArrayList<User> usersToJoinGroup = new ArrayList<>();
+    public static ArrayList<String> usersToJoinGroup = new ArrayList<>();
 
     @FXML
     private Text error;
@@ -28,7 +30,7 @@ public class NewGroupChatController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usersToJoinGroup.clear();
-        usersToJoinGroup.add(User.currentUser);
+        usersToJoinGroup.add(User.currentUser.getName());
 
         username.textProperty().addListener((observable, oldText, newText)->{
             if (User.getUserByUsername(newText) == null){
@@ -43,7 +45,7 @@ public class NewGroupChatController implements Initializable {
         if (!error.getText().isEmpty() && !error.getText().equals("User added successfully")){
 
         } else {
-            usersToJoinGroup.add(User.getUserByUsername(username.getText()));
+            usersToJoinGroup.add(username.getText());
             error.setText("User added successfully");
         }
     }
@@ -52,7 +54,12 @@ public class NewGroupChatController implements Initializable {
         if (!error.getText().isEmpty()){
 
         } else {
-            //TODO this part has to be done by Arshia createGroup
+            try {
+                LaunchMenu.dataOutputStream.writeUTF("create group -name " + groupName.getText());
+                LaunchMenu.dataOutputStream.writeUTF(new Gson().toJson(usersToJoinGroup));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

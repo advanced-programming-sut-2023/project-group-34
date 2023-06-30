@@ -1,5 +1,6 @@
 package view.main;
 
+import com.google.gson.Gson;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -214,9 +215,13 @@ public class ChatRoomMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chats.clear();
-
         //TODO fill in the chats with what comes from the server;
-
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get chats");
+            chats = (new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , ArrayList.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         getLinesRead();
         getMessagesRead();
         getAvatarRectRead();

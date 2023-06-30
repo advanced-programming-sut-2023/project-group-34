@@ -6,9 +6,8 @@ import java.io.Serializable;
 
 public class Group extends Chat implements Serializable {
     private final String name;
-    public Group(String name , User user) {
+    public Group(String name) {
         this.name = name;
-        this.getUsers().add(user);
     }
 
     public String getName() {

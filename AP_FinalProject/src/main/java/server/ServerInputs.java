@@ -4,11 +4,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum ServerInputs {
-    CREATE_GROUP("create group"),
+    CREATE_GROUP("create group -name (?<name>\\S+)"),
     CREATE_PV("create pv"),
     GET_CHAT("get chat -id (?<id>\\d+)"),
     UPDATE_CHAT("update chat"),
     ADD_USER("add user to group -id (?<id>\\d+) -u (?<username>\\S+)"),
+    GET_USER("get user -username (?<username>\\S+)"),
     GET_CHATS("get chats");
 
     private final String input;
