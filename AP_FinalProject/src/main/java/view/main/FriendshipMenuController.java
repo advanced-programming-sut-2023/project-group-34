@@ -63,8 +63,6 @@ public class FriendshipMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //TODO fills the requests with the data from server
         requests.clear();
-        requests.add(new FriendshipRequest(User.currentUser, User.getUserByUsername("abud")));
-        requests.add(new FriendshipRequest(User.getUserByUsername("abbas"), User.currentUser));
 
         avatar.setVisible(false);
         displayUsername.setVisible(false);
@@ -138,7 +136,7 @@ public class FriendshipMenuController implements Initializable {
         displayScore.setVisible(false);
         displayEmail.setVisible(false);
         //TODO get the text from username and bring the user
-        User user = User.getUserByUsername(username.getText());
+        User user = null;
         //TODO if the user does not exist set an error in usernameError and keep the fields invisible
 
 

@@ -593,16 +593,18 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void privateTable(MouseEvent mouseEvent) {
+        //TODO this part might have to be checked
+        tableView1.getItems().clear();
         chatName1.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableView1.getItems().setAll(parseUserListPrivate());
         tableView1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void groupTable(MouseEvent mouseEvent) {
+        //TODO this part might have to be checked
+        tableView1.getItems().clear();
         chatName1.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableView1.getItems().setAll(parseUserListGroup());
-
-
         tableView1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
