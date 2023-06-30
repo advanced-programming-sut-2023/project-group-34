@@ -9,7 +9,7 @@ public class PrivateChat extends Chat implements Serializable {
 
     public String getName(){
         for (User user : users){
-            if (!user.equals(User.currentUser))
+            if (!user.getName().equals(User.currentUser.getName()))
                 return user.getName();
         }
         return null;

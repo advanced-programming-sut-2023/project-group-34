@@ -26,6 +26,7 @@ import model.messenger.Message;
 import model.messenger.PrivateChat;
 import model.user.User;
 import org.checkerframework.checker.units.qual.C;
+import server.ServerController;
 import view.LaunchMenu;
 import view.profile.ProfileMenu;
 import view.profile.changeAvatarInScoreBoardDialog;
@@ -497,15 +498,14 @@ public class ChatRoomMenuController implements Initializable {
                 avatars.get(counter).setFill(new ImagePattern(new Image(chat.getMessages().get(i).getSender().getAvatarLink())));
                 avatars.get(counter).setVisible(true);
                 lines.get(counter).setVisible(true);
-                if (chat.getMessages().get(i).isSeen() && chat.getMessages().get(i).getSender().equals(User.currentUser)) {
+                if (chat.getMessages().get(i).isSeen() && chat.getMessages().get(i).getSender().getName().equals(User.currentUser.getName())) {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/seen.png").toString())));
                     seens.get(counter).setVisible(true);
-                } else if (chat.getMessages().get(i).getSender().equals(User.currentUser)) {
+                } else if (chat.getMessages().get(i).getSender().getName().equals(User.currentUser.getName())) {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/sent.png").toString())));
                     seens.get(counter).setVisible(true);
                 }
-//                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
-//                    chat.getMessages().get(i).setSeen(true);
+
 
                 if (chat.getMessages().get(i).isLiked()) {
                     likes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/like.jpg").toString())));
@@ -529,10 +529,10 @@ public class ChatRoomMenuController implements Initializable {
                 avatars.get(counter).setFill(new ImagePattern(new Image(chat.getMessages().get(i).getSender().getAvatarLink())));
                 avatars.get(counter).setVisible(true);
                 lines.get(counter).setVisible(true);
-                if (chat.getMessages().get(i).isSeen() && chat.getMessages().get(i).getSender().equals(User.currentUser)) {
+                if (chat.getMessages().get(i).isSeen() && chat.getMessages().get(i).getSender().getName().equals(User.currentUser.getName())) {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/seen.png").toString())));
                     seens.get(counter).setVisible(true);
-                } else if (chat.getMessages().get(i).getSender().equals(User.currentUser)) {
+                } else if (chat.getMessages().get(i).getSender().getName().equals(User.currentUser.getName())) {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/sent.png").toString())));
                     seens.get(counter).setVisible(true);
                 }
@@ -553,6 +553,15 @@ public class ChatRoomMenuController implements Initializable {
                 }
                 counter--;
             }
+        }
+
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("update chats");
+            Gson gson = new Gson();
+            String json = gson.toJson(currentChat);
+            LaunchMenu.dataOutputStream.writeUTF(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -742,5 +751,26 @@ public class ChatRoomMenuController implements Initializable {
 
     public void backToMain(MouseEvent mouseEvent) throws Exception {
         new MainMenu().start(LaunchMenu.getStage());
+    }
+
+    public void refresh(MouseEvent mouseEvent) {
+        updateChats();
+        if (currentChat == null)
+            return;
+        int id = currentChat.getID();
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get chat -id " + id);
+            String json = LaunchMenu.dataInputStream.readUTF();
+            Chat chat = null;
+            if (ServerController.isItPrivateChat(json)){
+                chat = new Gson().fromJson(json, PrivateChat.class);
+            } else {
+                chat = new Gson().fromJson(json, Group.class);
+            }
+            assert chat != null;
+            currentChat = chat;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

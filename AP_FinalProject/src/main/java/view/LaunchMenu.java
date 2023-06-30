@@ -56,9 +56,9 @@ public class LaunchMenu extends Application {
         stage.setFullScreen(true);
         Media media = new Media(Objects.requireNonNull(LaunchMenu.class.getResource
                 ("/media/IntroSong.mp3")).toString());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(-1);
+//        mediaPlayer = new MediaPlayer(media);
+//        mediaPlayer.setAutoPlay(true);
+//        mediaPlayer.setCycleCount(-1);
         stage.show();
     }
 

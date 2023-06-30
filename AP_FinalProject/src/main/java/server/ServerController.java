@@ -109,8 +109,8 @@ public class ServerController {
         ArrayList<Group> groups = new ArrayList<>();
         ArrayList<PrivateChat> privateChats = new ArrayList<>();
         for (Chat chat : Server.dataBase.getChats()) {
-            if (chat instanceof PrivateChat pv && pv.getUsers().contains(user)) privateChats.add(pv);
-            if (chat instanceof Group group && group.getUsers().contains(user)) groups.add(group);
+            if (chat instanceof PrivateChat pv && contains(pv.getUsers(), user)) privateChats.add(pv);
+            if (chat instanceof Group group && contains(group.getUsers(), user)) groups.add(group);
         }
         try {
             Gson gson = new Gson();
@@ -121,5 +121,13 @@ public class ServerController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean contains(ArrayList<User> users, User user){
+        for (User user1 : users){
+            if (user1.getName().equals(user.getName()))
+                return true;
+        }
+        return false;
     }
 }
