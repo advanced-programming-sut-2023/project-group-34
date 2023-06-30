@@ -54,10 +54,10 @@ public class ServerController {
         User.currentUser = user;
         for(User user1 : Server.dataBase.getIsUserOnline().keySet())
         {
-            if(user.getName().equals(User.currentUser.getName())) {
+            if(user1.getName().equals(User.currentUser.getName())) {
                 System.out.println("user " + user.getName() + " back online : " + connection.getSocket().getInetAddress());
                 for(Map.Entry<Socket , User> entry : Server.dataBase.getSocketUserHashMap().entrySet()) {
-                    if(entry.getValue().getName().equals(user.getName())) {
+                    if(entry.getValue().getName().equals(user1.getName())) {
                         Server.dataBase.getSocketUserHashMap().remove(entry.getKey() , entry.getValue());
                     }
                 }

@@ -50,7 +50,7 @@ public class Connection extends Thread {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String lastSeen = dateTimeFormatter.format(LocalTime.now());
         for(Map.Entry<User , String> entry : Server.dataBase.getIsUserOnline().entrySet()) {
-            if(entry.getKey().getName().equals(user.getName())) {
+            if(user != null && entry.getKey().getName().equals(user.getName())) {
                 Server.dataBase.getIsUserOnline().put(entry.getKey() , lastSeen);
             }
         }

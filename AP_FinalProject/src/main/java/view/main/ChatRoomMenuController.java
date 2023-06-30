@@ -270,6 +270,7 @@ public class ChatRoomMenuController implements Initializable {
             public void onChanged(Change<? extends Chat> change) {
                 show = change.getList().get(0).getMessages().size();
                 currentChat = change.getList().get(0);
+                getCurrentChat();
                 displayMessages(change.getList().get(0));
             }
         });
@@ -554,8 +555,12 @@ public class ChatRoomMenuController implements Initializable {
             }
         }
 
+
+    }
+
+    public void sendCurrentChat() {
         try {
-            LaunchMenu.dataOutputStream.writeUTF("update chats");
+            LaunchMenu.dataOutputStream.writeUTF("update chat");
             Gson gson = new Gson();
             String json = gson.toJson(currentChat);
             LaunchMenu.dataOutputStream.writeUTF(json);
@@ -563,10 +568,10 @@ public class ChatRoomMenuController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
     public void sendNewMessage(MouseEvent mouseEvent) {
         if (!textMessage.getText().isEmpty()) {
             currentChat.getMessages().add(new Message(textMessage.getText(), User.currentUser));
+            sendCurrentChat();
             textMessage.setPromptText("Enter your Message");
             show++;
             displayMessages(currentChat);
@@ -656,6 +661,7 @@ public class ChatRoomMenuController implements Initializable {
                 if (alert.getButtonTypes().get(0) == ButtonType.OK) {
                     stage.close();
                     currentChat.getMessages().remove(finalMessage);
+                    sendCurrentChat();
                     show--;
                     displayMessages(currentChat);
                 }
@@ -676,6 +682,7 @@ public class ChatRoomMenuController implements Initializable {
                     alert.setContentText("Message Edited Successfully");
                     alert.showAndWait();
                     finalMessage.setMessage(textField.getText());
+                    sendCurrentChat();
                     displayMessages(currentChat);
                 }
             }
@@ -760,6 +767,9 @@ public class ChatRoomMenuController implements Initializable {
 
     public void refresh(MouseEvent mouseEvent) {
         updateChats();
+        getCurrentChat();
+    }
+    public void getCurrentChat() {
         if (currentChat == null)
             return;
         int id = currentChat.getID();
