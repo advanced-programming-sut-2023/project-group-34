@@ -768,6 +768,7 @@ public class ChatRoomMenuController implements Initializable {
     public void refresh(MouseEvent mouseEvent) {
         updateChats();
         getCurrentChat();
+        displayMessages(currentChat);
     }
     public void getCurrentChat() {
         if (currentChat == null)
