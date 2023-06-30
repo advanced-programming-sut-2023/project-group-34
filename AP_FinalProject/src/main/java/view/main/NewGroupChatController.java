@@ -52,7 +52,7 @@ public class NewGroupChatController implements Initializable {
         if (!error.getText().isEmpty()){
 
         } else {
-            //TODO this part has to be done by Arshia
+            //TODO this part has to be done by Arshia createGroup
         }
     }
 }

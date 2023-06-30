@@ -48,7 +48,7 @@ public class newPrivateChatController implements Initializable {
         if (!usernameError.getText().isEmpty())
             return;
         else {
-            //TODO this part has to be done by Arshia
+            //TODO this part has to be done by Arshia createprivateChat
         }
     }
 }

@@ -214,26 +214,6 @@ public class ChatRoomMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chats.clear();
-        ArrayList<User> userPrivate = new ArrayList<>();
-        userPrivate.add(User.currentUser);
-        userPrivate.add(User.getUserByUsername("hame"));
-        PrivateChat privateChat = new PrivateChat(userPrivate);
-        Group group = new Group("Dadash");
-        chats.add(privateChat);
-        chats.add(group);
-        privateChat.getMessages().add(new Message("Hello", User.currentUser));
-        privateChat.getMessages().add(new Message("How Are you", User.currentUser));
-        privateChat.getMessages().add(new Message("doing well?", User.currentUser));
-        privateChat.getMessages().add(new Message("Hi", User.getUserByUsername("hame")));
-        privateChat.getMessages().add(new Message("doing fine", User.getUserByUsername("hame")));
-        privateChat.getMessages().add(new Message("what about you?", User.getUserByUsername("hame")));
-        privateChat.getMessages().add(new Message("Nothing much", User.currentUser));
-        privateChat.getMessages().add(new Message("Are you free?", User.currentUser));
-        privateChat.getMessages().add(new Message("We are planning to go somewhere", User.currentUser));
-        privateChat.getMessages().add(new Message("saddly no", User.getUserByUsername("hame")));
-        privateChat.getMessages().add(new Message("I have a project to finish", User.getUserByUsername("hame")));
-        privateChat.getMessages().add(new Message("I have a project to finish", User.getUserByUsername("hame")));
-        group.getMessages().add(new Message("Hello", User.currentUser));
 
         //TODO fill in the chats with what comes from the server;
 
@@ -321,8 +301,8 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void getLinesRead(){
-        lines.add(line1);
         lines.add(line2);
+        lines.add(line1);
         lines.add(line3);
         lines.add(line4);
         lines.add(line5);
@@ -334,9 +314,9 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void getMessagesRead(){
-        messages.add(message1);
         messages.add(message2);
         messages.add(message3);
+        messages.add(message1);
         messages.add(message4);
         messages.add(message5);
         messages.add(message6);

@@ -30,14 +30,13 @@ public class LaunchMenu extends Application {
 
     private static Stage stage;
     public static boolean gameStarted;
+    public static Socket socket;
 
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
         User.loadAllUsersFromDataBase();
         User.loadCurrentUser();
-//        launch(args);
-        Socket socket = new Socket("localhost", 8002);
-//        ChatMenu.dataInputStream = new DataInputStream(ChatMenu.socket.getInputStream());
-//        ChatMenu.dataOutputStream = new DataOutputStream(ChatMenu.socket.getOutputStream());
+        launch(args);
+        socket = new Socket("localhost", 8002);
     }
 
     @Override

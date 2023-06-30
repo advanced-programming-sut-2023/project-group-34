@@ -15,15 +15,15 @@ module AP.FinalProject {
     exports view.game.shop;
     exports view.game.trade;
     exports view.game;
-    exports view.game;
     exports model.messenger;
+    exports model.user;
 
 
     opens model to javafx.fxml, com.google.gson;
     opens model.user to com.google.gson, javafx.fxml, javafx.base;
     opens model.enums to com.google.gson;
     opens model.government to com.google.gson;
-    opens model.messenger to com.google.gson;
+    opens model.messenger to com.google.gson , javafx.fxml;
     opens model.building to com.google.gson;
     opens model.map to com.google.gson;
     opens model.human to com.google.gson;
@@ -37,6 +37,4 @@ module AP.FinalProject {
     opens view.game.trade to javafx.fxml;
     opens view.game.shop to javafx.fxml;
     opens view.game to javafx.fxml;
-    opens model.messenger to javafx.fxml;
-
 }
