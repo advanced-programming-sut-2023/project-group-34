@@ -51,8 +51,8 @@ public class NewGroupChatController implements Initializable {
     }
 
     public void createGroup(MouseEvent mouseEvent) {
-        if (!error.getText().isEmpty()){
-
+        if (error.getText().isEmpty() || error.getText().equals("Users added successfully")){
+            System.out.println("ERROR");
         } else {
             try {
                 LaunchMenu.dataOutputStream.writeUTF("create group -name " + groupName.getText());

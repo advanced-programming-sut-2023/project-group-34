@@ -6,13 +6,11 @@ import java.net.Socket;
 
 public class Server {
 
-    public static Server server;
-    public DB dataBase;
+    public static DB dataBase;
     public static void main(String[] args) throws IOException {
-        new Server(8002);
+        new Server(8003);
     }
     public Server(int port) {
-        server = this;
         dataBase = new DB();
         System.out.println("Server started...");
         ServerSocket serverSocket = null;

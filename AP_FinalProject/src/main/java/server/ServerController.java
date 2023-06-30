@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.messenger.Chat;
 import model.messenger.Group;
 import model.messenger.Message;
@@ -9,9 +10,11 @@ import model.user.User;
 import org.checkerframework.checker.units.qual.C;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.math.MathContext;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class ServerController {
@@ -20,12 +23,12 @@ public class ServerController {
         int id = Integer.parseInt(matcher.group("id"));
         String username = matcher.group("username");
         Chat chat = null;
-        for(Chat tempChat : Server.server.dataBase.getChats()) {
+        for(Chat tempChat : Server.dataBase.getChats()) {
             if(tempChat.getID() == id) chat = tempChat;
         }
         assert chat != null;
         User user = null;
-        for(User tempUser : Server.server.dataBase.getIsUserOnline().keySet()) {
+        for(User tempUser : Server.dataBase.getIsUserOnline().keySet()) {
             if(tempUser.getName().equals(username)) user = tempUser;
         }
         assert user != null;
@@ -35,7 +38,8 @@ public class ServerController {
     public static void createPV(Connection connection) throws IOException {
         Gson gson = new Gson();
         String json = connection.getDataInputStream().readUTF();
-        ArrayList<String> users = gson.fromJson(json , ArrayList.class);
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList<String> users = gson.fromJson(json , type);
         PrivateChat privateChat = new PrivateChat();
         for (String username : users) {
             User user = getUser(username);
@@ -44,7 +48,7 @@ public class ServerController {
     }
 
     public static User getUser(String username) {
-        for(User user : Server.server.dataBase.getIsUserOnline().keySet()) {
+        for(User user : Server.dataBase.getIsUserOnline().keySet()) {
             if(user.getName().equals(username)) return user;
         }
         return null;
@@ -53,7 +57,8 @@ public class ServerController {
         String groupName = matcher.group("name");
         Gson gson = new Gson();
         String json = connection.getDataInputStream().readUTF();
-        ArrayList<String> users = gson.fromJson(json , ArrayList.class);
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList<String> users = gson.fromJson(json , type);
         Group newGroup = new Group(groupName);
         for (String username : users) {
             User user = getUser(username);
@@ -71,10 +76,10 @@ public class ServerController {
             throw new RuntimeException(e);
         }
         int ChatID = chat.getID();
-        for (Chat tempChat : Server.server.dataBase.getChats()) {
+        for (Chat tempChat : Server.dataBase.getChats()) {
             if (tempChat.getID() == ChatID) {
-                Server.server.dataBase.getChats().remove(tempChat);
-                Server.server.dataBase.getChats().add(chat);
+                Server.dataBase.getChats().remove(tempChat);
+                Server.dataBase.getChats().add(chat);
                 return;
             }
         }
@@ -87,7 +92,7 @@ public class ServerController {
     public static void getChat(Connection connection, Matcher matcher) throws IOException {
         int id = Integer.parseInt(matcher.group("id"));
         Chat chat = null;
-        for(Chat tempChat : Server.server.dataBase.getChats()) {
+        for(Chat tempChat : Server.dataBase.getChats()) {
             if(tempChat.getID() == id) {
                 chat = tempChat;
                 break;
@@ -100,16 +105,19 @@ public class ServerController {
 
     public static void getChats(Connection connection) {
         Socket socket = connection.getSocket();
-        User user = Server.server.dataBase.getSocketUserHashMap().get(socket);
-        ArrayList<Chat> chats = new ArrayList<>();
-        for (Chat chat : Server.server.dataBase.getChats()) {
-            if (chat instanceof PrivateChat pv && pv.getUsers().contains(user)) chats.add(pv);
-            if (chat instanceof Group group && group.getUsers().contains(user)) chats.add(group);
+        User user = Server.dataBase.getSocketUserHashMap().get(socket);
+        ArrayList<Group> groups = new ArrayList<>();
+        ArrayList<PrivateChat> privateChats = new ArrayList<>();
+        for (Chat chat : Server.dataBase.getChats()) {
+            if (chat instanceof PrivateChat pv && pv.getUsers().contains(user)) privateChats.add(pv);
+            if (chat instanceof Group group && group.getUsers().contains(user)) groups.add(group);
         }
         try {
             Gson gson = new Gson();
-            String json = gson.toJson(chats);
-            connection.getDataOutputStream().writeUTF(json);
+            String json1 = gson.toJson(groups);
+            String json2 = gson.toJson(privateChats);
+            connection.getDataOutputStream().writeUTF(json1);
+            connection.getDataOutputStream().writeUTF(json2);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

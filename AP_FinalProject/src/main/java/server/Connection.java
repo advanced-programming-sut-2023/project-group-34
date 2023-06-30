@@ -25,9 +25,14 @@ public class Connection extends Thread {
         this.socket = socket;
         this.dataInputStream = new DataInputStream(socket.getInputStream());
         this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        User.loadCurrentUser();
-        Server.server.dataBase.getSocketUserHashMap().put(socket , User.currentUser);
-        Server.server.dataBase.getIsUserOnline().put(User.currentUser , true);
+        User.currentUser = new Gson().fromJson(dataInputStream.readUTF() , User.class);
+        if(User.currentUser == null) {
+            System.out.println("No user!!!");
+            System.exit(-1);
+        }
+        System.out.println("new User :" + User.currentUser.getName());
+        Server.dataBase.getSocketUserHashMap().put(socket , User.currentUser);
+        Server.dataBase.getIsUserOnline().put(User.currentUser , true);
     }
 
     @Override
@@ -42,14 +47,14 @@ public class Connection extends Thread {
         }
     }
     private void makeClientOfLine() {
-        User user = Server.server.dataBase.getSocketUserHashMap().get(socket);
-        Server.server.dataBase.getSocketUserHashMap().remove(socket);
-        Server.server.dataBase.getIsUserOnline().put(user , false);
+        User user = Server.dataBase.getSocketUserHashMap().get(socket);
+        Server.dataBase.getSocketUserHashMap().remove(socket);
+        Server.dataBase.getIsUserOnline().put(user , false);
     }
 
     private void handleClient() throws IOException {
         String input = dataInputStream.readUTF();
-
+        System.out.println("A new request : " + input + " from " + socket.getInetAddress());
         Matcher matcher;
         if((ServerInputs.GET_CHATS.getMatcher(input)).find()) {
             ServerController.getChats(this);

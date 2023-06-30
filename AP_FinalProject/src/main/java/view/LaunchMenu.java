@@ -37,10 +37,11 @@ public class LaunchMenu extends Application {
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
         User.loadAllUsersFromDataBase();
         User.loadCurrentUser();
-        launch(args);
-        socket = new Socket("localhost", 8002);
+        socket = new Socket("localhost", 8003);
         dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
+        launch(args);
     }
 
     @Override

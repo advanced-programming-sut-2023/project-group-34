@@ -16,7 +16,7 @@ public class Chat implements Serializable {
     Chat() {
         ChatCounter++;
         ID = ChatCounter;
-        Server.server.dataBase.addChat(this);
+        if(Server.dataBase != null) Server.dataBase.addChat(this);
     }
 
     public int getID() {
