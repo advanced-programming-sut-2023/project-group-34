@@ -27,40 +27,37 @@ public class newPrivateChatController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        username.textProperty().addListener((observable, oldText, newText)->{
-            User user;
-            try {
-                LaunchMenu.dataOutputStream.writeUTF("get user -username " + newText);
-                user = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , User.class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (user == null){
-                usernameError.setText("No User with this ID");
+    }
+
+    public void createNewChat(MouseEvent mouseEvent) {
+        User user;
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get user -username " + username.getText());
+            user = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , User.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Chat chat : ChatRoomMenuController.chats){
+            if (chat instanceof PrivateChat && chat.getUsers().contains(user)){
+                usernameError.setText("You already have a chat with this user");
                 return;
             } else {
                 usernameError.setText("");
             }
+        }
 
-
-            for (Chat chat : ChatRoomMenuController.chats){
-                if (chat instanceof PrivateChat && chat.getUsers().contains(user)){
-                    usernameError.setText("You already have a chat with this user");
-                    return;
-                } else {
-                    usernameError.setText("");
-                }
-            }
-
-
-        });
-    }
-
-    public void createNewChat(MouseEvent mouseEvent) {
+        if (user == null){
+            usernameError.setText("No User with this ID");
+            return;
+        } else {
+            usernameError.setText("");
+        }
         if (!usernameError.getText().isEmpty())
             return;
         else {
             try {
+                System.out.println(User.currentUser.getName() + "  " + username.getText());
                 LaunchMenu.dataOutputStream.writeUTF("create pv");
                 LaunchMenu.dataOutputStream.writeUTF(new Gson().toJson(
                         new ArrayList<String>(Arrays.asList(User.currentUser.getName() , username.getText()))));

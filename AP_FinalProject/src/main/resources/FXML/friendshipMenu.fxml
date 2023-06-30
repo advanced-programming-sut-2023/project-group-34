@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            styleClass="BackGroundRegister"
+            fx:controller="view.main.FriendshipMenuController"
+            prefHeight="Infinity" prefWidth="Infinity">
+
+    <Label text="FriendShip Menu layoutY" layoutY="60" layoutX="560" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
+        -fx-font-style: oblique; -fx-font-size: 45px; -fx-font-weight: bold;"/>
+    <Text text="Enter the username you are looking for: " x="540" y="200" styleClass="instruction-text"/>
+    <TextField promptText="username" layoutX="640" layoutY="240" fx:id="username"/>
+    <Text  x="680" y="300" fx:id="usernameError" styleClass="errorHandling"/>
+    <Button text="Search" layoutX="870" layoutY="250"/>
+    <Rectangle width="75" height="75" layoutX="950" layoutY="370" fx:id="avatar"/>
+    <Label text="username: " styleClass="instruction-text" fx:id="displayUsername" layoutX="650" layoutY="330"/>
+    <Label text="Nikname: " styleClass="instruction-text" fx:id="displayNick" layoutX="650" layoutY="370"/>
+    <Label text="Slogan: " styleClass="instruction-text" fx:id="displaySlogan" layoutX="650" layoutY="410"/>
+    <Label text="Email: " styleClass="instruction-text" fx:id="displayEmail" layoutX="650" layoutY="450"/>
+    <Label text="Score: " styleClass="instruction-text" fx:id="displayScore" layoutX="650" layoutY="490"/>
+
+
+</AnchorPane>

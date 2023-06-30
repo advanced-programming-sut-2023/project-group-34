@@ -51,4 +51,7 @@ public class MainMenuController {
         new ChatRoomMenu().start(LaunchMenu.getStage());
     }
 
+    public void onToFriendship(MouseEvent mouseEvent) throws Exception{
+        new FriendShipMenu().start(LaunchMenu.getStage());
+    }
 }
