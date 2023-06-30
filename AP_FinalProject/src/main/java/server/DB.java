@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class DB {
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final HashMap<Socket , User> socketUserHashMap = new HashMap<>();
-    private final HashMap<User , Boolean> isUserOnline = new HashMap<>();
+    private final HashMap<User , String> usersLastSeen = new HashMap<>();
     public void addChat(Chat chat) {
         chats.add(chat);
     }
@@ -22,7 +22,7 @@ public class DB {
         return socketUserHashMap;
     }
 
-    public HashMap<User, Boolean> getIsUserOnline() {
-        return isUserOnline;
+    public HashMap<User, String> getIsUserOnline() {
+        return usersLastSeen;
     }
 }

@@ -10,8 +10,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
 import java.util.regex.Matcher;
 
 public class Connection extends Thread {
@@ -30,9 +33,17 @@ public class Connection extends Thread {
             System.out.println("No user!!!");
             System.exit(-1);
         }
-        System.out.println("new User :" + User.currentUser.getName());
+        boolean flag = true;
+        for(User user : Server.dataBase.getIsUserOnline().keySet())
+        {
+            if(user.getName().equals(User.currentUser.getName())) {
+                System.out.println("user back online : " + socket.getInetAddress());
+                flag = false;
+            }
+        }
+        if(flag) System.out.println("new User :" + User.currentUser.getName());
         Server.dataBase.getSocketUserHashMap().put(socket , User.currentUser);
-        Server.dataBase.getIsUserOnline().put(User.currentUser , true);
+        Server.dataBase.getIsUserOnline().put(User.currentUser , "-1");
     }
 
     @Override
@@ -41,6 +52,7 @@ public class Connection extends Thread {
             try {
                 handleClient();
             } catch (IOException e) {
+                System.out.println("User went offline : " + socket.getInetAddress());
                 makeClientOfLine();
                 break;
             }
@@ -49,7 +61,8 @@ public class Connection extends Thread {
     private void makeClientOfLine() {
         User user = Server.dataBase.getSocketUserHashMap().get(socket);
         Server.dataBase.getSocketUserHashMap().remove(socket);
-        Server.dataBase.getIsUserOnline().put(user , false);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        Server.dataBase.getIsUserOnline().put(user , dateTimeFormatter.format(LocalDate.now()));
     }
 
     private void handleClient() throws IOException {

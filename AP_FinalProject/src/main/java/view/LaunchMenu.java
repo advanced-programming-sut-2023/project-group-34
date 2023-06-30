@@ -13,6 +13,7 @@ import model.messenger.Group;
 import model.messenger.Message;
 import model.messenger.PrivateChat;
 import model.user.User;
+import server.Server;
 
 import java.io.*;
 import java.net.Socket;
@@ -37,7 +38,7 @@ public class LaunchMenu extends Application {
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
         User.loadAllUsersFromDataBase();
         User.loadCurrentUser();
-        socket = new Socket("localhost", 8003);
+        socket = new Socket("localhost", Server.SERVER_PORT);
         dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
