@@ -15,6 +15,7 @@ import java.math.MathContext;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class ServerController {
@@ -47,6 +48,30 @@ public class ServerController {
         }
     }
 
+    public static void userLogin(Connection connection) throws IOException {
+        String json = connection.getDataInputStream().readUTF();
+        User user = new Gson().fromJson(json , User.class);
+        User.currentUser = user;
+        for(User user1 : Server.dataBase.getIsUserOnline().keySet())
+        {
+            if(user.getName().equals(User.currentUser.getName())) {
+                System.out.println("user " + user.getName() + " back online : " + connection.getSocket().getInetAddress());
+                for(Map.Entry<Socket , User> entry : Server.dataBase.getSocketUserHashMap().entrySet()) {
+                    if(entry.getValue().getName().equals(user.getName())) {
+                        Server.dataBase.getSocketUserHashMap().remove(entry.getKey() , entry.getValue());
+                    }
+                }
+                Server.dataBase.getIsUserOnline().remove(user1);
+                Server.dataBase.getIsUserOnline().put(user , "-1");
+                Server.dataBase.getSocketUserHashMap().put(connection.getSocket() , user);
+                return;
+            }
+        }
+        System.out.println("new User :" + User.currentUser.getName());
+        Server.dataBase.getSocketUserHashMap().put(connection.getSocket() , User.currentUser);
+        Server.dataBase.getIsUserOnline().put(User.currentUser , "-1");
+        Server.dataBase.getPublicChat().getUsers().add(User.currentUser);
+    }
     public static User getUser(String username) {
         for(User user : Server.dataBase.getIsUserOnline().keySet()) {
             if(user.getName().equals(username)) return user;

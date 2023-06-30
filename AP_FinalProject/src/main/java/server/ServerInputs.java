@@ -10,6 +10,8 @@ public enum ServerInputs {
     UPDATE_CHAT("update chat"),
     ADD_USER("add user to group -id (?<id>\\d+) -u (?<username>\\S+)"),
     GET_USER("get user -username (?<username>\\S+)"),
+    USER_LOGIN("user login"),
+    GET_PUBLIC_CHAT("get public chat"),
     GET_CHATS("get chats");
 
     private final String input;

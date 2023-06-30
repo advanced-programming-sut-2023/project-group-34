@@ -7,7 +7,7 @@ import java.net.Socket;
 public class Server {
 
     public static DB dataBase;
-    public static final int SERVER_PORT = 8004;
+    public static final int SERVER_PORT = 8006;
     public static void main(String[] args) throws IOException {
         new Server(SERVER_PORT);
     }

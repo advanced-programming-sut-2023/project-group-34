@@ -1,5 +1,6 @@
 package view.starter;
 
+import com.google.gson.Gson;
 import controller.UserController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import model.messenger.Message;
 import model.user.User;
 import view.LaunchMenu;
 import view.main.MainMenu;
@@ -136,12 +138,9 @@ public class RegisterAndLoginMenuController implements Initializable {
         User.currentUser = User.getUserByUsername(username.getText());
         if (stayLoggedIn.isSelected())
             User.currentUserJsonSaver();
+        LaunchMenu.dataOutputStream.writeUTF("user login");
+        LaunchMenu.dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
         new MainMenu().start(LaunchMenu.getStage());
-
-
-
-
-
     }
 
     public boolean checkCaptcha(){

@@ -505,8 +505,6 @@ public class ChatRoomMenuController implements Initializable {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/sent.png").toString())));
                     seens.get(counter).setVisible(true);
                 }
-
-
                 if (chat.getMessages().get(i).isLiked()) {
                     likes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/like.jpg").toString())));
                     likes.get(counter).setVisible(true);
@@ -519,7 +517,8 @@ public class ChatRoomMenuController implements Initializable {
                     laughing.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/laugh.jpg").toString())));
                     laughing.get(counter).setVisible(true);
                 }
-
+                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
+                    chat.getMessages().get(i).setSeen(true);
                 counter--;
             }
         } else {
@@ -536,8 +535,8 @@ public class ChatRoomMenuController implements Initializable {
                     seens.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/sent.png").toString())));
                     seens.get(counter).setVisible(true);
                 }
-//                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
-//                    chat.getMessages().get(i).setSeen(true);
+                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
+                    chat.getMessages().get(i).setSeen(true);
 
                 if (chat.getMessages().get(i).isLiked()) {
                     likes.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/like.jpg").toString())));
@@ -603,7 +602,13 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void showPublicChat(MouseEvent mouseEvent) {
-        //TODO implement showing public chat
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get public chat");
+            currentChat = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , Group.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        displayMessages(currentChat);
     }
 
     public void textOptions(MouseEvent mouseEvent) throws IOException {

@@ -41,7 +41,10 @@ public class LaunchMenu extends Application {
         socket = new Socket("localhost", Server.SERVER_PORT);
         dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
+        if (User.currentUser != null) {
+            LaunchMenu.dataOutputStream.writeUTF("user login");
+            LaunchMenu.dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
+        }
         launch(args);
     }
 
