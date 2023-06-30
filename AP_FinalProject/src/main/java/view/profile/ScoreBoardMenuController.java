@@ -43,17 +43,12 @@ public class ScoreBoardMenuController implements Initializable {
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         lastSeen.setCellValueFactory(new PropertyValueFactory<>("lastSeen"));
-
         tableView.getItems().setAll(parseUserList());
         customiseFactory(username);
-
-
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableScroll.setContent(tableView);
-
         TableView.TableViewSelectionModel<User> selectionModel = tableView.getSelectionModel();
         ObservableList<User> selectedItems = selectionModel.getSelectedItems();
-
         selectedItems.addListener(new ListChangeListener<User>() {
             @Override
             public void onChanged(Change<? extends User> change) {
@@ -75,6 +70,7 @@ public class ScoreBoardMenuController implements Initializable {
     }
 
     private ArrayList<User> parseUserList() {
+        //TODO userlist
         ArrayList<User> limitedUsers = new ArrayList<>();
         User.getUsers().sort(Comparator.comparingInt(User::getScore));
         tableIndex = 0;
@@ -105,6 +101,7 @@ public class ScoreBoardMenuController implements Initializable {
     }
 
     public void users(){
+        //TODO userlist
         ArrayList<User> users = new ArrayList<>();
         int counter = 0;
         while (counter + tableIndex < User.getUsers().size() && counter < 10){
@@ -123,8 +120,6 @@ public class ScoreBoardMenuController implements Initializable {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-
-
                     setText(empty ? "" : getItem().toString());
                     setGraphic(null);
 
@@ -139,5 +134,4 @@ public class ScoreBoardMenuController implements Initializable {
             };
         });
     }
-
 }
