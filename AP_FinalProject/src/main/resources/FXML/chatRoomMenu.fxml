@@ -124,5 +124,6 @@
     <Button text="New Chat" layoutX="370" layoutY="700" onMouseClicked="#startPrivateChat"/>
     <Button text="New Group" layoutX="480" layoutY="700" onMouseClicked="#startGroup"/>
     <Button text="Refresh" layoutX="590" layoutY="700"/>
+    <Button text="Back" layoutX="700" layoutY="700" onMouseClicked="#backToMain"/>
 
 </AnchorPane>
