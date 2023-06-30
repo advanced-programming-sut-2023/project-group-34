@@ -137,6 +137,8 @@ public class RegisterAndLoginMenuController implements Initializable {
         if (stayLoggedIn.isSelected())
             User.currentUserJsonSaver();
         new MainMenu().start(LaunchMenu.getStage());
+
+        //TODO fix this part for logging in
     }
 
     public boolean checkCaptcha(){
