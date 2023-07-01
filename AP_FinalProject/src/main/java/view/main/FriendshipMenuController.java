@@ -104,7 +104,6 @@ public class FriendshipMenuController implements Initializable {
                 int reqID = change.getList().get(0).getID();
                 change.getList().get(0).setRequestType(RequestTypes.ACCEPTED);
                 tableViewReceived.getItems().clear();
-                //TODO arshia should check this because it is causing an error but I don't know if it is necessary to deal with
                 tableViewReceived.getItems().addAll(parseReceivedList());
                 try {
                     LaunchMenu.dataOutputStream.writeUTF("answer request -id " + reqID + " -answer accepted");

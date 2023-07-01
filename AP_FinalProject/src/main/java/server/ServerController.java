@@ -21,6 +21,14 @@ import java.util.regex.Pattern;
 
 public class ServerController {
 
+    public static void makeLobby(Matcher matcher , Connection connection) throws IOException {
+        int id = Integer.parseInt(matcher.group("id"));
+        String name = matcher.group("name");
+        Lobby lobby = new Lobby(id , name);
+        Server.dataBase.getLobbies().add(lobby);
+        connection.getDataOutputStream().writeUTF(new Gson().toJson(lobby));
+    }
+
     public static void getLobby(Matcher matcher , Connection connection) throws IOException {
         int id = Integer.parseInt(matcher.group("id"));
         Lobby toBeSend = null;

@@ -1,5 +1,7 @@
 package view.main;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,9 +14,12 @@ import model.Lobby;
 import model.user.User;
 import view.LaunchMenu;
 import view.game.LobbyMenu;
+import view.game.LobbyMenuController;
 import view.profile.changeAvatarInScoreBoardDialog;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -56,23 +61,20 @@ public class LobbyListMenuController implements Initializable {
 
         TableView.TableViewSelectionModel<Lobby> selectionModel = tableView.getSelectionModel();
         ObservableList<Lobby> selectedItems = selectionModel.getSelectedItems();
-        selectedItems.addListener(new ListChangeListener<Lobby>() {
-            @Override
-            public void onChanged(Change<? extends Lobby> change) {
-                if (!change.getList().get(0).isPrivate()){
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.initOwner(LaunchMenu.getStage());
-                    alert.setHeaderText("Joining Lobby");
-                    alert.setContentText("Are you sure you want to join this lobby?");
-                    alert.showAndWait();
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK){
-                        //TODO set currentLobby in lobbyMenu to the lobby given in lobbyName and start a new page
-                        try {
-                            new LobbyMenu().start(LaunchMenu.getStage());
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+        selectedItems.addListener((ListChangeListener<Lobby>) change -> {
+            if (!change.getList().get(0).isPrivate()){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(LaunchMenu.getStage());
+                alert.setHeaderText("Joining Lobby");
+                alert.setContentText("Are you sure you want to join this lobby?");
+                alert.showAndWait();
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    setCurrentLobbyWithLobbyName();
+                    try {
+                        new LobbyMenu().start(LaunchMenu.getStage());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -81,21 +83,33 @@ public class LobbyListMenuController implements Initializable {
 
 
     }
+    public void setCurrentLobbyWithLobbyName() {
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get lobby -id " + lobbyName);
+            LobbyMenuController.currentLobby = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , Lobby.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private ArrayList<Lobby> parseUserList() {
-        //TODO fill in the lobbies arraylist with the information from the server
-        ArrayList<Lobby> lobbiesForTable = new ArrayList<>();
-        for (Lobby lobby : lobbies)
-            lobbiesForTable.add(lobby);
-        return lobbiesForTable;
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get lobbies");
+            Type type = new TypeToken<ArrayList<Lobby>>(){}.getType();
+            lobbies = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ArrayList<>(lobbies);
     }
 
     public void lookForLobby(MouseEvent mouseEvent) {
+        lobbyError.setText("");
         joinButton.setVisible(false);
-        //TODO look for the lobby called in lobbyName and if it was null set text for lobbyError and return
-
-
-
+        setCurrentLobbyWithLobbyName();
+        if(LobbyMenuController.currentLobby == null) {
+            lobbyError.setText("No lobby found!");
+        }
         joinButton.setVisible(true);
     }
 
@@ -104,7 +118,6 @@ public class LobbyListMenuController implements Initializable {
     }
 
     public void updateList(MouseEvent mouseEvent) {
-        //TODO update the lobbies list
         tableView.getItems().clear();
         tableView.getItems().setAll(parseUserList());
     }

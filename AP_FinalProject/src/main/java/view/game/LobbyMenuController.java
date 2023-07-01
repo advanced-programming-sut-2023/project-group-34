@@ -14,6 +14,7 @@ import org.checkerframework.checker.units.qual.A;
 import view.LaunchMenu;
 import view.main.MainMenu;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -58,12 +59,6 @@ public class LobbyMenuController implements Initializable {
         addAllNames();
         hideNames();
         hideAvatars();
-//        Lobby lobby = new Lobby(3, "gg");
-//        lobby.getPlayers().add(User.currentUser);
-//        lobby.getPlayers().add(User.getUserByUsername("abud"));
-//        currnetLobby = lobby;
-
-
         lobbyId.setText(lobbyId.getText() + currentLobby.getID());
         if (currnetLobby.isPrivate())
             lobbyStatus.setText("Private");
@@ -110,14 +105,23 @@ public class LobbyMenuController implements Initializable {
         name3.setVisible(false);
         name4.setVisible(false);
     }
-
     public void setPrivate(MouseEvent mouseEvent) {
         currnetLobby.setPrivate(true);
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currnetLobby.getID() + " private");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         lobbyStatus.setText("Private");
     }
 
     public void setPublic(MouseEvent mouseEvent) {
         currnetLobby.setPrivate(false);
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currnetLobby.getID() + " public");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         lobbyStatus.setText("Public");
     }
 
@@ -134,5 +138,10 @@ public class LobbyMenuController implements Initializable {
 
     public void onToLobbyChat(MouseEvent mouseEvent) throws Exception{
         new LobbyChatMenu().start(LaunchMenu.getStage());
+    }
+
+    //TODO
+    public void startGame(MouseEvent mouseEvent) {
+
     }
 }

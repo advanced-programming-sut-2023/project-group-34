@@ -116,6 +116,9 @@ public class Connection extends Thread {
         else if((matcher = ServerInputs.CHANGE_LOBBY_STATUS.getMatcher(input)).find()) {
             ServerController.changeLobby(matcher);
         }
+        else if((matcher = ServerInputs.CREATE_LOBBY.getMatcher(input)).find()) {
+            ServerController.makeLobby(matcher , this);
+        }
         else
             throw new IOException("wrong command");
     }

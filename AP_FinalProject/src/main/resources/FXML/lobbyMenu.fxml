@@ -31,7 +31,7 @@
 
 
     <Button text="back" layoutX="800" layoutY="680" onMouseClicked="#backToMain"/>
-    <Button text="Start Game" layoutX="870" layoutY="680"/>
+    <Button text="Start Game" layoutX="870" layoutY="680" onMouseClicked="#startGame"/>
     <Button text="ChatRoom" layoutX="990" layoutY="680" onMouseClicked="#onToLobbyChat"/>
 
     <Rectangle width="75" height="75" layoutX="560" layoutY="150" fx:id="avatar1"/>

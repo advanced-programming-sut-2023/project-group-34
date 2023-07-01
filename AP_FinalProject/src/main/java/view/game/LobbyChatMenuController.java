@@ -1,5 +1,6 @@
 package view.game;
 
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,10 +20,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.messenger.Chat;
+import model.messenger.Group;
 import model.messenger.Message;
+import model.messenger.PrivateChat;
 import model.user.User;
+import server.ServerController;
 import view.LaunchMenu;
 import view.main.ChatRoomMenu;
+import view.main.ChatRoomMenuController;
 import view.profile.ProfileMenu;
 
 import java.io.IOException;
@@ -219,7 +224,6 @@ public class LobbyChatMenuController implements Initializable {
     }
 
 
-
     public void sendNewMessage(MouseEvent mouseEvent) {
         if (!textMessage.getText().isEmpty()) {
             currentChat.getMessages().add(new Message(textMessage.getText(), User.currentUser));
@@ -230,11 +234,45 @@ public class LobbyChatMenuController implements Initializable {
         }
     }
 
-    public void backToLobby(MouseEvent mouseEvent) throws Exception{
+    public void sendCurrentChat() {
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("update chat");
+            Gson gson = new Gson();
+            String json = gson.toJson(currentChat);
+            LaunchMenu.dataOutputStream.writeUTF(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void backToLobby(MouseEvent mouseEvent) throws Exception {
         new LobbyMenu().start(LaunchMenu.getStage());
     }
 
     public void refresh(MouseEvent mouseEvent) {
+        getCurrentChat();
+        if (currentChat != null)
+            displayMessages(currentChat);
+    }
+    public void getCurrentChat() {
+        if (currentChat == null)
+            return;
+        int id = currentChat.getID();
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get chat -id " + id);
+            String json = LaunchMenu.dataInputStream.readUTF();
+            Chat chat = null;
+            if (ServerController.isItPrivateChat(json)){
+                chat = new Gson().fromJson(json, PrivateChat.class);
+            } else {
+                chat = new Gson().fromJson(json, Group.class);
+            }
+            assert chat != null;
+            currentChat = chat;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void getAvatarRectRead() {
@@ -468,23 +506,20 @@ public class LobbyChatMenuController implements Initializable {
         textField.setLayoutY(50);
         pane.getChildren().addAll(delete, edit, textField);
         Message finalMessage = message;
-        delete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.initOwner(stage);
-                alert.setHeaderText("Deleting Message");
-                alert.setContentText("Are you sure you want to delete this message?");
-                alert.showAndWait();
-                if (alert.getButtonTypes().get(0) == ButtonType.OK) {
-                    stage.close();
-                    currentChat.getMessages().remove(finalMessage);
-                    sendCurrentChat();
-                    show--;
-                    displayMessages(currentChat);
-                }
-
+        delete.setOnAction(actionEvent -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(stage);
+            alert.setHeaderText("Deleting Message");
+            alert.setContentText("Are you sure you want to delete this message?");
+            alert.showAndWait();
+            if (alert.getButtonTypes().get(0) == ButtonType.OK) {
+                stage.close();
+                currentChat.getMessages().remove(finalMessage);
+                sendCurrentChat();
+                show--;
+                displayMessages(currentChat);
             }
+
         });
 
         edit.setOnAction(new EventHandler<ActionEvent>() {

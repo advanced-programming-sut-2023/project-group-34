@@ -13,9 +13,10 @@ public class Lobby {
     private final ArrayList<User> players = new ArrayList<>();
 
     private boolean isPrivate = false;
-    private final Group group;
 
+    private final Group group;
     public static int counter = 0;
+
     private final int ID;
     public Lobby(int numberOfPlayers, String name) {
         this.numberOfPlayers = numberOfPlayers;
@@ -23,7 +24,6 @@ public class Lobby {
         group = new Group(this.name);
         ID = ++counter;
     }
-
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
@@ -32,10 +32,10 @@ public class Lobby {
         players.add(user);
         group.getUsers().add(user);
     }
+
     public ArrayList<User> getPlayers() {
         return players;
     }
-
     public boolean isPrivate() {
         return isPrivate;
     }
@@ -47,11 +47,11 @@ public class Lobby {
     public int getID() {
         return ID;
     }
+
     public User getAdmin() {
         if(players.isEmpty()) return null;
         return players.get(0);
     }
-
     public String getStatus(){
         if (isPrivate)
             return "private";
@@ -73,5 +73,9 @@ public class Lobby {
 
     public Group getGroup() {
         return group;
+    }
+
+    public String getName() {
+        return name;
     }
 }

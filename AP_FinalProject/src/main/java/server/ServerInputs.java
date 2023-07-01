@@ -22,7 +22,7 @@ public enum ServerInputs {
     JOIN_LOBBY("join lobby -id (?<id>\\d+) -username (?<username>\\w+)"),
     DELETE_LOBBY("delete lobby -id (?<id>\\d+)"),
     CHANGE_LOBBY_STATUS("change lobby -id (?<id>\\d+) (?<status>\\w+)"),
-
+    CREATE_LOBBY("create lobby -name (?<name>\\w+) -id (?<id>\\d+)"),
     GET_CHATS("get chats");
 
     private final String input;
