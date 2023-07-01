@@ -88,6 +88,16 @@ public class Connection extends Thread {
         else if(ServerInputs.GET_PUBLIC_CHAT.getMatcher(input).find()) {
             dataOutputStream.writeUTF(new Gson().toJson(Server.dataBase.getPublicChat()));
         }
+        else if(ServerInputs.GET_USERS.getMatcher(input).find()) {
+            ServerController.getUsers(this);
+        }
+        else if((matcher = ServerInputs.ANSWER_REQUEST.getMatcher(input)).find())
+            ServerController.answerRequest(matcher);
+        else if((matcher = ServerInputs.SEND_FRIEND_REQUEST.getMatcher(input)).find())
+            ServerController.sendRequest(matcher , this);
+        else if(ServerInputs.GET_REQUESTS.getMatcher(input).find()) {
+            ServerController.getRequests(this);
+        }
         else
             throw new IOException("wrong command");
     }

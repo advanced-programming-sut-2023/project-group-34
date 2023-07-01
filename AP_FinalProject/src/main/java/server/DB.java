@@ -1,5 +1,6 @@
 package server;
 
+import model.friendshiprequest.FriendshipRequest;
 import model.messenger.Chat;
 import model.messenger.Group;
 import model.user.User;
@@ -12,6 +13,7 @@ public class DB {
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final HashMap<Socket , User> socketUserHashMap = new HashMap<>();
     private final HashMap<User , String> usersLastSeen = new HashMap<>();
+    private final ArrayList<FriendshipRequest> requests = new ArrayList<>();
     private final Group publicChat = new Group("public chat");
     {
         chats.add(publicChat);
@@ -27,11 +29,15 @@ public class DB {
         return socketUserHashMap;
     }
 
-    public HashMap<User, String> getIsUserOnline() {
+    public synchronized HashMap<User, String> getIsUserOnline() {
         return usersLastSeen;
     }
 
     public Group getPublicChat() {
         return publicChat;
+    }
+
+    public ArrayList<FriendshipRequest> getRequests() {
+        return requests;
     }
 }

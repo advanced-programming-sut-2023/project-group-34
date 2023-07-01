@@ -1,5 +1,8 @@
 package view.profile;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.thoughtworks.xstream.io.binary.Token;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +14,8 @@ import javafx.scene.input.ScrollEvent;
 import model.user.User;
 import view.LaunchMenu;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +39,7 @@ public class ScoreBoardMenuController implements Initializable {
     @FXML
     private TableColumn<User, String> lastSeen;
     private int tableIndex;
+    Thread updater;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -67,12 +73,33 @@ public class ScoreBoardMenuController implements Initializable {
                 }
             }
         });
+        updater = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(9999);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                tableView.getItems().setAll(parseUserList());
+            }
+        });
+        updater.start();
     }
 
     private ArrayList<User> parseUserList() {
         //TODO userlist
+        ArrayList<User> allUsers;
+        Type type = new TypeToken<ArrayList<User>>(){}.getType();
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get users");
+            allUsers = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        User.getUsers().clear();
+        User.getUsers().addAll(allUsers);
         ArrayList<User> limitedUsers = new ArrayList<>();
-        User.getUsers().sort(Comparator.comparingInt(User::getScore));
+        User.getUsers().sort(Comparator.comparingInt(User::getScore).reversed());
         tableIndex = 0;
         for (User user : User.getUsers()) {
             if (tableIndex < 10) {
@@ -88,20 +115,30 @@ public class ScoreBoardMenuController implements Initializable {
 
 
     public void backToProfile(MouseEvent mouseEvent) throws Exception{
+        updater.interrupt();
         new ProfileMenu().start(LaunchMenu.getStage());
     }
 
     public void newUsersToShow(ScrollEvent scrollEvent) {
-        tableView.setOnScroll((ScrollEvent event) -> {
-            double deltaY = event.getDeltaY();
-            if (deltaY < -10 && User.getUsers().size() > 10){
-                users();
-            }
-        });
+//        tableView.setOnScroll((ScrollEvent event) -> {
+//            double deltaY = event.getDeltaY();
+//            if (deltaY < -10 && User.getUsers().size() > 10){
+//                try {
+//                    users();
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
     }
 
-    public void users(){
+    public void users() throws IOException {
         //TODO userlist
+        Type type = new TypeToken<ArrayList<User>>(){}.getType();
+        LaunchMenu.dataOutputStream.writeUTF("get users");
+        ArrayList<User> allUsers = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
+        User.getUsers().clear();
+        User.getUsers().addAll(allUsers);
         ArrayList<User> users = new ArrayList<>();
         int counter = 0;
         while (counter + tableIndex < User.getUsers().size() && counter < 10){

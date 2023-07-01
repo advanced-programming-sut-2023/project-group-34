@@ -12,6 +12,10 @@ public enum ServerInputs {
     GET_USER("get user -username (?<username>\\S+)"),
     USER_LOGIN("user login"),
     GET_PUBLIC_CHAT("get public chat"),
+    GET_USERS("get users"),
+    SEND_FRIEND_REQUEST("send req -username (?<username>\\S+)"),
+    GET_REQUESTS("get requests"),
+    ANSWER_REQUEST("answer request -id (?<id>\\d+) -answer (?<answer>\\w+)"),
     GET_CHATS("get chats");
 
     private final String input;

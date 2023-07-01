@@ -6,10 +6,13 @@ public class FriendshipRequest {
     private RequestTypes requestType = RequestTypes.PENDING;
     private final User sender;
     private final User receiver;
+    public static int counter = 0;
+    private final int ID;
 
     public FriendshipRequest(User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
+        ID = ++counter;
     }
 
     public RequestTypes getRequestType() {
@@ -26,5 +29,9 @@ public class FriendshipRequest {
 
     public User getReceiver() {
         return receiver;
+    }
+
+    public int getID() {
+        return ID;
     }
 }

@@ -204,6 +204,7 @@ public class ChatRoomMenuController implements Initializable {
     private Button sendButton;
     private int show;
 
+    Thread thread;
     public ArrayList<Rectangle> seens = new ArrayList<>();
     public ArrayList<Rectangle> avatars = new ArrayList<>();
     public ArrayList<Text> messages = new ArrayList<>();
@@ -225,10 +226,6 @@ public class ChatRoomMenuController implements Initializable {
             ArrayList<PrivateChat> privateChats= new Gson().fromJson(LaunchMenu.dataInputStream.readUTF(), type2);
             chats.addAll(groups);
             chats.addAll(privateChats);
-//            for (Chat chat : chats) {
-//                System.out.println(chat.getClass());
-//                if(chat instanceof Group group) System.out.println(group.getName());
-//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
 
@@ -271,6 +268,22 @@ public class ChatRoomMenuController implements Initializable {
                 show = change.getList().get(0).getMessages().size();
                 currentChat = change.getList().get(0);
                 getCurrentChat();
+                synchronized (currentChat) {
+                    thread = new Thread(() -> {
+                        while (true) {
+                            updateChats();
+                            getCurrentChat();
+                            if (currentChat != null)
+                                displayMessages(currentChat);
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                }
+                thread.start();
                 displayMessages(change.getList().get(0));
             }
         });
@@ -610,8 +623,6 @@ public class ChatRoomMenuController implements Initializable {
         try {
             LaunchMenu.dataOutputStream.writeUTF("get chat -id 1");
             currentChat = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , Group.class);
-            if(currentChat == null) System.out.println("FFFFFFFFFF");
-            System.out.println(currentChat.getMessages().size());
             displayMessages(currentChat);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -765,6 +776,7 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void backToMain(MouseEvent mouseEvent) throws Exception {
+        if(thread != null) thread.interrupt();
         new MainMenu().start(LaunchMenu.getStage());
     }
 
