@@ -17,9 +17,11 @@ module AP.FinalProject {
     exports view.game;
     exports model.messenger;
     exports model.user;
+    exports model.friendshiprequest;
 
 
     opens model to javafx.fxml, com.google.gson;
+    opens model.friendshiprequest to javafx.fxml,com.google.gson;
     opens model.user to com.google.gson, javafx.fxml, javafx.base;
     opens model.enums to com.google.gson;
     opens model.government to com.google.gson;

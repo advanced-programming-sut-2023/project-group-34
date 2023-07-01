@@ -34,4 +34,18 @@ public class FriendshipRequest {
     public int getID() {
         return ID;
     }
+
+    public String getStatus(){
+        if (requestType.equals(RequestTypes.PENDING))
+            return "pending";
+        else if (requestType.equals(RequestTypes.ACCEPTED))
+            return "accepted";
+        else return "denied";
+    }
+
+    public String getName(){
+        if (sender.getName().equals(User.currentUser.getName()))
+            return receiver.getName();
+        else return sender.getName();
+    }
 }

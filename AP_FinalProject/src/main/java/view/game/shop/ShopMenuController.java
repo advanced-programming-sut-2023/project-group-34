@@ -160,7 +160,7 @@ public class ShopMenuController implements Initializable {
     }
 
     public void BackToGame(MouseEvent mouseEvent) throws Exception{
-        //TODO this part has to go back to the main game
+
     }
 
     public void OntoTradeCenter(MouseEvent mouseEvent) throws Exception{
@@ -223,6 +223,5 @@ public class ShopMenuController implements Initializable {
         // getStorageDepartment().getResourcesStorage().get(Resources.GOLD));
     }
 
-    //TODO: commented lines have to be uncommented
 
 }

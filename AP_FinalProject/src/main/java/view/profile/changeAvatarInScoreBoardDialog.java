@@ -32,7 +32,8 @@ public class changeAvatarInScoreBoardDialog extends Dialog<ButtonType> {
     private void buildUI() {
         Pane pane = createPane();
         getDialogPane().setContent(pane);
-        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        ButtonType buttonType = new ButtonType("Friend Request");
+        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL, buttonType);
         Button button = (Button) getDialogPane().lookupButton(ButtonType.OK);
         button.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override

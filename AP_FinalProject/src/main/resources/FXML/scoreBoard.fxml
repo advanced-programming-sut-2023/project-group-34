@@ -30,16 +30,6 @@
         </columns>
     </TableView>
 
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="230" fx:id="profile1"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="265" fx:id="profile2"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="300" fx:id="profile3"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="335" fx:id="profile4"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="370" fx:id="profile5"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="405" fx:id="profile6"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="440" fx:id="profile7"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="575" fx:id="profile8"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="510" fx:id="profile9"/>
-    <Rectangle width="30" height="30" layoutX="1160" layoutY="545" fx:id="profile10"/>
 
 
 </Pane>

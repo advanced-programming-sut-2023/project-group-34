@@ -64,7 +64,9 @@ public class ScoreBoardMenuController implements Initializable {
                 Optional<ButtonType> result = changePassDialog.showAndWait();
                 if (result.get() == ButtonType.CANCEL)
                     changePassDialog.close();
-                else {
+                else if (result.get().getText().equals("Friend Request")){
+                    //TODO send a new friend request from the current user to change.getList().get(0).getName
+                } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Change Avatar");
                     alert.setContentText("Avatar changed successfully!");
