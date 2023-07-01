@@ -17,6 +17,7 @@ import view.LaunchMenu;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
@@ -89,17 +90,9 @@ public class ScoreBoardMenuController implements Initializable {
     }
 
     private ArrayList<User> parseUserList() {
-        //TODO userlist
         ArrayList<User> allUsers;
         Type type = new TypeToken<ArrayList<User>>(){}.getType();
-        try {
-            LaunchMenu.dataOutputStream.writeUTF("get users");
-            allUsers = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        User.getUsers().clear();
-        User.getUsers().addAll(allUsers);
+        getUsers(type);
         ArrayList<User> limitedUsers = new ArrayList<>();
         User.getUsers().sort(Comparator.comparingInt(User::getScore).reversed());
         tableIndex = 0;
@@ -122,25 +115,35 @@ public class ScoreBoardMenuController implements Initializable {
     }
 
     public void newUsersToShow(ScrollEvent scrollEvent) {
-//        tableView.setOnScroll((ScrollEvent event) -> {
-//            double deltaY = event.getDeltaY();
-//            if (deltaY < -10 && User.getUsers().size() > 10){
-//                try {
-//                    users();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
+        tableView.setOnScroll((ScrollEvent event) -> {
+            double deltaY = event.getDeltaY();
+            Type type = new TypeToken<ArrayList<User>>(){}.getType();
+            ArrayList<User> allUsers;
+            getUsers(type);
+            if (deltaY < -10 && User.getUsers().size() > 10){
+                try {
+                    users();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    private void getUsers(Type type) {
+        ArrayList<User> allUsers;
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get users");
+            allUsers = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        User.getUsers().clear();
+        User.getUsers().addAll(allUsers);
     }
 
     public void users() throws IOException {
-        //TODO userlist
-        Type type = new TypeToken<ArrayList<User>>(){}.getType();
-        LaunchMenu.dataOutputStream.writeUTF("get users");
-        ArrayList<User> allUsers = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
-        User.getUsers().clear();
-        User.getUsers().addAll(allUsers);
+
         ArrayList<User> users = new ArrayList<>();
         int counter = 0;
         while (counter + tableIndex < User.getUsers().size() && counter < 10){

@@ -61,9 +61,8 @@ public class FriendshipMenuController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO fills the requests with the data from server
         requests.clear();
-
+        //TODO fills the requests with the data from server
         avatar.setVisible(false);
         displayUsername.setVisible(false);
         displayNick.setVisible(false);
@@ -85,27 +84,24 @@ public class FriendshipMenuController implements Initializable {
         TableView.TableViewSelectionModel<FriendshipRequest> selectionModel = tableViewReceived.getSelectionModel();
         ObservableList<FriendshipRequest> selectedItems = selectionModel.getSelectedItems();
 
-        selectedItems.addListener(new ListChangeListener<FriendshipRequest>() {
-            @Override
-            public void onChanged(Change<? extends FriendshipRequest> change) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Accepting Request");
-                alert.setContentText("Do you want to accept this request?");
-                alert.initOwner(LaunchMenu.getStage());
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    change.getList().get(0).setRequestType(RequestTypes.ACCEPTED);
-                    tableViewReceived.getItems().clear();
-                    //TODO arshia should check this because it is causing an error but I don't know if it is necessary to deal with
-                    tableViewReceived.getItems().addAll(parseReceivedList());
-                    //TODO tell server that this request was accepted
-                }
-                else {
-                    change.getList().get(0).setRequestType(RequestTypes.DENIED);
-                    tableViewReceived.getItems().clear();
-                    tableViewReceived.getItems().addAll(parseReceivedList());
-                    //TODO tell server that this request was denied
-                }
+        selectedItems.addListener((ListChangeListener<FriendshipRequest>) change -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Accepting Request");
+            alert.setContentText("Do you want to accept this request?");
+            alert.initOwner(LaunchMenu.getStage());
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                change.getList().get(0).setRequestType(RequestTypes.ACCEPTED);
+                tableViewReceived.getItems().clear();
+                //TODO arshia should check this because it is causing an error but I don't know if it is necessary to deal with
+                tableViewReceived.getItems().addAll(parseReceivedList());
+                //TODO tell server that this request was accepted
+            }
+            else {
+                change.getList().get(0).setRequestType(RequestTypes.DENIED);
+                tableViewReceived.getItems().clear();
+                tableViewReceived.getItems().addAll(parseReceivedList());
+                //TODO tell server that this request was denied
             }
         });
     }
@@ -135,11 +131,11 @@ public class FriendshipMenuController implements Initializable {
         displaySlogan.setVisible(false);
         displayScore.setVisible(false);
         displayEmail.setVisible(false);
+//        username
         //TODO get the text from username and bring the user
         User user = null;
         //TODO if the user does not exist set an error in usernameError and keep the fields invisible
-
-
+//        usernameError return
         avatar.setVisible(true);
         displayUsername.setVisible(true);
         displayNick.setVisible(true);
