@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -190,5 +191,9 @@ public class ClientMenu extends Application implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public void back (MouseEvent mouseEvent) {
+        //todo: back implementation.
     }
 }
