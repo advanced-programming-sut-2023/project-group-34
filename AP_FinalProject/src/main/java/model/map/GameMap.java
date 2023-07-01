@@ -1,5 +1,6 @@
 package model.map;
 
+import com.google.gson.Gson;
 import model.enums.Direction;
 
 public class GameMap {
@@ -113,5 +114,16 @@ public class GameMap {
 
     public void setUpLeftCorner (int x, int y) {
         setUpLeftCornerBlock(map[y][x]);
+    }
+    
+    
+    public static GameMap jsonToGameMap (String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, GameMap.class);
+    }
+    
+    public String toJson () {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

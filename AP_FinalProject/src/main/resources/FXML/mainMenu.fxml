@@ -15,7 +15,7 @@
     <Label text="Main Menu" layoutX="175" layoutY="80"/>
     <Button text="New Game" layoutX="170" layoutY="170" minWidth="250" minHeight="40" onMouseClicked="#selectingPlayers"/>
     <Button text="Profile" layoutX="170" layoutY="260" minWidth="250" minHeight="40" onMouseClicked="#onToProfileMenu"/>
-    <Button text="Map Menu" layoutX="170" layoutY="350" minWidth="250" minHeight="40"/>
+    <Button text="Map Menu" layoutX="170" layoutY="350" minWidth="250" minHeight="40" onMouseClicked="#onToMapMenu"/>
     <Button text="Chatroom" layoutX="170" layoutY="440" minWidth="250" minHeight="40" onMouseClicked="#onToChatRoom"/>
     <Button text="Friendship" layoutX="170" layoutY="530" minWidth="250" minHeight="40" onMouseClicked="#onToFriendship"/>
     <Button text="Logout" layoutX="170" layoutY="620" minWidth="250" minHeight="40" onMouseClicked="#logout"/>
