@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import model.user.User;
+import view.ClientMenu;
 import view.LaunchMenu;
 import view.game.SelectPlayersMenu;
 import view.game.shop.ShopMenu;
@@ -51,4 +52,7 @@ public class MainMenuController {
         new ChatRoomMenu().start(LaunchMenu.getStage());
     }
 
+    public void onToMapMenu(MouseEvent mouseEvent) throws Exception{
+        new ClientMenu().start(LaunchMenu.getStage());
+    }
 }
