@@ -17,6 +17,7 @@ import model.Commands;
 import model.map.GameMap;
 import model.user.Password;
 import model.user.User;
+import view.main.MainMenu;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -193,7 +194,7 @@ public class ClientMenu extends Application implements Runnable {
         }
     }
     
-    public void back (MouseEvent mouseEvent) {
-        //todo: back implementation.
+    public void back (MouseEvent mouseEvent) throws Exception{
+        new MainMenu().start(LaunchMenu.getStage());
     }
 }
