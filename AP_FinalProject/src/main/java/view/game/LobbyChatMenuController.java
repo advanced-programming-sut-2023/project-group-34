@@ -223,7 +223,7 @@ public class LobbyChatMenuController implements Initializable {
     public void sendNewMessage(MouseEvent mouseEvent) {
         if (!textMessage.getText().isEmpty()) {
             currentChat.getMessages().add(new Message(textMessage.getText(), User.currentUser));
-            sendCurrentChat();
+            //sendCurrentChat();
             textMessage.setPromptText("Enter your Message");
             show++;
             displayMessages(currentChat);
@@ -479,7 +479,7 @@ public class LobbyChatMenuController implements Initializable {
                 if (alert.getButtonTypes().get(0) == ButtonType.OK) {
                     stage.close();
                     currentChat.getMessages().remove(finalMessage);
-                    sendCurrentChat();
+                    //sendCurrentChat();
                     show--;
                     displayMessages(currentChat);
                 }
@@ -500,7 +500,7 @@ public class LobbyChatMenuController implements Initializable {
                     alert.setContentText("Message Edited Successfully");
                     alert.showAndWait();
                     finalMessage.setMessage(textField.getText());
-                    sendCurrentChat();
+                    //sendCurrentChat();
                     displayMessages(currentChat);
                 }
             }

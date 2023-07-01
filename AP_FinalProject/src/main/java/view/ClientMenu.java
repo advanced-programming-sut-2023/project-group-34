@@ -47,7 +47,7 @@ public class ClientMenu extends Application implements Runnable {
     @Override
     public void run () {
         System.out.println("Enter your username:");
-        user = new User("","",new Password("") , "", "");//todo: Give current user to this field!
+        user = User.currentUser;
 //        user.maps.add(new GameMap("map1", user));
 //        user.maps.add(new GameMap("map4", user));
 //        user.maps.add(new GameMap("map6", user));
@@ -55,7 +55,7 @@ public class ClientMenu extends Application implements Runnable {
             Socket socket = new Socket("localhost", 8080);
             outputStream = new DataOutputStream(socket.getOutputStream());
             inputStream = new DataInputStream(socket.getInputStream());
-            outputStream.writeUTF(user.toJson());
+            //outputStream.writeUTF(user.toJson());
 //            handleInput();
         } catch (IOException e) {
             throw new RuntimeException(e);

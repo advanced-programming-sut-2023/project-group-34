@@ -25,7 +25,7 @@ public class Connection extends Thread {
     @Override
     public void run () {
         try {
-            user = ServerHandler.serverHandler.referenceToNewlyAddedUser(getUserFromInputStream());
+            //user = ServerHandler.serverHandler.referenceToNewlyAddedUser(getUserFromInputStream());
             String data;
             Matcher matcher;
             while (true) {
