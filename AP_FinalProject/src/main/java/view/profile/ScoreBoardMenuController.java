@@ -129,7 +129,6 @@ public class ScoreBoardMenuController implements Initializable {
             }
         });
     }
-
     private void getUsers(Type type) {
         ArrayList<User> allUsers;
         try {
