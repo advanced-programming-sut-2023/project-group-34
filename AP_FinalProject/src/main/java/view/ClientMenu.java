@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Commands;
 import model.map.GameMap;
+import model.user.Password;
 import model.user.User;
 
 import java.io.DataInputStream;
@@ -44,7 +45,7 @@ public class ClientMenu extends Application implements Runnable {
     @Override
     public void run () {
         System.out.println("Enter your username:");
-//        user = new User(scanner.nextLine());todo: Give current user to this field!
+        user = new User("","",new Password("") , "", "");//todo: Give current user to this field!
 //        user.maps.add(new GameMap("map1", user));
 //        user.maps.add(new GameMap("map4", user));
 //        user.maps.add(new GameMap("map6", user));

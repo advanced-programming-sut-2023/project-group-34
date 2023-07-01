@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.view.ClientMenu"
+      fx:controller="view.ClientMenu"
       prefHeight="900.0" prefWidth="1360.0"
       minWidth="1360"
       stylesheets="@../CSS/style.css"
