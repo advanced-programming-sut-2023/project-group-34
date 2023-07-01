@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.game.CreatingLobbyController"
+            styleClass="BackGroundRegister"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            prefHeight="300.0" prefWidth="200.0">
+
+    <TextField promptText="Name" layoutX="40" layoutY="50" fx:id="lobbyName"/>
+    <Button text="2 Players" layoutX="5" layoutY="130" onMouseClicked="#makeLobbyForTwo"/>
+    <Button text="3 Players" layoutX="105" layoutY="130" onMouseClicked="#makeLobbyForThree"/>
+    <Button text="4 Players" layoutX="205" layoutY="130" onMouseClicked="#makeLobbyForFour"/>
+
+</AnchorPane>

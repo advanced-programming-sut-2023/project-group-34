@@ -5,15 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import view.profile.AvatarMenu;
 
 import java.net.URL;
 
-public class SelectPlayersMenu extends Application {
+public class LobbyMenu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        URL url = SelectPlayersMenu.class.getResource("/FXML/selectPlayers.fxml");
+        URL url = LobbyMenu.class.getResource("/FXML/lobbyMenu.fxml");
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane);
         stage.setScene(scene);

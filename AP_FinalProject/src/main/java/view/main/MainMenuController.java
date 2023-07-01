@@ -1,17 +1,21 @@
 package view.main;
 
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.user.User;
 import view.ClientMenu;
 import view.LaunchMenu;
-import view.game.SelectPlayersMenu;
-import view.game.shop.ShopMenu;
+import view.game.LobbyMenu;
 import view.profile.ProfileMenu;
 import view.starter.RegisterAndLoginMenu;
 
+import java.net.URL;
 import java.util.Optional;
 
 public class MainMenuController {
@@ -45,7 +49,13 @@ public class MainMenuController {
     }
 
     public void selectingPlayers(MouseEvent mouseEvent) throws Exception{
-        new SelectPlayersMenu().start(LaunchMenu.getStage());
+        Stage stage = new Stage();
+        URL url = ProfileMenu.class.getResource("/FXML/creatingLobby.fxml");
+        Pane pane = FXMLLoader.load(url);
+        Scene scene = new Scene(pane, 300, 200);
+        stage.setScene(scene);
+        stage.initOwner(LaunchMenu.getStage());
+        stage.show();
     }
 
     public void onToChatRoom(MouseEvent mouseEvent) throws Exception {
