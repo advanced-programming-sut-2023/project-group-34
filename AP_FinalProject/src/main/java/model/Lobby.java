@@ -1,5 +1,6 @@
 package model;
 
+import model.messenger.Group;
 import model.user.User;
 
 import java.util.ArrayList;
@@ -13,9 +14,13 @@ public class Lobby {
 
     public static int counter = 0;
     private final int ID;
-    public Lobby(int numberOfPlayers) {
+    private final String name;
+    private final Group group;
+    public Lobby(int numberOfPlayers, String name) {
         this.numberOfPlayers = numberOfPlayers;
+        this.name = name;
         ID = ++counter;
+        group = new Group(name);
     }
 
     public int getNumberOfPlayers() {
@@ -24,6 +29,7 @@ public class Lobby {
 
     public void addPlayer(User user) {
         players.add(user);
+        group.getUsers().add(user);
     }
     public ArrayList<User> getPlayers() {
         return players;
@@ -43,5 +49,13 @@ public class Lobby {
     public User getAdmin() {
         if(players.isEmpty()) return null;
         return players.get(0);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 }

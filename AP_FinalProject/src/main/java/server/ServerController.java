@@ -2,6 +2,7 @@ package server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import model.Lobby;
 import model.friendshiprequest.FriendshipRequest;
 import model.friendshiprequest.RequestTypes;
 import model.messenger.Chat;
@@ -16,14 +17,68 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServerController {
+
+    public static void getLobby(Matcher matcher , Connection connection) throws IOException {
+        int id = Integer.parseInt(matcher.group("id"));
+        Lobby toBeSend = null;
+        for(Lobby lobby : Server.dataBase.getLobbies()) {
+            if(lobby.getID() == id) toBeSend = lobby;
+        }
+        connection.getDataOutputStream().writeUTF(new Gson().toJson(toBeSend));
+    }
+    public static Lobby getLobbyById(int id) {
+        for(Lobby lobby : Server.dataBase.getLobbies()) {
+            if(lobby.getID() == id) return lobby;
+        }
+        return null;
+    }
+    public static void getLobbies(Connection connection) throws IOException {
+        ArrayList<Lobby> lobbies = new ArrayList<>(Server.dataBase.getLobbies());
+        connection.getDataOutputStream().writeUTF(new Gson().toJson(lobbies));
+    }
+    public static void startGame(Matcher matcher , Connection connection) throws IOException {
+        int id = Integer.parseInt(matcher.group("id"));
+        Socket socket = new Socket("localhost" , 8090);
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        Lobby lobby = getLobbyById(id);
+        if(lobby == null) throw new RuntimeException("Failed during starting game (lobby does not exits)");
+        dataOutputStream.writeUTF(new Gson().toJson(lobby.getPlayers()));
+        Server.dataBase.getLobbies().remove(lobby);
+    }
+    public static void joinLobby(Matcher matcher) {
+        int id = Integer.parseInt(matcher.group("id"));
+        String username = matcher.group("username");
+        User user = getUser(username);
+        if(user == null) throw new RuntimeException("Failed during joining lobby (user not found)");
+        Lobby lobby = getLobbyById(id);
+        if(lobby == null) throw new RuntimeException("Failed during joining lobby (lobby does not exits)");
+        lobby.addPlayer(user);
+    }
+    public static void deleteLobby(Matcher matcher) {
+        int id = Integer.parseInt(matcher.group("id"));
+        Lobby lobby = getLobbyById(id);
+        if(lobby == null) throw new RuntimeException("Failed during deleting lobby (lobby does not exits)");
+        if(lobby.getPlayers().isEmpty()) Server.dataBase.getLobbies().remove(lobby);
+    }
+    public static void changeLobby(Matcher matcher) {
+        String status = matcher.group("status");
+        int id = Integer.parseInt(matcher.group("id"));
+        Lobby lobby = getLobbyById(id);
+        if(lobby == null) throw new RuntimeException("Failed during changing lobby (lobby does not exits)");
+        switch (status) {
+            case "private" -> lobby.setPrivate(true);
+            case "public" -> lobby.setPrivate(false);
+        }
+    }
 
     public static void sendRequest(Matcher matcher, Connection connection) {
         String username = matcher.group("username");
         User receiver = getUser(username);
-        assert receiver != null;
         User sender = Server.dataBase.getSocketUserHashMap().get(connection.getSocket());
+        assert receiver != null;
         assert sender != null;
         Server.dataBase.getRequests().add(new FriendshipRequest(sender, receiver));
     }
@@ -32,7 +87,14 @@ public class ServerController {
         User user = Server.dataBase.getSocketUserHashMap().get(connection.getSocket());
         assert user != null;
         ArrayList<FriendshipRequest> result = new ArrayList<>();
-        for (FriendshipRequest request : Server.dataBase.getRequests()) {
+        ArrayList<FriendshipRequest> requests = Server.dataBase.getRequests();
+        for (int i = requests.size() - 1; i >= 0; i--) {
+            FriendshipRequest request = requests.get(i);
+            if(request.getReceiver() == null) {
+                System.out.println("FUck");
+                Server.dataBase.getRequests().remove(request);
+                continue;
+            }
             if (request.getSender().getName().equals(user.getName()) || request.getReceiver().getName().equals(user.getName())) {
                 result.add(request);
             }
@@ -118,23 +180,8 @@ public class ServerController {
     }
 
     public static void getUsers(Connection connection) throws IOException {
-//        ArrayList<User> users = new ArrayList<>(Server.dataBase.getIsUserOnline().keySet());
-//        for(User user : users) {
-//            String time = Server.dataBase.getIsUserOnline().get(user);
-//            System.out.println(user.getName() + "  " + time +"  "+ Server.dataBase.getIsUserOnline().size());
-//            if(time.equals("just now")) {
-//                user.setStatus(true);
-//            }
-//            else user.setStatus(false);
-//            user.setLastSeen(time);
-//            user.setScore(new Random().nextInt(1000));
-//        }
-//        connection.getDataOutputStream().writeUTF(new Gson().toJson(users));
-        int counter = 0;
         ArrayList<User> users = new ArrayList<>();
         for (Map.Entry<User, String> entry : Server.dataBase.getIsUserOnline().entrySet()) {
-            System.out.println(++counter);
-            System.out.println(entry.getKey().getName() + "  " + entry.getValue());
             entry.getKey().setStatus(entry.getValue().equals("just now"));
             entry.getKey().setLastSeen(entry.getValue());
             if(!contains(users , entry.getKey()))
@@ -217,7 +264,7 @@ public class ServerController {
 
     public static boolean contains(ArrayList<User> users, User user) {
         for (User user1 : users) {
-//            if(user1 == null) continue;
+            if(user1 == null) continue;
             if (user1.getName().equals(user.getName()))
                 return true;
         }

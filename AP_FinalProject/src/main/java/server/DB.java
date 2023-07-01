@@ -1,5 +1,6 @@
 package server;
 
+import model.Lobby;
 import model.friendshiprequest.FriendshipRequest;
 import model.messenger.Chat;
 import model.messenger.Group;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 
 public class DB {
     private final ArrayList<Chat> chats = new ArrayList<>();
+    private final ArrayList<Lobby> lobbies = new ArrayList<>();
     private final HashMap<Socket , User> socketUserHashMap = new HashMap<>();
     private final HashMap<User , String> usersLastSeen = new HashMap<>();
     private final ArrayList<FriendshipRequest> requests = new ArrayList<>();
@@ -39,5 +41,9 @@ public class DB {
 
     public ArrayList<FriendshipRequest> getRequests() {
         return requests;
+    }
+
+    public ArrayList<Lobby> getLobbies() {
+        return lobbies;
     }
 }

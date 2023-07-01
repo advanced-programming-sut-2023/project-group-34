@@ -1,5 +1,7 @@
 package view.main;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +19,8 @@ import model.user.User;
 import view.LaunchMenu;
 import view.profile.changeAvatarInScoreBoardDialog;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -62,7 +66,13 @@ public class FriendshipMenuController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         requests.clear();
-        //TODO fills the requests with the data from server
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get requests");
+            Type type = new TypeToken<ArrayList<FriendshipRequest>>(){}.getType();
+            requests = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         avatar.setVisible(false);
         displayUsername.setVisible(false);
         displayNick.setVisible(false);
@@ -91,17 +101,27 @@ public class FriendshipMenuController implements Initializable {
             alert.initOwner(LaunchMenu.getStage());
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
+                int reqID = change.getList().get(0).getID();
                 change.getList().get(0).setRequestType(RequestTypes.ACCEPTED);
                 tableViewReceived.getItems().clear();
                 //TODO arshia should check this because it is causing an error but I don't know if it is necessary to deal with
                 tableViewReceived.getItems().addAll(parseReceivedList());
-                //TODO tell server that this request was accepted
+                try {
+                    LaunchMenu.dataOutputStream.writeUTF("answer request -id " + reqID + " -answer accepted");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else {
+                int reqID = change.getList().get(0).getID();
                 change.getList().get(0).setRequestType(RequestTypes.DENIED);
                 tableViewReceived.getItems().clear();
                 tableViewReceived.getItems().addAll(parseReceivedList());
-                //TODO tell server that this request was denied
+                try {
+                    LaunchMenu.dataOutputStream.writeUTF("answer request -id " + reqID + " -answer denied");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -132,10 +152,17 @@ public class FriendshipMenuController implements Initializable {
         displayScore.setVisible(false);
         displayEmail.setVisible(false);
 //        username
-        //TODO get the text from username and bring the user
         User user = null;
-        //TODO if the user does not exist set an error in usernameError and keep the fields invisible
-//        usernameError return
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get user -username " + username.getText());
+            user = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , User.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if(user == null) {
+            usernameError = new Text("username not found!");
+            return;
+        }
         avatar.setVisible(true);
         displayUsername.setVisible(true);
         displayNick.setVisible(true);
@@ -151,7 +178,11 @@ public class FriendshipMenuController implements Initializable {
     }
 
     public void sendFriendRequest(MouseEvent mouseEvent) {
-        //TODO send request to someone and add that request to the servers list, also the table showing sent requests has to be updated
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("send req -username " + username.getText());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void backToMain(MouseEvent mouseEvent) throws Exception{

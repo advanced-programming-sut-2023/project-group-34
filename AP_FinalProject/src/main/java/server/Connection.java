@@ -98,6 +98,24 @@ public class Connection extends Thread {
         else if(ServerInputs.GET_REQUESTS.getMatcher(input).find()) {
             ServerController.getRequests(this);
         }
+        else if((matcher = ServerInputs.GET_LOBBY.getMatcher(input)).find()) {
+            ServerController.getLobby(matcher , this);
+        }
+        else if((matcher = ServerInputs.GET_LOBBIES.getMatcher(input)).find()) {
+            ServerController.getLobbies(this);
+        }
+        else if((matcher = ServerInputs.START_GAME.getMatcher(input)).find()) {
+            ServerController.startGame(matcher , this);
+        }
+        else if((matcher = ServerInputs.JOIN_LOBBY.getMatcher(input)).find()) {
+            ServerController.joinLobby(matcher);
+        }
+        else if((matcher = ServerInputs.DELETE_LOBBY.getMatcher(input)).find()) {
+            ServerController.deleteLobby(matcher);
+        }
+        else if((matcher = ServerInputs.CHANGE_LOBBY_STATUS.getMatcher(input)).find()) {
+            ServerController.changeLobby(matcher);
+        }
         else
             throw new IOException("wrong command");
     }

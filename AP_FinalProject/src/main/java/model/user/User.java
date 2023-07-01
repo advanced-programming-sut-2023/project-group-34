@@ -293,7 +293,6 @@ public class User {
             return "online";
         else
             return "offline";
-        //TODO check with the server if the user is online
     }
 
     public void setStatus(boolean status) {
@@ -302,7 +301,6 @@ public class User {
 
     public String getLastSeen() {
         return lastSeen;
-        //TODO check with the server to get the last seen
     }
 
     public void setLastSeen(String lastSeen) {

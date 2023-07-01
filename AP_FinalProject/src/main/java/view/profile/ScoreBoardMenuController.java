@@ -56,24 +56,27 @@ public class ScoreBoardMenuController implements Initializable {
         tableScroll.setContent(tableView);
         TableView.TableViewSelectionModel<User> selectionModel = tableView.getSelectionModel();
         ObservableList<User> selectedItems = selectionModel.getSelectedItems();
-        selectedItems.addListener(new ListChangeListener<User>() {
-            @Override
-            public void onChanged(Change<? extends User> change) {
-                Dialog<ButtonType> changePassDialog = new changeAvatarInScoreBoardDialog
-                        (change.getList().get(0).getAvatarLink());
-                changePassDialog.initOwner(LaunchMenu.getStage());
-                Optional<ButtonType> result = changePassDialog.showAndWait();
-                if (result.get() == ButtonType.CANCEL)
-                    changePassDialog.close();
-                else if (result.get().getText().equals("Friend Request")){
-                    //TODO send a new friend request from the current user to change.getList().get(0).getName
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Change Avatar");
-                    alert.setContentText("Avatar changed successfully!");
-                    alert.initOwner(LaunchMenu.getStage());
-                    alert.showAndWait();
+        selectedItems.addListener((ListChangeListener<User>) change -> {
+            Dialog<ButtonType> changePassDialog = new changeAvatarInScoreBoardDialog
+                    (change.getList().get(0).getAvatarLink());
+            changePassDialog.initOwner(LaunchMenu.getStage());
+            Optional<ButtonType> result = changePassDialog.showAndWait();
+            if (result.get() == ButtonType.CANCEL) {
+                changePassDialog.close();
+            }
+            else if (result.get().getText().equals("Friend Request")){
+                System.out.println("FFFFF");
+                try {
+                    LaunchMenu.dataOutputStream.writeUTF("send req -username " + change.getList().get(0).getName());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Change Avatar");
+                alert.setContentText("Avatar changed successfully!");
+                alert.initOwner(LaunchMenu.getStage());
+                alert.showAndWait();
             }
         });
         updater = new Thread(() -> {
@@ -86,7 +89,7 @@ public class ScoreBoardMenuController implements Initializable {
                 tableView.getItems().setAll(parseUserList());
             }
         });
-        updater.start();
+//        updater.start();
     }
 
     private ArrayList<User> parseUserList() {

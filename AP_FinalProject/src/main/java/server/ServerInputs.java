@@ -16,6 +16,13 @@ public enum ServerInputs {
     SEND_FRIEND_REQUEST("send req -username (?<username>\\S+)"),
     GET_REQUESTS("get requests"),
     ANSWER_REQUEST("answer request -id (?<id>\\d+) -answer (?<answer>\\w+)"),
+    GET_LOBBIES("get lobbies"),
+    GET_LOBBY("get lobby -id (?<id>\\d+)"),
+    START_GAME("start game -id (?<id>\\d+)"),
+    JOIN_LOBBY("join lobby -id (?<id>\\d+) -username (?<username>\\w+)"),
+    DELETE_LOBBY("delete lobby -id (?<id>\\d+)"),
+    CHANGE_LOBBY_STATUS("change lobby -id (?<id>\\d+) (?<status>\\w+)"),
+
     GET_CHATS("get chats");
 
     private final String input;
