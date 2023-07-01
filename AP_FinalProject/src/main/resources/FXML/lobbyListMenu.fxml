@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.main.LobbyListMenuController"
+            styleClass="BackGroundRegister"
+            stylesheets="@../CSS/scoreBoardStyle.css"
+            prefHeight="Infinity" prefWidth="Infinity">
+    <Label text="Lobby List" layoutY="60" layoutX="650" style="-fx-text-fill: gold; -fx-font-family: Bahnschrift;
+        -fx-font-style: oblique; -fx-font-size: 45px; -fx-font-weight: bold;"/>
+    <TextField fx:id="lobbyName" layoutX="750" layoutY="180" promptText="lobby name"/>
+    <Button text="Search" layoutX="1050" layoutY="190" onMouseClicked="#lookForLobby"/>
+    <Button text="Join" fx:id="joinButton" layoutX="810" layoutY="280" onMouseClicked="#joinTheLobby"/>
+    <Text styleClass="errorHandling" fx:id="lobbyError"  layoutX="810" layoutY="240"/>
+
+    <TableView fx:id="tableView" prefWidth="400" prefHeight="300" layoutX="630" layoutY="350">
+        <columns>
+            <TableColumn prefWidth="100.0" text="name" fx:id= "name" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="players" fx:id="players" styleClass="label1" />
+            <TableColumn prefWidth="100.0" text="status" fx:id="status" styleClass="label1"/>
+            <TableColumn prefWidth="100.0" text="capacity" fx:id="capacity" styleClass="label1"/>
+        </columns>
+    </TableView>
+
+    <Button text="Refresh" layoutY="700" layoutX="720" onMouseClicked="#updateList"/>
+    <Button text="Back" layoutY="700" layoutX="820" onMouseClicked="#backToMain"/>
+
+</AnchorPane>
