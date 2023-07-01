@@ -20,7 +20,6 @@ module AP.FinalProject {
     exports model.friendshiprequest;
 
 
-    opens model to javafx.fxml, com.google.gson;
     opens model.friendshiprequest to javafx.fxml,com.google.gson;
     opens model.user to com.google.gson, javafx.fxml, javafx.base;
     opens model.enums to com.google.gson;
@@ -39,4 +38,5 @@ module AP.FinalProject {
     opens view.game.trade to javafx.fxml;
     opens view.game.shop to javafx.fxml;
     opens view.game to javafx.fxml;
+    opens model to com.google.gson, javafx.base, javafx.fxml;
 }

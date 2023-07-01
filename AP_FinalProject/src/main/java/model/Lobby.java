@@ -1,4 +1,6 @@
-package model.user;
+package model;
+
+import model.user.User;
 
 import java.util.ArrayList;
 
