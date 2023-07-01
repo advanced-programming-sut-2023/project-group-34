@@ -2,7 +2,6 @@ package model;
 
 import com.google.gson.JsonSyntaxException;
 import controller.ServerHandler;
-import model.map.GameMap;
 import model.user.User;
 
 import java.io.DataInputStream;
@@ -34,20 +33,20 @@ public class Connection extends Thread {
                     data = inputStream.readUTF();
                     if ((matcher = Commands.CLONE_MAP.getMatcher(data)) != null) {
                         String mapName = matcher.group("map");
-                        GameMap map = ServerHandler.serverHandler.getMapByName(mapName);
+                        String map = ServerHandler.serverHandler.getMapByName(mapName);
                         if (map == null) outputStream.writeUTF("fail");
-                        else outputStream.writeUTF(map.toJson());
+                        else outputStream.writeUTF(map);
                     } else if (data.equals("info")) {
                         StringBuilder result = new StringBuilder();
                         boolean notFirstTime = false;
-                        for (GameMap map : ServerHandler.serverHandler.getMaps()) {
+                        for (String map : ServerHandler.serverHandler.getMaps()) {
                             if (notFirstTime) result.append("\n");
                             else notFirstTime = true;
-                            result.append(map.name);
+                            result.append(map);
                         }
                         outputStream.writeUTF(result.toString());
                     } else {
-                        outputStream.writeUTF(ServerHandler.serverHandler.addNewMap(GameMap.jsonToGameMap(data)).text);
+                        outputStream.writeUTF(ServerHandler.serverHandler.addNewMap(data).text);
                     }
                 }
             }

@@ -120,7 +120,7 @@ public class ClientMenu extends Application implements Runnable {
                     outputStream.writeUTF("clone " + map);
                     String received = inputStream.readUTF();
                     if (received.equals("fail")) return;
-                    GameMap gameMap = GameMap.jsonToGameMap(received);
+                    GameMap gameMap = new GameMap(received);
                     if (user.getMapByName(gameMap.name) != null) return;
                     user.getCustomMaps().add(gameMap);
                     user.getReceivedMapsNames().add(gameMap.name);
@@ -146,7 +146,7 @@ public class ClientMenu extends Application implements Runnable {
             }
             imageView.setOnMouseClicked(mouseEvent -> {
                 try {
-                    outputStream.writeUTF(map.toJson());
+                    outputStream.writeUTF(map.name);
                     if (inputStream.readUTF().equals("Success!")) refreshSharedMaps();
                 } catch (IOException e) {
                     throw new RuntimeException(e);

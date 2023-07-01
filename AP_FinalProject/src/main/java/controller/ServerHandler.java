@@ -1,6 +1,5 @@
 package controller;
 
-import model.map.GameMap;
 import model.Messages;
 import model.user.User;
 
@@ -9,27 +8,22 @@ import java.util.ArrayList;
 public class ServerHandler {
     public static ServerHandler serverHandler = new ServerHandler();
     private final ArrayList<User> users = new ArrayList<>();
-    private final ArrayList<GameMap> maps = new ArrayList<>();
+    private final ArrayList<String> maps = new ArrayList<>();
     
-    private boolean isTheMapAdded (GameMap map) {
-        for (GameMap gameMap : maps) {
-            if (gameMap.equals(map)) return true;
-        }
-        return false;
+    private boolean isTheMapAdded (String mapName) {
+        return maps.contains(mapName);
     }
     
     public ArrayList<User> getUsers () {
         return users;
     }
     
-    public ArrayList<GameMap> getMaps () {
+    public ArrayList<String> getMaps () {
         return maps;
     }
     
-    public GameMap getMapByName (String name) {
-        for (GameMap map : maps) {
-            if (map.name.equals(name)) return map;
-        }
+    public String getMapByName (String name) {
+        if (maps.contains(name)) return name;
         return null;
     }
     
@@ -41,7 +35,7 @@ public class ServerHandler {
         return addingUser;
     }
     
-    public Messages addNewMap (GameMap map) {
+    public Messages addNewMap (String map) {
         if (isTheMapAdded(map)) return Messages.MAP_ALREADY_ADDED;
         maps.add(map);
         //todo: graphical changes!
