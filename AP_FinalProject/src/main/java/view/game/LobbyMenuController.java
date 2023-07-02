@@ -142,4 +142,7 @@ public class LobbyMenuController implements Initializable {
     public void startGame(MouseEvent mouseEvent) {
 
     }
+
+    public void refresh(MouseEvent mouseEvent) {
+    }
 }
