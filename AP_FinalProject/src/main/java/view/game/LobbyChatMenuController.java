@@ -224,6 +224,7 @@ public class LobbyChatMenuController implements Initializable {
     }
 
 
+
     public void sendNewMessage(MouseEvent mouseEvent) {
         if (!textMessage.getText().isEmpty()) {
             currentChat.getMessages().add(new Message(textMessage.getText(), User.currentUser));
@@ -520,6 +521,7 @@ public class LobbyChatMenuController implements Initializable {
                 displayMessages(currentChat);
             }
 
+            }
         });
 
         edit.setOnAction(new EventHandler<ActionEvent>() {
