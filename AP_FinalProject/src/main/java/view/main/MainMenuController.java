@@ -68,4 +68,8 @@ public class MainMenuController {
     public void onToMapMenu(MouseEvent mouseEvent) throws Exception{
         new ClientMenu().start(LaunchMenu.getStage());
     }
+
+    public void onToLobbyList(MouseEvent mouseEvent) throws Exception{
+        new LobbyListMenu().start(LaunchMenu.getStage());
+    }
 }

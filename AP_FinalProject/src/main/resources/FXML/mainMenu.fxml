@@ -12,14 +12,15 @@
             stylesheets="@../CSS/menuStyle.css"
             styleClass="BackgroundMain"
             prefHeight="-Infinity" prefWidth="-Infinity">
-    <Label text="Main Menu" layoutX="175" layoutY="80"/>
-    <Button text="New Game" layoutX="170" layoutY="170" minWidth="250" minHeight="40" onMouseClicked="#selectingPlayers"/>
-    <Button text="Profile" layoutX="170" layoutY="260" minWidth="250" minHeight="40" onMouseClicked="#onToProfileMenu"/>
-    <Button text="Map Menu" layoutX="170" layoutY="350" minWidth="250" minHeight="40" onMouseClicked="#onToMapMenu"/>
-    <Button text="Chatroom" layoutX="170" layoutY="440" minWidth="250" minHeight="40" onMouseClicked="#onToChatRoom"/>
-    <Button text="Friendship" layoutX="170" layoutY="530" minWidth="250" minHeight="40" onMouseClicked="#onToFriendship"/>
-    <Button text="Logout" layoutX="170" layoutY="620" minWidth="250" minHeight="40" onMouseClicked="#logout"/>
-    <Button text="Quit Game" layoutX="170" layoutY="710" minWidth="250" minHeight="40" onMouseClicked="#quitGame"/>
+    <Label text="Main Menu" layoutX="175" layoutY="40"/>
+    <Button text="New Game" layoutX="170" layoutY="130" minWidth="250" minHeight="40" onMouseClicked="#selectingPlayers"/>
+    <Button text="Profile" layoutX="170" layoutY="220" minWidth="250" minHeight="40" onMouseClicked="#onToProfileMenu"/>
+    <Button text="Map Menu" layoutX="170" layoutY="310" minWidth="250" minHeight="40" onMouseClicked="#onToMapMenu"/>
+    <Button text="Chatroom" layoutX="170" layoutY="400" minWidth="250" minHeight="40" onMouseClicked="#onToChatRoom"/>
+    <Button text="Friendship" layoutX="170" layoutY="490" minWidth="250" minHeight="40" onMouseClicked="#onToFriendship"/>
+    <Button text="Lobby" layoutX="170" layoutY="580" minWidth="250" minHeight="40" onMouseClicked="#onToLobbyList"/>
+    <Button text="Logout" layoutX="170" layoutY="670" minWidth="250" minHeight="40" onMouseClicked="#logout"/>
+    <Button text="Quit Game" layoutX="170" layoutY="760" minWidth="250" minHeight="40" onMouseClicked="#quitGame"/>
 
 
 </Pane>
