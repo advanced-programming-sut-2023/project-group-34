@@ -65,7 +65,6 @@ public class ScoreBoardMenuController implements Initializable {
                 changePassDialog.close();
             }
             else if (result.get().getText().equals("Friend Request")){
-                System.out.println("FFFFF");
                 try {
                     LaunchMenu.dataOutputStream.writeUTF("send req -username " + change.getList().get(0).getName());
                 } catch (IOException e) {
@@ -89,7 +88,7 @@ public class ScoreBoardMenuController implements Initializable {
                 tableView.getItems().setAll(parseUserList());
             }
         });
-//        updater.start();
+        updater.start();
     }
 
     private ArrayList<User> parseUserList() {

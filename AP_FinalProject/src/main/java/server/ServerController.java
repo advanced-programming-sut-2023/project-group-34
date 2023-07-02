@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ServerController {
 
@@ -45,25 +44,41 @@ public class ServerController {
     }
     public static void getLobbies(Connection connection) throws IOException {
         ArrayList<Lobby> lobbies = new ArrayList<>(Server.dataBase.getLobbies());
+        for (int i = lobbies.size() - 1; i >= 0; i--) {
+            Lobby lobby = lobbies.get(i);
+            if(lobby.getPlayers().isEmpty()) {
+                lobbies.remove(lobby);
+                Server.dataBase.getLobbies().remove(lobby);
+            }
+        }
         connection.getDataOutputStream().writeUTF(new Gson().toJson(lobbies));
     }
-    public static void startGame(Matcher matcher , Connection connection) throws IOException {
+    public static void startGame(Matcher matcher) throws IOException {
         int id = Integer.parseInt(matcher.group("id"));
+        Lobby lobby = getLobbyById(id);
+        startGame(lobby);
+    }
+    public static void startGame(Lobby lobby) throws IOException {
         Socket socket = new Socket("localhost" , 8090);
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        Lobby lobby = getLobbyById(id);
         if(lobby == null) throw new RuntimeException("Failed during starting game (lobby does not exits)");
         dataOutputStream.writeUTF(new Gson().toJson(lobby.getPlayers()));
         Server.dataBase.getLobbies().remove(lobby);
     }
-    public static void joinLobby(Matcher matcher) {
+    public static void joinLobby(Matcher matcher) throws IOException {
         int id = Integer.parseInt(matcher.group("id"));
         String username = matcher.group("username");
         User user = getUser(username);
         if(user == null) throw new RuntimeException("Failed during joining lobby (user not found)");
         Lobby lobby = getLobbyById(id);
         if(lobby == null) throw new RuntimeException("Failed during joining lobby (lobby does not exits)");
+        for(User user1 : lobby.getPlayers()) {
+            if(user1.getName().equals(user.getName())) return;
+        }
         lobby.addPlayer(user);
+        if(lobby.getPlayers().size() == lobby.getNumberOfPlayers()) {
+            startGame(lobby);
+        }
     }
     public static void deleteLobby(Matcher matcher) {
         int id = Integer.parseInt(matcher.group("id"));

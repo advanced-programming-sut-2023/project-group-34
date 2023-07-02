@@ -106,7 +106,7 @@ public class LobbyMenuController implements Initializable {
     public void setPrivate(MouseEvent mouseEvent) {
         currentLobby.setPrivate(true);
         try {
-            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currentLobby.getID() + " private");
+            LaunchMenu.dataOutputStream.writeUTF("change lobby -id " + currentLobby.getID() + " private");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -116,7 +116,7 @@ public class LobbyMenuController implements Initializable {
     public void setPublic(MouseEvent mouseEvent) {
         currentLobby.setPrivate(false);
         try {
-            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currentLobby.getID() + " public");
+            LaunchMenu.dataOutputStream.writeUTF("change lobby -id " + currentLobby.getID() + " public");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -140,6 +140,19 @@ public class LobbyMenuController implements Initializable {
 
     //TODO
     public void startGame(MouseEvent mouseEvent) {
-
+        if(!currentLobby.getAdmin().getName().equals(User.currentUser.getName())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR , "You are not the admin!");
+            alert.show();
+            return;
+        }
+        if(currentLobby.getPlayers().size() == 1) {
+            new Alert(Alert.AlertType.ERROR , "You can't play just by yourself go get a friend!").show();
+            return;
+        }
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("start game -id " + currentLobby.getID());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -62,16 +62,17 @@ public class LobbyListMenuController implements Initializable {
         TableView.TableViewSelectionModel<Lobby> selectionModel = tableView.getSelectionModel();
         ObservableList<Lobby> selectedItems = selectionModel.getSelectedItems();
         selectedItems.addListener((ListChangeListener<Lobby>) change -> {
-            if (!change.getList().get(0).isPrivate()){
+            if (!change.getList().get(0).isPrivate()) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.initOwner(LaunchMenu.getStage());
                 alert.setHeaderText("Joining Lobby");
                 alert.setContentText("Are you sure you want to join this lobby?");
-                alert.showAndWait();
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK){
-                    setCurrentLobbyWithLobbyName();
+                if (result.get() == ButtonType.OK) {
                     try {
+                        LaunchMenu.dataOutputStream.writeUTF("get lobby -id " + change.getList().get(0).getID());
+                        LobbyMenuController.currentLobby = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF(), Lobby.class);
+                        LaunchMenu.dataOutputStream.writeUTF("join lobby -id " + LobbyMenuController.currentLobby.getID() + " -username " + User.currentUser.getName());
                         new LobbyMenu().start(LaunchMenu.getStage());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -81,12 +82,12 @@ public class LobbyListMenuController implements Initializable {
         });
 
 
-
     }
+
     public void setCurrentLobbyWithLobbyName() {
         try {
-            LaunchMenu.dataOutputStream.writeUTF("get lobby -id " + lobbyName);
-            LobbyMenuController.currentLobby = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , Lobby.class);
+            LaunchMenu.dataOutputStream.writeUTF("get lobby -id " + lobbyName.getText());
+            LobbyMenuController.currentLobby = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF(), Lobby.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,8 +96,9 @@ public class LobbyListMenuController implements Initializable {
     private ArrayList<Lobby> parseUserList() {
         try {
             LaunchMenu.dataOutputStream.writeUTF("get lobbies");
-            Type type = new TypeToken<ArrayList<Lobby>>(){}.getType();
-            lobbies = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , type);
+            Type type = new TypeToken<ArrayList<Lobby>>() {
+            }.getType();
+            lobbies = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF(), type);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -107,13 +109,13 @@ public class LobbyListMenuController implements Initializable {
         lobbyError.setText("");
         joinButton.setVisible(false);
         setCurrentLobbyWithLobbyName();
-        if(LobbyMenuController.currentLobby == null) {
+        if (LobbyMenuController.currentLobby == null) {
             lobbyError.setText("No lobby found!");
         }
         joinButton.setVisible(true);
     }
 
-    public void backToMain(MouseEvent mouseEvent) throws Exception{
+    public void backToMain(MouseEvent mouseEvent) throws Exception {
         new MainMenu().start(LaunchMenu.getStage());
     }
 
@@ -122,8 +124,9 @@ public class LobbyListMenuController implements Initializable {
         tableView.getItems().setAll(parseUserList());
     }
 
-    public void joinTheLobby(MouseEvent mouseEvent) throws Exception{
-        //TODO set currentLobby in lobbyMenu to the lobby given in lobbyName and start a a new page
+    public void joinTheLobby(MouseEvent mouseEvent) throws Exception {
+        setCurrentLobbyWithLobbyName();
+        LaunchMenu.dataOutputStream.writeUTF("join lobby -id " + LobbyMenuController.currentLobby.getID() + " -username " + User.currentUser.getName());
         new LobbyMenu().start(LaunchMenu.getStage());
     }
 }

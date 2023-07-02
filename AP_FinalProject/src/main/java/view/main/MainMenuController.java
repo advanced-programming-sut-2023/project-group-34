@@ -40,6 +40,7 @@ public class MainMenuController {
             User.currentUser = null;
             User.currentUserJsonSaver();
             User.updateDataBase();
+            LaunchMenu.dataOutputStream.writeUTF("user logout");
             new RegisterAndLoginMenu().start(LaunchMenu.getStage());
         }
     }

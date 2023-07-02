@@ -32,7 +32,10 @@ public class Lobby {
         players.add(user);
         group.getUsers().add(user);
     }
-
+    public void removePlayer(User user) {
+        players.remove(user);
+        group.getUsers().remove(user);
+    }
     public ArrayList<User> getPlayers() {
         return players;
     }
