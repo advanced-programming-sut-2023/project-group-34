@@ -24,9 +24,6 @@ public class LobbyMenuController implements Initializable {
 
     @FXML
     private Label lobbyId;
-
-    public Lobby currnetLobby;
-
     @FXML
     private Rectangle avatar1;
     @FXML
@@ -60,7 +57,8 @@ public class LobbyMenuController implements Initializable {
         hideNames();
         hideAvatars();
         lobbyId.setText(lobbyId.getText() + currentLobby.getID());
-        if (currnetLobby.isPrivate())
+        
+        if (currentLobby != null && currentLobby.isPrivate())
             lobbyStatus.setText("Private");
         else lobbyStatus.setText("Public");
         showPlayers();
@@ -106,9 +104,9 @@ public class LobbyMenuController implements Initializable {
         name4.setVisible(false);
     }
     public void setPrivate(MouseEvent mouseEvent) {
-        currnetLobby.setPrivate(true);
+        currentLobby.setPrivate(true);
         try {
-            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currnetLobby.getID() + " private");
+            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currentLobby.getID() + " private");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -116,9 +114,9 @@ public class LobbyMenuController implements Initializable {
     }
 
     public void setPublic(MouseEvent mouseEvent) {
-        currnetLobby.setPrivate(false);
+        currentLobby.setPrivate(false);
         try {
-            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currnetLobby.getID() + " public");
+            LaunchMenu.dataOutputStream.writeUTF("change lobby " + currentLobby.getID() + " public");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -128,10 +126,10 @@ public class LobbyMenuController implements Initializable {
     public void showPlayers(){
         hideAvatars();
         hideNames();
-        for (int i = 0 ; i < currnetLobby.getPlayers().size(); i++){
-            avatars.get(i).setFill(new ImagePattern(new Image(currnetLobby.getPlayers().get(i).getAvatarLink())));
+        for (int i = 0 ; i < currentLobby.getPlayers().size(); i++){
+            avatars.get(i).setFill(new ImagePattern(new Image(currentLobby.getPlayers().get(i).getAvatarLink())));
             avatars.get(i).setVisible(true);
-            names.get(i).setText(currnetLobby.getPlayers().get(i).getName());
+            names.get(i).setText(currentLobby.getPlayers().get(i).getName());
             names.get(i).setVisible(true);
         }
     }

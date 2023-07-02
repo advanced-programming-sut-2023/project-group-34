@@ -99,7 +99,6 @@ public class ServerController {
         for (int i = requests.size() - 1; i >= 0; i--) {
             FriendshipRequest request = requests.get(i);
             if(request.getReceiver() == null) {
-                System.out.println("FUck");
                 Server.dataBase.getRequests().remove(request);
                 continue;
             }

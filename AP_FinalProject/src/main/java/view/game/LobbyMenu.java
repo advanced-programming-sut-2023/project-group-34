@@ -13,6 +13,7 @@ public class LobbyMenu extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         URL url = LobbyMenu.class.getResource("/FXML/lobbyMenu.fxml");
+        assert url != null;
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
