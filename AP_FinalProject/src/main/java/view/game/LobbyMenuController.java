@@ -155,4 +155,7 @@ public class LobbyMenuController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+    public void refresh(MouseEvent mouseEvent) {
+    }
 }
