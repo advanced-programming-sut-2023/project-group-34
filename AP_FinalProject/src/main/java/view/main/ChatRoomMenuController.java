@@ -278,12 +278,12 @@ public class ChatRoomMenuController implements Initializable {
                             try {
                                 Thread.sleep(2000);
                             } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
+                                System.out.println("sleep interrupted");
                             }
                         }
                     });
                 }
-                thread.start();
+//                thread.start();
                 displayMessages(change.getList().get(0));
             }
         });
@@ -606,7 +606,6 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void privateTable(MouseEvent mouseEvent) {
-        //TODO this part might have to be checked
         tableView1.getItems().clear();
         chatName1.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableView1.getItems().setAll(parseUserListPrivate());
@@ -614,7 +613,6 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void groupTable(MouseEvent mouseEvent) {
-        //TODO this part might have to be checked
         tableView1.getItems().clear();
         chatName1.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableView1.getItems().setAll(parseUserListGroup());
@@ -713,8 +711,7 @@ public class ChatRoomMenuController implements Initializable {
         URL url = ProfileMenu.class.getResource("/FXML/messageOptions.fxml");
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane, 300, 200);
-        int index = (int) (((y - 150) / 53)) + show - 10;
-
+        int index = (int) (((y - 100) / 53)) + show - 10;
         Rectangle like = new Rectangle();
         Rectangle dislike = new Rectangle();
         Rectangle laugh = new Rectangle();
@@ -724,12 +721,9 @@ public class ChatRoomMenuController implements Initializable {
         dislike.setHeight(45);
         laugh.setWidth(45);
         laugh.setHeight(45);
-
         makeRectangle(pane, like, 60, 60, "like", index);
         makeRectangle(pane, dislike, 120, 60, "dislike", index);
         makeRectangle(pane, laugh, 180, 60, "laugh", index);
-
-
         stage.setScene(scene);
         stage.initOwner(LaunchMenu.getStage());
         stage.show();

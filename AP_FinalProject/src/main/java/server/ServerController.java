@@ -165,7 +165,10 @@ public class ServerController {
         PrivateChat privateChat = new PrivateChat();
         for (String username : users) {
             User user = getUser(username);
-            if (user != null) privateChat.getUsers().add(user);
+            if (user != null) {
+                privateChat.getUsers().add(user);
+                System.out.println("FFFF");
+            }
         }
     }
 

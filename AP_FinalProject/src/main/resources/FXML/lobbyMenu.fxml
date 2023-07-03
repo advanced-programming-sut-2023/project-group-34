@@ -33,7 +33,7 @@
     <Button text="back" layoutX="800" layoutY="680" onMouseClicked="#backToMain"/>
     <Button text="Start Game" layoutX="870" layoutY="680" onMouseClicked="#startGame"/>
     <Button text="ChatRoom" layoutX="990" layoutY="680" onMouseClicked="#onToLobbyChat"/>
-    <Button text="Refresh" layoutX="1090" layoutY="680" onMouseClicked="#refresh"/>
+    <Button text="Refresh" layoutX="1110" layoutY="680" onMouseClicked="#refresh"/>
 
     <Rectangle width="75" height="75" layoutX="560" layoutY="150" fx:id="avatar1"/>
     <Rectangle width="75" height="75" layoutX="560" layoutY="250" fx:id="avatar2"/>

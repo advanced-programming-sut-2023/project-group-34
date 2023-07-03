@@ -1,5 +1,6 @@
 package view.game;
 
+import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -62,8 +63,6 @@ public class LobbyMenuController implements Initializable {
             lobbyStatus.setText("Private");
         else lobbyStatus.setText("Public");
         showPlayers();
-
-        //TODO this might need a thread that checks if a player has joined
 
 
 
@@ -138,7 +137,6 @@ public class LobbyMenuController implements Initializable {
         new LobbyChatMenu().start(LaunchMenu.getStage());
     }
 
-    //TODO
     public void startGame(MouseEvent mouseEvent) {
         if(!currentLobby.getAdmin().getName().equals(User.currentUser.getName())) {
             Alert alert = new Alert(Alert.AlertType.ERROR , "You are not the admin!");
@@ -157,5 +155,12 @@ public class LobbyMenuController implements Initializable {
     }
 
     public void refresh(MouseEvent mouseEvent) {
+        try {
+            LaunchMenu.dataOutputStream.writeUTF("get lobby -id " + currentLobby.getID());
+            LobbyMenuController.currentLobby = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF(), Lobby.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        showPlayers();
     }
 }
