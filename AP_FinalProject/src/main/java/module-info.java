@@ -6,7 +6,8 @@ module AP.FinalProject {
     requires xstream;
     requires com.google.common;
     requires org.checkerframework.checker.qual;
-
+    requires java.sql;
+    
     exports view.main;
     exports view;
     exports controller;

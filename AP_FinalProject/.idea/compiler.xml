@@ -9,8 +9,5 @@
         <module name="AP_FinalProject" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="AP_FinalProject" target="19" />
-    </bytecodeTargetLevel>
   </component>
 </project>
