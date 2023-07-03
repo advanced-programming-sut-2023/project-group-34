@@ -531,8 +531,10 @@ public class ChatRoomMenuController implements Initializable {
                     laughing.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/laugh.jpg").toString())));
                     laughing.get(counter).setVisible(true);
                 }
-                if (!chat.getMessages().get(i).getSender().equals(User.currentUser))
+                if (!chat.getMessages().get(i).getSender().equals(User.currentUser)) {
                     chat.getMessages().get(i).setSeen(true);
+                    sendCurrentChat();
+                }
                 counter--;
             }
         } else {
@@ -563,6 +565,10 @@ public class ChatRoomMenuController implements Initializable {
                 if (chat.getMessages().get(i).isLaughed()) {
                     laughing.get(counter).setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/laugh.jpg").toString())));
                     laughing.get(counter).setVisible(true);
+                }
+                if (!chat.getMessages().get(i).getSender().equals(User.currentUser)) {
+                    chat.getMessages().get(i).setSeen(true);
+                    sendCurrentChat();
                 }
                 counter--;
             }
@@ -711,7 +717,7 @@ public class ChatRoomMenuController implements Initializable {
         URL url = ProfileMenu.class.getResource("/FXML/messageOptions.fxml");
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane, 300, 200);
-        int index = (int) (((y - 100) / 53)) + show - 10;
+        int index = (int) (((y - 150) / 53)) + show - 10;
         Rectangle like = new Rectangle();
         Rectangle dislike = new Rectangle();
         Rectangle laugh = new Rectangle();
@@ -742,6 +748,7 @@ public class ChatRoomMenuController implements Initializable {
                     currentChat.getMessages().get(index).setDisliked(true);
                 else
                     currentChat.getMessages().get(index).setLaughed(true);
+                sendCurrentChat();
                 displayMessages(currentChat);
             }
         });
