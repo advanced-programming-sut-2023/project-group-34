@@ -14,7 +14,7 @@ public class Password {
     private SecurityQuestion securityQuestion;
     private String answer;
 
-    private static String sha256Encrypt (final String string) {
+    public static String sha256Encrypt (final String string) {
         try{
             final MessageDigest digest = MessageDigest.getInstance("SHA-256");
             final byte[] hash = digest.digest(string.getBytes("UTF-8"));

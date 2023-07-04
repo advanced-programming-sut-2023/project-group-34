@@ -45,6 +45,7 @@ public class LaunchMenu extends Application {
             LaunchMenu.dataOutputStream.writeUTF("user login");
             LaunchMenu.dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
         }
+        LaunchMenuController.authentication();
         launch(args);
     }
 

@@ -4,8 +4,15 @@ import java.sql.Connection;
 import java.sql.*;
 
 public class Connect {
+    public static void main(String[] args) {
+        createNewTable();
+        Connect connect = new Connect();
+        connect.insert("aa" , "aabb");
+        connect.insert("bb" , "bb2");
+        connect.selectAll();
+    }
     private static final String url =
-            "jdbc:sqlite:C:/University/AP/tests/db/src/main/resources/database/database.db";//fixme: address!!!.
+            "jdbc:sqlite:C:/Users/IT CITY/Desktop/Ann/project-group-34/AP_FinalProject/src/main/resources/database/database.db";//fixme: address!!!.
     
     public static java.sql.Connection connect () {
         java.sql.Connection conn = null;
@@ -15,6 +22,9 @@ public class Connect {
             System.out.println(e.getMessage());
         }
         return conn;
+    }
+    public Connect() {
+        createNewTable();
     }
     
     public static void createNewTable () {
@@ -31,7 +41,7 @@ public class Connect {
     public String getUsernameFromToken (String token) {
         String sql = "SELECT id, username, token FROM userTokens";
         
-        try (java.sql.Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs =
+        try (java.sql.Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs =
                 stmt.executeQuery(sql)) {
             
             while (rs.next()) {
@@ -46,7 +56,7 @@ public class Connect {
     public void selectAll () {
         String sql = "SELECT id, username, token FROM userTokens";
         
-        try (java.sql.Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs =
+        try (java.sql.Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs =
                 stmt.executeQuery(sql)) {
             
             while (rs.next()) {
@@ -58,9 +68,9 @@ public class Connect {
     }
     
     public void insert (String username, String token) {
-        String sql = "INSERT INTO userTokens(username,token) VALUES(?,?)";
         if (getUsernameFromToken(token) != null) return;
-        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "INSERT INTO userTokens(username,token) VALUES(?,?)";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, token);
             pstmt.executeUpdate();

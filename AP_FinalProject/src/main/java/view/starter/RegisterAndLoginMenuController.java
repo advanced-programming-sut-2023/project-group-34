@@ -4,18 +4,19 @@ import com.google.gson.Gson;
 import controller.UserController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import model.messenger.Message;
+import model.user.Password;
 import model.user.User;
 import view.LaunchMenu;
+import view.LaunchMenuController;
 import view.main.MainMenu;
 
 import java.net.URL;
@@ -136,11 +137,24 @@ public class RegisterAndLoginMenuController implements Initializable {
             return;
 
         User.currentUser = User.getUserByUsername(username.getText());
-        if (stayLoggedIn.isSelected())
-            User.currentUserJsonSaver();
         LaunchMenu.dataOutputStream.writeUTF("user login");
         LaunchMenu.dataOutputStream.writeUTF(new Gson().toJson(User.currentUser));
+        String username = User.currentUser.getName();
+        String encrypt = Password.sha256Encrypt(username);
+        LaunchMenuController.connect.insert(username , encrypt);
+        TextArea textArea = new TextArea("your token is: " + encrypt);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        GridPane gridPane = new GridPane();
+        gridPane.setMaxWidth(Double.MAX_VALUE);
+        gridPane.add(textArea, 0, 0);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("token");
+        alert.getDialogPane().setContent(gridPane);
+        alert.showAndWait();
         new MainMenu().start(LaunchMenu.getStage());
+        System.out.println("your token is: " + encrypt);
     }
 
     public boolean checkCaptcha(){
