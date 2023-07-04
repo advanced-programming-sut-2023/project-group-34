@@ -236,11 +236,9 @@ public class ServerController {
             String indexer = connection.getDataInputStream().readUTF();
             if (indexer.equals("g")) {
                 chat = gson.fromJson(jason, Group.class);
-                System.out.println("updated group");
             }
             else {
                 chat = gson.fromJson(jason, PrivateChat.class);
-                System.out.println("updated pv");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -283,10 +281,6 @@ public class ServerController {
         ArrayList<PrivateChat> privateChats = new ArrayList<>();
         for (Chat chat : Server.dataBase.getChats()) {
             if(chat instanceof PrivateChat pv) {
-                System.out.println("an");
-                for (User pvUser : pv.getUsers()) {
-                    System.out.println(pvUser.getName());
-                }
             }
             if (chat instanceof PrivateChat pv && contains(pv.getUsers(), user)) {
                 privateChats.add(pv);
