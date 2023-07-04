@@ -303,8 +303,8 @@ public class LobbyChatMenuController implements Initializable {
     }
 
     public void getLinesRead() {
-        lines.add(line2);
         lines.add(line1);
+        lines.add(line2);
         lines.add(line3);
         lines.add(line4);
         lines.add(line5);
@@ -316,9 +316,9 @@ public class LobbyChatMenuController implements Initializable {
     }
 
     public void getMessagesRead() {
+        messages.add(message1);
         messages.add(message2);
         messages.add(message3);
-        messages.add(message1);
         messages.add(message4);
         messages.add(message5);
         messages.add(message6);
@@ -486,7 +486,7 @@ public class LobbyChatMenuController implements Initializable {
 
         }
         if (message == null) {
-            openReactionPanel(mouseEvent.getSceneY());
+            openReactionPanel(text.getText());
             return;
         }
 
@@ -623,12 +623,18 @@ public class LobbyChatMenuController implements Initializable {
         }
     }
 
-    public void openReactionPanel(double y) throws IOException {
+    public void openReactionPanel(String text) throws IOException {
         Stage stage = new Stage();
         URL url = ProfileMenu.class.getResource("/FXML/messageOptions.fxml");
         Pane pane = FXMLLoader.load(url);
         Scene scene = new Scene(pane, 300, 200);
-        int index = (int) (((y - 150) / 53)) + show - 10;
+        Message message = null;
+
+        for (int i = currentChat.getMessages().size() - 1; i >= 0; i--) {
+            String checker = currentChat.getMessages().get(i).getSender().getName() + ": " + currentChat.getMessages().get(i).getMessage() + " (" + currentChat.getMessages().get(i).getSendTime() + ")";
+            if (checker.equals(text))
+                message = currentChat.getMessages().get(i);
+        }
 
         Rectangle like = new Rectangle();
         Rectangle dislike = new Rectangle();
@@ -639,18 +645,16 @@ public class LobbyChatMenuController implements Initializable {
         dislike.setHeight(45);
         laugh.setWidth(45);
         laugh.setHeight(45);
-
-        makeRectangle(pane, like, 60, 60, "like", index);
-        makeRectangle(pane, dislike, 120, 60, "dislike", index);
-        makeRectangle(pane, laugh, 180, 60, "laugh", index);
-
-
+        makeRectangle(pane, like, 60, 60, "like", message);
+        makeRectangle(pane, dislike, 120, 60, "dislike", message);
+        makeRectangle(pane, laugh, 180, 60, "laugh", message);
         stage.setScene(scene);
         stage.initOwner(LaunchMenu.getStage());
         stage.show();
     }
 
-    public void makeRectangle(Pane pane, Rectangle rectangle, float x, float y, String name, int index) {
+
+    public void makeRectangle(Pane pane, Rectangle rectangle, float x, float y, String name, Message message) {
         rectangle.setX(x);
         rectangle.setY(y);
         rectangle.setFill(new ImagePattern(new Image(ChatRoomMenu.class.getResource("/images/" + name + ".jpg").toString())));
@@ -658,11 +662,12 @@ public class LobbyChatMenuController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (name.equals("like"))
-                    currentChat.getMessages().get(index).setLiked(true);
+                    message.setLiked(true);
                 else if (name.equals("dislike"))
-                    currentChat.getMessages().get(index).setDisliked(true);
+                    message.setDisliked(true);
                 else
-                    currentChat.getMessages().get(index).setLaughed(true);
+                    message.setLaughed(true);
+                sendCurrentChat();
                 displayMessages(currentChat);
             }
         });

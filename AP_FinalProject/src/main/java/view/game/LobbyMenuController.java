@@ -152,6 +152,11 @@ public class LobbyMenuController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        try {
+            new MainMenu().start(LaunchMenu.getStage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void refresh(MouseEvent mouseEvent) {

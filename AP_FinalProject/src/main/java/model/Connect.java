@@ -12,7 +12,7 @@ public class Connect {
         connect.selectAll();
     }
     private static final String url =
-            "jdbc:sqlite:C:/Users/IT CITY/Desktop/Ann/project-group-34/AP_FinalProject/src/main/resources/database/database.db";//fixme: address!!!.
+            "jdbc:sqlite:C:/Users/Hosein/Desktop/project-group-34/AP_FinalProject/src/main/resources/database/database.db";//fixme: address!!!.
     
     public static java.sql.Connection connect () {
         java.sql.Connection conn = null;

@@ -336,8 +336,8 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void getLinesRead() {
-        lines.add(line2);
         lines.add(line1);
+        lines.add(line2);
         lines.add(line3);
         lines.add(line4);
         lines.add(line5);
@@ -349,9 +349,9 @@ public class ChatRoomMenuController implements Initializable {
     }
 
     public void getMessagesRead() {
+        messages.add(message1);
         messages.add(message2);
         messages.add(message3);
-        messages.add(message1);
         messages.add(message4);
         messages.add(message5);
         messages.add(message6);
@@ -631,6 +631,7 @@ public class ChatRoomMenuController implements Initializable {
         try {
             LaunchMenu.dataOutputStream.writeUTF("get chat -id 1");
             currentChat = new Gson().fromJson(LaunchMenu.dataInputStream.readUTF() , Group.class);
+            show = currentChat.getMessages().size();
             displayMessages(currentChat);
         } catch (IOException e) {
             throw new RuntimeException(e);
