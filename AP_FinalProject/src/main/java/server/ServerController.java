@@ -167,7 +167,6 @@ public class ServerController {
             User user = getUser(username);
             if (user != null) {
                 privateChat.getUsers().add(user);
-                System.out.println("FFFF");
             }
         }
     }
@@ -234,23 +233,31 @@ public class ServerController {
         try {
             Gson gson = new Gson();
             String jason = connection.getDataInputStream().readUTF();
-            if (!isItPrivateChat(jason)) chat = gson.fromJson(jason, Group.class);
-            else chat = gson.fromJson(jason, PrivateChat.class);
+            String indexer = connection.getDataInputStream().readUTF();
+            if (indexer.equals("g")) {
+                chat = gson.fromJson(jason, Group.class);
+                System.out.println("updated group");
+            }
+            else {
+                chat = gson.fromJson(jason, PrivateChat.class);
+                System.out.println("updated pv");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         int ChatID = chat.getID();
-        for (Chat tempChat : Server.dataBase.getChats()) {
+        ArrayList<Chat> chats = Server.dataBase.getChats();
+        for (int i = chats.size() - 1; i >= 0; i--) {
+            Chat tempChat = chats.get(i);
             if (tempChat.getID() == ChatID) {
                 Server.dataBase.getChats().remove(tempChat);
-                Server.dataBase.getChats().add(chat);
-                return;
             }
         }
+        Server.dataBase.getChats().add(chat);
     }
 
     public static boolean isItPrivateChat(String json) {
-        return !json.contains("\"name\"");
+        return json.endsWith("p");
     }
 
     public static void getChat(Connection connection, Matcher matcher) throws IOException {
@@ -265,6 +272,8 @@ public class ServerController {
         Gson gson = new Gson();
         String json = gson.toJson(chat);
         connection.getDataOutputStream().writeUTF(json);
+        if(chat instanceof PrivateChat) connection.getDataOutputStream().writeUTF("p");
+        else connection.getDataOutputStream().writeUTF("g");
     }
 
     public static void getChats(Connection connection) {
@@ -273,7 +282,15 @@ public class ServerController {
         ArrayList<Group> groups = new ArrayList<>();
         ArrayList<PrivateChat> privateChats = new ArrayList<>();
         for (Chat chat : Server.dataBase.getChats()) {
-            if (chat instanceof PrivateChat pv && contains(pv.getUsers(), user)) privateChats.add(pv);
+            if(chat instanceof PrivateChat pv) {
+                System.out.println("an");
+                for (User pvUser : pv.getUsers()) {
+                    System.out.println(pvUser.getName());
+                }
+            }
+            if (chat instanceof PrivateChat pv && contains(pv.getUsers(), user)) {
+                privateChats.add(pv);
+            }
             if (chat instanceof Group group && contains(group.getUsers(), user)) groups.add(group);
         }
         try {

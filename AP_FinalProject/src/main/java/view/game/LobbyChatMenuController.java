@@ -263,7 +263,8 @@ public class LobbyChatMenuController implements Initializable {
             LaunchMenu.dataOutputStream.writeUTF("get chat -id " + id);
             String json = LaunchMenu.dataInputStream.readUTF();
             Chat chat = null;
-            if (ServerController.isItPrivateChat(json)){
+            String indexer = LaunchMenu.dataInputStream.readUTF();
+            if (indexer.equals("p")){
                 chat = new Gson().fromJson(json, PrivateChat.class);
             } else {
                 chat = new Gson().fromJson(json, Group.class);

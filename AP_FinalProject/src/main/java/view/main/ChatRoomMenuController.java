@@ -583,6 +583,8 @@ public class ChatRoomMenuController implements Initializable {
             Gson gson = new Gson();
             String json = gson.toJson(currentChat);
             LaunchMenu.dataOutputStream.writeUTF(json);
+            if(currentChat instanceof PrivateChat) LaunchMenu.dataOutputStream.writeUTF("p");
+            else LaunchMenu.dataOutputStream.writeUTF("g");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -805,7 +807,8 @@ public class ChatRoomMenuController implements Initializable {
             LaunchMenu.dataOutputStream.writeUTF("get chat -id " + id);
             String json = LaunchMenu.dataInputStream.readUTF();
             Chat chat = null;
-            if (ServerController.isItPrivateChat(json)){
+            String indexer = LaunchMenu.dataInputStream.readUTF();
+            if (indexer.equals("p")){
                 chat = new Gson().fromJson(json, PrivateChat.class);
             } else {
                 chat = new Gson().fromJson(json, Group.class);
